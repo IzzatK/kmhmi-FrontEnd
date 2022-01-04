@@ -49,11 +49,11 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                     id: 'phone_number',
                     placeholder: 'Phone',
                 },
-                {
-                    id: 'dod_id',
-                    placeholder: 'DoD ID',
-                    readonly: true
-                },
+                // {
+                //     id: 'dod_id',
+                //     placeholder: 'DoD ID',
+                //     readonly: true
+                // },
                 {
                     id: 'account_status',
                     placeholder: 'Account Status',
@@ -304,7 +304,6 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                 case 'last_name':
                 case 'email_address':
                 case 'phone_number':
-                case 'dod_id':
                 case 'account_status':
                 default:
                     renderDiv = (
@@ -340,7 +339,7 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                             <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Role:</div>
                             <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Email:</div>
                             <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Phone:</div>
-                            <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>DoD ID:</div>
+                            {/*<div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>DoD ID:</div>*/}
                             <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Account Status:</div>
                             {editDivs}
                         </div>
