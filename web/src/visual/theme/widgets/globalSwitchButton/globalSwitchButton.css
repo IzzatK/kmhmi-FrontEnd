@@ -1,0 +1,70 @@
+.global-switch-button {
+    background: var(--global-switch-button-bg-color);
+    border-radius: 1rem;
+    height: 3.3rem;
+    width: 7.5rem
+}
+
+.global-switch-button .personal-svg {
+    fill: var(--global-switch-button-selected-icon-color);
+    background: var(--global-switch-button-selected-bg-color);
+    padding: 0.75rem;
+    border-radius: 1rem;
+    height: 3.3rem;
+    width: 3.3rem;
+    min-height: 3.3rem;
+    min-width: 3.3rem;
+}
+
+.global-switch-button .global-svg {
+    fill: var(--global-switch-button-icon-color);
+    background: transparent;
+    padding: 0.75rem;
+    border-radius: 1rem;
+    height: 3.3rem;
+    width: 3.3rem;
+    min-height: 3.3rem;
+    min-width: 3.3rem;
+}
+
+.global-switch-button.global {
+
+}
+
+.global-switch-button.global .personal-svg {
+    fill: var(--global-switch-button-icon-color);
+    background: transparent;
+}
+
+.global-switch-button.global .global-svg {
+    fill: var(--global-switch-button-selected-icon-color);
+    background: var(--global-switch-button-selected-bg-color);
+}
+
+.global-switch-button.light {
+    background: var(--light-global-switch-button-bg-color);
+}
+
+.global-switch-button.light .personal-svg {
+    background: var(--light-global-switch-button-selected-bg-color);
+    fill: var(--light-global-switch-button-selected-icon-color);
+}
+
+.global-switch-button.light .global-svg {
+    fill: var(--light-global-switch-button-icon-color);
+    background: transparent;
+}
+
+.global-switch-button.light.global {
+
+}
+
+.global-switch-button.light.global .personal-svg {
+    fill: var(--light-global-switch-button-icon-color);
+    background: transparent;
+}
+
+.global-switch-button.light.global .global-svg {
+    background: var(--light-global-switch-button-selected-bg-color);
+    fill: var(--light-global-switch-button-selected-icon-color);
+}

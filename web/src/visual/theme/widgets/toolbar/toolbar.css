@@ -1,0 +1,35 @@
+.toolbar{
+
+}
+
+.toolbar > ul > li > .button {
+
+}
+
+.tool-item .button {
+    background: var(--toggle-button-bg-color);
+    padding: 1.2rem !important;
+    min-width: 6.7rem;
+}
+
+.tool-item .button svg {
+    fill: var(--toggle-button-color);
+}
+
+.tool-item .button.selected:hover,
+.tool-item .button:hover {
+    background: var(--toggle-button-hover-bg-color);
+}
+
+.tool-item .button.selected:hover svg,
+.tool-item .button:hover svg {
+    fill: var(--toggle-button-hover-color);
+}
+
+.tool-item .button.selected {
+    background: var(--toggle-button-selected-bg-color);
+}
+
+.tool-item .button.selected svg {
+    fill: var(--toggle-button-selected-color);
+}

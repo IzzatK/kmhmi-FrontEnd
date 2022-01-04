@@ -1,0 +1,22 @@
+body > * {
+    --primary-font-family: 'Open Sans', sans-serif;
+    --mono-font-family: 'Roboto', sans-serif;
+
+
+    /** Common Colors **/
+    --primary-color: #ffffff;
+    --secondary-color: #2e2e2e;
+    --warning-color: #ff0000;
+    --warning-color-35: rgba(255, 0, 0, 0.35);
+    --caution-color: #ffff00;
+    --caution-color-35: rgba(255, 255, 0, 0.35);
+    --advisory-color: #0000ff;
+    --advisory-color-35: #0000ff;
+    --accent-color: #17DBF2;
+    --info-color: #6085A6;
+    --nominal-color: #008000;
+    --muted-color: #ACACAC;
+    --selected-color: #E5E9EB;
+    --disabled-color: #ACACAC;
+    --notification-color: #ff3300;
+}

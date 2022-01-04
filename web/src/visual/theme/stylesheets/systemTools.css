@@ -1,0 +1,14 @@
+.system-tool-panel {
+
+}
+
+.system-tool-panel .header {
+    padding: 1.0rem;
+    background: var(--system-tool-header-background);
+    color: var(--system-tool-header-color);
+    font-size: 1.6rem;
+}
+
+.system-tool-panel .title {
+    color: var(--system-tool-color);
+}

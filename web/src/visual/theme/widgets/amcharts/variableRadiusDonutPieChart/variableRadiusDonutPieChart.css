@@ -1,0 +1,25 @@
+.variable-radius-donut-pie-chart {
+    /*min-width: 150rem;*/
+    /*min-height: 72rem;*/
+    min-height: 32.22rem;
+    background: var(--stats-background);
+}
+
+.variable-radius-donut-pie-chart.minimized {
+    min-width: 0;
+    min-height: 32.22rem;
+}
+
+.legend {
+    color: var(--stats-color);
+    min-width: 25.56rem;
+}
+
+.variable-radius-donut-pie-chart .legend-title {
+    color: var(--donut-pie-chart-header-color);
+}
+
+.variable-radius-donut-pie-chart tspan {
+    font-family: var(--primary-font-family) !important;
+    font-size: 1.4rem !important;
+}

@@ -1,0 +1,49 @@
+.bumed-logo {
+    background-image: url("../images/bumed_logo.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-position: center;
+    background-size: contain;
+    width:3.0rem;
+    height: 3.0rem;
+}
+
+.fake-graphs {
+    background-image: url("../images/graphs.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-position: center;
+    background-size: contain;
+    width:121.5rem;
+    height: 38.7rem;
+}
+
+.fake-graph-bar {
+    background-image: url("../images/graph_bar.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-position: center;
+    background-size: contain;
+    width:38.7rem;
+    height: 38.7rem;
+}
+
+.fake-graph-pie {
+    background-image: url("../images/graph_pie.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-position: center;
+    background-size: contain;
+    width:38.7rem;
+    height: 38.7rem;
+}
+
+.fake-graph-timeline {
+    background-image: url("../images/graph_timeline.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-position: center;
+    background-size: contain;
+    width:38.7rem;
+    height: 38.7rem;
+}

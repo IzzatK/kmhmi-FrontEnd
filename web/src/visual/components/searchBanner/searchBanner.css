@@ -1,0 +1,66 @@
+.search-banner {
+    background: transparent;
+    padding: 0 10rem 0 10rem;
+}
+
+.search-banner .combo-box {
+    min-width: 12rem;
+    min-height: 3.3rem;
+}
+
+.search-banner .button {
+    background: var(--light-toggle-button-bg-color);
+    fill: var(--light-toggle-button-color);
+    color: var(--light-toggle-button-color);
+}
+
+.search-banner .button:hover {
+    background: var(--light-toggle-button-hover-bg-color);
+    fill: var(--light-toggle-button-hover-color);
+    color: var(--light-toggle-button-hover-color);
+}
+
+.search-banner .button.selected {
+    background: var(--light-toggle-button-selected-bg-color);
+    fill: var(--light-toggle-button-selected-color);
+    color: var(--light-toggle-button-selected-color);
+}
+
+.search-banner .combo-box-button {
+    min-width: 10rem;
+    background: var(--light-combo-box-bg-color);
+    color: var(--light-combo-box-color);
+    min-height: 3.3rem;
+}
+
+.search-banner .combo-box-button svg {
+    fill: var(--light-combo-box-arrow-color);
+}
+
+.search-banner .combo-box-button:hover {
+    color: var(--combo-box-hover-color);
+    background: var(--combo-box-hover-bg-color);
+}
+
+.search-banner .combo-box-button:hover svg {
+    fill: var(--combo-box-arrow-hover-color);
+}
+
+.search-banner .combo-box-button.selected {
+    color: var(--light-combo-box-selected-color);
+    background: var(--light-combo-box-selected-bg-color);
+}
+
+.search-banner .combo-box-button.selected svg {
+    fill: var(--light-combo-box-arrow-selected-bg-color);
+}
+
+.portal .advanced {
+    background: var(--light-combo-box-list-bg-color);
+    color: var(--app-airForceBlue) !important;
+    font-size: 1.5rem;
+}
+
+.portal .advanced .footer {
+    background: var(--app-summerSky);
+}

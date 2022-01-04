@@ -1,0 +1,9 @@
+export enum StatType {
+    CUSTOM_SHARED_TAG=1,
+    DATASTORE_SIZE,
+    DEPARTMENT,
+    FILE_TYPE,
+    PROJECT,
+    PURPOSE,
+    UPLOAD_DATE,
+}

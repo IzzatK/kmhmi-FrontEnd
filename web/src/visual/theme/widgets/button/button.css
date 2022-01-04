@@ -1,0 +1,57 @@
+.button {
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    background: var(--button-bg-color);
+    color: var(--button-color);
+    fill: var(--button-color);
+    cursor: pointer;
+}
+
+.button.highlight:hover,
+.button.selected:hover,
+.button:hover {
+    background: var(--button-hover-bg-color);
+    color: var(--button-hover-color);
+    fill: var(--button-hover-color);
+}
+
+.button:active {
+    transform: scale(0.98);
+}
+
+.button.selected {
+    /*background: var(--button-selected-bg-color);*/
+    /*color: var(--button-selected-color);*/
+    /*fill: var(--button-selected-color);*/
+}
+
+.button.disabled {
+    pointer-events: none;
+}
+
+.button.btn-small {
+    padding: 0.2rem;
+    font-size: 1.0rem;
+}
+
+.button.btn-transparent {
+    background: transparent;
+}
+
+.button.light {
+    background: var(--light-button-bg-color);
+    color: var(--light-button-color);
+    fill: var(--light-button-color);
+}
+
+.button.light:hover {
+    background: var(--light-button-hover-bg-color);
+    color: var(--light-button-hover-color);
+    fill: var(--light-button-hover-color);
+}
+
+.button.highlight {
+    color: var(--button-highlight-color);
+    background: var(--button-highlight-bg-color);
+    fill: var(--button-highlight-color);
+}

@@ -1,0 +1,50 @@
+.tag {
+    background: var(--tag-bg-color);
+    height: 2.55rem;
+}
+
+.tag.global {
+    border: 2px solid var(--tag-border-color);
+}
+
+.tag.edit {
+    background: var(--tag-edit-bg-color);
+    border: 2px solid var(--tag-edit-border-color);
+}
+
+.tag .tag-text {
+    color: var(--tag-color);
+}
+
+.tag .text-edit {
+    min-width: 10.5rem;
+    min-height: 2.15rem;
+    height: 2.15rem;
+}
+
+.tag .text-edit input[type=text] {
+    /*border-bottom: none;*/
+    /*background: var(--tag-edit-bg-color);*/
+    /*color: var(--tag-edit-color);*/
+}
+
+.tag .text-edit input[type=text]::placeholder {
+    /*color: var(--tag-edit-color);*/
+}
+
+.tag .text-edit input[type=text]:focus {
+    /*border-bottom: none;*/
+    /*background: var(--tag-edit-bg-color);*/
+    /*color: var(--tag-edit-color);*/
+}
+
+.tag .delete-btn {
+    opacity: 0;
+    width: 0;
+    fill: var(--tag-color);
+}
+
+.tag:hover .delete-btn {
+    width: 100%;
+    opacity: 1;
+}

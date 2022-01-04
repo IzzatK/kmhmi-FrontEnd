@@ -1,0 +1,92 @@
+.search-advanced-panel {
+
+}
+
+.search-advanced-panel .combo-box {
+    color: var(--advanced-search-combo-box-color);
+    background: var(--advanced-search-combo-box-background);
+}
+
+.search-advanced-panel .combo-box-selected {
+    background: var(--advanced-search-combo-box-selected-background);
+    color: var(--primary-color);
+}
+
+.search-advanced-panel .combo-box:hover {
+    color: var(--advanced-search-combo-box-hover-color);
+    background: var(--primary-color);
+}
+
+.list-cell-selected {
+    background: var(--advanced-search-combo-box-item-selected-background);
+}
+
+ul.list-items {
+    background: var(--advanced-search-combo-box-item-background);
+    color: var(--combo-box-color);
+}
+
+.list-items > div:hover {
+    background: var(--advanced-search-combo-box-item-hover-background);
+}
+
+.search-advanced-panel .combo-box .combo-box-arrow {
+    fill: var(--advanced-search-combo-box-svg-background);
+}
+
+.search-advanced-panel .combo-box:hover .combo-box-arrow {
+    fill: var(--advanced-search-combo-box-svg-hover-background);
+}
+
+.search-advanced-panel .combo-box-selected .combo-box-arrow {
+    fill: var(--combo-box-arrow-selected-background);
+}
+
+.search-advanced-panel .button {
+    background: transparent;
+    padding: 0.7rem;
+}
+
+.search-advanced-panel .button:hover {
+    background: transparent;
+    padding: 0.37rem 0.5rem 0.5rem 0.7rem;
+}
+
+@media only screen and (max-width: 1920px) {
+    .search-advanced-panel .button:hover {
+        padding: 0.3rem 0.5rem 0.5rem 0.7rem;
+    }
+}
+
+.search-advanced-panel .button svg {
+    display: inline-block;
+    vertical-align: middle;
+    horiz-align: center;
+}
+
+.search-advanced-panel .button svg path {
+    fill: var(--advanced-search-svg-background);
+}
+
+.search-advanced-panel .button:hover svg path {
+    fill: var(--advanced-search-svg-hover-background);
+}
+
+.search-advanced-panel .button:hover svg {
+    height: 2.4rem;
+    width: 2.4rem;
+    min-height: 2.4rem;
+    min-width: 2.4rem;
+}
+
+.search-advanced-panel .search-text {
+    color: var(--advanced-search-color);
+}
+
+.search-advanced-panel .even-row {
+    background: var(--advanced-search-odd-row-background);
+}
+
+.search-advanced-panel .search-container {
+    border: 2px solid var(--advanced-search-border-color);
+}

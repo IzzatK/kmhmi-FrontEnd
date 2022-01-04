@@ -1,0 +1,16 @@
+.system-banner {
+    background: var(--system-banner-background);
+}
+
+.system-banner .title {
+    color: var(--system-banner-color);
+}
+
+.system-banner .text {
+    color: var(--system-banner-secondary-color);
+}
+
+.system-banner .system-banner-text-accent {
+    color: var(--system-banner-accent-color);
+}
+

@@ -1,0 +1,18 @@
+.progress-bar {
+    --track-background: var(--progress-bar-track-background);
+    --charged-background: var(--progress-bar-charged-background);
+    --charged-nominal-background: var(--nominal-color);
+    --charged-warning-background: var(--warning-color);
+    --charged-critical-background: var(--critical-color);
+
+    background: var(--track-background);
+    display: flex;
+    align-items: stretch;
+    width: 7.5rem;
+    height: 1.5rem;
+}
+
+.progress-bar .bar {
+    background: var(--charged-background);
+    transition: width 200ms;
+}

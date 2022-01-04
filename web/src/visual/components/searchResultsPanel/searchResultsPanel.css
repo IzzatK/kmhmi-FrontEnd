@@ -1,0 +1,324 @@
+.search-results-panel {
+    background-color: var(--search-results-panel-bg-color);
+}
+
+.search-results-panel .button {
+    background: var(--light-toggle-button-bg-color);
+    fill: var(--light-toggle-button-color);
+    color: var(--light-toggle-button-color);
+    min-width: 3.3rem;
+}
+
+.search-results-panel .button:hover {
+    background: var(--light-toggle-button-hover-bg-color);
+    color: var(--light-toggle-button-hover-color);
+    fill: var(--light-toggle-button-hover-color);
+}
+
+.search-results-panel .button.selected,
+.search-results-panel .button.selected:hover {
+    background: var(--light-toggle-button-selected-bg-color);
+    fill: var(--light-toggle-button-selected-color);
+    color: var(--light-toggle-button-selected-color)
+}
+
+.search-results-panel .combo-box svg {
+    fill: var(--light-combo-box-arrow-color);
+}
+
+.search-results-panel .combo-box:hover svg {
+    fill: var(--combo-box-arrow-hover-color)
+}
+
+.search-results-panel .combo-box.selected svg {
+    fill: var(--light-combo-box-arrow-selected-bg-color);
+}
+
+/* Card */
+.search-results-panel .search-results .cards {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fill, minmax(36.7rem, 1fr));
+    grid-template-rows: repeat(auto-fill, minmax(15.7rem, 1fr));
+    /* grid-auto-columns: 1fr; */
+    grid-auto-rows: 1fr;
+    grid-gap: 1.5rem;
+}
+
+.search-results-panel .search-results .cards .result-item .card {
+    background: var(--search-results-card-bg-color);
+    border: 0 solid transparent;
+    border-left: 1rem solid var(--search-results-card-border-color);
+}
+
+.search-results-panel .search-results .cards .result-item .card:hover {
+    transform: scaleY(1.05);
+    background: var(--search-results-card-hover-bg-color);
+    border-left-color: var(--search-results-card-hover-border-color);
+}
+
+.search-results-panel .search-results .cards .result-item .card .title {
+    color: var(--search-results-card-accent-color);
+    font-size: 2.2rem;
+    line-height: 2.2rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
+.search-results-panel .search-results .cards .result-item .card:hover .title {
+    color: var(--search-results-card-hover-accent-color);
+}
+
+.search-results-panel .search-results .cards .result-item .card .text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    color: var(--search-results-card-color);
+}
+
+.search-results-panel .search-results .cards .result-item .card:hover .text {
+    color: var(--search-results-card-hover-color);
+}
+
+.search-results-panel .search-results .cards .result-item .card .datetime {
+    min-width: 8rem;
+}
+
+.search-results-panel .search-results .cards .result-item.selected .card {
+    background: var(--search-results-card-selected-bg-color);
+    border-left-color: var(--search-results-card-selected-border-color);
+    transform: scaleY(1.05);
+    /*transition: all 200ms;*/
+}
+
+.search-results-panel .search-results .cards .result-item.selected .card .title {
+    color: var(--search-results-card-selected-accent-color);
+    font-weight: bold;
+}
+
+.search-results-panel .search-results .cards .result-item.selected .card .text {
+    color: var(--search-results-card-selected-color);
+}
+
+/* List */
+.search-results-panel .search-results .list .result-item .title {
+    font-size: 2.0rem;
+    line-height: 2.0rem;
+    color: var(--search-results-list-accent-color);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
+.search-results-panel .search-results .list .result-item:hover .title {
+    color: var(--search-results-list-hover-accent-color);
+}
+
+.search-results-panel .search-results .list .result-item.selected .title {
+    color: var(--search-results-list-selected-accent-color);
+}
+
+.search-results-panel .search-results .list .result-item .text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    color: var(--search-results-list-color);
+}
+
+.search-results-panel .search-results .list .result-item .text.collapsed {
+    -webkit-line-clamp: 2;
+}
+
+.search-results-panel .search-results .list .result-item:hover .text {
+    color: var(--search-results-list-hover-color);
+}
+
+.search-results-panel .search-results .list .result-item.selected .text {
+    color: var(--search-results-list-selected-color);
+}
+
+.search-results .search-results .list .result-item {
+    background: var(--search-results-list-bg-color);
+}
+
+.search-results-panel .search-results .list .result-item:hover {
+    transform: scaleY(1.05);
+    background: var(--search-results-list-hover-bg-color);
+}
+
+.search-results-panel .search-results .list .result-item.selected {
+    transform: scaleY(1.05);
+    background: var(--search-results-list-selected-bg-color);
+}
+
+.search-results-panel .search-results .list .listItem .card .info-button {
+    background: transparent;
+    color: var(--search-results-list-info-color);
+    fill: var(--search-results-list-info-color);
+}
+
+.search-results-panel .search-results .list .listItem .card.selected .info-button {
+    color: var(--search-results-list-selected-info-color);
+    fill: var(--search-results-list-selected-info-color);
+}
+
+.search-results-panel .search-results .list .listItem .card {
+    color: var(--search-results-list-info-accent-color);
+}
+
+.search-results-panel .search-results .list .listItem .card .custom-v-gap > *:not(:first-child):not(.exclude-item) {
+    margin-top: 1.87rem;
+}
+
+.search-results-panel .search-results .list .listItem .card .card-body.expanded {
+    min-height: 40rem;
+}
+
+.search-results-panel .search-results .list .listItem .card.collapsed .card-body.expanded {
+    min-height: 25rem;
+}
+
+.search-results-panel .search-results .list .listItem .card .property-grid {
+    display: grid;
+    grid-template-rows: repeat(11, 3.5rem);
+    grid-template-columns: 10rem 15rem;
+    grid-auto-flow: column;
+    grid-gap: 0 3rem;
+}
+
+.search-results-panel .search-results .list .listItem .card.collapsed .property-grid {
+    grid-template-rows: repeat(7, 3.5rem);
+}
+
+.search-results-panel .search-results .list .listItem .card .property-grid-2 {
+    display: grid;
+    grid-template-rows: repeat(2, 3.5rem);
+    grid-template-columns: 5rem 15rem;
+    grid-auto-flow: column;
+    grid-gap: 0 3rem;
+}
+
+.search-results-panel .search-results .list .listItem .card .custom-margin {
+    margin-top: 3.45rem;
+}
+
+/* Table */
+.search-results-panel .rgt-cell .rgt-cell-inner {
+    margin: 0 !important;
+    padding: 1.5rem;
+    place-self: stretch;
+    color: var(--search-results-table-color);
+}
+
+.search-results-panel .rgt-cell .rgt-cell-inner .title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+
+}
+
+.search-results-panel .rgt-cell .rgt-cell-inner .author {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+.search-results-panel .rgt-cell {
+    background: transparent;
+    border: transparent;
+    max-height: 61px;
+}
+
+.search-results-panel .rgt-cell .rgt-cell-inner.selected {
+    background: var(--search-results-table-selected-bg-color);
+    transform: scaleY(1.05);
+    color: var(--search-results-table-selected-color);
+}
+
+/*TODO apply hover style to entire row, not just single cell*/
+/*.search-results-panel .rgt-cell:hover .rgt-cell-inner {*/
+/*    background: var(--search-results-table-hover-bg-color);*/
+/*    transform: scaleY(1.05);*/
+/*    color: var(--search-results-table-hover-color);*/
+/*}*/
+
+.search-results-panel .rgt-cell-header {
+    background: transparent;
+    border-bottom-color: transparent;
+    border-bottom-width: 0;
+    min-height: 27px;
+}
+
+/*works*/
+.search-results-panel .rgt-wrapper {
+    border: transparent;
+}
+
+.search-results-panel .rgt-container {
+    background: transparent;
+}
+
+.search-results-panel .rgt-header-container {
+    background: transparent;
+    border: transparent;
+}
+
+.search-results-panel .rgt-cell-header-inner {
+    background: var(--search-results-table-header-bg-color);
+    border-right-color: var(--app-background);
+    border-right-width: 3px;
+    color: var(--search-results-table-header-color);
+    font-size: 1.6rem;
+    line-height: 1.6rem;
+    padding: 0;
+    justify-content: center;
+}
+
+/*.search-results-panel .rgt-footer {*/
+/*    background: transparent;*/
+/*    border-top-color: transparent;*/
+/*    border-top-width: 0;*/
+/*}*/
+
+/*.search-results-panel .rgt-footer-right-container {*/
+/*    display: flex;*/
+/*    flex: 1 1 auto !important;*/
+/*    justify-content: center;*/
+/*}*/
+
+/*.search-results-panel .rgt-footer-right-container .pagination {*/
+/*    min-width: 10rem;*/
+/*}*/
+
+.search-results-panel .cell-text {
+    text-overflow: ellipsis;
+}
+
+.search-results-panel .table .loader-container {
+    background: transparent;
+}
+
+.search-results-panel .table .loader {
+    width: 1.0rem;
+    height: 1.0rem;
+}
+
+::-webkit-scrollbar{
+    width:8px !important;
+}
+
+::-webkit-scrollbar-thumb{
+    border-radius: 5px !important;
+    background-color: var(--scrollbar-thumb-color) !important;
+    border: 0 !important;
+}
+
+::-webkit-scrollbar-track{
+    border-radius: 5px !important;
+    background-color: var(--scrollbar-track-color) !important;
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent !important;
+}

@@ -1,0 +1,64 @@
+.upload-panel {
+}
+
+.upload-panel .pending-item .card .card-header .pending-item-body {
+    min-height: 5.5rem;
+    background: var(--pending-item-bg-color);
+    border: 0;
+    border-bottom: 4px solid var(--pending-item-border-color);
+    color: var(--pending-item-color);
+}
+
+.upload-panel .pending-item .card:hover .card-header  .pending-item-body{
+    border-bottom: 4px solid var(--pending-item-hover-border-color);
+    background: var(--pending-item-hover-bg-color);
+    color: var(--pending-item-hover-color);
+}
+
+.upload-panel .pending-item .card.loading:hover .card-header .pending-item-body,
+.upload-panel .pending-item .card.loading  .card-header .pending-item-body {
+    border-bottom: 4px solid var(--pending-item-loading-border-color);
+    background: var(--pending-item-loading-bg-color);
+    color: var(--pending-item-loading-color);
+}
+
+.upload-panel .pending-item .card.selected .card-header .pending-item-body {
+    border-bottom: 4px solid var(--pending-item-selected-border-color);
+    background: var(--pending-item-selected-bg-color);
+    color: var(--pending-item-selected-color);
+}
+
+.upload-panel .pending-item .card.disabled .card-header .pending-item-body {
+    border-bottom: 4px solid var(--pending-item-disabled-border-color);
+    background: var(--pending-item-disabled-bg-color);
+    color: var(--pending-item-disabled-color);
+}
+
+.upload-panel .pending-item .card.deleted .card-header .pending-item-body {
+    border-bottom: 4px solid var(--pending-item-deleted-border-color);
+    background: var(--pending-item-deleted-bg-color);
+    color: var(--pending-item-deleted-color);
+}
+
+.upload-panel .pending-item .card .card-body.expanded {
+    min-height: 0;
+}
+
+.upload-panel .pending-item .card .pending-item-body .button {
+    opacity: 0;
+    fill: var(--pending-item-loading-button-color);
+}
+
+.upload-panel .pending-item .card.loading:hover .pending-item-body .button {
+    opacity: 1;
+}
+
+.upload-panel .pending-item .card .accept {
+    background: var(--pending-item-button-bg-color);
+    fill: var(--pending-item-accept-button-color);
+}
+
+.upload-panel .pending-item .card .reject {
+    background: var(--pending-item-button-bg-color);
+    fill: var(--pending-item-reject-button-color);
+}

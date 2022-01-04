@@ -1,0 +1,28 @@
+.card {
+    background: var(--card-bg-color);
+}
+
+.card:hover {
+    /*filter: brightness(1.05);*/
+}
+
+.card-header {
+    z-index: 1;
+    /*padding: 1.5rem;*/
+}
+
+.card-body.collapsed {
+    overflow: hidden;
+    min-height: 0;
+    max-height: 0;
+    transition: all 250ms ease-in-out;
+}
+
+.card-body.expanded {
+    /*overflow: hidden;*/
+    min-height: 32.22rem;
+    max-height: 64.44rem;
+    height: max-content;
+    overflow: auto;
+    transition: all 250ms ease-in-out;
+}

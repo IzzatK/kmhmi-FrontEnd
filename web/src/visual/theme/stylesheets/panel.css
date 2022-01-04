@@ -1,0 +1,7 @@
+.border-xlg {
+    border-width: 0.3rem !important;
+}
+
+.border-dark {
+    border-color: var(--file-input-border-color) !important;
+}

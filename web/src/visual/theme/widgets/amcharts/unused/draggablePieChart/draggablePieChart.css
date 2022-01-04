@@ -1,0 +1,18 @@
+.draggable-pie-chart {
+    /*min-width: 150rem;*/
+    min-height: 32.22rem;
+    background: var(--stats-background);
+}
+
+.legend {
+    color: var(--stats-color);
+    min-width: 25.56rem;
+}
+
+.draggable-pie-chart .legend-title {
+    color: var(--draggable-pie-chart-header-color);
+}
+
+.draggable-pie-chart tspan {
+    font-size: 1.4rem !important;
+}

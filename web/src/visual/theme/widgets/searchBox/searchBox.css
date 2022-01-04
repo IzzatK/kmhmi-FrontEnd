@@ -1,0 +1,27 @@
+.search-box {
+    min-width: 35.0rem;
+    color: var(--search-box-color);
+    background: var(--search-box-bg-color);
+}
+
+.search-box input::placeholder { /* Most modern browsers support this now. */
+    /*color: var(--text-placeholder);*/
+}
+
+.search-box input { /* Most modern browsers support this now. */
+    border: 0;
+    background: transparent;
+    padding: 0.5rem;
+}
+
+.search-box .button {
+    padding: 0.8rem !important;
+}
+
+.search-box .button:hover {
+    background: transparent;
+}
+
+.search-box .button:hover svg {
+    fill: var(--search-box-color);
+}

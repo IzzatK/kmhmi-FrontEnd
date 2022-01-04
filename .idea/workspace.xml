@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitlab-ci.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/km-hmi.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/.env.development" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/.storybook/main.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/.storybook/preview.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/generate-types.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/public/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/public/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/public/logo192.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/public/logo512.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/public/manifest.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/public/robots.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/api/authentication/iAuthenticationService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/api/common/iConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/api/common/iEntityProvider.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/api/documents/iDocumentService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/api/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/api/references/iReferenceService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/api/scenarioService/iScenarioService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/api/stats/iStatService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/api/tags/iTagService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/api/users/IUserProvider.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/api/users/iUserService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/authentication/authenticationService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/common/converters/converter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/common/converters/parsingUtils.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/common/converters/types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/common/providers/entityProvider.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/documents/converters/deleteDocumentResponseConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/documents/converters/documentResponseConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/documents/converters/getDocumentArrayRequestConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/documents/converters/getDocumentArrayResponseConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/documents/converters/getDocumentResponseConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/documents/converters/updateDocumentRequestConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/documents/converters/uploadDocumentRequestConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/documents/converters/uploadDocumentResponseConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/documents/documentService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/documents/providers/documentProvider.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/references/converters/getReferenceArrayRequestConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/references/converters/getReferenceArrayResponseConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/references/providers/referenceProvider.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/references/referenceService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/scenarioService/scenarioService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/serviceComposition.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/stats/converters/getStatsRequestConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/stats/converters/getStatsResponseConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/stats/providers/statProvider.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/stats/statService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/tags/converters/getTagArrayRequestConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/tags/converters/getTagArrayResponseConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/tags/converters/getTagResponseConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/tags/providers/tagProvider.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/tags/tagService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/users/converters/roles/getSingleRoleResponseConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/users/converters/users/createUserRequestConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/users/converters/users/deleteUserResponseConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/users/converters/users/getUserArrayRequestConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/users/converters/users/getUserArrayResponseConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/users/converters/users/getUserResponseConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/users/converters/users/updateUserRequestConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/users/converters/users/userStatusResponseConverter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/users/providers/roleProvider.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/users/providers/userProvider.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/application/users/userService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/config/config.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/config/scenario.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/api/.gitempty" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/extras/iViewModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/extras/presenter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/extras/useInterval.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/extras/useParentClass.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/extras/usePrevious.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/extras/useRenderCounter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/extras/useTraceUpdate.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/extras/utils/animationUtils.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/extras/utils/collectionUtils.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/extras/utils/cssHelpers.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/extras/utils/formatUtils.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/extras/utils/mathUtils.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/extras/utils/searchAlgorithms.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/extras/utils/timeUtils.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/extras/utils/uniqueIdUtils.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/model/menuItemVM.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/model/metaDataVM.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/model/svgModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/fonts/FontAwesome.otf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/fonts/Roboto-Regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/fonts/Roboto-Thin.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/fonts/RobotoCondensed-Regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/fonts/fontawesome-webfont.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/fonts/fontawesome-webfont.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/fonts/fontawesome-webfont.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/fonts/fontawesome-webfont.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/fonts/fontawesome-webfont.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/fonts/icofont.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/fonts/icofont.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/fonts/icofont.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/images/tektonux_logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/stylesheets/animations.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/stylesheets/font-awesome.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/stylesheets/icofont.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/stylesheets/images.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/stylesheets/index.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/stylesheets/reset.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/stylesheets/shapes.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/stylesheets/text.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/stylesheets/theme.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/stylesheets/utilities.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework.visual/theme/widgets/svg.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/api/IBasePlugin.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/api/IPlugin.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/api/displayService/iDisplayService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/api/httpService/iHttpService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/api/iDataStore.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/api/iLoggablePlugin.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/api/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/api/logService/iLogService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/api/logService/iLogger.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/api/logService/logLevel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/api/repoService/iRepoService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/api/selectionService/iSelectionService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/config/default.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/extras/basePlugin.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/extras/loggablePlugin.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/extras/plugin.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/extras/typeUtils.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/model/menuItem.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/redux/reduxStore.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/services/applicationService/applicationService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/services/displayService/displayService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/services/httpService/httpService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/services/logService/defaultLogger.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/services/logService/logService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/services/metadataModule/metadataReducer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/services/repoService/repoItem.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/services/repoService/repoService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/services/selectionService/selectionService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/websocket/socket.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/wrappers/componentWrapper.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/wrappers/displayWrapper.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/wrappers/metadataWrapper.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/framework/wrappers/viewModelWrapper.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/index.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/model/documentInfo.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/model/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/model/metadataInfo.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/model/paramType.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/model/referenceInfo.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/model/referenceType.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/model/roleInfo.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/model/searchParamInfo.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/model/sortPropertyInfo.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/model/statInfo.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/model/statType.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/model/tagInfo.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/model/tagType.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/model/userInfo.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/react-app-env.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/serviceWorker.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/tests/Button.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/tests/Button.stories.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/tests/Header.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/tests/Header.stories.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/tests/Introduction.stories.mdx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/tests/Page.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/tests/Page.stories.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/tests/assets/code-brackets.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/tests/assets/colors.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/tests/assets/comments.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/tests/assets/direction.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/tests/assets/flow.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/tests/assets/plugin.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/tests/assets/repo.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/tests/assets/stackalt.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/tests/button.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/tests/header.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/tests/page.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/documentPanel/documentPanel.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/documentPanel/documentPanelModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/documentPanel/documentPanelPresenter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/documentPanel/documentPanelView.stories.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/documentPanel/documentPanelView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/documentPanel/documentPdfPreview.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/searchBanner/searchBanner.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/searchBanner/searchBannerModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/searchBanner/searchBannerPresenter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/searchBanner/searchBannerView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/searchGraphsPanel/searchGraphsModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/searchGraphsPanel/searchGraphsPanel.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/searchGraphsPanel/searchGraphsPanelPresenter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/searchGraphsPanel/searchGraphsPanelView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/searchResultsPanel/renderers/cardCollectionView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/searchResultsPanel/renderers/listCollectionView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/searchResultsPanel/renderers/tableCollectionView.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/searchResultsPanel/searchResultsModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/searchResultsPanel/searchResultsPanel.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/searchResultsPanel/searchResultsPanelPresenter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/searchResultsPanel/searchResultsPanelView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemBanner/systemBanner.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemBanner/systemBannerModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemBanner/systemBannerPresenter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemBanner/systemBannerView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/newUserProfileInfoView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profileInfoView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanel.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanel.stories.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelPresenter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/userRequestInfoView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/statsPanel/statsPanel.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/statsPanel/statsPanelModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/statsPanel/statsPanelPresenter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/statsPanel/statsPanelView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/tagsPanel/tagsPanel.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/tagsPanel/tagsPanelModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/tagsPanel/tagsPanelPresenter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/tagsPanel/tagsPanelView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/uploadPanel/uploadPanel.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/uploadPanel/uploadPanelModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/uploadPanel/uploadPanelPresenter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/uploadPanel/uploadPanelView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolbar/systemToolbar.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolbar/systemToolbarModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolbar/systemToolbarPresenter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolbar/systemToolbarView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/unused/common/DragHelper.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/unused/common/DraggableWrapper.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/unused/common/DropTargetWrapper.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/unused/searchAdvancedPanel/searchAdvancedPanel.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/unused/searchAdvancedPanel/searchAdvancedPanelPresenter.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/components/unused/searchAdvancedPanel/searchAdvancedPanelView.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/model/searchBannerMenuItem.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/model/searchResultsMenuItem.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/model/systemToolMenuItem.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/common/.gitempty" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/fonts/Overpass-Black.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/fonts/Overpass-BlackItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/fonts/Overpass-Bold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/fonts/Overpass-BoldItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/fonts/Overpass-ExtraBold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/fonts/Overpass-ExtraBoldItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/fonts/Overpass-ExtraLight.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/fonts/Overpass-ExtraLightItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/fonts/Overpass-Italic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/fonts/Overpass-Light.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/fonts/Overpass-LightItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/fonts/Overpass-Regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/fonts/Overpass-SemiBold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/fonts/Overpass-SemiBoldItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/fonts/Overpass-Thin.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/fonts/Overpass-ThinItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/fonts/goodtimesrg.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/images/bumed_logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/images/graph_bar.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/images/graph_pie.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/images/graph_timeline.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/images/graphs.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/stylesheets/images.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/stylesheets/index.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/stylesheets/panel.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/stylesheets/systemTools.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/stylesheets/theme.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/acceptSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/addUserSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/arrowDownSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/arrowLeftSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/arrowRightSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/arrowUpSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/cardsSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/checkMarkSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/circleSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/deleteSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/docPreviewSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/downloadSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/editSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/filterSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/globalSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/graphSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/infoSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/lightBulbSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/listSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/personalSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/pinSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/profileSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/removeSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/resourcesSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/rocketSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/searchSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/settingsSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/sortSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/statsSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/tableSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/tagsSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/textEditSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/uploadSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/zoomInSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/svgs/zoomOutSVG.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/amcharts/circlePieChart/circlePieChart.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/amcharts/circlePieChart/circlePieChart.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/amcharts/circlePieChart/circlePieChartModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/amcharts/donutPieChart/donutPieChart.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/amcharts/donutPieChart/donutPieChart.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/amcharts/donutPieChart/donutPieChartModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/amcharts/unused/draggablePieChart/draggablePieChart.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/amcharts/unused/draggablePieChart/draggablePieChart.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/amcharts/variableRadiusDonutPieChart/variableRadiusDonutPieChart.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/amcharts/variableRadiusDonutPieChart/variableRadiusDonutPieChart.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/amcharts/variableRadiusDonutPieChart/variableRadiusDonutPieChartModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/amcharts/wordCloud/wordCloud.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/amcharts/wordCloud/wordCloud.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/amcharts/wordCloud/wordCloudModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/amcharts/xyChart/xyChart.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/amcharts/xyChart/xyChart.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/amcharts/xyChart/xyChartModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/button/button.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/button/button.stories.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/button/button.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/button/buttonModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/card/card.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/card/card.stories.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/card/card.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/card/cardModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/checkBox/checkBox.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/checkBox/checkBox.stories.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/checkBox/checkBox.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/checkBox/checkBoxModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/comboBox/comboBox.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/comboBox/comboBox.stories.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/comboBox/comboBox.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/comboBox/comboBoxItem.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/comboBox/comboBoxModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/delayedPortal/delayedPortal.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/delayedPortal/delayedPortalModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/fileInput/fileInput.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/fileInput/fileInput.stories.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/fileInput/fileInput.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/fileInput/fileInputModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/globalSwitchButton/globalSwitchButton.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/globalSwitchButton/globalSwitchButton.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/globalSwitchButton/globalSwitchButtonModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/listItem/listItem.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/listItem/listItem.stories.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/listItem/listItem.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/listItem/listSystemModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/loadingIndicator/loadingIndicator.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/loadingIndicator/loadingIndicator.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/loadingIndicator/loadingIndicatorModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/portal/portal.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/portal/portalModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/portal/positionStrategy.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/progressBar/progressBar.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/progressBar/progressBar.stories.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/progressBar/progressBar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/progressBar/progressBarModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/scrollBar/scrollBar.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/scrollBar/scrollBar.stories.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/scrollBar/scrollBar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/scrollBar/scrollBarModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/searchBox/searchBox.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/searchBox/searchBox.stories.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/searchBox/searchBox.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/searchBox/searchBoxModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/switchButton/switchButton.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/switchButton/switchButton.stories.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/switchButton/switchButton.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/switchButton/switchButtonModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/tag/tag.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/tag/tag.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/tag/tagModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/textEdit/textEdit.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/textEdit/textEdit.stories.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/textEdit/textEdit.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/textEdit/textEditModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/textEdit/textInput.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/toolbar/toolItem.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/toolbar/toolbar.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/toolbar/toolbar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/toolbar/toolbarModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/tooltipPortal/tooltipPortal.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/theme/widgets/tooltipPortal/tooltipPortalModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/views/app/App.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/views/app/App.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/views/app/searchView/searchView.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/views/app/searchView/searchView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/views/bumed.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/views/bumed.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/views/landing/landing.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/views/landing/landing.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="23F1BpNvlk1zSk1OHRaBTEv8LSX" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="ts.external.directory.path" value="C:\Repos\km-hmi\web\node_modules\typescript\lib" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Repos\km-hmi" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="" />
+      <created>1641314890275</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1641314890275</updated>
+      <workItem from="1641314892135" duration="1941000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+</project>

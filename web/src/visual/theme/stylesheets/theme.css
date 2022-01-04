@@ -1,0 +1,401 @@
+body > * {
+    --primary-font-family: 'Open Sans', sans-serif;
+    --mono-font-family: 'Roboto', sans-serif;
+
+    --app-black: #000000;
+    --app-white: #FFFFFF;
+    --app-bleach: #F0F0F0;
+    --app-whiteSmoke: #EAEAEA;
+    --app-silver: #BABABA;
+    --app-suvaGrey: #959595;
+    --app-shuttleGrey: #5D636B;
+    --app-vulcan: #3B3D44;
+    --app-bunker: #2B2D32;
+    --app-blackRussian: #212227;
+    --app-nero: #171717;
+    --app-summerSky: #4097E6;
+    --app-dodgerBlue: #48A8ff;
+    --app-airForceBlue: #6085A6;
+    --app-rockBlue: #87A1B9;
+    --app-valencia: #D15353;
+    --app-puce: #CC8E8E;
+    --app-pastelGreen: #73D98B;
+
+    /** Common Colors **/
+    --primary-color: var(--app-white);
+    --secondary-color: var(--app-black);
+    --warning-color: var(--app-puce);
+    --caution-color: #ffff00;
+    --advisory-color: var(--app-summerSky);
+    --accent-color: var(--app-silver);
+    --info-color: var(--app-suvaGrey);
+    --nominal-color: var(--app-pastelGreen);
+    --muted-color: var(--app-shuttleGrey);
+    --selected-color: var(--app-dodgerBlue);
+    --disabled-color: var(--app-suvaGrey);
+    --notification-color: var(--app-valencia);
+
+    --app-background: var(--app-whiteSmoke);
+
+    /* System Banner */
+    --system-banner-background: var(--app-nero);
+    --system-banner-color: var(--app-whiteSmoke);
+    --system-banner-accent-color: var(--app-dodgerBlue);
+    --system-banner-secondary-color: var(--app-bleach);
+
+    /* Search Results Panel*/
+    --search-results-panel-bg-color: transparent;
+
+    --search-results-card-color: var(--app-shuttleGrey);
+    --search-results-card-accent-color: var(--app-bunker);/*title*/
+    --search-results-card-bg-color: var(--app-bleach);
+    --search-results-card-border-color: var(--app-airForceBlue);
+    --search-results-card-hover-color: var(--app-shuttleGrey);
+    --search-results-card-hover-accent-color: var(--app-bunker);
+    --search-results-card-hover-bg-color: var(--app-white);
+    --search-results-card-hover-border-color: var(--app-summerSky);
+    --search-results-card-selected-color: var(--app-black);
+    --search-results-card-selected-accent-color: var(--app-black);
+    --search-results-card-selected-bg-color: var(--app-white);
+    --search-results-card-selected-border-color: var(--app-dodgerBlue);
+    --search-results-card-disabled-color: var(--app-suvaGrey);
+    --search-results-card-disabled-accent-color: var(--app-suvaGrey);
+    --search-results-card-disabled-bg-color: var(--app-silver);
+    --search-results-card-disabled-border-color: var(--app-suvaGrey);
+    --search-results-card-deleted-color: var(--app-suvaGrey);
+    --search-results-card-deleted-accent-color: var(--app-suvaGrey);
+    --search-results-card-deleted-bg-color: var(--app-silver);
+    --search-results-card-deleted-border-color: var(--app-suvaGrey);
+
+    --search-results-table-header-color: var(--app-whiteSmoke);
+    --search-results-table-header-bg-color: var(--app-shuttleGrey);
+    --search-results-table-color: var(--app-shuttleGrey);
+    --search-results-table-bg-color: transparent;
+    --search-results-table-hover-color: var(--app-shuttleGrey);
+    --search-results-table-hover-bg-color: var(--app-white);
+    --search-results-table-selected-color: var(--app-black);
+    --search-results-table-selected-bg-color: var(--app-white);
+
+    --search-results-list-bg-color: transparent;
+    --search-results-list-color: var(--app-suvaGrey);
+    --search-results-list-accent-color: var(--app-shuttleGrey);
+    --search-results-list-info-color: var(--app-airForceBlue);
+    --search-results-list-selected-info-color: var(--app-dodgerBlue);
+    --search-results-list-info-accent-color: var(--app-suvaGrey);
+    --search-results-list-hover-bg-color: var(--app-white);
+    --search-results-list-hover-color: var(--app-shuttleGrey);
+    --search-results-list-hover-accent-color: var(--app-bunker);
+    --search-results-list-selected-bg-color: var(--app-white);
+    --search-results-list-selected-color: var(--app-black);
+    --search-results-list-selected-accent-color: var(--app-black);
+
+    /* Document Panel */
+    --document-panel-bg-color: var(--app-blackRussian);
+    --document-panel-pdf-bg-color: var(--app-blackRussian);
+    --document-panel-color: var(--app-bleach);
+    --document-panel-secondary-color: var(--app-whiteSmoke);
+    --dcoument-panel-accent-color: var(--app-suvaGrey);
+    --document-panel-button-bg-color: var(--app-vulcan);
+    --document-panel-pdf-icon-color: var(--app-shuttleGrey);
+    --document-panel-pdf-color: var(--app-suvaGrey);
+    --document-panel-pdf-icon-secondary-color: var(--app-bleach);
+
+    /* System Toolbar */
+    --system-toolbar-background: var(--app-blackRussian);
+
+    /* System Tools Panel */
+    --system-tool-panel-background: var(--app-bunker);
+    --system-tool-header-background: var(--app-black);
+    --system-tool-header-color: var(--app-whiteSmoke);
+    --system-tool-color: var(--app-bleach);
+
+    /* User Management */
+    --profile-panel-color: var(--app-whiteSmoke);
+    --profile-panel-secondary-color: var(--app-whiteSmoke);
+    --profile-panel-accent-color: var(--app-suvaGrey);
+    --profile-panel-dirty-color: var(--app-white);
+
+    --profile-info-bg-color: var(--app-shuttleGrey);
+    --profile-info-color: var(--app-bleach);
+    --profile-info-border-color: var(--app-airForceBlue);
+    --profile-info-dirty-color: var(--app-bleach);
+    --profile-info-dirty-secondary-color: var(--app-white);
+    --profile-info-dirty-border-color: var(--app-dodgerBlue);
+
+    --profile-panel-request-color: var(--app-whiteSmoke);
+    --profile-panel-request-bg-color: var(--app-blackRussian);
+    --profile-panel-request-border-color: var(--app-dodgerBlue);
+    --profile-panel-request-secondary-color: var(--app-silver);
+    --profile-panel-request-accent-color: var(--app-suvaGrey);
+
+    --user-request-bg-color: var(--app-blackRussian);
+    --user-request-color: var(--app-whiteSmoke);
+    --user-request-border-color: var(--app-dodgerBlue);
+    --user-request-secondary-color: var(--app-whiteSmoke);
+
+    /* Upload Panel */
+    --pending-item-bg-color: var(--app-bleach);
+    --pending-item-color: var(--app-bunker);
+    --pending-item-border-color: var(--app-airForceBlue);
+    --pending-item-hover-bg-color: var(--app-white);
+    --pending-item-hover-color: var(--app-bunker);
+    --pending-item-hover-border-color: var(--app-summerSky);
+    --pending-item-loading-bg-color: var(--app-bleach);
+    --pending-item-loading-color: var(--app-silver);
+    --pending-item-loading-border-color: var(--app-airForceBlue);
+    --pending-item-selected-bg-color: var(--app-white);
+    --pending-item-selected-color: var(--app-black);
+    --pending-item-selected-border-color: var(--app-dodgerBlue);
+    --pending-item-disabled-bg-color: var(--app-silver);
+    --pending-item-disabled-color: var(--app-suvaGrey);
+    --pending-item-disabled-border-color: var(--app-suvaGrey);
+    --pending-item-deleted-bg-color: var(--app-silver);
+    --pending-item-deleted-color: var(--app-suvaGrey);
+    --pending-item-deleted-secondary-color: var(--app-bleach);
+    --pending-item-deleted-border-color: transparent;
+    --pending-item-accept-button-color: var(--app-pastelGreen);
+    --pending-item-reject-button-color: var(--app-puce);
+    --pending-item-button-bg-color: var(--app-blackRussian);
+    --pending-item-loading-button-color: var(--app-airForceBlue);
+
+    /* Widgets */
+
+    /* Buttons */
+    --button-color: var(--app-silver);
+    --button-bg-color: var(--app-vulcan);
+    --button-hover-color: var(--app-white);
+    --button-hover-bg-color: var(--app-black);
+    /*--button-armed-color: ;*/
+    /*--button-armed-bg-color: ;*/
+    --button-disabled-color: rgba(186, 186, 186, 0.4);/*--app-silver*/
+    --button-disabled-bg-color: var(--app-bunker);
+    --button-highlight-color: var(--app-bleach);
+    --button-highlight-bg-color: var(--app-shuttleGrey);
+
+    /*--light-button-color: var(--app-white);*/
+    /*--light-button-bg-color: var(--app-summerSky);*/
+    --light-button-color: var(--app-summerSky);
+    --light-button-bg-color: var(--app-white);
+    --light-button-hover-color: var(--app-white);
+    --light-button-hover-bg-color: var(--app-dodgerBlue);
+    /*--button-armed-color: ;*/
+    /*--button-armed-bg-color: ;*/
+    /*--button-disabled-color: ;*/
+    /*--button-disabled-bg-color: ;*/
+
+    /* Combo Box */
+    --combo-box-color: var(--app-silver);
+    --combo-box-bg-color: var(--app-vulcan);
+    --combo-box-arrow-color: var(--app-airForceBlue);
+    --combo-box-hover-color: var(--app-whiteSmoke);
+    --combo-box-arrow-hover-color: var(--app-whiteSmoke);
+    --combo-box-hover-bg-color: var(--app-black);
+    --combo-box-selected-color: var(--app-white);
+    --combo-box-selected-bg-color: var(--app-shuttleGrey);
+    --combo-box-arrow-selected-bg-color: var(--app-dodgerBlue);
+    /*--combo-box-armed-color: ;*/
+    /*--combo-box-armed-bg-color: ;*/
+    --combo-box-disabled-color: rgba(149, 149, 149, 0.4);/*--app-suvaGrey*/
+    --combo-box-disabled-bg-color: var(--app-vulcan);
+    --combo-box-disabled-arrow-color: rgba(64, 151, 230, 0.4);/*--app-summerSky*/
+    --combo-dox-dirty-color: var(--app-bleach);
+    --combo-box-dirty-bg-color: var(--app-vulcan);
+    --combo-box-arrow-dirty-color: var(--app-summerSky);
+    --combo-box-list-color: var(--app-suvaGrey);
+    --combo-box-list-bg-color: var(--app-blackRussian);
+    --combo-box-list-hover-color: var(--app-whiteSmoke);
+    --combo-box-list-hover-bg-color: var(--app-bunker);
+    /*--combo-box-list-selected-color: ;*/
+    /*--combo-box-list-selected-bg-color: ;*/
+
+    --light-combo-box-color: var(--app-suvaGrey);
+    --light-combo-box-bg-color: var(--app-bleach);
+    --light-combo-box-arrow-color: var(--app-suvaGrey);
+    /*--light-combo-box-hover-color: ;*/
+    /*--light-combo-box-arrow-hover-color: ;*/
+    /*--light-combo-box-hover-bg-color: ;*/
+    --light-combo-box-selected-color: var(--app-summerSky);
+    --light-combo-box-selected-bg-color: var(--app-silver);
+    --light-combo-box-arrow-selected-bg-color: var(--app-summerSky);
+    /*--light-combo-box-armed-color: ;*/
+    /*--light-combo-box-armed-bg-color: ;*/
+    /*--light-combo-box-disabled-color: ;*/
+    /*--light-combo-box-disabled-bg-color: ;*/
+    /*--light-combo-dox-dirty-color: ;*/
+    /*--light-combo-box-dirty-bg-color: ;*/
+    /*--light-combo-box-arrow-dirty-color: ;*/
+    --light-combo-box-list-color: var(--app-suvaGrey);
+    --light-combo-box-list-bg-color: var(--app-vulcan);
+    /*--light-combo-box-list-hover-color: ;*/
+    /*--light-combo-box-list-hover-bg-color: ;*/
+    /*--light-combo-box-list-selected-color: ;*/
+    /*--light-combo-box-list-selected-bg-color: ;*/
+
+    /* Card */
+    --card-bg-color: transparent;
+
+    /* Check Box */
+    --check-box-border-color: var(--app-silver);
+    --check-box-hover-border-color: var(--app-summerSky);
+    --check-box-selected-border-color: var(--app-airForceBlue);
+    --check-box-checkmark-color: var(--app-summerSky);
+    --check-box-disabled-border-color: var(--app-suvaGrey);
+
+    /* Global Switch Button */
+    --global-switch-button-bg-color: var(--app-vulcan);
+    --global-switch-button-icon-color: var(--app-shuttleGrey);
+    --global-switch-button-selected-bg-color: var(--app-shuttleGrey);
+    --global-switch-button-selected-icon-color: var(--app-silver);
+
+    --light-global-switch-button-bg-color: var(--app-whiteSmoke);
+    --light-global-switch-button-icon-color: var(--app-silver);
+    --light-global-switch-button-selected-bg-color: var(--app-dodgerBlue);
+    --light-global-switch-button-selected-icon-color: var(--app-white);
+
+    /* File Input*/
+    --file-input-bg-color: #24262B;
+    --file-input-border-color: var(--app-shuttleGrey);
+    --file-input-color: var(--app-suvaGrey);
+    --file-input-link-color: var(--app-airForceBlue);
+    --file-input-icon-color: var(--app-silver);
+    --file-input-hover-bg-color: var(--app-blackRussian);
+    --file-input-hover-border-color: var(--app-silver);
+    --file-input-hover-color: var(--app-suvaGrey);
+    --file-input-hover-link-color: var(--app-white);
+    --file-input-hover-icon-color: var(--app-white);
+
+    /* Progress Bar*/
+    --progress-bar-track-background: var(--app-airForceBlue);
+    --progress-bar-charged-background: var(--app-dodgerBlue);
+
+    /* Scrollbar */
+    --scrollbar-thumb-color: var(--app-shuttleGrey);
+    --scrollbar-track-color: var(--app-silver);
+
+    /* Search Box */
+    --search-box-color: var(--app-suvaGrey);
+    --search-box-bg-color: #F0F0F0;
+
+    /* Stats */
+    /* amcharts */
+    --stats-background: var(--app-bleach);
+    --stats-color: var(--app-silver);
+    --xy-chart-header-background: #8DC77B;
+    --xy-chart-header-color: var(--app-bleach);
+    --word-cloud-header-background: #E8BA54;
+    --word-cloud-header-color: var(--app-bleach);
+    --variable-radius-pie-chart-header-background: var(--app-dodgerBlue);
+    --variable-radius-pie-chart-header-color: var(--app-bleach);
+    --draggable-pie-chart-header-background: #EC1889;
+    --draggable-pie-chart-header-color: var(--app-bleach);
+    --donut-pie-chart-header-background: #7654E8;
+    --donut-pie-chart-header-color: var(--app-bleach);
+
+    /* Switch Button */
+    --switch-button-track-color: var(--app-shuttleGrey);
+    --switch-button-thumb-color: var(--app-airForceBlue);
+
+    /* Tag */
+    --tag-bg-color: var(--app-summerSky);
+    --tag-color: var(--app-white);
+    --tag-border-color: var(--app-silver);
+    --tag-edit-color: var(--app-suvaGrey);
+    --tag-edit-bg-color: transparent;
+    --tag-edit-border-color: var(--app-suvaGrey);
+
+    /* Text Edit */
+    --text-field-color: var(--app-silver);
+    --text-field-bg-color: transparent;
+    --text-field-border-color: transparent;
+    --text-field-placeholder-color: var(--app-suvaGrey);
+    /*--text-field-hover-color: ;*/
+    /*--text-field-hover-bg-color: ;*/
+    /*--text-field-hover-border-color: ;*/
+    --text-field-selected-color: var(--app-whiteSmoke);
+    --text-field-selected-bg-color: var(--app-vulcan);
+    --text-field-selected-border-color: var(--app-silver);
+    --text-field-disabled-color: var(--app-suvaGrey);
+    --text-field-disabled-bg-color: transparent;
+    --text-field-disabled-border-color: transparent;
+    --text-field-dirty-color: var(--app-suvaGrey);
+    --text-field-dirty-bg-color: transparent;
+    --text-field-dirty-border-color: var(--app-silver);
+    --text-field-edit-color: var(--app-suvaGrey);
+    --text-field-edit-bg-color: transparent;
+    --text-field-edit-border-color: var(--app-silver);
+
+    /* Toggle Button */
+    --toggle-button-color: var(--app-shuttleGrey);
+    --toggle-button-bg-color: transparent;
+    --toggle-button-hover-color: var(--app-white);
+    --toggle-button-hover-bg-color: var(--app-black);
+    --toggle-button-selected-color: var(--app-bleach);
+    --toggle-button-selected-bg-color: var(--app-bunker);
+    /*--toggle-button-armed-color: ;*/
+    /*--toggle-button-armed-bg-color: ;*/
+    /*--toggle-button-disabled-color: ;*/
+    /*--toggle-button-disabled-bg-color: ;*/
+
+    --light-toggle-button-color: var(--app-suvaGrey);
+    --light-toggle-button-bg-color: transparent;
+    --light-toggle-button-hover-color: var(--app-black);
+    --light-toggle-button-hover-bg-color: var(--app-white);
+    --light-toggle-button-selected-color: var(--app-summerSky);
+    --light-toggle-button-selected-bg-color: var(--app-silver);
+    /*--light-toggle-button-armed-color: ;*/
+    /*--light-toggle-button-armed-bg-color: ;*/
+    /*--light-toggle-button-disabled-color: ;*/
+    /*--light-toggle-button-disabled-bg-color: ;*/
+
+    /*NOT USED*/
+    /* Advanced Search */
+    --advanced-search-combo-box-color: #959595;
+    --advanced-search-combo-box-hover-color: #000000;
+    --advanced-search-combo-box-background: #F0F0F0;
+    --advanced-search-combo-box-selected-background: #BABABA;
+    --advanced-search-combo-box-item-background: #DFDFDF;
+    --advanced-search-combo-box-item-selected-background: #BABABA;
+    --advanced-search-combo-box-item-hover-background: #BABABA;
+    --advanced-search-combo-box-svg-background: #6085A6;
+    --advanced-search-combo-box-svg-hover-background: #000000;
+    --advanced-search-svg-background: #6085A6;
+    --advanced-search-svg-hover-background: #4097E6;
+    --advanced-search-color: #6085A6;
+    --advanced-search-border-color: #6085A6;
+    --advanced-search-odd-row-background: rgba(186, 186, 186, 0.5);
+
+    /* Scrollable */
+    --scrollable-background: linear-gradient(315deg, #003F69 0%, #006FB9 100%);
+    --scrollable-secondary-background: linear-gradient(315deg, #809FB4 0%, #9bb7c9 100%);
+
+    /* Table */
+    --table-header-background: #5D636B;
+    --table-header-color: #D7D7D7;
+    --table-row-even-background: #DFDFDF;
+    --table-row-odd-background: transparent;
+    --table-row-hover-background: rgba(22, 132, 206, 0.3);
+    --table-row-background: #FFFFFF;
+
+    --stats-header-color: #F0F0F0;
+    --stats-header-background: #3B3D44;
+    --cell-background: #D6D6D6;
+    --bar-header-background: #48A8FF;
+    --bar-cell-background-1: #5ED8FF;
+    --bar-cell-background-2: #FFC658;
+    --bar-cell-background-3: #8884D8;
+    --bar-cell-background-4: #82CA9D;
+    --bar-cell-background-5: #EA4FA2;
+    --radial-header-background: #EA4FA2;
+    --radial-cell-background-1: #F83BA0;
+    --radial-cell-background-2: #E1489E;
+    --radial-cell-background-3: #CB559C;
+    --radial-cell-background-4: #B4629A;
+    --radial-cell-background-5: #9E7098;
+    --treemap-header-background: #E8BA54;
+    --treemap-color: #EAEAEA;
+    --treemap-cell-background-1: #DEA72F;
+    --treemap-cell-background-2: #C8BD5C;
+    --treemap-cell-background-3: #CBB15B;
+    --treemap-cell-background-4: #FFC658;
+    --treemap-cell-background-5: #C3BB79;
+}

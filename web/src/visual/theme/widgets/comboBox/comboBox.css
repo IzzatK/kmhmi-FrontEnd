@@ -1,0 +1,142 @@
+.combo-box {
+    position: relative;
+    height: 3.2rem;
+    color: var(--combo-box-color);
+    background: var(--combo-box-bg-color);
+    user-select: none;
+}
+
+.combo-box.light {
+    color: var(--light-combo-box-color);
+    background: var(--light-combo-box-bg-color);
+}
+
+.combo-box.selected {
+    background: var(--combo-box-selected-bg-color);
+    color: var(--combo-box-selected-color);
+}
+
+.combo-box.light.selected {
+    background: var(--light-combo-box-selected-bg-color);
+    color: var(--light-combo-box-selected-color);
+}
+
+.combo-box:hover {
+    cursor: pointer;
+    color: var(--combo-box-hover-color);
+    background: var(--combo-box-hover-bg-color);
+}
+
+/*.combo-box:focus {*/
+/*    color: var(--combo-box-hover-color);*/
+/*    background: var(--combo-box-hover-bg-color);*/
+/*}*/
+
+.combo-box.dirty {
+    font-weight: 600;
+}
+
+.combo-box.disabled,
+.combo-box.disabled:hover {
+    cursor: auto;
+    color: var(--combo-box-disabled-color);
+    background: var(--combo-box-disabled-bg-color);
+}
+
+.combo-box.disabled .combo-box-arrow,
+.combo-box.disabled:hover .combo-box-arrow {
+    fill: var(--combo-box-disabled-arrow-color);
+}
+
+.list-cell {
+    height: 100%;
+    padding: 0 0.7rem;
+}
+
+.list-cell.selected {
+
+}
+
+ul.list-items {
+    background: var(--combo-box-list-bg-color);
+    border-top: unset;
+    color: var(--combo-box-list-color);
+    z-index: 9999;
+    max-height: 50rem;
+    overflow: auto;
+}
+
+ul.list-items.light {
+    margin-top: 1rem;
+    background: var(--light-combo-box-list-bg-color);
+    color: var(--light-combo-box-list-color);
+}
+
+.list-items > div:not(:first-child){
+}
+
+.list-items > .list-cell {
+    height: 3rem;
+    align-items: center;
+}
+
+.list-items > .list-cell .title {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.list-items > div:hover {
+    color: var(--combo-box-list-hover-color);
+    background: var(--combo-box-list-hover-bg-color);
+}
+
+.combo-box .combo-box-arrow {
+    fill: var(--combo-box-arrow-color);
+}
+
+.combo-box.light .combo-box-arrow {
+    fill: var(--light-combo-box-arrow-color);
+}
+
+/*.combo-box:focus .combo-box-arrow, */
+.combo-box:hover .combo-box-arrow {
+    fill: var(--combo-box-arrow-hover-color);
+}
+
+.combo-box.light.selected .combo-box-arrow {
+    fill: var(--light-combo-box-arrow-selected-bg-color);
+}
+
+.combo-box.selected .combo-box-arrow {
+    fill: var(--combo-box-arrow-selected-bg-color);
+}
+
+.combo-box.dirty .combo-box-arrow {
+
+}
+
+::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+    border-radius: 5px;
+    background-color: var(--scrollbar-thumb-color);
+}
+
+::-webkit-scrollbar-track{
+    border-radius: 5px;
+    background-color: var(--scrollbar-track-color);
+}
+
+.clear-button {
+    /*position: absolute;*/
+    min-width: 6.1rem;
+    max-width: 6.1rem;
+    /*top: 10rem;*/
+    /*right: 0;*/
+    /*bottom: 0;*/
+    z-index: 9999;
+}

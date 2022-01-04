@@ -1,0 +1,23 @@
+.xy-chart {
+    /*min-width: 150rem;*/
+    min-height: 32.22rem;
+    background: var(--stats-background);
+}
+
+.xy-chart.minimized {
+    min-width: 0;
+}
+
+.legend {
+    color: var(--stats-color);
+    min-width: 25.56rem;
+}
+
+.xy-chart .legend-title {
+    color: var(--xy-chart-header-color);
+}
+
+.xy-chart tspan {
+    font-family: var(--primary-font-family) !important;
+    font-size: 1.4rem !important;
+}

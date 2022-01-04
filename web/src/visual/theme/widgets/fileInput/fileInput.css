@@ -1,0 +1,31 @@
+.file-input {
+    color: var(--file-input-color);
+    background: var(--file-input-bg-color);
+}
+
+.file-input.drag-hover,
+.file-input:hover {
+    color: var(--file-input-hover-color);
+    border-color: var(--file-input-hover-border-color) !important;
+}
+
+.file-input .file-input-browse-text {
+    color: var(--file-input-link-color);
+}
+
+.file-input:hover .file-input-browse-text {
+    color: var(--file-input-hover-link-color);
+}
+
+.file-input #fileInputField {
+    opacity: 0;
+    cursor: pointer;
+}
+
+.file-input .file-input-svg {
+    fill: var(--file-input-icon-color);
+}
+
+.file-input:hover .file-input-svg {
+    fill: var(--file-input-hover-icon-color);
+}

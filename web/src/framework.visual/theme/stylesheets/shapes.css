@@ -1,0 +1,83 @@
+/*div[class*=" arrow-"].dock-button {*/
+/*    border-color: pink;*/
+/*}*/
+
+.arrow-up {
+    cursor: pointer;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent;
+    border-left-width: 1.5rem;
+    border-right-width: 1.5rem;
+    border-bottom-width: 1.5rem;
+    border-bottom-color: var(--secondary-color)
+}
+
+.arrow-up:hover {
+    border-bottom-color: var(--secondary-color);
+}
+
+.arrow-up:active {
+    border-bottom-color: var(--secondary-color);
+}
+
+.arrow-down {
+    cursor: pointer;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent;
+    border-left-width: 1.5rem;
+    border-right-width: 1.5rem;
+    border-top-width: 1.5rem;
+    border-top-color: var(--secondary-color)
+}
+
+.arrow-down:hover {
+    border-top-color: var(--secondary-color);
+}
+
+.arrow-down:active {
+    border-top-color: var(--secondary-color);
+}
+
+.arrow-right {
+    cursor: pointer;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent;
+    border-top-width: 1.5rem;
+    border-bottom-width: 1.5rem;
+    border-left-width: 1.5rem;
+    border-left-color: var(--secondary-color)
+}
+
+.arrow-right:hover {
+    border-left-color: var(--secondary-color);
+}
+
+.arrow-right:active {
+    border-left-color: var(--secondary-color);
+}
+
+.arrow-left {
+    cursor: pointer;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent;
+    border-top-width: 1.5rem;
+    border-bottom-width: 1.5rem;
+    border-right-width: 1.5rem;
+    border-right-color: var(--secondary-color)
+}
+
+.arrow-left:hover {
+    border-right-color: var(--secondary-color);
+}
+
+.arrow-left:active {
+    border-right-color: var(--secondary-color);
+}

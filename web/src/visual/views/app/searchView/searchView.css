@@ -1,0 +1,23 @@
+.search-view {
+    background-color: var(--search-panel-background) !important;
+}
+
+
+/*.search-view-tools.collapsed {*/
+/*    overflow: hidden;*/
+/*    min-height: 0;*/
+/*    max-height: 0;*/
+/*    transition: all 250ms ease-in-out;*/
+/*}*/
+
+/*.search-view-tools.expanded {*/
+/*    !*overflow: hidden;*!*/
+/*    min-height: 32.22rem;*/
+/*    !*max-height: 32.22rem;*!*/
+/*    max-height: 64.44rem;*/
+/*    height: max-content;*/
+/*    overflow: auto;*/
+/*    transition: all 250ms ease-in-out;*/
+/*}*/
+
+

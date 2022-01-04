@@ -1,0 +1,165 @@
+.clear {
+    opacity: 0;
+    display: none;
+}
+
+.clear-active {
+    opacity: 0;
+    display: none;
+}
+
+.fadeIn {
+    opacity: 0;
+}
+
+.fadeIn-active {
+    opacity: 1;
+    transition: all 250ms ease-in-out;
+}
+
+.fadeOut {
+    opacity: 1;
+}
+
+.fadeOut-active {
+    opacity: 0;
+    transition: all 250ms ease-in-out;
+}
+
+.slideLeftIn {
+    opacity: 0;
+    transform: translateX(100%);
+}
+
+.slideLeftIn-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: all 300ms ease-in-out;
+}
+
+.slideLeftOut {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.slideLeftOut-active {
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: all 300ms ease-in-out;
+}
+
+.slideRightIn {
+    opacity: 0;
+    transform: translateX(-100%);
+}
+
+.slideRightIn-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: all 300ms ease-in-out;
+}
+
+.slideRightOut {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.slideRightOut-active {
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 300ms ease-in-out;
+}
+
+.slideDownIn {
+    opacity: 0;
+    transform: translateY(-100%);
+}
+
+.slideDownIn-active {
+    max-height: 100%;
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 300ms ease-in-out;
+}
+
+.slideDownOut {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.slideDownOut-active {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: all 300ms ease-in-out;
+}
+
+.growHorizontal {
+    opacity: 0;
+    width: 0;
+}
+
+.growHorizontal-active {
+    opacity: 1;
+    width: 100%;
+    transition: all 250ms ease-in-out;
+}
+
+.shrinkHorizontal {
+    width: 100%;
+    opacity: 1;
+    /*transform: scaleX(1);*/
+}
+
+.shrinkHorizontal-active {
+    width: 0;
+    opacity: 0;
+    /*transform: scaleX(0);*/
+    transition: all 250ms ease-in-out;
+}
+
+.growVertical {
+    opacity: 0;
+    transform: scaleY(0);
+}
+
+.growVertical-active {
+    opacity: 1;
+    transform: scaleY(1);
+    transition: all 200ms ease-in-out;
+}
+
+.shrinkVertical {
+    transform: scaleY(1);
+    opacity: 1;
+    /*transform: scaleX(1);*/
+}
+
+.shrinkVertical-active {
+    transform: scaleY(0);
+    opacity: 0;
+    /*transform: scaleX(0);*/
+    transition: all 200ms ease-in-out;
+}
+
+.zoomIn {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.zoomIn-active {
+    opacity: 1;
+    transform: scale(1.0);
+    transition: all 300ms ease-in-out;
+}
+
+.zoomOut {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.zoomOut-active {
+    opacity: 0;
+    transform: scale(0);
+    transition: all 300ms ease-in-out;
+}

@@ -1,0 +1,72 @@
+h1,
+.header-1 {
+    font-family: var(--primary-font-family);
+    font-size: 1.4rem;
+    line-height: 1.4rem;
+}
+
+h2,
+.header-2 {
+    font-family: var(--primary-font-family);
+    font-size: 1.3rem;
+    line-height: 1.3rem;
+}
+
+h3,
+.header-3 {
+    font-family: var(--primary-font-family);
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+}
+
+h4,
+.header-4 {
+    font-family: var(--primary-font-family);
+    font-size: 1.0rem;
+    line-height: 1.0rem;
+}
+
+h5,
+.header-5 {
+    font-family: var(--primary-font-family);
+    font-size: 0.9rem;
+    line-height: 0.9rem;
+}
+
+h6,
+.header-6 {
+    font-family: var(--primary-font-family);
+    font-size: 0.8rem;
+    line-height: 0.8rem;
+}
+
+h7,
+.header-7 {
+    font-family: var(--primary-font-family);
+    font-size: 0.7rem;
+    line-height: 0.7rem;
+}
+
+.display-1 {
+    font-size: 2.4rem;
+    line-height: 2.4rem;
+    font-family: var(--primary-font-family);
+}
+
+.display-2 {
+    font-size: 1.8rem;
+    line-height: 1.8rem;
+    font-family: var(--primary-font-family);
+}
+
+.display-3 {
+    font-family: var(--primary-font-family);
+    font-size: 1.6rem;
+    line-height: 1.6rem;
+}
+
+.display-4 {
+    font-family: var(--primary-font-family);
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+}

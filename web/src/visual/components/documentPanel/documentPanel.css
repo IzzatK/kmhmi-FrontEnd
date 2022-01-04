@@ -1,0 +1,119 @@
+.document-panel {
+    display: flex;
+    flex-direction: column;
+    background: var(--document-panel-bg-color);
+    color: var(--document-panel-color);
+}
+
+.document-panel .header {
+    color: var(--document-panel-secondary-color);
+}
+
+.document-panel .title {
+    color: var(--document-panel-color);
+}
+
+.document-panel .header .disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.document-panel .body {
+    background: var(--document-panel-pdf-bg-color);
+}
+
+.document-panel .rpv-default-layout__sidebar-tabs {
+    width: 0;
+    border: 0;
+}
+
+.document-panel .text-field {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.document-panel .property-grid-container .long-text-edit {
+    max-width: 52rem;
+}
+
+.document-panel .property-grid-container {
+    min-height: 14.5rem;
+    max-height: 14.5rem;
+    transition: all 300ms ease-out;
+    align-content: start;
+}
+
+.document-panel .property-grid-container.expanded {
+    min-height: 32rem;
+    max-height: 32rem;
+    transition: all 300ms ease-out;
+}
+
+.document-panel .property-grid {
+    display: grid;
+    grid-template-rows: repeat(2, 3.5rem);
+    grid-template-columns: 9.4rem 1fr;
+    grid-auto-flow: column;
+    grid-gap: 0 3rem;
+}
+
+.document-panel .property-grid-2 {
+    display: grid;
+    grid-template-rows: repeat(7, 3.5rem);
+    grid-template-columns: 9.4rem 1fr;
+    grid-auto-flow: column;
+    grid-gap: 0 3rem;
+}
+
+.document-panel .property-grid-3 {
+    display: grid;
+    grid-template-rows: repeat(3, 3.5rem);
+    grid-template-columns: 9rem 1fr;
+    grid-auto-flow: column;
+    grid-gap: 3.5rem 3rem;
+}
+
+.document-panel .custom-padding {
+    padding-top: 0.95rem;
+}
+
+.document-panel .custom-width {
+    max-width: 27.6rem;
+}
+
+.document-panel .pdf-viewer *,
+.document-panel .pdf-viewer *:before,
+.document-panel .pdf-viewer *:after{
+    -webkit-user-select: text !important;
+    -moz-user-select: text !important;
+    -ms-user-select: text !important;
+    user-select: text !important;
+    background: transparent;
+}
+
+.document-panel .pdf-viewer .pdf-icon {
+    fill: var(--document-panel-pdf-icon-color);
+}
+
+.document-panel .pdf-viewer .pagination {
+    fill: var(--document-panel-pdf-icon-secondary-color);
+    color: var(--document-panel-pdf-color);
+    font-size: 1.4rem;
+}
+
+.document-panel .tag-button {
+    border-radius: 50%;
+    background: var(--document-panel-button-bg-color);
+    padding: 0.6rem 0.8rem 0.7rem 0.8rem;
+    height: 2.55rem;
+}
+
+.document-panel .button {
+    min-width: 8.7rem;
+}
+
+.document-panel .custom-v-gap > *:not(:first-child):not(.exclude-item) {
+    margin-top: 1.7rem;
+}
