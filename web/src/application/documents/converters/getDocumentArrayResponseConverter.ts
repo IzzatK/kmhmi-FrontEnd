@@ -31,7 +31,9 @@ export class GetDocumentArrayResponseConverter extends Converter<any,DocumentInf
 
             const {sort:sortProperty} = searchParams;
             let searchValueObject: Record<string, any> = options.getSearchParamValue(sortProperty);
-            let sortValue: string = searchValueObject['sort'];
+
+            //get sort value or set default sort value
+            let sortValue: string = searchValueObject['sort'] ? searchValueObject['sort'] : "author_ascending";
             fromData = sortByProperty(fromData, sortValue);
 
             forEach(fromData, (item: any) => {
