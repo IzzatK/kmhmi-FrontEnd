@@ -31,15 +31,15 @@ export abstract class Plugin extends BasePlugin implements IBasePlugin {
         this.repoService = repoService;
     }
 
-    addOrUpdateRepoItem<T extends IRepoItem>(item: T) {
+    protected addOrUpdateRepoItem<T extends IRepoItem>(item: T) {
         this.repoService?.addOrUpdateRepoItem(item);
     }
 
-    addOrUpdateAllRepoItems<T extends IRepoItem>(items: T[]) {
+    protected addOrUpdateAllRepoItems<T extends IRepoItem>(items: T[]) {
         this.repoService?.addOrUpdateAllRepoItems(items);
     }
 
-    getRepoItem<T extends IRepoItem>(className: string, id: string): Nullable<T> {
+    protected getRepoItem<T extends IRepoItem>(className: string, id: string): Nullable<T> {
         let result: Nullable<T> = null;
 
         if (this.repoService != null) {
@@ -48,7 +48,7 @@ export abstract class Plugin extends BasePlugin implements IBasePlugin {
         return result;
     }
 
-    getAll<T extends IRepoItem>(className: string, includeSubTypes?: boolean, ...ids: string[]): Record<string, T> {
+    protected getAll<T extends IRepoItem>(className: string, includeSubTypes?: boolean, ...ids: string[]): Record<string, T> {
         let result: Record<string, T> = {};
 
         if (this.repoService != null) {
@@ -58,19 +58,19 @@ export abstract class Plugin extends BasePlugin implements IBasePlugin {
         return result;
     }
 
-    removeRepoItem<T extends IRepoItem>(item: T) {
+    protected removeRepoItem<T extends IRepoItem>(item: T) {
         this.repoService?.removeRepoItem(item);
     }
 
-    removeAllByType<T extends IRepoItem>(className: string) {
+    protected removeAllByType<T extends IRepoItem>(className: string) {
         this.repoService?.removeAllByType(className, false);
     }
 
-    removeAllById<T extends IRepoItem>(className: string, ...ids: string[]) {
+    protected removeAllById<T extends IRepoItem>(className: string, ...ids: string[]) {
         this.repoService?.removeAllById(className, ...ids);
     }
 
-    getRepoState() : any {
+    protected getRepoState() : any {
         return this.repoService?.getState();
     }
 }

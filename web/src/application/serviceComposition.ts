@@ -14,7 +14,7 @@ import {UserProvider} from "./users/providers/userProvider";
 import {IRepositoryService} from "../framework/api";
 import {ISelectionService} from "../framework/api";
 import {IDisplayService} from "../framework/api";
-import {IScenarioService} from "../api";
+import {IAuthorizationService, IScenarioService} from "../api";
 import {IAuthenticationService} from "../api";
 import {IDocumentService} from "../api";
 import {IReferenceService} from "../api";
@@ -36,6 +36,9 @@ import {IUserProvider} from "../api";
 import {RoleInfo} from "../model";
 import {RoleProvider} from "./users/providers/roleProvider";
 import {AppDataStore} from "../framework/redux/reduxStore";
+import {PermissionInfo} from "../model/permissionInfo";
+import {PermissionProvider} from "./authorization/providers/permissionProvider";
+import {AuthorizationService} from "./authorization/authorizationService";
 
 // create the framework plugins
 export const appDataStore:IStorage = new AppDataStore();
@@ -54,10 +57,12 @@ const statProvider: IEntityProvider<StatInfo> = new StatProvider();
 const tagProvider: IEntityProvider<TagInfo> = new TagProvider();
 const roleProvider: IEntityProvider<RoleInfo> = new RoleProvider();
 const userProvider: IUserProvider = new UserProvider();
+const permissionProvider: IEntityProvider<PermissionInfo> = new PermissionProvider()
 
 
 // create the application application
 export const authenticationService: IAuthenticationService = new AuthenticationService();
+export const authorizationService: IAuthorizationService = new AuthorizationService();
 export const documentService: IDocumentService = new DocumentService();
 export const referenceService: IReferenceService = new ReferenceService();
 export const statService: IStatService = new StatService();
@@ -135,6 +140,11 @@ userProvider.setHttpService(httpService);
 userProvider.setRoleProvider(roleProvider);
 userProvider.start();
 
+permissionProvider.setLogService(logService);
+permissionProvider.setRepositoryService(repoService);
+permissionProvider.setHttpService(httpService);
+permissionProvider.start();
+
 
 // set references and start application application
 // authentication service
@@ -143,6 +153,11 @@ authenticationService.setRepositoryService(repoService);
 authenticationService.setUserService(userService);
 authenticationService.setAppDataStore(appDataStore);
 authenticationService.start();
+// authorization service
+authorizationService.setLogService(logService);
+authorizationService.setRepositoryService(repoService);
+authorizationService.setPermissionProvider(permissionProvider);
+authorizationService.start();
 // document service
 documentService.setLogService(logService);
 documentService.setRepositoryService(repoService);
@@ -170,6 +185,7 @@ userService.setRepositoryService(repoService);
 userService.setSelectionService(selectionService);
 userService.setReferenceService(referenceService);
 userService.setUserProvider(userProvider);
+userService.setAuthorizationService(authorizationService);
 userService.start();
 
 // for the UI Components, using the Provider/Consumer pattern seems to be the way to go

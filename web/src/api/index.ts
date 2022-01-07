@@ -12,3 +12,4 @@ export * from "./stats/iStatService";
 export * from "./tags/iTagService";
 export * from "./users/IUserProvider";
 export * from "./users/iUserService";
+export * from "./authorization/iAuthorizationService";

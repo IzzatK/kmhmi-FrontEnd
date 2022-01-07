@@ -7,6 +7,7 @@ import {ReferenceType} from "../../../../model";
 import {referenceService, userService} from "../../../../application/serviceComposition";
 import {UserInfo} from "../../../../model";
 import {AccountStatusVM, DepartmentVM, RoleVM, UserInfoVM} from "./profilePanelModel";
+import {PermissionsVM} from "../../documentPanel/documentPanelModel";
 
 class ProfilePanel extends Presenter {
     private readonly accountStatuses: AccountStatusVM[];
@@ -59,6 +60,15 @@ class ProfilePanel extends Presenter {
                 onUserRemoved: (id: string) => userService.removeUser(id)
             };
         }
+    }
+
+    getPermissions() : PermissionsVM {
+
+        return {
+            canDelete: true,//authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.DELETE)
+            canDownload: true,//authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.DOWNLOAD)
+            canModify: true//authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.MODIFY)
+        };
     }
 
     getManagedUserVMs = createSelector(

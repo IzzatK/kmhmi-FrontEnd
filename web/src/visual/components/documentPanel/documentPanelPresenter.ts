@@ -3,15 +3,16 @@ import {createSelector} from "@reduxjs/toolkit";
 import {Presenter} from "../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
 import DocumentPdfPreview from "./documentPdfPreview";
-import {DocumentInfo, ParamType} from "../../../model";
-import {ReferenceType} from "../../../model";
+import {DocumentInfo, ParamType, ReferenceType} from "../../../model";
 import {
     authenticationService,
+    authorizationService,
     documentService,
     referenceService,
     selectionService,
 } from "../../../application/serviceComposition";
-import {DocumentInfoVM} from "./documentPanelModel";
+import {DocumentInfoVM, PermissionsVM} from "./documentPanelModel";
+import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../api";
 
 class DocumentPanel extends Presenter {
     constructor() {
@@ -36,6 +37,7 @@ class DocumentPanel extends Presenter {
                 editProperties: this._getEditProperties(),
                 userProfile: authenticationService.getUserProfile(),
                 token: authenticationService.getToken(),
+                permissions: this.getPermissions()
             }
         }
 
@@ -45,6 +47,15 @@ class DocumentPanel extends Presenter {
                 onRemoveDocument: (id: string) => documentService.removeDocument(id)
             };
         }
+    }
+
+    getPermissions() : PermissionsVM {
+
+        return {
+            canDelete: true,//authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.DELETE)
+            canDownload: true,//authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.DOWNLOAD)
+            canModify: true//authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.MODIFY)
+        };
     }
 
     _getEditProperties = () => {

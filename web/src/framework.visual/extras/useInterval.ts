@@ -14,7 +14,7 @@ export const useInterval = (callback: any, interval: any, runAtStart=true) => {
         () => {
             const handler = (...args: any[]) => savedCallback.current(...args);
 
-            if (interval !== null) {
+            if (interval != null) {
 
                 if (runAtStart) {
                     handler();

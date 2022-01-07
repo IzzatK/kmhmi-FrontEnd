@@ -64,3 +64,9 @@ export type EditPropertyVM = {
     long?: boolean;
     options?: any;
 }
+
+export type PermissionsVM = {
+    canDelete: boolean,
+    canDownload: boolean,
+    canModify: boolean
+}

@@ -74,7 +74,7 @@ export class SelectionService extends BasePlugin implements ISelectionService {
         return this.storage?.getState()[this.model.name];
     }
 
-    getContext(key: string) {
+    getContext(key: string): string {
         return this.getModelState().contextMap[key];
     }
 

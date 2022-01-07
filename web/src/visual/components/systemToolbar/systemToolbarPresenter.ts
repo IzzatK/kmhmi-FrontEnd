@@ -5,9 +5,15 @@ import {createComponentWrapper} from "../../../framework/wrappers/componentWrapp
 import {DocumentPanelId} from "../documentPanel/documentPanelPresenter";
 import {DocPreviewSVG} from "../../theme/svgs/docPreviewSVG";
 import {forEach} from "../../../framework.visual/extras/utils/collectionUtils";
-import {displayService, repoService, selectionService} from "../../../application/serviceComposition";
+import {
+    authorizationService,
+    displayService,
+    repoService,
+    selectionService
+} from "../../../application/serviceComposition";
 import {SystemToolMenuItem} from "../../model/systemToolMenuItem";
 import {SystemToolVM} from "./systemToolbarModel";
+import {PERMISSION_ENTITY, PERMISSION_LEVEL, PERMISSION_OPERATOR} from "../../../api";
 
 
 export const SYSTEM_TOOLBAR_VIEW_ID = 'system-tool-panel';
@@ -61,15 +67,25 @@ class SystemToolbar extends Presenter {
 
 
     getToolVMs = createSelector(
-        [ this.getSelectedNode, this.getTools], // if this changes, will re-evaluate the combiner and trigger a re-render
+        [ this.getSelectedNode, this.getTools, authorizationService.getPermissions], // if this changes, will re-evaluate the combiner and trigger a re-render
         (selectedId, items) => {
             let itemVMs: Record<string, SystemToolVM> = {};
 
             forEach(items, (item: SystemToolMenuItem) => {
-                itemVMs[item.id] = {
-                    ...item,
-                    selected: selectedId === item.id
-                };
+
+                let enabled = true;
+                switch(item.id) {
+                    case 'components/uploadPanel':
+                        enabled = authorizationService.getPermissionLevel(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.POST) >= PERMISSION_LEVEL.ANY;
+                        break;
+                }
+
+                if (enabled) {
+                    itemVMs[item.id] = {
+                        ...item,
+                        selected: selectedId === item.id
+                    };
+                }
             });
 
             return Object.values(itemVMs);

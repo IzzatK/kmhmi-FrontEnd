@@ -110,7 +110,6 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
 
                             this.appDataStore?.sendEvent(this.model.actions.setProfile(this._kc.profile));
 
-                            debugger
                             if (this.userService) {
                                 this.userService.setCurrentUser(userId);
                             }

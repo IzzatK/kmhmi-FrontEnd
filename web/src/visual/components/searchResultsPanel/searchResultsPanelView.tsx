@@ -47,7 +47,7 @@ class SearchResultsPanelView extends Component<SearchResultsProps, SearchResults
 
     componentDidMount() {
         let element = document.getElementById('search-results-panel');
-        this.resizeObserver.observe(element !== null ? element : new Element());
+        this.resizeObserver.observe(element != null ? element : new Element());
     }
 
     render() {

@@ -2,7 +2,7 @@ import {makeGuid} from "../../framework.visual/extras/utils/uniqueIdUtils";
 import {forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
 import {ReferenceType} from "../../model";
 import {UserInfo} from "../../model";
-import {IUserService} from "../../api";
+import {IAuthorizationService, IUserService} from "../../api";
 import {Nullable} from "../../framework/extras/typeUtils";
 import {ISelectionService} from "../../framework/api";
 import {IReferenceService} from "../../api";
@@ -12,6 +12,7 @@ import {IEntityProvider} from "../../api";
 export class UserService extends Plugin implements IUserService {
     public static readonly class: string = 'UserService';
     private selectionService: Nullable<ISelectionService> = null;
+    private authorizationService: Nullable<IAuthorizationService> = null;
     private referenceService: Nullable<IReferenceService> = null;
     private userProvider: Nullable<IEntityProvider<UserInfo>> = null
 
@@ -34,6 +35,10 @@ export class UserService extends Plugin implements IUserService {
 
     setSelectionService(selectionService: ISelectionService) {
         this.selectionService = selectionService;
+    }
+
+    setAuthorizationService(authorizationService: IAuthorizationService): void {
+        this.authorizationService = authorizationService;
     }
 
     setReferenceService(referenceService: IReferenceService) {
@@ -129,6 +134,8 @@ export class UserService extends Plugin implements IUserService {
 
     setCurrentUser(id: string) {
         this.fetchUser(id);
+
+        this.authorizationService?.fetchPermissions(id);
 
         this.selectionService?.setContext('current-user', id);
     }

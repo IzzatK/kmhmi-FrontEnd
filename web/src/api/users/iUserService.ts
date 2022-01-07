@@ -4,6 +4,7 @@ import {ISelectionService} from "../../framework/api";
 import {IReferenceService} from "../references/iReferenceService";
 import {IEntityProvider} from "../common/iEntityProvider";
 import {Nullable} from "../../framework/extras/typeUtils";
+import {IAuthorizationService} from "../authorization/iAuthorizationService";
 
 export interface IUserService extends IPlugin {
     fetchUser(id: string): void;
@@ -29,6 +30,8 @@ export interface IUserService extends IPlugin {
     isAdmin(): boolean;
 
     setSelectionService(selectionService: ISelectionService): void;
+
+    setAuthorizationService(authorizationService: IAuthorizationService): void;
 
     setReferenceService(referenceService: IReferenceService): void;
 

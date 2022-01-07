@@ -21,6 +21,14 @@ export type ProfilePanelProps = {
     onDecline?: (id: string) => void;
 }
 
+export type PermissionsVM = {
+    canModifySelf: boolean;
+
+    canCreate: boolean;
+    canDelete: boolean;
+    canModify: boolean;
+}
+
 export type ProfilePanelState = {
     tmpUser: UserInfoVM;
     isDirty?: boolean;

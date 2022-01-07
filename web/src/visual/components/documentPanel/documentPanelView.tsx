@@ -466,7 +466,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                             <div className={'d-flex flex-column v-gap-4 pl-4'} >
                                 <div className={'d-flex h-gap-2 align-items-center header-2 text-info'}>
                                     {
-                                        document && upload_date !== null &&
+                                        document && upload_date != null &&
                                         <div>Uploaded: {upload_date?.split(",")[0]}</div>
                                     }
                                     {
