@@ -32,7 +32,7 @@ export interface IAuthorizationService extends IPlugin {
     fetchPermissions(userId: string): void;
     getPermissionLevel(entity: PERMISSION_ENTITY, operator: PERMISSION_OPERATOR): PERMISSION_LEVEL;
     getPermissions(): Record<string, PermissionInfo>;
-    hasPermission(entity: PERMISSION_ENTITY, operator: PERMISSION_OPERATOR, currentUserId: string, entityOwnerId: Nullable<string>) : boolean;
+    hasPermission(entity: PERMISSION_ENTITY, operator: PERMISSION_OPERATOR, currentUserId?: string, entityOwnerId?: Nullable<string>) : boolean;
 
     setPermissionProvider(provider: IEntityProvider<PermissionInfo>): void;
 }

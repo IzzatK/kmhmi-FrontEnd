@@ -27,8 +27,6 @@ export interface IUserService extends IPlugin {
 
     getCurrentUserId(): string;
 
-    isAdmin(): boolean;
-
     setSelectionService(selectionService: ISelectionService): void;
 
     setAuthorizationService(authorizationService: IAuthorizationService): void;

@@ -11,7 +11,6 @@ export type ProfilePanelProps = {
     departments?: Record<string, DepartmentVM>;
     accountStatuses?: Record<string, AccountStatusVM>;
     userLookUp?: Record<string, UserInfo>;
-    isAdmin?: boolean;
     user?: UserInfoVM;
     onSelect?: () => void;
     onCancel?: () => void;
@@ -19,6 +18,7 @@ export type ProfilePanelProps = {
     userRequest?: UserRequestVM;
     onAccept?: (id: string) => void;
     onDecline?: (id: string) => void;
+    permissions: PermissionsVM;
 }
 
 export type PermissionsVM = {

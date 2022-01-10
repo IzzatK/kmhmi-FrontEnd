@@ -162,24 +162,6 @@ export class UserService extends Plugin implements IUserService {
         return result;
     }
 
-    isAdmin() {
-        let currentUser: any = this.getCurrentUser();
-        let roles = this.referenceService?.getAllReferences(ReferenceType.ROLE);
-
-        let result = false;
-        if (roles && currentUser && currentUser.role) {
-            let role = roles[currentUser.role];
-            if (role) {
-                let roleTitleUpper = role.title.toUpperCase();
-                if (roleTitleUpper === 'ADMIN') {
-                    result = true;
-                }
-            }
-        }
-
-        return true;//TODO change to 'return result' for deployment
-    }
-
     setUserProvider(provider: IEntityProvider<UserInfo>): void {
         this.userProvider = provider;
     }

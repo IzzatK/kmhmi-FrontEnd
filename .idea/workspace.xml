@@ -7,17 +7,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="added logic for authorization service. currently only limiting document upload by role. need to limit functionality through the rest of the UI">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="limit by role Document Panel">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/api/authorization/iAuthorizationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/api/authorization/iAuthorizationService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/api/users/iUserService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/api/users/iUserService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/application/authorization/authorizationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/application/authorization/authorizationService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/application/users/userService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/application/users/userService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/framework/services/selectionService/selectionService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/framework/services/selectionService/selectionService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/visual/components/documentPanel/documentPanelModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/documentPanel/documentPanelModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/visual/components/documentPanel/documentPanelPresenter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/documentPanel/documentPanelPresenter.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/visual/components/documentPanel/documentPanelView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/documentPanel/documentPanelView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profileInfoView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profileInfoView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelModel.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelPresenter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelPresenter.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/components/systemToolbar/systemToolbarPresenter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolbar/systemToolbarPresenter.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +84,7 @@
       <updated>1641314890275</updated>
       <workItem from="1641314892135" duration="1941000" />
       <workItem from="1641329826785" duration="13922000" />
-      <workItem from="1641418866388" duration="32026000" />
+      <workItem from="1641418866388" duration="34099000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1641329914789</created>
@@ -100,7 +100,14 @@
       <option name="project" value="LOCAL" />
       <updated>1641566016215</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="limit by role Document Panel">
+      <created>1641848314010</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1641848314010</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -123,6 +130,7 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="initial commit" />
     <MESSAGE value="added logic for authorization service. currently only limiting document upload by role. need to limit functionality through the rest of the UI" />
-    <option name="LAST_COMMIT_MESSAGE" value="added logic for authorization service. currently only limiting document upload by role. need to limit functionality through the rest of the UI" />
+    <MESSAGE value="limit by role Document Panel" />
+    <option name="LAST_COMMIT_MESSAGE" value="limit by role Document Panel" />
   </component>
 </project>

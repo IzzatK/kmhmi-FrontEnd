@@ -3,11 +3,11 @@ import {Presenter} from "../../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../../framework/wrappers/componentWrapper";
 import {forEach, forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {createSelector} from "@reduxjs/toolkit";
-import {ReferenceType} from "../../../../model";
-import {referenceService, userService} from "../../../../application/serviceComposition";
-import {UserInfo} from "../../../../model";
-import {AccountStatusVM, DepartmentVM, RoleVM, UserInfoVM} from "./profilePanelModel";
-import {PermissionsVM} from "../../documentPanel/documentPanelModel";
+import {ReferenceType, UserInfo} from "../../../../model";
+import {authorizationService, referenceService, userService} from "../../../../application/serviceComposition";
+import {AccountStatusVM, DepartmentVM, PermissionsVM, RoleVM, UserInfoVM} from "./profilePanelModel";
+import {PermissionInfo} from "../../../../model/permissionInfo";
+import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../../api";
 
 class ProfilePanel extends Presenter {
     private readonly accountStatuses: AccountStatusVM[];
@@ -46,10 +46,10 @@ class ProfilePanel extends Presenter {
                 users: this.getManagedUserVMs(state),
                 userLookUp: userService.getUsers(),
                 currentUser: this.getCurrentUserVM(state),
-                isAdmin: userService.isAdmin(),
                 roles: this.getRolesVMs(state),
                 departments: this.getDepartmentVMs(state),
-                accountStatuses: this.accountStatuses
+                accountStatuses: this.accountStatuses,
+                permissions: this.getPermissions(state)
             }
         }
 
@@ -62,14 +62,18 @@ class ProfilePanel extends Presenter {
         }
     }
 
-    getPermissions() : PermissionsVM {
+    getPermissions = createSelector<any, string, Record<string, PermissionInfo>, PermissionsVM>(
+        [() => userService.getCurrentUserId(), authorizationService.getPermissions],
+        (currentUserId, permissionInfoLookup) => {
 
-        return {
-            canDelete: true,//authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.DELETE)
-            canDownload: true,//authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.DOWNLOAD)
-            canModify: true//authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.MODIFY)
-        };
-    }
+            return {
+                canModifySelf: authorizationService.hasPermission(PERMISSION_ENTITY.USER, PERMISSION_OPERATOR.MODIFY, currentUserId, currentUserId),
+                canCreate: authorizationService.hasPermission(PERMISSION_ENTITY.USER, PERMISSION_OPERATOR.POST),
+                canDelete: authorizationService.hasPermission(PERMISSION_ENTITY.USER, PERMISSION_OPERATOR.DELETE),
+                canModify: authorizationService.hasPermission(PERMISSION_ENTITY.USER, PERMISSION_OPERATOR.MODIFY)
+            }
+        }
+    )
 
     getManagedUserVMs = createSelector(
         [userService.getUsers, userService.getCurrentUser],

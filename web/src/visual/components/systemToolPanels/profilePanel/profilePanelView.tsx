@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import './profilePanel.css';
 import ProfileInfoView from "./profileInfoView";
 import ScrollBar from "../../../theme/widgets/scrollBar/scrollBar";
@@ -220,7 +220,7 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
 
     render() {
         const { className, users, currentUser, onUserUpdated, onUserRemoved, onUserAdded, roles, departments,
-            accountStatuses, userLookUp, isAdmin, userRequests, ...rest } = this.props;
+            accountStatuses, userLookUp, userRequests, permissions, ...rest } = this.props;
 
         const { editProperties, tmpUser, isDirty, isAddingNewUser } = this.state;
 
@@ -231,7 +231,7 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         if (users) {
             profileInfoViews = users.map((user: UserInfoVM) => {
                 return (
-                    <ProfileInfoView isAdmin={isAdmin} currentUser={currentUser} roles={roles} departments={departments}
+                    <ProfileInfoView permissions={permissions} currentUser={currentUser} roles={roles} departments={departments}
                                      accountStatuses={accountStatuses} user={user} onUserUpdated={onUserUpdated}
                                      onUserRemoved={onUserRemoved} userLookUp={userLookUp}/>
                 )
@@ -243,7 +243,7 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         if (userRequests) {
             userRequestViews = userRequests.map((userRequest) => {
                 return (
-                    <UserRequestInfoView roles={roles} userRequest={userRequest} onAccept={this.onAcceptUserRequest}
+                    <UserRequestInfoView permissions={permissions} roles={roles} userRequest={userRequest} onAccept={this.onAcceptUserRequest}
                                          onDecline={this.onDeclineUserRequest}/>
                 )
             })
@@ -346,7 +346,10 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                         {
                             !isDirty &&
                             <div className={"d-flex justify-content-end h-gap-2"}>
-                                <Button text={"Edit"} orientation={"horizontal"} onClick={() => this.toggleEdit()} selected={false} disabled={false} className={"px-5"}/>
+                                {
+                                    permissions.canModifySelf &&
+                                    <Button text={"Edit"} orientation={"horizontal"} onClick={() => this.toggleEdit()} selected={false} disabled={false} className={"px-5"}/>
+                                }
                             </div>
                         }
                         {
@@ -357,39 +360,43 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                             </div>
                         }
                     </div>
+                    {
+                        permissions.canModify &&
+                            <Fragment>
+                                <div className={"header d-flex align-items-center justify-content-between mt-3 mb-5 mr-4"}>
+                                    <div className={'py-3'}>User Requests</div>
+                                </div>
+                                <div className={'mr-4'}>
+                                    <ScrollBar renderTrackHorizontal={false}>
+                                        <div className={'v-gap-3 mr-4'}>
+                                            {userRequestViews}
+                                        </div>
+                                    </ScrollBar>
+                                </div>
 
-                    <div className={"header d-flex align-items-center justify-content-between mt-3 mb-5 mr-4"}>
-                        <div className={'py-3'}>User Requests</div>
-                    </div>
-                    <div className={'mr-4'}>
-                        <ScrollBar renderTrackHorizontal={false}>
-                            <div className={'v-gap-3 mr-4'}>
-                                {userRequestViews}
-                            </div>
-                        </ScrollBar>
-                    </div>
-
-                    <div className={"header d-flex align-items-center justify-content-between mt-3 mb-5 mr-4"}>
-                        <div className={'py-3'}>User Manager</div>
-                        {
-                            isAdmin &&
-                            <Button text={"Add User"} orientation={"horizontal"} onClick={() => this.toggleIsAddingNewUser()} selected={false} disabled={false} className={"px-5 mr-5"}/>
-                        }
-                    </div>
-                    <div className={'h-100 mr-4'}>
-                        <ScrollBar renderTrackHorizontal={false}>
-                            <div className={'v-gap-3 mr-4'}>
-                                {
-                                    isAddingNewUser &&
-                                    <NewUserProfileInfoView onUserAdded={(newUser) => this.addUser(newUser)}
-                                                            onCancel={() => this.toggleIsAddingNewUser()}
-                                                            accountStatuses={accountStatuses} departments={departments}
-                                                            roles={roles}/>
-                                }
-                                {profileInfoViews}
-                            </div>
-                        </ScrollBar>
-                    </div>
+                                <div className={"header d-flex align-items-center justify-content-between mt-3 mb-5 mr-4"}>
+                                    <div className={'py-3'}>User Manager</div>
+                                    {
+                                        permissions.canCreate &&
+                                        <Button text={"Add User"} orientation={"horizontal"} onClick={() => this.toggleIsAddingNewUser()} selected={false} disabled={false} className={"px-5 mr-5"}/>
+                                    }
+                                </div>
+                                <div className={'h-100 mr-4'}>
+                                    <ScrollBar renderTrackHorizontal={false}>
+                                        <div className={'v-gap-3 mr-4'}>
+                                            {
+                                                isAddingNewUser &&
+                                                <NewUserProfileInfoView permissions={permissions} onUserAdded={(newUser) => this.addUser(newUser)}
+                                                                        onCancel={() => this.toggleIsAddingNewUser()}
+                                                                        accountStatuses={accountStatuses} departments={departments}
+                                                                        roles={roles}/>
+                                            }
+                                            {profileInfoViews}
+                                        </div>
+                                    </ScrollBar>
+                                </div>
+                            </Fragment>
+                    }
                 </div>
             </div>
         );

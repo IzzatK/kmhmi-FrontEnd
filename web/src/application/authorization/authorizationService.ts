@@ -8,9 +8,8 @@ import {
 import {Nullable} from "../../framework/extras/typeUtils";
 import {IStorage} from "../../framework/api";
 import {Plugin} from "../../framework/extras/plugin";
-import {createSelector, createSlice, OutputSelector, Selector, Slice} from "@reduxjs/toolkit";
+import {createSelector, OutputSelector, Selector} from "@reduxjs/toolkit";
 import {PermissionInfo} from "../../model/permissionInfo";
-import {authorizationService, selectionService} from "../serviceComposition";
 import {forEach} from "../../framework.visual/extras/utils/collectionUtils";
 
 // type AuthorizationState = {
@@ -140,11 +139,14 @@ export class AuthorizationService extends Plugin implements IAuthorizationServic
         let result = false;
 
         let permissionLevel = this.getPermissionLevel(entity, operator);
-        if (permissionLevel > PERMISSION_LEVEL.SELF) {
+
+        if (permissionLevel == PERMISSION_LEVEL.ANY) {
             result = true;
         }
         else if (permissionLevel == PERMISSION_LEVEL.SELF) {
-            result = entityOwnerId == currentUserId;
+            if (currentUserId && entityOwnerId) {
+                result = entityOwnerId == currentUserId;
+            }
         }
 
         return result;

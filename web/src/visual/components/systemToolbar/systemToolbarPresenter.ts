@@ -76,7 +76,7 @@ class SystemToolbar extends Presenter {
                 let enabled = true;
                 switch(item.id) {
                     case 'components/uploadPanel':
-                        enabled = authorizationService.getPermissionLevel(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.POST) >= PERMISSION_LEVEL.ANY;
+                        enabled = authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.POST);
                         break;
                 }
 

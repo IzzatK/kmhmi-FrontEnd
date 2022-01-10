@@ -224,7 +224,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
     }
 
     render() {
-        const {user, currentUser, onSelect, onUserUpdated, onUserRemoved, roles, departments, accountStatuses, userLookUp, isAdmin } = this.props;
+        const {user, currentUser, onSelect, onUserUpdated, onUserRemoved, roles, departments, accountStatuses, userLookUp, permissions } = this.props;
 
         const { isDirty, editProperties, tmpUser, selected } = this.state;
 
@@ -389,16 +389,16 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                           {
                               !isDirty &&
                               <div className={"d-flex justify-content-end h-gap-2"}>
-                                  {
-                                      isAdmin &&
-                                      <Button text={"Edit"} orientation={"horizontal"} onClick={() => this.toggleEdit()} selected={false} disabled={false} className={"px-5"}/>
-                                  }
+                                  <Button text={"Edit"} orientation={"horizontal"} onClick={() => this.toggleEdit()} selected={false} disabled={false} className={"px-5"}/>
                               </div>
                           }
                           {
                               isDirty &&
                               <div className={"d-flex h-gap-2 justify-content-end"}>
-                                  <Button text={"Remove User"} orientation={"horizontal"} highlight={true} onClick={() => this.removeUser()} selected={false} disabled={false} className={"px-5"}/>
+                                  {
+                                      permissions.canDelete &&
+                                      <Button text={"Remove User"} orientation={"horizontal"} highlight={true} onClick={() => this.removeUser()} selected={false} disabled={false} className={"px-5"}/>
+                                  }
                                   <Button text={"Cancel"} orientation={"horizontal"} highlight={true} onClick={() => this.cancelEdit()} selected={false} disabled={false} className={"px-5"}/>
                                   <Button text={"Save"} orientation={"horizontal"} onClick={() => this.updateUser()} selected={false} disabled={false} className={"px-5"}/>
                               </div>
