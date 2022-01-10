@@ -25,7 +25,7 @@ export interface IUserService extends IPlugin {
 
     getCurrentUser(): Nullable<UserInfo>;
 
-    getCurrentUserId(): any;
+    getCurrentUserId(): string;
 
     isAdmin(): boolean;
 

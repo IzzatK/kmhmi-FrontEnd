@@ -67,10 +67,10 @@ export class SelectionService extends BasePlugin implements ISelectionService {
     }
 
     getContextMap = () => {
-        return this.storage?.getState()[this.model.name].contextMap;
+        return this.getModelState().contextMap;
     };
 
-    getModelState() {
+    getModelState(): SelectionState {
         return this.storage?.getState()[this.model.name];
     }
 

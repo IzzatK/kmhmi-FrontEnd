@@ -1,6 +1,7 @@
 import {IPlugin} from "../../framework/api";
 import {IEntityProvider} from "../common/iEntityProvider";
 import {PermissionInfo} from "../../model/permissionInfo";
+import {Nullable} from "../../framework/extras/typeUtils";
 
 export enum PERMISSION_ENTITY {
     NONE='NONE',
@@ -31,6 +32,7 @@ export interface IAuthorizationService extends IPlugin {
     fetchPermissions(userId: string): void;
     getPermissionLevel(entity: PERMISSION_ENTITY, operator: PERMISSION_OPERATOR): PERMISSION_LEVEL;
     getPermissions(): Record<string, PermissionInfo>;
+    hasPermission(entity: PERMISSION_ENTITY, operator: PERMISSION_OPERATOR, currentUserId: string, entityOwnerId: Nullable<string>) : boolean;
 
     setPermissionProvider(provider: IEntityProvider<PermissionInfo>): void;
 }

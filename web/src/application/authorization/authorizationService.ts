@@ -10,47 +10,44 @@ import {IStorage} from "../../framework/api";
 import {Plugin} from "../../framework/extras/plugin";
 import {createSelector, createSlice, OutputSelector, Selector, Slice} from "@reduxjs/toolkit";
 import {PermissionInfo} from "../../model/permissionInfo";
-import {selectionService} from "../serviceComposition";
+import {authorizationService, selectionService} from "../serviceComposition";
 import {forEach} from "../../framework.visual/extras/utils/collectionUtils";
 
-type AuthorizationState = {
-    // permissions: Nullable<PERMISSION_TYPE[]>
-}
-
-type AuthenticationSliceType = Slice<AuthorizationState,
-    {
-        // setPermissions: (state: AuthorizationState, action: PayloadAction<PERMISSION_TYPE[]>) => void;
-    }>;
+// type AuthorizationState = {
+//     // permissions: Nullable<PERMISSION_TYPE[]>
+// }
+//
+// type AuthenticationSliceType = Slice<AuthorizationState,
+//     {
+//         // setPermissions: (state: AuthorizationState, action: PayloadAction<PERMISSION_TYPE[]>) => void;
+//     }>;
 
 export class AuthorizationService extends Plugin implements IAuthorizationService {
     public static readonly class:string = 'AuthorizationService';
     private appDataStore: Nullable<IStorage> = null;
 
-    private model: AuthenticationSliceType;
+    // private model: AuthenticationSliceType;
 
     private permissionProvider?: Nullable<IEntityProvider<PermissionInfo>> = null;
 
-    // private readonly getPermissionInfoSelector: Selector<any, Record<string, PermissionInfo>>;
-    // private readonly getAllPermissionsGroupedByEntitySelector: Selector<any, Record<string, Record<string, ReferenceInfo>>>;
-    private getPermissionInfoSelector: OutputSelector<any, PermissionInfo, (res1: Record<string, PermissionInfo>, res2: string) => PermissionInfo>;
-    private permissionInfoSelector: Selector<any, Record<string, PermissionInfo>>;
-    private getAllPermissionsGroupedByEntitySelector: OutputSelector<any, Record<string, Record<string, PERMISSION_LEVEL>>, (res: Record<string, PermissionInfo>) => Record<string, Record<string, PERMISSION_LEVEL>>>;
+    private readonly permissionInfoSelector: Selector<any, Record<string, PermissionInfo>>;
+    private readonly getAllPermissionsGroupedByEntitySelector: OutputSelector<any, Record<string, Record<string, PERMISSION_LEVEL>>, (res: Record<string, PermissionInfo>) => Record<string, Record<string, PERMISSION_LEVEL>>>;
 
     constructor() {
         super();
         this.appendClassName(AuthorizationService.class);
 
-        this.model = createSlice({
-            name: 'application/authorization',
-            initialState: {
-                // permissions: null
-            } as AuthorizationState,
-            reducers: {
-                // setPermissions: (state, action) => {
-                //     state.permissions = action.payload;
-                // }
-            },
-        });
+        // this.model = createSlice({
+        //     name: 'application/authorization',
+        //     initialState: {
+        //         // permissions: null
+        //     } as AuthorizationState,
+        //     reducers: {
+        //         // setPermissions: (state, action) => {
+        //         //     state.permissions = action.payload;
+        //         // }
+        //     },
+        // });
 
         this.permissionInfoSelector = createSelector(
             [() => this.getAll<PermissionInfo>(PermissionInfo.class)],
@@ -81,19 +78,12 @@ export class AuthorizationService extends Plugin implements IAuthorizationServic
                 return result;
             }
         );
-
-        this.getPermissionInfoSelector = createSelector(
-            [() => super.getAll<PermissionInfo>(PermissionInfo.class), () => selectionService.getContext('current-user')],
-            (permissionInfos, id) => {
-                return permissionInfos[id];
-            }
-        )
     }
 
     start() {
         super.start();
 
-        this.appDataStore?.addEventHandlers(this.model.name, this.model.reducer);
+        // this.appDataStore?.addEventHandlers(this.model.name, this.model.reducer);
     }
 
     stop() {
@@ -108,9 +98,9 @@ export class AuthorizationService extends Plugin implements IAuthorizationServic
         this.appDataStore = appDataStore;
     }
 
-    getAuthorizationState(): AuthorizationState {
-        return this.appDataStore?.getState()[this.model.name];
-    }
+    // getAuthorizationState(): AuthorizationState {
+    //     return this.appDataStore?.getState()[this.model.name];
+    // }
 
     fetchPermissions(userId: string): void {
         this.removeAllByType(PermissionInfo.class);
@@ -146,7 +136,19 @@ export class AuthorizationService extends Plugin implements IAuthorizationServic
         return this.permissionInfoSelector(this.getRepoState());
     }
 
+    hasPermission(entity: PERMISSION_ENTITY, operator: PERMISSION_OPERATOR, currentUserId: string, entityOwnerId: Nullable<string>): boolean {
+        let result = false;
 
+        let permissionLevel = this.getPermissionLevel(entity, operator);
+        if (permissionLevel > PERMISSION_LEVEL.SELF) {
+            result = true;
+        }
+        else if (permissionLevel == PERMISSION_LEVEL.SELF) {
+            result = entityOwnerId == currentUserId;
+        }
+
+        return result;
+    }
 
     setPermissionProvider(provider: IEntityProvider<PermissionInfo>): void {
         this.permissionProvider = provider;

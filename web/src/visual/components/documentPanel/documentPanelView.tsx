@@ -258,6 +258,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
     }
 
     getCellRenderer(tmpDocument: DocumentInfoVM, document: DocumentInfoVM, editProperty: EditPropertyVM, isGlobal?: boolean) {
+        const { canModify } = this.props.permissions;
         const {id, type, title='test', options={}, long=false} = editProperty;
         const { id:document_id } = document;
 
@@ -282,7 +283,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                   dirty={dirty}
                                   value={value}
                                   disable={document_id === undefined}
-                                  edit={document_id !== undefined}
+                                  edit={document_id !== undefined && canModify}
                                   onSubmit={this.onTmpDocumentChanged}/>
                     </div>
                 )
@@ -327,7 +328,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
 
                 let tagsDivs = value ? value.map((tag: string) => {
                     return tag.length > 0 && <Tag name={id} text={tag.trim()} onDelete={onClick} isGlobal={isGlobal}
-                                                  isEdit={tag.trim() === "-1"} editable={true} onSubmit={onSubmit}/>
+                                                  isEdit={tag.trim() === "-1"} editable={canModify} onSubmit={onSubmit}/>
                 }) : <div/>
 
                 cellRenderer = (
@@ -348,7 +349,11 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
 
                 cellRenderer = (
                     <div key={id}>
-                        <ComboBox className={`align-self-center ${dirty ? 'dirty' : ''}`} title={cbTitle} items={Object.values(options)} onSelect={(value: string) => this.onTmpDocumentChanged(id, value)}/>
+                        <ComboBox disable={!canModify}
+                                  className={`align-self-center ${dirty ? 'dirty' : ''}`}
+                                  title={cbTitle}
+                                  items={Object.values(options)}
+                                  onSelect={(value: string) => this.onTmpDocumentChanged(id, value)}/>
                     </div>
                 )
                 break;
@@ -366,7 +371,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
     render() {
         const {
             document, onUpdateDocument, onRemoveDocument, pdfRenderer: PdfRenderer, editProperties, userProfile, token,
-            className, ...rest
+            className, permissions, ...rest
         } = this.props;
         const {id, preview_url = "", original_url, isUpdating=false, upload_date, publication_date} = document || {};
 
@@ -384,16 +389,27 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                     <div className={`header position-relative`}>
                         <div className={`d-flex flex-column p-4 v-gap-5 position-relative ${!id && 'disabled'} `}>
                             <div className={'d-flex align-items-end justify-content-end h-gap-2'}>
-
                                 <div className={'d-flex h-gap-2 align-items-center'}>
-                                    <Button text={'DELETE'} highlight={true} onClick={this.removeDocument}/>
-                                    <Button text={'DOWNLOAD'} onClick={this.download}/>
-                                    <Button
-                                        disabled={!isDirty}
-                                        text={'CANCEL'} onClick={this.cancelEdit}/>
-                                    <Button
-                                        disabled={!isDirty}
-                                        text={'PUBLISH'} onClick={this.updateDocument}/>
+                                    {
+                                        permissions.canDelete &&
+                                        <Button text={'DELETE'} highlight={true} onClick={this.removeDocument}/>
+                                    }
+                                    {
+                                        permissions.canDownload &&
+                                        <Button text={'DOWNLOAD'} onClick={this.download}/>
+                                    }
+                                    {
+                                        permissions.canModify &&
+                                        <Button
+                                            disabled={!isDirty}
+                                            text={'CANCEL'} onClick={this.cancelEdit}/>
+                                    }
+                                    {
+                                        permissions.canModify &&
+                                        <Button
+                                            disabled={!isDirty}
+                                            text={'PUBLISH'} onClick={this.updateDocument}/>
+                                    }
                                 </div>
                             </div>
 

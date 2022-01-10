@@ -10,9 +10,11 @@ import {
     documentService,
     referenceService,
     selectionService,
+    userService,
 } from "../../../application/serviceComposition";
 import {DocumentInfoVM, PermissionsVM} from "./documentPanelModel";
 import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../api";
+import {PermissionInfo} from "../../../model/permissionInfo";
 
 class DocumentPanel extends Presenter {
     constructor() {
@@ -37,7 +39,7 @@ class DocumentPanel extends Presenter {
                 editProperties: this._getEditProperties(),
                 userProfile: authenticationService.getUserProfile(),
                 token: authenticationService.getToken(),
-                permissions: this.getPermissions()
+                permissions: this.getPermissions(state)
             }
         }
 
@@ -47,15 +49,6 @@ class DocumentPanel extends Presenter {
                 onRemoveDocument: (id: string) => documentService.removeDocument(id)
             };
         }
-    }
-
-    getPermissions() : PermissionsVM {
-
-        return {
-            canDelete: true,//authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.DELETE)
-            canDownload: true,//authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.DOWNLOAD)
-            canModify: true//authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.MODIFY)
-        };
     }
 
     _getEditProperties = () => {
@@ -206,6 +199,20 @@ class DocumentPanel extends Presenter {
             return itemVM;
         }
     );
+
+    getPermissions = createSelector<any, DocumentInfoVM, string, Record<string, PermissionInfo>, PermissionsVM>(
+        [this.getDocument, () => userService.getCurrentUserId(), authorizationService.getPermissions],
+        (documentInfoVM, currentUserId, permissionInfoLookup) => {
+
+            let uploadedBy = documentInfoVM?.uploadedBy_id || null;
+
+            return {
+                canDelete: authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.DELETE, currentUserId, uploadedBy),
+                canDownload: authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.DOWNLOAD, currentUserId, uploadedBy),
+                canModify: authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.MODIFY, currentUserId, uploadedBy)
+            }
+        }
+    )
 }
 
 export const {

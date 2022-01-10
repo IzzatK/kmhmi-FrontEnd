@@ -10,6 +10,7 @@ export type DocumentPanelProps = {
     preview_url: string;
     userProfile: UserProfileVM;
     token: string;
+    permissions: PermissionsVM;
 }
 
 export type DocumentPanelState = {

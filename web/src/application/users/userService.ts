@@ -153,9 +153,11 @@ export class UserService extends Plugin implements IUserService {
     }
 
     getCurrentUserId() {
-        let result = null;
+        let result = '';
 
-        result = this.selectionService?.getContext('current-user');
+        if (this.selectionService != null) {
+            result = this.selectionService.getContext('current-user');
+        }
 
         return result;
     }
