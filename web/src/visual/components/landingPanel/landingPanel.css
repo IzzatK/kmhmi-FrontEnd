@@ -1,0 +1,60 @@
+.landing-panel {
+    background: var(--login-panel-background);
+    color: var(--login-panel-color);
+}
+
+.landing-panel .text-advisory {
+    font-size: 4rem;
+    line-height: 4rem;
+}
+
+.landing-panel .button {
+    min-width: 19rem;
+    min-height: 4.6rem;
+    font-size: 2.2rem;
+    margin-top: 10rem !important;
+}
+
+.landing-panel .button.light {
+    width: 11.8rem;
+    min-height: 3.8rem;
+    font-size: 1.8rem;
+    margin-top: 0 !important;
+}
+
+.landing-panel .popup {
+    background: var(--login-panel-popup-background);
+}
+
+.landing-panel .text-selected {
+    font-size: 4rem;
+    line-height: 4rem;
+}
+
+.landing-panel .combo-box {
+    min-width: 13.8rem;
+}
+
+.landing-panel .login-grid {
+    display: inline-grid;
+    grid-template-rows:    repeat(4, 3.5rem);
+    grid-template-columns: 10rem 33rem;
+    grid-gap: 0 3rem;
+    grid-auto-flow: column;
+}
+
+.landing-panel .text-edit {
+    max-width: 18.8rem;
+}
+
+.landing-panel .register-grid {
+    display: inline-grid;
+    grid-template-rows:    repeat(6, 3.5rem);
+    grid-template-columns: 10rem 33rem;
+    grid-gap: 0 3rem;
+    grid-auto-flow: column;
+}
+
+.landing-panel .admin {
+    color: var(--login-panel-accent-color);
+}

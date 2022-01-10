@@ -37,6 +37,17 @@ body > * {
 
     --app-background: var(--app-whiteSmoke);
 
+    /* Login Panel */
+
+    --login-panel-background: var(--app-vulcan);
+    --login-panel-popup-background: var(--app-bunker);
+    --login-panel-color: var(--app-bleach);
+    --login-panel-accent-color: var(--app-airForceBlue);
+
+    /* Logout Panel */
+
+
+
     /* System Banner */
     --system-banner-background: var(--app-nero);
     --system-banner-color: var(--app-whiteSmoke);

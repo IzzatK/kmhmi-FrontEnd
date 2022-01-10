@@ -12,6 +12,8 @@ export type TextEditProps = {
     onKeyUp?: () => void;
     edit?: boolean;
     autoFocus?: boolean;
+    rows?: number;
+    cols?: number;
 }
 
 export type TextEditState = {

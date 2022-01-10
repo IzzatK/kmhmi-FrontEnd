@@ -81,3 +81,30 @@
     border-color: var(--text-field-selected-border-color);
     background: var(--text-field-selected-bg-color);
 }
+
+.text-area {
+    font-family: var(--primary-font-family);
+    padding: 1rem;
+    border: 0;
+    background: var(--text-field-selected-bg-color);
+    font-size: 1.6rem;
+    color: var(--text-field-color);
+    min-width: 80rem;
+    min-height: 21rem;
+}
+
+.text-area:focus {
+    color: var(--text-field-selected-color);
+}
+
+.text-area::placeholder {
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text-field-placeholder-color);
+}
+
+.text-area.disabled {
+    color: var(--text-field-disabled-color);
+    font-style: normal;
+    font-weight: 300 !important;
+}
