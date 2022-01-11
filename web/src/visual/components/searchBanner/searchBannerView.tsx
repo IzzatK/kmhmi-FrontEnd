@@ -151,7 +151,6 @@ class SearchBannerView extends Component<SearchBannerProps, SearchBannerState> {
                 ...Object.values(options)
             ]
 
-
             result = (
                 <ComboBox key={id} className={dirty ? 'dirty rounded-lg' : 'rounded-lg'} light={true}
                           title={cbTitle || ''} items={cbOptions} multiSelect={true}
@@ -257,7 +256,7 @@ class SearchBannerView extends Component<SearchBannerProps, SearchBannerState> {
                         <div className={'flex-fill d-flex flex-column align-items-stretch v-gap-2'}>
                             <div className={'d-flex flex-wrap align-items-end'}>
                                 <SearchBox className={'mr-3'}
-                                           style={{minWidth: maxWidth, maxWidth: maxWidth}}
+                                           style={{minWidth: maxWidth, maxWidth: maxWidth}} light={true}
                                            onSearch={this._onSearch} text={searchText}
                                            onTextChange={this._onSearchTextChanged}/>
                                 <div className={'d-flex h-gap-2 align-items-end mt-3'} >

@@ -35,6 +35,7 @@ export type ProfilePanelState = {
     isAddingNewUser?: boolean;
     editProperties: EditPropertyVM[];
     selected?: boolean;
+    showPopup?: boolean;
 }
 
 export type UserInfoVM = {

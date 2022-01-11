@@ -42,7 +42,7 @@ class Tag extends React.Component<TagProps, TagState> {
 
 
     render() {
-        const {className, onDelete, text, name, isEdit=false, onSubmit, isGlobal=false, editable=false} = this.props;
+        const {className, onDelete, text, name, isEdit=false, onSubmit, isGlobal=false, readonly=true} = this.props;
         const {tmpText, isSelected} = this.state;
 
         let cn = 'tag d-flex rounded-pill h-gap-2 cursor-pointer';
@@ -69,7 +69,7 @@ class Tag extends React.Component<TagProps, TagState> {
                 <div className={"d-grid"} onClick={this.toggleSelected}>
                     {
                         !isEdit &&
-                        <div className={`tag-text display-4 text-nowrap align-self-center ${editable ? 'pl-4' : 'px-4'}`}>
+                        <div className={`tag-text display-4 text-nowrap align-self-center ${readonly ? 'px-4' : 'pl-4'}`}>
                             {text}
                         </div>
                     }
@@ -85,7 +85,7 @@ class Tag extends React.Component<TagProps, TagState> {
                     }
                 </div>
                 {
-                    editable &&
+                    !readonly &&
                     <div className={'delete-btn align-self-center pr-2'} onClick={this.delete}>
                         <DeleteSVG className={"tiny-image-container"}/>
                     </div>

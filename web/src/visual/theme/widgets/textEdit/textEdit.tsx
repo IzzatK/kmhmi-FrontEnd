@@ -92,7 +92,7 @@ class TextEdit extends Component<TextEditProps, TextEditState> {
 	}
 
 	render() {
-		const { placeholder, dirty, className, disable, value, type='text', autoFocus=false, edit } = this.props;
+		const { placeholder, dirty, className, disable, value, type='text', autoFocus=false, edit, readonly } = this.props;
 
 		const { tmpValue } = this.state;
 
@@ -114,6 +114,10 @@ class TextEdit extends Component<TextEditProps, TextEditState> {
 			cn += ` disabled`;
 		}
 
+		if (readonly) {
+			cn += ` readonly`;
+		}
+
 		return (
 			<div className={cn}>
 				<input  type={type} className={'position-absolute h-100 w-100'}
@@ -122,7 +126,7 @@ class TextEdit extends Component<TextEditProps, TextEditState> {
 						value={tmpValue}
 						onKeyUp={this.onKeyPress}
 						onChange={this.handleChange}
-						disabled={disable}
+						disabled={disable || readonly}
 						autoFocus={autoFocus}
 				>
 				</input>

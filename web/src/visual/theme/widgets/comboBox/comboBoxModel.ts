@@ -12,6 +12,7 @@ export type ComboBoxProps = {
     light?: boolean;
     dirty?: boolean;
     multiSelect?: boolean;
+    readonly?: boolean;
 }
 
 export type ComboBoxState = {
@@ -26,6 +27,7 @@ export type ComboBoxItemProps = {
     onClick?: (() => void) | undefined;
     selected?: boolean;
     multiSelect?: boolean;
+    readonly?: boolean;
 }
 
 export type ComboBoxItemState = {

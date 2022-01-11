@@ -31,6 +31,7 @@ export class DocumentInfo extends RepoItem{
   isUpdating: boolean = false;
   isUploading: boolean = false;
   isPending: boolean = false;
+  isDeleted?: boolean = false;
 
   constructor(id: string)
   {

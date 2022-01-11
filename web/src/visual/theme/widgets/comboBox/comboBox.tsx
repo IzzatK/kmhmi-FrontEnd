@@ -44,9 +44,19 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
         const { selectedItemIds } = this.state;
 
         if (multiSelect) {
-            let selectedItems = {
-                ...selectedItemIds,
-                [id]: id,
+
+            let selectedItems = {};
+
+            if (selectedItemIds[id]) {
+                delete selectedItemIds[id];
+                selectedItems = {
+                    ...selectedItemIds,
+                }
+            } else {
+                selectedItems = {
+                    ...selectedItemIds,
+                    [id]: id,
+                }
             }
 
             this.setState(prevState => {
@@ -79,9 +89,17 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
     }
 
     _clear() {
+        const { onSelect } = this.props;
+
         this.setState({
             ...this.state,
             selectedItemIds: {},
+        }, () => {
+            if (onSelect) {
+                const { selectedItemIds } = this.state;
+                let tmpArray = Object.keys(selectedItemIds);
+                onSelect(Array.from(tmpArray));
+            }
         })
     }
 
@@ -100,7 +118,7 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
     }
 
     render() {
-        const {className, id, title, onSelect, items, graphic:Graphic, disable, light, dirty, multiSelect, ...rest} = this.props;
+        const {className, id, title, onSelect, items, graphic:Graphic, disable, light, dirty, multiSelect, readonly, ...rest} = this.props;
 
         const { selected } = this.state;
 
@@ -135,16 +153,16 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
             const { selectedItemIds } = this.state;
 
             forEachKVP(items, (itemKey: string, itemValue: { id: string; title: string; selected: boolean; }) => {
-                const { id, title, selected } = itemValue;
+                const { id:itemId, title:itemTitle, selected:itemSelected } = itemValue;
 
                 let value = false;
-                if (selectedItemIds && selectedItemIds[id]) {
+                if ((selectedItemIds && selectedItemIds[itemId]) || (title === itemTitle)) {
                     value = true;
                 }
 
                 comboBoxItems.push(
-                    <ComboBoxItem className={'d-flex'} key={id} title={title} multiSelect={multiSelect}
-                                  onClick={() => this._onSelectHandler(id || "")} selected={value}/>
+                    <ComboBoxItem className={'d-flex'} key={itemId} title={itemTitle} multiSelect={multiSelect}
+                                  onClick={() => this._onSelectHandler(itemId || "")} selected={value} readonly={readonly}/>
                 )
             });
         }
@@ -164,13 +182,13 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
                     timeout={200}
                     onShouldClose={this._onClickHandler}
                     portalContent={
-                        <div className={"position-absolute w-100 shadow"}>
+                        <div className={`position-absolute w-100 ${multiSelect ? "" : "shadow"}`}>
                             <ul className={lcn}>
                                 {comboBoxItems}
                             </ul>
                             {
                                 multiSelect &&
-                                <div className={"d-flex bg-advisory p-2 justify-content-center"}>
+                                <div className={"d-flex bg-advisory p-2 justify-content-center shadow"}>
                                     <Button className={"clear-button"} light={true} text={"Clear"} onClick={() => this._clear()}/>
                                 </div>
 
@@ -182,7 +200,7 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
                         <div onClick={disable ? undefined : this._onClickHandler} className={"list-cell h-gap-1 w-100 d-flex align-items-center justify-content-between"}>
                             {
                                 Graphic &&
-                                <Graphic className={'small-image-container'}/>
+                                <Graphic className={'small-image-container mr-3'}/>
                             }
                             <div className={"header-3 flex-fill"}>{title}</div>
                             {

@@ -7,6 +7,8 @@ import TextEdit from "../../../theme/widgets/textEdit/textEdit";
 import {arrayEquals, forEach} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
 import {ProfilePanelProps, ProfilePanelState, UserInfoVM} from "./profilePanelModel";
+import Popup from "../../../theme/widgets/popup/popup";
+import {FileSVG} from "../../../theme/svgs/fileSVG";
 
 class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
 
@@ -58,6 +60,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                 }
             ],
             selected: false,
+            showPopup: false,
         }
     }
 
@@ -191,6 +194,15 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
         if (user && onUserRemoved) {
             onUserRemoved(user.id || "");
         }
+
+        this._setPopupVisible(false);
+    }
+
+    _setPopupVisible(visible: boolean) {
+        this.setState({
+            ...this.state,
+            showPopup: visible,
+        })
     }
 
     cancelEdit() {
@@ -374,6 +386,14 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                   }
                   body={
                       <div className={'p-3'}>
+                          <Popup
+                              text={"Are you sure you want to remove this User?"}
+                              proceedText={"Remove"}
+                              cancelText={"Cancel"}
+                              graphic={FileSVG}
+                              padding={"65%"}
+                              onCancel={() => this._setPopupVisible(false)}
+                              onProceed={() => this.removeUser()}/>
                           <div className={`personal-info-grid w-100 ${isDirty ? 'dirty' : ''}`}>
                               <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>First Name:</div>
                               <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Last Name:</div>
@@ -397,7 +417,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                               <div className={"d-flex h-gap-2 justify-content-end"}>
                                   {
                                       permissions.canDelete &&
-                                      <Button text={"Remove User"} orientation={"horizontal"} highlight={true} onClick={() => this.removeUser()} selected={false} disabled={false} className={"px-5"}/>
+                                      <Button text={"Remove User"} orientation={"horizontal"} highlight={true} onClick={() => this._setPopupVisible(true)} selected={false} disabled={false} className={"px-5"}/>
                                   }
                                   <Button text={"Cancel"} orientation={"horizontal"} highlight={true} onClick={() => this.cancelEdit()} selected={false} disabled={false} className={"px-5"}/>
                                   <Button text={"Save"} orientation={"horizontal"} onClick={() => this.updateUser()} selected={false} disabled={false} className={"px-5"}/>

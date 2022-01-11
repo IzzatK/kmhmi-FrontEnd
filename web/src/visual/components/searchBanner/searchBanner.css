@@ -27,7 +27,7 @@
 }
 
 .search-banner .combo-box-button {
-    min-width: 10rem;
+    min-width: 10.5rem;
     background: var(--light-combo-box-bg-color);
     color: var(--light-combo-box-color);
     min-height: 3.3rem;
@@ -38,12 +38,12 @@
 }
 
 .search-banner .combo-box-button:hover {
-    color: var(--combo-box-hover-color);
-    background: var(--combo-box-hover-bg-color);
+    color: var(--light-combo-box-hover-color);
+    background: var(--light-combo-box-hover-bg-color);
 }
 
 .search-banner .combo-box-button:hover svg {
-    fill: var(--combo-box-arrow-hover-color);
+    fill: var(--light-combo-box-arrow-hover-color);
 }
 
 .search-banner .combo-box-button.selected {

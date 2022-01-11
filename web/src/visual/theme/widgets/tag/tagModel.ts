@@ -6,7 +6,7 @@ export type TagProps = {
     onSubmit?: (name: string, text: string, tmpValue: string) => void;
     isEdit?: boolean;
     isGlobal?: boolean;
-    editable?: boolean;
+    readonly?: boolean;
 }
 
 export type TagState = {

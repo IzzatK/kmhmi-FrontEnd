@@ -1,0 +1,33 @@
+.popup {
+    z-index: 999;
+    left: 0;
+    top: 0;
+}
+
+.popup .popup-content {
+    background: var(--popup-bg-color);
+    color: var(--popup-color);
+    margin: auto;
+    width: fit-content;
+}
+
+.popup .popup-content .close {
+    top: 1rem;
+    right: 1rem;
+}
+
+.popup .popup-content .close .button svg {
+    fill: var(--popup-color);
+}
+
+.popup .popup-content .text-wrap {
+    max-width: 29rem;
+}
+
+.popup .popup-content svg {
+    fill: var(--popup-color);
+}
+
+.popup .popup-content .option {
+    min-width: 9.8rem;
+}

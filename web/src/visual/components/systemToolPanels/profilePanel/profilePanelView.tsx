@@ -11,6 +11,7 @@ import {NewUserProfileInfoView} from "./newUserProfileInfoView";
 import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
 import {ProfilePanelProps, ProfilePanelState, UserInfoVM} from "./profilePanelModel";
 import {UserRequestInfoView} from "./userRequestInfoView";
+import SearchBox from "../../../theme/widgets/searchBox/searchBox";
 
 class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
 
@@ -376,6 +377,7 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
 
                                 <div className={"header d-flex align-items-center justify-content-between mt-3 mb-5 mr-4"}>
                                     <div className={'py-3'}>User Manager</div>
+                                    <SearchBox placeholder={"Search for User"}/>
                                     {
                                         permissions.canCreate &&
                                         <Button text={"Add User"} orientation={"horizontal"} onClick={() => this.toggleIsAddingNewUser()} selected={false} disabled={false} className={"px-5 mr-5"}/>

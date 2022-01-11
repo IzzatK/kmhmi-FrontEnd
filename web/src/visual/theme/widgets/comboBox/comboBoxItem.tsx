@@ -9,11 +9,17 @@ class ComboBoxItem extends Component<ComboBoxItemProps, ComboBoxItemState> {
     }
 
     render() {
-        const {className, title, selected, onClick, multiSelect} = this.props;
+        const {className, title, selected, onClick, multiSelect, readonly} = this.props;
 
         let cn = "list-cell header-3 h-gap-2";
         if (className) {
             cn += ` ${className}`;
+        }
+
+        if (readonly) {
+            cn += ` readonly`;
+        } else {
+            cn += ` cursor-pointer`;
         }
 
         if (selected) {
@@ -21,9 +27,9 @@ class ComboBoxItem extends Component<ComboBoxItemProps, ComboBoxItemState> {
         }
 
         return (
-            <div className={cn} onClick={onClick}>
+            <div className={cn} onClick={readonly ? undefined : onClick}>
                 {
-                    multiSelect &&
+                    multiSelect && !readonly &&
                     <CheckBox selected={selected}/>
                 }
                 <div className={'text-wrap title'}>{title}</div>

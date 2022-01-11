@@ -320,15 +320,7 @@ export class DocumentService extends Plugin implements IDocumentService {
         });
     }
 
-    clearDocuments() {
-        this.removeAllByType(DocumentInfo.class);
-    }
-
-    getDocument(id: string): Nullable<DocumentInfo> {
-        return super.getRepoItem<DocumentInfo>(DocumentInfo.class, id);
-    }
-
-    removePendingFile(id: string) {
+    cancelUpload(id: string) {
         this.removeDocument(id);
 
         // delete raw file
@@ -338,6 +330,51 @@ export class DocumentService extends Plugin implements IDocumentService {
 
         // update in repo
         this.removeAllById(DocumentInfo.class, id);
+    }
+
+    clearDocuments() {
+        this.removeAllByType(DocumentInfo.class);
+    }
+
+    getDocument(id: string): Nullable<DocumentInfo> {
+        return super.getRepoItem<DocumentInfo>(DocumentInfo.class, id);
+    }
+
+    approvePendingFile(id: string) {
+        let pendingFile = this.getDocument(id);
+
+        if (pendingFile) {
+            let approvedFile = {
+                ...pendingFile,
+                isPending: false,
+            }
+            this.addOrUpdateRepoItem(approvedFile);
+        }
+    }
+
+    removePendingFile(id: string) {
+        // delete raw file
+        if (this.pendingFilesRaw[id]) {
+            delete this.pendingFilesRaw[id];
+        }
+
+        this.documentProvider?.remove(id)
+            .then(document => {
+                if (document != null) {
+                    let approvedFile = {
+                        ...document,
+                        isPending: true,
+                        isDeleted: true,
+                    }
+                    this.addOrUpdateRepoItem(approvedFile);
+                    setTimeout(() => {
+                        this.removeRepoItem(approvedFile);
+                    }, 3000)
+                }
+            })
+            .catch(error => {
+                this.error(error);
+            });
     }
 
     setGetDocumentArrayMetadata(isLoading: boolean, errorMessage?: string) {

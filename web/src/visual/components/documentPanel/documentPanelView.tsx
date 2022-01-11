@@ -328,7 +328,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
 
                 let tagsDivs = value ? value.map((tag: string) => {
                     return tag.length > 0 && <Tag name={id} text={tag.trim()} onDelete={onClick} isGlobal={isGlobal}
-                                                  isEdit={tag.trim() === "-1"} editable={canModify} onSubmit={onSubmit}/>
+                                                  isEdit={tag.trim() === "-1"} readonly={!canModify} onSubmit={onSubmit}/>
                 }) : <div/>
 
                 cellRenderer = (

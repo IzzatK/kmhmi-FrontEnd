@@ -12,7 +12,6 @@ import {
     selectionService
 } from "../../../../application/serviceComposition";
 import {PendingDocumentVM} from "./uploadPanelModel";
-import {is} from "@amcharts/amcharts4/core";
 
 class UploadPanel extends Presenter {
     constructor() {
@@ -40,6 +39,8 @@ class UploadPanel extends Presenter {
                 onPendingDocumentAdded: (fileList: PendingDocumentVM[]) => documentService.startUpload(fileList),
                 onPendingDocumentRemoved: (id: string) => this._removePendingDocument(id),
                 onDocumentSelected: (id: string) => this._onDocumentSelected(id),
+                onPendingDocumentApproved: (id: string) => this._approvePendingDocument(id),
+                onCancelUpload: (id: string) => this._cancelUpload(id),
             };
         }
     }
@@ -49,8 +50,16 @@ class UploadPanel extends Presenter {
         displayService.showNode(DocumentPanelId);
     }
 
+    _approvePendingDocument(id: string) {
+        documentService.approvePendingFile(id);
+    }
+
     _removePendingDocument(id: string) {
         documentService.removePendingFile(id)
+    }
+
+    _cancelUpload(id: string) {
+        documentService.cancelUpload(id);
     }
 
     getSelectedDocumentId = selectionService.makeGetContext("selected-document");
@@ -65,6 +74,7 @@ class UploadPanel extends Presenter {
                     id,
                     file_name,
                     isUpdating,
+                    isDeleted,
                 } = itemVM;
 
                 let statusReferenceInfo = statusReferenceInfos[itemVM.status];
@@ -84,6 +94,7 @@ class UploadPanel extends Presenter {
                     isUpdating: isUpdating,
                     status,
                     selected: id === selectedId,
+                    deleted: isDeleted,
                 }
 
             });

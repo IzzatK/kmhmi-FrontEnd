@@ -1,17 +1,47 @@
 .search-box {
-    min-width: 35.0rem;
-    color: var(--search-box-color);
+    min-width: 20rem;
     background: var(--search-box-bg-color);
+    border: 0;
+    border-bottom: 1px solid var(--search-box-border-color);
 }
 
-.search-box input::placeholder { /* Most modern browsers support this now. */
-    /*color: var(--text-placeholder);*/
+.search-box.light {
+    min-width: 35.0rem;
+    background: var(--light-search-box-bg-color);
+    border-bottom: 0;
+}
+
+.search-box.light.selected {
+    background: var(--light-search-box-selected-bg-color);
+}
+
+.search-box input::placeholder {
+    color: var(--search-box-placeholder-color);
+}
+
+.search-box.light input::placeholder {
+    color: var(--light-search-box-color);
 }
 
 .search-box input { /* Most modern browsers support this now. */
     border: 0;
     background: transparent;
     padding: 0.5rem;
+    color: var(--search-box-color);
+}
+
+.search-box.light input {
+    color: var(--light-search-box-color);
+}
+
+.search-box.light input:focus::placeholder {
+    color: var(--light-search-box-selected-color);
+}
+
+.search-box.light input:focus {
+    border-radius: 0.5rem !important;
+    color: var(--light-search-box-selected-color);
+    background: var(--light-search-box-selected-bg-color);
 }
 
 .search-box .button {
@@ -22,6 +52,23 @@
     background: transparent;
 }
 
-.search-box .button:hover svg {
+.search-box .button svg {
     fill: var(--search-box-color);
+}
+
+.search-box.light .button svg {
+    fill: var(--light-search-box-color);
+}
+
+.search-box.light .button:hover svg {
+    fill: var(--light-search-box-color);
+}
+
+.search-box.light.selected .button {
+    border-radius: 0.5rem !important;
+    background: var(--light-search-box-selected-bg-color);
+}
+
+.search-box.light.selected .button svg {
+    fill: var(--light-search-box-selected-color);
 }

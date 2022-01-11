@@ -12,18 +12,27 @@ class Card extends React.Component<CardProps, CardState> {
     }
 
     componentDidMount() {
-        if (this.props.selected !== undefined) {
-            this.setState({expanded: this.props.selected});
+        const { selected } = this.props;
+        if (selected !== undefined) {
+            this.setState({
+                ...this.state,
+                expanded: selected,
+            });
         }
     }
 
     _toggleExpanded() {
-        if (this.props.body || this.props.children) {
-            this.setState({expanded: !this.state.expanded});
+        const { body, children, onClick } = this.props;
+        const { expanded } = this.state;
+        if (body || children) {
+            this.setState({
+                ...this.state,
+                expanded: !expanded
+            });
         }
 
-        if (this.props.onClick) {
-            this.props.onClick();
+        if (onClick) {
+            onClick();
         }
     }
 

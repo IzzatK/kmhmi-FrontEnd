@@ -2,7 +2,7 @@
 }
 
 .upload-panel .pending-item .card .card-header .pending-item-body {
-    min-height: 5.5rem;
+
     background: var(--pending-item-bg-color);
     border: 0;
     border-bottom: 4px solid var(--pending-item-border-color);
@@ -22,6 +22,10 @@
     color: var(--pending-item-loading-color);
 }
 
+.upload-panel .pending-item .card .pending-item-container {
+    background: var(--pending-item-selected-bg-secondary-color);
+}
+
 .upload-panel .pending-item .card.selected .card-header .pending-item-body {
     border-bottom: 4px solid var(--pending-item-selected-border-color);
     background: var(--pending-item-selected-bg-color);
@@ -35,6 +39,7 @@
 }
 
 .upload-panel .pending-item .card.deleted .card-header .pending-item-body {
+    cursor: auto;
     border-bottom: 4px solid var(--pending-item-deleted-border-color);
     background: var(--pending-item-deleted-bg-color);
     color: var(--pending-item-deleted-color);
@@ -53,6 +58,11 @@
     opacity: 1;
 }
 
+.upload-panel .pending-item .card.loading:hover .pending-item-body .button:hover {
+    transform: scale(1.235);
+    fill: var(--pending-item-button-hover-bg-color);
+}
+
 .upload-panel .pending-item .card .accept {
     background: var(--pending-item-button-bg-color);
     fill: var(--pending-item-accept-button-color);
@@ -61,4 +71,21 @@
 .upload-panel .pending-item .card .reject {
     background: var(--pending-item-button-bg-color);
     fill: var(--pending-item-reject-button-color);
+}
+
+.upload-panel .pending-item .card .accept:hover {
+    transform: scale(1.235);
+    fill: var(--pending-item-button-hover-bg-color);
+}
+
+.upload-panel .pending-item .card .reject:hover {
+    transform: scale(1.235);
+    fill: var(--pending-item-button-hover-bg-color);
+}
+
+.upload-panel .pending-item .card.deleted:hover .card-header .pending-item-body,
+.upload-panel .pending-item .card.deleted  .card-header .pending-item-body {
+    border-bottom: 4px solid var(--pending-item-deleted-border-color);
+    background: var(--pending-item-deleted-bg-color);
+    color: var(--pending-item-deleted-color);
 }

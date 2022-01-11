@@ -44,7 +44,8 @@
     fill: var(--light-button-color);
 }
 
-.button.light:hover {
+.button.light:hover,
+.button.light.highlight:hover {
     background: var(--light-button-hover-bg-color);
     color: var(--light-button-hover-color);
     fill: var(--light-button-hover-color);
@@ -54,4 +55,10 @@
     color: var(--button-highlight-color);
     background: var(--button-highlight-bg-color);
     fill: var(--button-highlight-color);
+}
+
+.button.light.highlight {
+    color: var(--light-button-highlight-color);
+    background: var(--light-button-highlight-bg-color);
+    fill: var(--light-button-highlight-color);
 }

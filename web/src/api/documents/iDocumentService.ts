@@ -20,9 +20,13 @@ export interface IDocumentService extends IPlugin {
 
     startUpload(fileList: Record<string, any>): void;
 
+    cancelUpload(id: string): void;
+
     clearDocuments(): void;
 
     getDocument(state: any, id: string): Nullable<DocumentInfo>;
+
+    approvePendingFile(id: string): void;
 
     removePendingFile(id: string): void;
 

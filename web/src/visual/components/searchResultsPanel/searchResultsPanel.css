@@ -26,12 +26,17 @@
     fill: var(--light-combo-box-arrow-color);
 }
 
-.search-results-panel .combo-box:hover svg {
-    fill: var(--combo-box-arrow-hover-color)
+.search-results-panel .combo-box:hover svg,
+.search-results-panel .combo-box.selected:hover svg {
+    fill: var(--light-combo-box-arrow-hover-color)
 }
 
 .search-results-panel .combo-box.selected svg {
     fill: var(--light-combo-box-arrow-selected-bg-color);
+}
+
+.search-results-panel .combo-box {
+    background: var(--light-toggle-button-bg-color);
 }
 
 /* Card */

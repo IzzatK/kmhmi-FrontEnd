@@ -5,8 +5,12 @@ export type SearchBoxProps = {
     onSearch?: () => void,
     style?: any,
     className?: string,
+    selected?: boolean,
+    light?: boolean,
+    placeholder?: string,
 }
 
 export type SearchBoxState = {
     text?: string,
+    selected?: boolean;
 }

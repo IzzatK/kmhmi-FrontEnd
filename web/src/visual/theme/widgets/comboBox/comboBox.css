@@ -27,6 +27,11 @@
     background: var(--combo-box-hover-bg-color);
 }
 
+.combo-box.light:hover {
+    color: var(--light-combo-box-hover-color);
+    background: var(--light-combo-box-hover-bg-color);
+}
+
 /*.combo-box:focus {*/
 /*    color: var(--combo-box-hover-color);*/
 /*    background: var(--combo-box-hover-bg-color);*/
@@ -54,7 +59,7 @@
 }
 
 .list-cell.selected {
-
+    color: var(--light-combo-box-list-selected-color);
 }
 
 ul.list-items {
@@ -92,6 +97,11 @@ ul.list-items.light {
     background: var(--combo-box-list-hover-bg-color);
 }
 
+.list-items > .list-cell.readonly:hover {
+    color: var(--light-combo-box-list-color);
+    background: var(--light-combo-box-list-bg-color);
+}
+
 .combo-box .combo-box-arrow {
     fill: var(--combo-box-arrow-color);
 }
@@ -103,6 +113,10 @@ ul.list-items.light {
 /*.combo-box:focus .combo-box-arrow, */
 .combo-box:hover .combo-box-arrow {
     fill: var(--combo-box-arrow-hover-color);
+}
+
+.combo-box.light:hover .combo-box-arrow {
+    fill: var(--light-combo-box-arrow-hover-color);
 }
 
 .combo-box.light.selected .combo-box-arrow {

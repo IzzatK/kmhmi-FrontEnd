@@ -2,7 +2,6 @@ import './searchBox.css';
 import React from "react";
 import Button from "../button/button";
 import {SearchSVG} from "../../svgs/searchSVG";
-import PropTypes from "prop-types";
 import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
 import {SearchBoxProps, SearchBoxState} from "./searchBoxModel";
 
@@ -12,7 +11,8 @@ class SearchBox extends React.Component<SearchBoxProps, SearchBoxState> {
         super(props, context);
 
         this.state = {
-            text: ''
+            text: '',
+            selected: false,
         }
 
         bindInstanceMethods(this);
@@ -52,14 +52,27 @@ class SearchBox extends React.Component<SearchBoxProps, SearchBoxState> {
         }
     }
 
+    _setSelected(focused: boolean) {
+        this.setState({
+            ...this.state,
+            selected: focused,
+        })
+    }
+
     render() {
-        const {className, onSearch, onTextChange, ...rest} = this.props;
+        const {className, onSearch, onTextChange, light, placeholder, ...rest} = this.props;
 
-        const { text } = this.state;
+        const { text, selected } = this.state;
 
-        let cn = "search-box d-flex rounded-lg align-items-stretch";
+        let cn = "search-box d-flex align-items-stretch";
         if (className) {
             cn += ` ${className}`;
+        }
+        if (light) {
+            cn += " light rounded-lg"
+        }
+        if (selected) {
+            cn += " selected";
         }
 
         return (
@@ -67,8 +80,8 @@ class SearchBox extends React.Component<SearchBoxProps, SearchBoxState> {
                 <Button className={"rounded-0 border-0 btn-transparent"} onClick={onSearch}>
                     <SearchSVG className={"tiny-image-container"}/>
                 </Button>
-                <input className={"flex-fill px-2 display-4"} value={text} placeholder={"Search"} onChange={this._onTextUpdate}
-                       onKeyPress={this._onKeyPress} id={'searchBox'}/>
+                <input className={"flex-fill px-2 display-4"} value={text} placeholder={placeholder ? placeholder : "Search"} onChange={this._onTextUpdate}
+                       onKeyPress={this._onKeyPress} id={'searchBox'} onFocus={() => this._setSelected(true)} onBlur={() => this._setSelected(false)}/>
             </div>
         );
     }

@@ -4,10 +4,13 @@ export type UploadPanelProps = {
     onPendingDocumentAdded: (fileList: PendingDocumentVM[]) => void;
     onPendingDocumentRemoved: (id: string) => void;
     onDocumentSelected: (id: string) => void;
+    onPendingDocumentApproved: (id: string) => void;
+    onCancelUpload: (id: string) => void;
 }
 
 export type UploadPanelState = {
-    lastSelected: any;
+    showPopup: boolean;
+    selectedId: string;
 }
 
 export type PendingDocumentVM = {
@@ -16,4 +19,6 @@ export type PendingDocumentVM = {
     status?: string;
     isUpdating: boolean;
     selected?: boolean;
+    approved?: boolean;
+    deleted?: boolean;
 }
