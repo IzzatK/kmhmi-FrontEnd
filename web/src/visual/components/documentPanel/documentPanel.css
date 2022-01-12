@@ -28,14 +28,14 @@
 }
 
 .document-panel .text-field {
-    width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    min-width: 19.3rem;
 }
 
-.document-panel .property-grid-container .long-text-edit {
-    max-width: 52rem;
+.document-panel .combo-box {
+    min-width: 19.5rem;
 }
 
 .document-panel .property-grid-container {
@@ -46,12 +46,12 @@
 }
 
 .document-panel .property-grid-container.expanded {
-    min-height: 32rem;
-    max-height: 32rem;
+    min-height: 33rem;
+    max-height: 33rem;
     transition: all 300ms ease-out;
 }
 
-.document-panel .property-grid {
+.document-panel .title-grid {
     display: grid;
     grid-template-rows: repeat(2, 3.5rem);
     grid-template-columns: 9.4rem 1fr;
@@ -59,28 +59,51 @@
     grid-gap: 0 3rem;
 }
 
-.document-panel .property-grid-2 {
+.document-panel .property-grid {
     display: grid;
-    grid-template-rows: repeat(7, 3.5rem);
-    grid-template-columns: 9.4rem 1fr;
+    grid-template-rows: repeat(auto-fit, 3.5rem);
+    grid-template-columns: repeat(auto-fit, minmax(26.2rem, 1fr));
+    grid-auto-rows: 1fr;
+    grid-gap: 0 3rem;
+}
+
+.document-panel .property-grid .label {
+    min-width: 9.4rem;
+}
+
+.document-panel .info-grid {
+    display: grid;
+    grid-template-rows: repeat(6, 3.5rem);
+    grid-template-columns: 12rem minmax(15rem, 1fr);
     grid-auto-flow: column;
     grid-gap: 0 3rem;
 }
 
-.document-panel .property-grid-3 {
+.document-panel .sme-grid {
     display: grid;
-    grid-template-rows: repeat(3, 3.5rem);
-    grid-template-columns: 9rem 1fr;
-    grid-auto-flow: column;
-    grid-gap: 3.5rem 3rem;
+    grid-template-rows: repeat(auto-fit, 3.5rem);
+    grid-template-columns: repeat(auto-fit, minmax(26.2rem, 1fr));
+    grid-auto-rows: 1fr;
+    grid-gap: 0 3rem;
 }
 
-.document-panel .custom-padding {
-    padding-top: 0.95rem;
+.document-panel .sme-grid .label {
+    min-width: 12rem;
 }
 
-.document-panel .custom-width {
-    max-width: 27.6rem;
+.document-panel .card .card-body.expanded {
+    min-height: 34rem;
+}
+
+.document-panel .info-button {
+    background: transparent;
+    color: var(--search-results-list-info-color);
+    fill: var(--search-results-list-info-color);
+}
+
+.document-panel .card.selected .info-button {
+    color: var(--search-results-list-selected-info-color);
+    fill: var(--search-results-list-selected-info-color);
 }
 
 .document-panel .pdf-viewer *,

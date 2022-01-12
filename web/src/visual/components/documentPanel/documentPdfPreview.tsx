@@ -1,17 +1,15 @@
 import React from 'react';
 import './documentPanel.css';
 import {Viewer, Worker} from '@react-pdf-viewer/core';
-import {defaultLayoutPlugin} from '@react-pdf-viewer/default-layout';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import '@react-pdf-viewer/highlight/lib/styles/index.css';
 import {DocumentPanelProps} from "./documentPanelModel";
 import { toolbarPlugin } from '@react-pdf-viewer/toolbar';
-import type { ToolbarSlot, TransformToolbarSlot } from '@react-pdf-viewer/toolbar';
-import type { RenderCurrentScaleProps, RenderZoomInProps, RenderZoomOutProps } from '@react-pdf-viewer/zoom';
+import type { ToolbarSlot } from '@react-pdf-viewer/toolbar';
+import type { RenderZoomInProps, RenderZoomOutProps } from '@react-pdf-viewer/zoom';
 import type { RenderGoToPageProps } from '@react-pdf-viewer/page-navigation';
 import type { RenderDownloadProps } from '@react-pdf-viewer/get-file';
-import type { RenderShowSearchPopoverProps } from '@react-pdf-viewer/search';
 import type { RenderCurrentPageLabelProps } from '@react-pdf-viewer/page-navigation';
 import {ZoomInSVG} from "../../theme/svgs/zoomInSVG";
 import {ZoomOutSVG} from "../../theme/svgs/zoomOutSVG";
@@ -19,26 +17,38 @@ import {DownloadSVG} from "../../theme/svgs/downloadSVG";
 import {TextEditSVG} from "../../theme/svgs/textEditSVG";
 import {ArrowLeftSVG} from "../../theme/svgs/arrowLeftSVG";
 import {ArrowRightSVG} from "../../theme/svgs/arrowRightSVG";
+import Button from "../../theme/widgets/button/button";
 
 function DocumentPdfPreview(props: DocumentPanelProps) {
-    const {className, preview_url, userProfile, token, ...rest} = props;
-
-    // Create new plugin instance
-    const defaultLayoutPluginInstance = defaultLayoutPlugin();
+    const {className, preview_url, original_url, userProfile, token, permissions, ...rest} = props;
 
     const toolbarPluginInstance = toolbarPlugin();
     const { Toolbar } = toolbarPluginInstance;
 
-    const transform: TransformToolbarSlot = (slot: ToolbarSlot) => {
-        const { NumberOfPages } = slot;
-        return Object.assign({}, slot, {
-            NumberOfPages: () => (
-                <>
-                    of <NumberOfPages />
-                </>
-            ),
-        });
-    };
+    const _download = () => {
+        let username = userProfile.username;
+        let id = userProfile.id;
+        let email = userProfile.email;
+        let firstName = userProfile.firstName;
+        let lastName = userProfile.lastName;
+
+        let xhr = new XMLHttpRequest;
+
+        xhr.open( "GET", original_url || "");
+
+        xhr.addEventListener( "load", function(){
+            window.open(original_url);
+        }, false);
+
+        xhr.setRequestHeader("km_token", `bearer ${token}` );
+        xhr.setRequestHeader("km_user_name", username );
+        xhr.setRequestHeader("km_user_id", id );
+        xhr.setRequestHeader("km_email", email );
+        xhr.setRequestHeader("km_first_name", firstName );
+        xhr.setRequestHeader("km_last_name", lastName );
+
+        xhr.send();
+    }
 
     let cn = "pdf-viewer flex-fill align-self-stretch";
     if (className) {
@@ -82,30 +92,32 @@ function DocumentPdfPreview(props: DocumentPanelProps) {
                                             Download,
                                             GoToNextPage,
                                             GoToPreviousPage,
-                                            ShowSearchPopover,
                                             ZoomIn,
                                             ZoomOut,
                                         } = props;
                                         return (
                                             <>
                                                 <div style={{ padding: '0px 2px' }}>
-                                                    <Download>
-                                                        {(props: RenderDownloadProps) => (
-                                                            <div onClick={props.onClick}>
-                                                                <DownloadSVG className={'small-image-container cursor-pointer pdf-icon mx-5'}/>
-                                                            </div>
-                                                        )}
-                                                    </Download>
+                                                    {
+                                                        permissions.canDownload &&
+                                                        <Button onClick={() => _download()}>
+                                                            <DownloadSVG className={'small-image-container cursor-pointer pdf-icon mx-5'}/>
+                                                        </Button>
+                                                    }
+                                                    {/*<Download>*/}
+                                                    {/*    {(props: RenderDownloadProps) => (*/}
+                                                    {/*        <div onClick={props.onClick}>*/}
+                                                    {/*            */}
+                                                    {/*        </div>*/}
+                                                    {/*    )}*/}
+                                                    {/*</Download>*/}
                                                 </div>
 
+
                                                 <div style={{ padding: '0px 2px' }}>
-                                                    <ShowSearchPopover>
-                                                        {(props: RenderShowSearchPopoverProps) => (
-                                                            <div onClick={props.onClick}>
-                                                                <TextEditSVG className={'small-image-container cursor-pointer pdf-icon mx-3'}/>
-                                                            </div>
-                                                        )}
-                                                    </ShowSearchPopover>
+                                                    <Button>
+                                                        <TextEditSVG className={'small-image-container cursor-pointer pdf-icon mx-3'}/>
+                                                    </Button>
                                                 </div>
 
                                                 <div style={{ padding: '0px 2px',  marginLeft: 'auto' }}>
@@ -191,17 +203,5 @@ function DocumentPdfPreview(props: DocumentPanelProps) {
         </div>
     );
 }
-
-const renderPage = (props: any) => {
-    return (
-        <div>
-            {props.canvasLayer.children}
-            <div style={{ backgroundColor: 'red' }}>
-                {props.textLayer.children}
-            </div>
-            {props.annotationLayer.children}
-        </div>
-    );
-};
 
 export default DocumentPdfPreview;

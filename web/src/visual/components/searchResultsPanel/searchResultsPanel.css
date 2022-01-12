@@ -57,7 +57,7 @@
 }
 
 .search-results-panel .search-results .cards .result-item .card:hover {
-    transform: scaleY(1.05);
+    /*transform: scaleY(1.05);*/
     background: var(--search-results-card-hover-bg-color);
     border-left-color: var(--search-results-card-hover-border-color);
 }
@@ -93,7 +93,7 @@
 .search-results-panel .search-results .cards .result-item.selected .card {
     background: var(--search-results-card-selected-bg-color);
     border-left-color: var(--search-results-card-selected-border-color);
-    transform: scaleY(1.05);
+    /*transform: scaleY(1.05);*/
     /*transition: all 200ms;*/
 }
 
@@ -148,12 +148,12 @@
 }
 
 .search-results-panel .search-results .list .result-item:hover {
-    transform: scaleY(1.05);
+    /*transform: scaleY(1.05);*/
     background: var(--search-results-list-hover-bg-color);
 }
 
 .search-results-panel .search-results .list .result-item.selected {
-    transform: scaleY(1.05);
+    /*transform: scaleY(1.05);*/
     background: var(--search-results-list-selected-bg-color);
 }
 
@@ -237,7 +237,7 @@
 
 .search-results-panel .rgt-cell .rgt-cell-inner.selected {
     background: var(--search-results-table-selected-bg-color);
-    transform: scaleY(1.05);
+    /*transform: scaleY(1.05);*/
     color: var(--search-results-table-selected-color);
 }
 

@@ -19,10 +19,12 @@ class CheckBox extends Component<CheckProp, CheckState> {
         if (!disabled) {
             this.setState({
                 ...this.state,
-                selected: !selected});
-            if (onClick) {
-                onClick();
-            }
+                selected: !selected}, () => {
+                if (onClick) {
+                    onClick(this.state.selected);
+                }
+                });
+
         }
     };
 

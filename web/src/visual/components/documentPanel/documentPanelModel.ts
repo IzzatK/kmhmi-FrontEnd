@@ -8,6 +8,7 @@ export type DocumentPanelProps = {
     editProperties: Record<string, EditPropertyVM>;
     pdfRenderer: any;
     preview_url: string;
+    original_url: string;
     userProfile: UserProfileVM;
     token: string;
     permissions: PermissionsVM;

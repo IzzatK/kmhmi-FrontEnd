@@ -3,7 +3,7 @@ export type CheckProp = {
     disabled?: boolean;
     selected?: boolean;
     text?: string;
-    onClick?: () => void;
+    onClick?: (selected?: boolean) => void;
 }
 
 export interface CheckState {

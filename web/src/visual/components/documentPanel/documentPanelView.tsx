@@ -4,13 +4,15 @@ import Button from "../../theme/widgets/button/button";
 import TextEdit from "../../theme/widgets/textEdit/textEdit";
 import {arrayEquals, forEach} from "../../../framework.visual/extras/utils/collectionUtils";
 import {LoadingIndicator} from "../../theme/widgets/loadingIndicator/loadingIndicator";
-import ScrollBar from "../../theme/widgets/scrollBar/scrollBar";
 import {ParamType} from "../../../model";
 import ComboBox from "../../theme/widgets/comboBox/comboBox";
 import Tag from "../../theme/widgets/tag/tag";
 import GlobalSwitchButton from "../../theme/widgets/globalSwitchButton/globalSwitchButton";
 import {bindInstanceMethods} from "../../../framework/extras/typeUtils";
 import {DocumentPanelProps, DocumentPanelState, DocumentInfoVM, EditPropertyVM} from "./documentPanelModel";
+import {InfoSVG} from "../../theme/svgs/infoSVG";
+import Card from "../../theme/widgets/card/card";
+import CheckBox from "../../theme/widgets/checkBox/checkBox";
 
 class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState> {
 
@@ -26,7 +28,6 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
             isGlobal: true,
         }
     }
-
 
     componentDidMount() {
         const { document } = this.props;
@@ -48,33 +49,6 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                 this.setTmpDocument({id});
             }
         }
-    }
-
-    download() {
-        const { document, userProfile, token } = this.props;
-
-        let username = userProfile.username;
-        let id = userProfile.id;
-        let email = userProfile.email;
-        let firstName = userProfile.firstName;
-        let lastName = userProfile.lastName;
-
-        let xhr = new XMLHttpRequest;
-
-        xhr.open( "GET", document.original_url || "");
-
-        xhr.addEventListener( "load", function(){
-            window.open(document.original_url);
-        }, false);
-
-        xhr.setRequestHeader("km_token", `bearer ${token}` );
-        xhr.setRequestHeader("km_user_name", username );
-        xhr.setRequestHeader("km_user_id", id );
-        xhr.setRequestHeader("km_email", email );
-        xhr.setRequestHeader("km_first_name", firstName );
-        xhr.setRequestHeader("km_last_name", lastName );
-
-        xhr.send();
     }
 
     setTmpDocument(doc: DocumentInfoVM) {
@@ -277,7 +251,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
             case ParamType.STRING: {
                 cellRenderer = (
                     <div key={id}>
-                        <TextEdit className={`text-field align-self-center ${long ? "long-text-edit" : ""}`}
+                        <TextEdit className={`text-field align-self-center ${long ? "w-100" : ""}`}
                                   placeholder={title}
                                   name={id}
                                   dirty={dirty}
@@ -347,6 +321,8 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                     cbTitle = `Select ${title}`
                 }
 
+                console.log(JSON.stringify(Object.values(options)))
+
                 cellRenderer = (
                     <div key={id}>
                         <ComboBox disable={!canModify}
@@ -368,12 +344,102 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         return cellRenderer;
     }
 
+    _getStatus(title: string) {
+        const { editProperties } = this.props;
+        const { options={} } =  editProperties['status'];
+
+        let result = "";
+
+        forEach(Object.values(options), (option: { title: string; id: any; }) => {
+            console.log(JSON.stringify(option))
+            if (option.title === title) {
+                result = option.id;
+            }
+        })
+        return result;
+    }
+
+    _formatType(type: string) {
+        let result = type;
+
+        switch (type.toLowerCase()) {
+            case "application/msword":
+            case "application/vnd.ms-word.document.macroEnabled.12":
+            case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+            case "application/vnd.openxmlformats-officedocument.wordprocessingml.template":
+            case "application/vnd.ms-word.template.macroEnabled.12":
+                result = "MS Word Doc";
+                break;
+            case "text/html":
+                result = "HTML";
+                break;
+            case "application/pdf":
+                result = "PDF";
+                break;
+            case "application/vnd.ms-powerpoint.template.macroEnabled.12":
+            case "application/vnd.openxmlformats-officedocument.presentationml.template":
+            case "application/vnd.ms-powerpoint.addin.macroEnabled.12":
+            case "application/vnd.openxmlformats-officedocument.presentationml.slideshow":
+            case "application/vnd.ms-powerpoint.slideshow.macroEnabled.12":
+            case "application/vnd.ms-powerpoint":
+            case "application/vnd.ms-powerpoint.presentation.macroEnabled.12":
+            case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+                result = "PowerPoint";
+                break;
+            case "application/rtf":
+                result = "rtf";
+                break;
+            case "text/rtf":
+                result = "rtf2";
+                break;
+            case "text/plain":
+                result = "Plain Text";
+                break;
+            case "text/csv":
+                result = "csv";
+                break;
+            case "application/csv":
+                result = "csv1";
+                break;
+            case "application/json":
+                result = "JSON";
+                break;
+            case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+            case "application/vnd.ms-excel.sheet.binary.macroEnabled.12":
+            case "application/vnd.ms-excel":
+            case "application/vnd.ms-excel.sheet.macroEnabled.12":
+                result = "Excel Spreadsheet";
+                break;
+            case "image/bmp":
+                result = "BMP";
+                break;
+            case "image/gif":
+                result = "GIF";
+                break;
+            case "image/jpeg":
+                result = "JPEG";
+                break;
+            case "image/png":
+                result = "PNG";
+                break;
+            case "multipart/form-data":
+                result = "file";
+                break;
+            default:
+                break;
+        }
+
+        return result;
+    }
+
     render() {
         const {
             document, onUpdateDocument, onRemoveDocument, pdfRenderer: PdfRenderer, editProperties, userProfile, token,
             className, permissions, ...rest
         } = this.props;
-        const {id, preview_url = "", original_url, isUpdating=false, upload_date, publication_date} = document || {};
+        const {id, preview_url = "", original_url, isUpdating=false, upload_date, publication_date, file_type, uploaded_by,
+            primary_sme_name, primary_sme_phone, primary_sme_email, secondary_sme_name, secondary_sme_phone, secondary_sme_email,
+        file_name, file_size} = document || {};
 
         const { tmpDocument, isDirty, isExpanded, isGlobal } = this.state;
 
@@ -391,15 +457,19 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                             <div className={'d-flex align-items-end justify-content-end h-gap-2'}>
                                 <div className={'d-flex h-gap-2 align-items-center'}>
                                     {
-                                        permissions.canDelete &&
-                                        <Button text={'DELETE'} highlight={true} onClick={this.removeDocument}/>
-                                    }
-                                    {
-                                        permissions.canDownload &&
-                                        <Button text={'DOWNLOAD'} onClick={this.download}/>
-                                    }
-                                    {
                                         permissions.canModify &&
+                                        <div className={"d-flex h-gap-2 pr-3"}>
+                                            <div className={"text-accent display-4 font-weight-light"}>Publish as Private</div>
+                                            <CheckBox onClick={(selected) => {selected ? this.onTmpDocumentChanged("status", this._getStatus("Private")) : this.onTmpDocumentChanged("status", this._getStatus("Public"))}
+                                            }/>
+                                        </div>
+                                    }
+                                    {
+                                        permissions.canDelete &&
+                                        <Button text={'DELETE'} onClick={this.removeDocument}/>
+                                    }
+                                    {
+                                        permissions.canModify && isDirty &&
                                         <Button
                                             disabled={!isDirty}
                                             text={'CANCEL'} onClick={this.cancelEdit}/>
@@ -408,97 +478,116 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                         permissions.canModify &&
                                         <Button
                                             disabled={!isDirty}
-                                            text={'PUBLISH'} onClick={this.updateDocument}/>
+                                            text={'PUBLISH'} highlight={true} onClick={this.updateDocument}/>
                                     }
                                 </div>
                             </div>
 
                             {/*</Card>*/}
-                            <ScrollBar className={`property-grid-container ${isExpanded ? 'expanded' : ''}`} renderTrackHorizontal={false}>
-                                <div className={"d-flex flex-column v-gap-1 header-1"}>
-                                    <div className={'property-grid'}>
-                                        <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Title:</div>
-                                        <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Author:</div>
+                            <div className={"d-flex flex-column v-gap-1 header-1"}>
+                                <div className={'title-grid'}>
+                                    <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Title:</div>
+                                    <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Author:</div>
+                                    {
+                                        this.getCellRenderer(tmpDocument, document, editProperties['title'])
+                                    }
+                                    {
+                                        this.getCellRenderer(tmpDocument, document, editProperties['author'])
+                                    }
+                                </div>
+                                <div className={'property-grid'}>
+
+                                    <div className={"d-flex h-gap-5"}>
+                                        <div className={'header-1 font-weight-semi-bold align-self-center text-right label'}>Dept:</div>
                                         {
-                                            this.getCellRenderer(tmpDocument, document, editProperties['title'])
-                                        }
-                                        {
-                                            this.getCellRenderer(tmpDocument, document, editProperties['author'])
+                                            this.getCellRenderer(tmpDocument, document, editProperties['department'])
                                         }
                                     </div>
-
-                                    <div className={'d-flex'}>
-                                        <div className={'property-grid-2'}>
-                                            <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Dept:</div>
-                                            <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Project: </div>
-                                            <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>SME:</div>
-                                            <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Email:</div>
-                                            <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>2nd SME:</div>
-                                            <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Email:</div>
-                                            <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Status:</div>
-                                            {
-                                                this.getCellRenderer(tmpDocument, document, editProperties['department'])
-                                            }
-                                            {
-                                                this.getCellRenderer(tmpDocument, document, editProperties['project'])
-                                            }
-                                            {
-                                                this.getCellRenderer(tmpDocument, document, editProperties['primary_sme_name'])
-                                            }
-                                            {
-                                                this.getCellRenderer(tmpDocument, document, editProperties['primary_sme_email'])
-                                            }
-                                            {
-                                                this.getCellRenderer(tmpDocument, document, editProperties['secondary_sme_name'])
-                                            }
-                                            {
-                                                this.getCellRenderer(tmpDocument, document, editProperties['secondary_sme_email'])
-                                            }
-                                            {
-                                                this.getCellRenderer(tmpDocument, document, editProperties['status'])
-                                            }
-                                        </div>
-                                        <div className={'d-flex flex-column v-gap-5'}>
-                                            <div className={'property-grid-3'}>
-                                                <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Purpose:</div>
-                                                <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Phone:</div>
-                                                <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Phone:</div>
-                                                {
-                                                    this.getCellRenderer(tmpDocument, document, editProperties['purpose'])
-                                                }
-                                                {
-                                                    this.getCellRenderer(tmpDocument, document, editProperties['primary_sme_phone'])
-                                                }
-                                                {
-                                                    this.getCellRenderer(tmpDocument, document, editProperties['secondary_sme_phone'])
-                                                }
-                                            </div>
-                                            <TextEdit autoFocus={false} className={'custom-padding custom-width pl-5 ml-4'} placeholder={'+ New Field'}/>
-                                        </div>
+                                    <div className={"d-flex h-gap-5"}>
+                                        <div className={'header-1 font-weight-semi-bold align-self-center text-right label'}>Project:</div>
+                                        {
+                                            this.getCellRenderer(tmpDocument, document, editProperties['project'])
+                                        }
+                                    </div>
+                                    <div className={"d-flex h-gap-5"}>
+                                        <div className={'header-1 font-weight-semi-bold align-self-center text-right label'}>Purpose:</div>
+                                        {
+                                            this.getCellRenderer(tmpDocument, document, editProperties['purpose'])
+                                        }
                                     </div>
                                 </div>
-                            </ScrollBar>
+                            </div>
+
+                            <Card className={`d-flex flex-column overflow-hidden pl-5`}
+                                  header={
+                                      <div className={"d-flex info-button justify-content-start"}>
+                                          <div className={'d-flex h-gap-3 align-items-center'}>
+                                              <InfoSVG className={'small-image-container'}/>
+                                              <div className={'header-2'}>More Info</div>
+                                          </div>
+                                      </div>
+                                  }
+                                  body={
+                                      <div className={'d-flex flex-column pt-5 text-info'}>
+                                          <div className={'info-grid'}>
+                                              <div className={'align-self-center justify-self-end header-3'}>PUBLICATION DATE</div>
+                                              <div className={'align-self-center justify-self-end header-3'}>ORIGINAL FILE NAME</div>
+                                              <div className={'align-self-center justify-self-end header-3'}>UPLOADED BY</div>
+                                              <div className={'align-self-center justify-self-end header-3'}>UPLOAD DATE</div>
+                                              <div className={'align-self-center justify-self-end header-3'}>TYPE</div>
+                                              <div className={'align-self-center justify-self-end header-3'}>SIZE</div>
+                                              <div className={'align-self-center header-2'}>{publication_date}</div>
+                                              <div className={'align-self-center header-2'}>{file_name}</div>
+                                              <div className={'align-self-center header-2'}>{uploaded_by}</div>
+                                              <div className={'align-self-center header-2'}>{upload_date?.split(",")[0]}</div>
+                                              <div className={'align-self-center header-2'}>{this._formatType(file_type || "")}</div>
+                                              <div className={'align-self-center header-2'}>{file_size}</div>
+                                          </div>
+
+                                          <div className={'sme-grid'}>
+                                              <div className={"d-flex h-gap-5"}>
+                                                  <div className={'align-self-center text-right header-3 label'}>PRIMARY SME</div>
+
+                                                  <div className={'align-self-center header-2'}>{primary_sme_name}</div>
+
+                                              </div>
+                                              <div className={"d-flex h-gap-5"}>
+                                                  <div className={'align-self-center text-right header-3 label'}>PHONE</div>
+                                                  <div className={'align-self-center header-2'}>{primary_sme_phone}</div>
+                                              </div>
+                                              <div className={"d-flex h-gap-5"}>
+                                                  <div className={'align-self-center text-right header-3 label'}>EMAIL</div>
+
+                                                  <div className={'align-self-center header-2'}>{primary_sme_email}</div>
+
+                                              </div>
+
+                                          </div>
+
+                                          <div className={'sme-grid'}>
+                                              <div className={"d-flex h-gap-5"}>
+                                                  <div className={'align-self-center text-right header-3 label'}>SECONDARY SME</div>
+
+                                                  <div className={'align-self-center header-2'}>{secondary_sme_name}</div>
+
+                                              </div>
+                                              <div className={"d-flex h-gap-5"}>
+                                                  <div className={'align-self-center text-right header-3 label'}>PHONE</div>
+                                                  <div className={'align-self-center header-2'}>{secondary_sme_phone}</div>
+                                              </div>
+                                              <div className={"d-flex h-gap-5"}>
+                                                  <div className={'align-self-center text-right header-3 label'}>EMAIL</div>
+                                                  <div className={'align-self-center header-2'}>{secondary_sme_email}</div>
+
+
+                                              </div>
+                                          </div>
+                                      </div>
+                                  }
+                            />
 
                             <div className={'d-flex flex-column v-gap-4 pl-4'} >
-                                <div className={'d-flex h-gap-2 align-items-center header-2 text-info'}>
-                                    {
-                                        document && upload_date != null &&
-                                        <div>Uploaded: {upload_date?.split(",")[0]}</div>
-                                    }
-                                    {
-                                        (document === null || upload_date === undefined) &&
-                                        <div>Upload Date/Time</div>
-                                    }
-                                    <div>|</div>
-                                    {
-                                        document && publication_date &&
-                                        <div>Published: {publication_date}</div>
-                                    }
-                                    {
-                                        (document === null || publication_date === undefined) &&
-                                        <div>Publication Date/Time</div>
-                                    }
-                                </div>
+
                                 <div className={'d-flex align-items-center justify-content-between'}>
                                     <div className={'d-flex h-gap-2'}>
                                         <GlobalSwitchButton isGlobal={isGlobal} light={false} onClick={this.toggleGlobal} className={'mr-3'}/>
@@ -510,10 +599,13 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                             !isGlobal &&
                                             this.getCellRenderer(tmpDocument, document, editProperties['private_tag'], false)
                                         }
-                                        <div className={'tag-button text-primary header-1 cursor-pointer align-self-center'}
-                                             onClick={isGlobal ? this.addNewPublicTag : this.addNewPrivateTag}>+</div>
+                                        {
+                                            permissions.canModify &&
+                                            <div className={'tag-button text-primary header-1 cursor-pointer align-self-center'}
+                                                 onClick={isGlobal ? this.addNewPublicTag : this.addNewPrivateTag}>+</div>
+                                        }
                                     </div>
-                                    <Button text={isExpanded ? "Show Less" : "Show More"} onClick={() => this.setExpanded(!isExpanded)}/>
+                                    <Button className={"bg-transparent display-4 font-weight-light info-button"} text={"Static Field +"}/>
                                 </div>
                             </div>
                         </div>
@@ -529,7 +621,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                         {
                             id ?
                                 preview_url.length > 0 ?
-                                    <PdfRenderer preview_url={preview_url} userProfile={userProfile} token={token}/> :
+                                    <PdfRenderer preview_url={preview_url} original_url={original_url} userProfile={userProfile} token={token} permissions={permissions}/> :
                                     <div className={"position-relative w-100 h-100"}>
                                         <LoadingIndicator/>
                                     </div>
