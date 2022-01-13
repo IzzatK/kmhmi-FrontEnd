@@ -5,9 +5,10 @@ import {forEach, forEachKVP} from "../../../../framework.visual/extras/utils/col
 import {createSelector} from "@reduxjs/toolkit";
 import {ReferenceType, UserInfo} from "../../../../model";
 import {authorizationService, referenceService, userService} from "../../../../application/serviceComposition";
-import {AccountStatusVM, DepartmentVM, PermissionsVM, RoleVM, UserInfoVM} from "./profilePanelModel";
+import {AccountStatusVM, DepartmentVM, PermissionsVM, RoleVM, UserInfoVM, UserRequestInfoVM} from "./profilePanelModel";
 import {PermissionInfo} from "../../../../model/permissionInfo";
 import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../../api";
+import {UserRequestInfo} from "../../../../model/userRequestInfo";
 
 class ProfilePanel extends Presenter {
     private readonly accountStatuses: AccountStatusVM[];
@@ -49,7 +50,8 @@ class ProfilePanel extends Presenter {
                 roles: this.getRolesVMs(state),
                 departments: this.getDepartmentVMs(state),
                 accountStatuses: this.accountStatuses,
-                permissions: this.getPermissions(state)
+                permissions: this.getPermissions(state),
+                userRequests: this.getUserRequestVMs(state),
             }
         }
 
@@ -57,7 +59,9 @@ class ProfilePanel extends Presenter {
             return {
                 onUserAdded: (user: UserInfoVM) => userService.createUser(user),
                 onUserUpdated: (user: UserInfo) => userService.updateUser(user),
-                onUserRemoved: (id: string) => userService.removeUser(id)
+                onUserRemoved: (id: string) => userService.removeUser(id),
+                onAcceptUserRequest: (id: string) => userService.acceptUserRequest(id),
+                onDeclineUserRequest: (id: string) => userService.declineUserRequest(id),
             };
         }
     }
@@ -164,6 +168,42 @@ class ProfilePanel extends Presenter {
             })
 
             return itemVMs;
+        }
+    )
+
+    getUserRequestVMs = createSelector(
+        [userService.getUserRequests],
+        (items) => {
+            let itemVMs: Record<string, UserRequestInfoVM> = {};
+
+            forEach(items, (item: UserRequestInfo) => {
+                const {
+                    id,
+                    user_id,
+                    role,
+                    duration,
+                    comment
+                } = item;
+
+                let name = "";
+                let user = userService.getUser(user_id);
+
+                if (user) {
+                    name = user.first_name + user.last_name ? " " + user.last_name : "";
+                }
+
+                let itemVM: UserRequestInfoVM = {
+                    id,
+                    name,
+                    role,
+                    duration,
+                    comment
+                }
+
+                itemVMs[id] = itemVM;
+            });
+
+            return Object.values(itemVMs);
         }
     )
 }

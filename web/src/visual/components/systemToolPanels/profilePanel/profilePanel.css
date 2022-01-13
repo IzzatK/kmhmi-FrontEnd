@@ -91,6 +91,11 @@
 .profile-panel .card .card-body {
 }
 
+.profile-panel .position-sticky {
+    top: 0;
+    z-index: 2;
+}
+
 .user-request .user-request-header {
     background: var(--user-request-bg-color);
     color: var(--user-request-color);

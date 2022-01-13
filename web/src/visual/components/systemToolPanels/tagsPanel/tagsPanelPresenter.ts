@@ -1,6 +1,11 @@
 import TagsPanelView from "./tagsPanelView";
 import {Presenter} from "../../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../../framework/wrappers/componentWrapper";
+import {createSelector} from "@reduxjs/toolkit";
+import {tagService} from "../../../../application/serviceComposition";
+import {TagInfoVM} from "./tagsPanelModel";
+import {forEach} from "../../../../framework.visual/extras/utils/collectionUtils";
+import {TagInfo} from "../../../../model";
 
 class TagsPanel extends Presenter {
     constructor() {
@@ -19,7 +24,7 @@ class TagsPanel extends Presenter {
 
         this.mapStateToProps = (state: any, props: any) => {
             return {
-
+                tags: this.getTagVMs(state),
             }
         }
 
@@ -29,6 +34,32 @@ class TagsPanel extends Presenter {
             };
         }
     }
+
+    getTagVMs = createSelector(
+        [tagService.getAllPublicTags],
+        (items) => {
+            let itemVMs: TagInfoVM[] = [];
+
+            forEach(items, (item: TagInfo) => {
+                const { id, title } = item;
+
+                let itemVM: TagInfoVM = {
+                    id,
+                    title: title.toLowerCase(),
+                }
+
+                itemVMs.push(itemVM);
+            });
+
+            let sortedArray: TagInfoVM[];
+
+            sortedArray = itemVMs.sort((a, b) => {
+                return a.title.localeCompare(b.title);
+            })
+
+            return sortedArray;
+        }
+    )
 }
 
 export const {

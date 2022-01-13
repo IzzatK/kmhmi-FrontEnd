@@ -5,15 +5,16 @@ import {IReferenceService} from "../references/iReferenceService";
 import {IEntityProvider} from "../common/iEntityProvider";
 import {Nullable} from "../../framework/extras/typeUtils";
 import {IAuthorizationService} from "../authorization/iAuthorizationService";
+import {UserRequestInfo} from "../../model/userRequestInfo";
 
 export interface IUserService extends IPlugin {
     fetchUser(id: string): void;
 
     fetchUsers(): void;
 
-    getUser(id: string): any;
+    getUser(id: string): Nullable<UserInfo>;
 
-    getUsers(): any;
+    getUsers(): Record<string, UserInfo>;
 
     createUser(userData: any): void;
 
@@ -26,6 +27,12 @@ export interface IUserService extends IPlugin {
     getCurrentUser(): Nullable<UserInfo>;
 
     getCurrentUserId(): string;
+
+    getUserRequests(): Record<string, UserRequestInfo>;
+
+    acceptUserRequest(id: string): void;
+
+    declineUserRequest(id: string): void;
 
     setSelectionService(selectionService: ISelectionService): void;
 

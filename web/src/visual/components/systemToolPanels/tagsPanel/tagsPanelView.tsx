@@ -17,7 +17,7 @@ class TagsPanelView extends Component<TagsPanelProps, TagsPanelState> {
     }
 
     render() {
-        const { className, nominatedTags } = this.props;
+        const { className, nominatedTags, tags } = this.props;
 
         let cn = "d-flex position-absolute w-100 h-100 align-items-center justify-content-center";
 
@@ -62,6 +62,9 @@ class TagsPanelView extends Component<TagsPanelProps, TagsPanelState> {
             })
         }
 
+        let tagDivs = Object.entries(tags).map(([key, tag]) => {
+        })
+
         return (
             <div className={cn}>
                 <div className={'system-tool-panel tags-panel flex-fill h-100 py-4 pl-4 d-flex flex-column'}>
@@ -86,6 +89,9 @@ class TagsPanelView extends Component<TagsPanelProps, TagsPanelState> {
                     <div className={"header d-flex align-items-center justify-content-between mt-3 mb-5 mr-4"}>
                         <div className={'py-3'}>TAGS LIBRARIES</div>
                     </div>
+                    <ScrollBar renderTrackHorizontal={false}>
+                        {tagDivs}
+                    </ScrollBar>
                 </div>
 
             </div>

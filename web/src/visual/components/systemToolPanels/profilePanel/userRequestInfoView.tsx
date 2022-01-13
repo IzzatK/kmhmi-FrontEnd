@@ -42,20 +42,20 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
     }
 
     onAccept() {
-        const { onAccept, userRequest } = this.props;
+        const { onAcceptUserRequest, userRequest } = this.props;
 
         if (userRequest) {
             const { id } = userRequest;
-            if (onAccept) onAccept(id);
+            if (onAcceptUserRequest) onAcceptUserRequest(id);
         }
     }
 
     onDecline() {
-        const { onDecline, userRequest } = this.props;
+        const { onDeclineUserRequest, userRequest } = this.props;
 
         if (userRequest) {
             const { id } = userRequest;
-            if (onDecline) onDecline(id);
+            if (onDeclineUserRequest) onDeclineUserRequest(id);
         }
     }
 
@@ -100,7 +100,7 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
                                   <div className={'header-2 text-accent'}>for</div>
                                   <ComboBox title={durationTitle} disable={true}/>
                               </div>
-                              <div className={'header-1 font-italic font-weight-light text-info'}>{userRequest?.reason}</div>
+                              <div className={'header-1 font-italic font-weight-light text-info'}>{userRequest?.comment}</div>
                           </div>
 
                           <div className={"d-flex justify-content-between"}>

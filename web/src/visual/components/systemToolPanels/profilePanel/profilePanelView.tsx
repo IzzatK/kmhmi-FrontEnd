@@ -208,15 +208,15 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
     }
 
     onAcceptUserRequest(id: string) {
-        const { onAccept } = this.props;
+        const { onAcceptUserRequest } = this.props;
 
-        if (onAccept) onAccept(id);
+        if (onAcceptUserRequest) onAcceptUserRequest(id);
     }
 
     onDeclineUserRequest(id: string) {
-        const { onDecline } = this.props;
+        const { onDeclineUserRequest } = this.props;
 
-        if (onDecline) onDecline(id);
+        if (onDeclineUserRequest) onDeclineUserRequest(id);
     }
 
     render() {
@@ -244,8 +244,8 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         if (userRequests) {
             userRequestViews = userRequests.map((userRequest) => {
                 return (
-                    <UserRequestInfoView permissions={permissions} roles={roles} userRequest={userRequest} onAccept={this.onAcceptUserRequest}
-                                         onDecline={this.onDeclineUserRequest}/>
+                    <UserRequestInfoView permissions={permissions} roles={roles} userRequest={userRequest} onAcceptUserRequest={this.onAcceptUserRequest}
+                                         onDeclineUserRequest={this.onDeclineUserRequest}/>
                 )
             })
         }
@@ -326,43 +326,45 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
             <div className={cn}>
                 <div className={'profile-panel system-tool-panel flex-fill h-100 py-4 pl-4 d-flex flex-column'}>
                     <div className={'header-1 title py-3'}>PROFILE MANAGER</div>
-                    <div className={`header mt-3 d-flex align-items-center justify-content-start mr-4 ${isDirty ? 'dirty' : ''}`}>
-                        <div className={'d-flex h-gap-3 align-items-center py-3'}>
-                            <div>PERSONAL INFORMATION</div>
-                        </div>
-                    </div>
 
-                    <div className={'p-3 mr-4'}>
-                        <div className={'personal-info-grid w-100'}>
-                            <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end '}>First Name:</div>
-                            <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Last Name:</div>
-                            <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Department:</div>
-                            <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Role:</div>
-                            <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Email:</div>
-                            <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Phone:</div>
-                            {/*<div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>DoD ID:</div>*/}
-                            <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Account Status:</div>
-                            {editDivs}
+                    <ScrollBar renderTrackHorizontal={false}>
+                        <div className={`header mt-3 d-flex align-items-center justify-content-start mr-4 ${isDirty ? 'dirty' : ''}`}>
+                            <div className={'d-flex h-gap-3 align-items-center py-3'}>
+                                <div>PERSONAL INFORMATION</div>
+                            </div>
+                        </div>
+
+                        <div className={'p-3 mr-4'}>
+                            <div className={'personal-info-grid w-100'}>
+                                <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end '}>First Name:</div>
+                                <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Last Name:</div>
+                                <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Department:</div>
+                                <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Role:</div>
+                                <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Email:</div>
+                                <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Phone:</div>
+                                {/*<div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>DoD ID:</div>*/}
+                                <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Account Status:</div>
+                                {editDivs}
+                            </div>
+                            {
+                                !isDirty &&
+                                <div className={"d-flex justify-content-end h-gap-2"}>
+                                    {
+                                        permissions.canModifySelf &&
+                                        <Button text={"Edit"} orientation={"horizontal"} onClick={() => this.toggleEdit()} selected={false} disabled={false} className={"px-5"}/>
+                                    }
+                                </div>
+                            }
+                            {
+                                isDirty &&
+                                <div className={"d-flex justify-content-end h-gap-2"}>
+                                    <Button text={"Cancel"} orientation={"horizontal"} onClick={() => this.cancelEdit()} selected={false} disabled={false} className={"px-5"}/>
+                                    <Button text={"Save"} orientation={"horizontal"} onClick={() => this.updateUser()} selected={false} disabled={false} className={"px-5"}/>
+                                </div>
+                            }
                         </div>
                         {
-                            !isDirty &&
-                            <div className={"d-flex justify-content-end h-gap-2"}>
-                                {
-                                    permissions.canModifySelf &&
-                                    <Button text={"Edit"} orientation={"horizontal"} onClick={() => this.toggleEdit()} selected={false} disabled={false} className={"px-5"}/>
-                                }
-                            </div>
-                        }
-                        {
-                            isDirty &&
-                            <div className={"d-flex justify-content-end h-gap-2"}>
-                                <Button text={"Cancel"} orientation={"horizontal"} onClick={() => this.cancelEdit()} selected={false} disabled={false} className={"px-5"}/>
-                                <Button text={"Save"} orientation={"horizontal"} onClick={() => this.updateUser()} selected={false} disabled={false} className={"px-5"}/>
-                            </div>
-                        }
-                    </div>
-                    {
-                        permissions.canModify &&
+                            permissions.canModify &&
                             <Fragment>
                                 <div className={"header d-flex align-items-center justify-content-between mt-3 mb-5 mr-4"}>
                                     <div className={'py-3'}>User Requests</div>
@@ -375,7 +377,7 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                                     </ScrollBar>
                                 </div>
 
-                                <div className={"header d-flex align-items-center justify-content-between mt-3 mb-5 mr-4"}>
+                                <div className={"header d-flex align-items-center justify-content-between mt-3 mb-5 mr-4 position-sticky"}>
                                     <div className={'py-3'}>User Manager</div>
                                     <SearchBox placeholder={"Search for User"}/>
                                     {
@@ -384,21 +386,24 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                                     }
                                 </div>
                                 <div className={'h-100 mr-4'}>
-                                    <ScrollBar renderTrackHorizontal={false}>
-                                        <div className={'v-gap-3 mr-4'}>
-                                            {
-                                                isAddingNewUser &&
-                                                <NewUserProfileInfoView permissions={permissions} onUserAdded={(newUser) => this.addUser(newUser)}
-                                                                        onCancel={() => this.toggleIsAddingNewUser()}
-                                                                        accountStatuses={accountStatuses} departments={departments}
-                                                                        roles={roles}/>
-                                            }
-                                            {profileInfoViews}
-                                        </div>
-                                    </ScrollBar>
+                                    <div className={'v-gap-3 mr-4'}>
+                                        {
+                                            isAddingNewUser &&
+                                            <NewUserProfileInfoView permissions={permissions} onUserAdded={(newUser) => this.addUser(newUser)}
+                                                                    onCancel={() => this.toggleIsAddingNewUser()}
+                                                                    accountStatuses={accountStatuses} departments={departments}
+                                                                    roles={roles}/>
+                                        }
+                                        {profileInfoViews}
+                                    </div>
+                                    {/*<ScrollBar renderTrackHorizontal={false}>*/}
+                                    {/*    */}
+                                    {/*</ScrollBar>*/}
                                 </div>
                             </Fragment>
-                    }
+                        }
+                    </ScrollBar>
+
                 </div>
             </div>
         );

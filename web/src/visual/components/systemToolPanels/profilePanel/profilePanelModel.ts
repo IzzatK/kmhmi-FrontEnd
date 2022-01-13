@@ -14,10 +14,10 @@ export type ProfilePanelProps = {
     user?: UserInfoVM;
     onSelect?: () => void;
     onCancel?: () => void;
-    userRequests?: UserRequestVM[];
-    userRequest?: UserRequestVM;
-    onAccept?: (id: string) => void;
-    onDecline?: (id: string) => void;
+    userRequests?: UserRequestInfoVM[];
+    userRequest?: UserRequestInfoVM;
+    onAcceptUserRequest?: (id: string) => void;
+    onDeclineUserRequest?: (id: string) => void;
     permissions: PermissionsVM;
 }
 
@@ -72,10 +72,10 @@ export type EditPropertyVM = {
     readonly?: boolean;
 }
 
-export type UserRequestVM = {
+export type UserRequestInfoVM = {
     id: string;
     name?: string;
     role?: string;
     duration?: string;
-    reason?: string;
+    comment?: string;
 }

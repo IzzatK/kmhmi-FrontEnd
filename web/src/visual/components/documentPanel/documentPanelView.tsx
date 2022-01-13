@@ -599,11 +599,8 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                             !isGlobal &&
                                             this.getCellRenderer(tmpDocument, document, editProperties['private_tag'], false)
                                         }
-                                        {
-                                            permissions.canModify &&
-                                            <div className={'tag-button text-primary header-1 cursor-pointer align-self-center'}
-                                                 onClick={isGlobal ? this.addNewPublicTag : this.addNewPrivateTag}>+</div>
-                                        }
+                                        <div className={'tag-button text-primary header-1 cursor-pointer align-self-center'}
+                                             onClick={isGlobal ? this.addNewPublicTag : this.addNewPrivateTag}>+</div>
                                     </div>
                                     <Button className={"bg-transparent display-4 font-weight-light info-button"} text={"Static Field +"}/>
                                 </div>

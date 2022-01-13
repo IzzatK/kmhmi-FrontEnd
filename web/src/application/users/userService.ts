@@ -8,6 +8,7 @@ import {ISelectionService} from "../../framework/api";
 import {IReferenceService} from "../../api";
 import {Plugin} from "../../framework/extras/plugin";
 import {IEntityProvider} from "../../api";
+import {UserRequestInfo} from "../../model/userRequestInfo";
 
 export class UserService extends Plugin implements IUserService {
     public static readonly class: string = 'UserService';
@@ -164,5 +165,21 @@ export class UserService extends Plugin implements IUserService {
 
     setUserProvider(provider: IEntityProvider<UserInfo>): void {
         this.userProvider = provider;
+    }
+
+    getUserRequests(): Record<string, UserRequestInfo> {
+        let result: Record<string, UserRequestInfo> = {};
+
+        result = this.getAll<UserRequestInfo>(UserRequestInfo.class);
+
+        return result;
+    }
+
+    acceptUserRequest(id: string) {
+        //TODO
+    }
+
+    declineUserRequest(id: string) {
+        //TODO
     }
 }
