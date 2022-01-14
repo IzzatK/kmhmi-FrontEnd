@@ -1,6 +1,12 @@
+export enum Size {
+    large = "large",
+    medium = "medium",
+    small = "small",
+}
+
 export type LoadingIndicatorProps = {
     className?: string;
-    small?: boolean;
+    size?: Size;
 }
 
 export type LoadingIndicatorState = {

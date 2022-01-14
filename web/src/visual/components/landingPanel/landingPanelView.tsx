@@ -161,31 +161,68 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
                             </div>
                         </div>
 
-                        <div className={"d-flex flex-column popup v-gap-5"}>
-                            <div className={"text-selected font-weight-semi-bold px-5 pt-5"}>
-                                <div>New Users</div>
-                            </div>
+                        {
+                            !isAuthPending &&
+                            <div className={"d-flex flex-column popup v-gap-5"}>
+                                <div className={"text-selected font-weight-semi-bold px-5 pt-5"}>
+                                    <div>New Users</div>
+                                </div>
 
-                            <div className={"v-gap-5"}>
-                                <div className={'register-grid px-5'}>
-                                    <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>DoD ID:</div>
-                                    <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>First Name:</div>
-                                    <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>Last Name:</div>
-                                    <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>Email:</div>
-                                    <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>Phone:</div>
-                                    <TextEdit value={tmpUser["dodId"] ? tmpUser["dodId"] : user?.dodId} name={"dodId"} autoFocus={true} placeholder={"DoD ID"} onSubmit={this.onTmpUserChanged}/>
-                                    {/*<div className={"align-self-center text-info font-weight-light display-4"}>{user?.name}</div>*/}
-                                    <TextEdit value={tmpUser["first_name"] ? tmpUser["first_name"] : user?.first_name} name={"first_name"} autoFocus={true} placeholder={"First Name"} onSubmit={this.onTmpUserChanged}/>
-                                    <TextEdit value={tmpUser["last_name"] ? tmpUser["last_name"] : user?.last_name} name={"last_name"} autoFocus={true} placeholder={"Last Name"} onSubmit={this.onTmpUserChanged}/>
-                                    <TextEdit value={tmpUser["email"] ? tmpUser["email"] : user?.email} name={"email"} autoFocus={true} placeholder={"Email Address"} onSubmit={this.onTmpUserChanged}/>
-                                    <TextEdit value={tmpUser["phone"] ? tmpUser["phone"] : user?.phone} name={"phone"} placeholder={"Phone Number"} onSubmit={this.onTmpUserChanged}/>
+                                <div className={"v-gap-5"}>
+                                    <div className={'register-grid px-5'}>
+                                        <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>DoD ID:</div>
+                                        <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>First Name:</div>
+                                        <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>Last Name:</div>
+                                        <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>Email:</div>
+                                        <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>Phone:</div>
+                                        <TextEdit value={tmpUser["dodId"] ? tmpUser["dodId"] : user?.dodId} name={"dodId"} autoFocus={true} placeholder={"DoD ID"} onSubmit={this.onTmpUserChanged}/>
+                                        {/*<div className={"align-self-center text-info font-weight-light display-4"}>{user?.name}</div>*/}
+                                        <TextEdit value={tmpUser["first_name"] ? tmpUser["first_name"] : user?.first_name} name={"first_name"} autoFocus={true} placeholder={"First Name"} onSubmit={this.onTmpUserChanged}/>
+                                        <TextEdit value={tmpUser["last_name"] ? tmpUser["last_name"] : user?.last_name} name={"last_name"} autoFocus={true} placeholder={"Last Name"} onSubmit={this.onTmpUserChanged}/>
+                                        <TextEdit value={tmpUser["email"] ? tmpUser["email"] : user?.email} name={"email"} autoFocus={true} placeholder={"Email Address"} onSubmit={this.onTmpUserChanged}/>
+                                        <TextEdit value={tmpUser["phone"] ? tmpUser["phone"] : user?.phone} name={"phone"} placeholder={"Phone Number"} onSubmit={this.onTmpUserChanged}/>
+                                    </div>
+                                </div>
+
+                                <div className={"d-flex justify-content-end py-4 pr-5 bg-advisory"}>
+                                    <Button text={"Register"} light={true} onClick={() => this._onRegister()}/>
                                 </div>
                             </div>
+                        }
 
-                            <div className={"d-flex justify-content-end py-4 pr-5 bg-advisory"}>
-                                <Button text={"Register"} light={true} onClick={() => this._onRegister()}/>
+                        {
+                            isAuthPending &&
+                            <div className={"d-flex justify-content-center align-items-center"}>
+                                <div className={"d-flex flex-column popup v-gap-5"}>
+                                    <div className={"text-selected font-weight-semi-bold px-5 pt-5"}>
+                                        <div className={"d-flex justify-content-center mt-5 pt-5"}>Your Authorization is Pending...</div>
+                                    </div>
+
+                                    <div className={"d-flex flex-column justify-content-center align-items-center v-gap-5 px-5 mx-5"}>
+                                        {
+                                            admin &&
+                                            <div className={"d-flex flex-column justify-content-center align-items-center v-gap-5"}>
+                                                <div className={"text-info font-weight-light display-3 pt-5"}>The following admin needs to authorize you in order to access CIC Knowledge Management</div>
+                                                <div className={"d-flex admin header-2 h-gap-5 pt-5"}>
+                                                    <div>{admin.name}</div>
+                                                    <div className={"d-flex h-gap-2"}>
+                                                        <div>PHONE</div>
+                                                        <div>{admin.phone}</div>
+                                                    </div>
+                                                    <div className={"d-flex h-gap-2"}>
+                                                        <div>EMAIL</div>
+                                                        <div>{admin.email}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        <div className={"text-info font-weight-light display-3 pt-5"}>Please check back once your authorization has been approved.</div>
+                                    </div>
+
+                                    <div className={"d-flex justify-content-end py-4 pr-5 bg-advisory"}/>
+                                </div>
                             </div>
-                        </div>
+                        }
 
                         {/*{*/}
                         {/*    (isAuthPending || isLogin || isAuthRequest || isRegister) &&*/}
