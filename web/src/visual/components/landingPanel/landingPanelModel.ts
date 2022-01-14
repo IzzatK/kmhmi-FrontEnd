@@ -1,4 +1,6 @@
-export type LoginPanelProps = {
+import {Nullable} from "../../../framework/extras/typeUtils";
+
+export type LoginPanelStateProps = {
     className: string;
     isError: boolean;
     isUnregistered: boolean;
@@ -6,15 +8,20 @@ export type LoginPanelProps = {
     isLogin: boolean;
     isRegister: boolean;
     isAuthRequest: boolean;
-    onSubmit: (user: UserInfoVM, remember?: boolean) => void;
-    user: UserInfoVM;
-    admin: UserInfoVM;
+    user: Nullable<UserInfoVM>;
+    admin: Nullable<UserInfoVM>;
     roles?: Record<string, RoleVM>;
-    isLogout?: boolean;
+    isLogout: boolean;
+}
+
+export type LoginPanelDispatchProps = {
+    onSubmit: (user: UserInfoVM, remember?: boolean) => void;
     onGetInfo: () => void;
     onReload: () => void;
     onClose: () => void;
 }
+
+export type LoginPanelProps = LoginPanelStateProps & LoginPanelDispatchProps;
 
 export type LoginPanelState = {
     isRemember: boolean;

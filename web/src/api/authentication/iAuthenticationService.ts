@@ -1,10 +1,9 @@
 import {IPlugin} from "../../framework/api";
 import {IStorage} from "../../framework/api";
 import {IUserService} from "../users/iUserService";
+import {IUserProvider} from "../users/IUserProvider";
 
 export interface IAuthenticationService extends IPlugin {
-    initKeycloak(onAuthenticatedCallback: any, onRegisterCallback: any): void;
-
     doLogin(): any;
 
     doLogout(): any;
@@ -30,4 +29,6 @@ export interface IAuthenticationService extends IPlugin {
     setAppDataStore(appDataStore: IStorage): void;
 
     setUserService(userService: IUserService): void;
+
+    setUserProvider(userProvider: IUserProvider): void;
 }

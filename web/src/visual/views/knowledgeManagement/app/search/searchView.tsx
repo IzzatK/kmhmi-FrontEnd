@@ -1,23 +1,23 @@
 import React, {Component} from 'react';
 import './searchView.css';
-import {Presenter} from "../../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../../framework/wrappers/componentWrapper";
-import {SearchBannerPresenter} from "../../../components/searchBanner/searchBannerPresenter";
-import {SearchResultsPanelPresenter} from "../../../components/searchResultsPanel/searchResultsPanelPresenter";
-import {SearchGraphsPanelPresenter} from "../../../components/searchGraphsPanel/searchGraphsPanelPresenter";
+import {Presenter} from "../../../../../framework.visual/extras/presenter";
+import {createComponentWrapper} from "../../../../../framework/wrappers/componentWrapper";
+import {SearchBannerPresenter} from "../../../../components/searchBanner/searchBannerPresenter";
+import {SearchResultsPanelPresenter} from "../../../../components/searchResultsPanel/searchResultsPanelPresenter";
+import {SearchGraphsPanelPresenter} from "../../../../components/searchGraphsPanel/searchGraphsPanelPresenter";
 
-import {displayService} from "../../../../application/serviceComposition";
+import {displayService} from "../../../../../application/serviceComposition";
 
 class SearchPresenter extends Presenter {
     constructor(props: any) {
         super();
 
-        this.id ='view/searchView';
+        this.id ='view/search';
 
         this.view = SearchView;
 
         this.displayOptions = {
-            containerId: 'bumed-app',
+            containerId: 'view/app',
             visible: true,
             appearClass: '',
             enterClass: '',

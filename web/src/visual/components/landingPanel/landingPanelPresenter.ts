@@ -1,9 +1,9 @@
 import {Presenter} from "../../../framework.visual/extras/presenter";
 import LandingPanelView from "./landingPanelView";
-import {LoginPanelProps} from "./landingPanelModel";
+import {LoginPanelDispatchProps, LoginPanelProps, LoginPanelStateProps, UserInfoVM} from "./landingPanelModel";
 import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
 import {createSelector} from "@reduxjs/toolkit";
-import {referenceService} from "../../../application/serviceComposition";
+import {authenticationService, referenceService} from "../../../application/serviceComposition";
 import {ReferenceType} from "../../../model";
 import {RoleVM} from "../systemToolPanels/profilePanel/profilePanelModel";
 import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
@@ -16,21 +16,40 @@ class LandingPanel extends Presenter {
 
         this.view = LandingPanelView;
 
-        this.mapStateToProps = (state: any, props: LoginPanelProps) => {
+        this.mapStateToProps = (state: any, props: any): LoginPanelStateProps => {
             return {
+                admin: null,
+                className: "",
+                isAuthPending: false,
+                isAuthRequest: false,
+                isError: false, // no common access card
+                isLogin: true,
+                isRegister: false,
+                isUnregistered: false, // not recognized as authorized user
+                user: null,
                 roles: this.getRolesVMs(state),
+                isLogout: false,
             };
         }
 
-        this.mapDispatchToProps = () => {
+        this.mapDispatchToProps = (): LoginPanelDispatchProps => {
             return {
+                onClose(): void {
+                },
+                onGetInfo(): void {
+                },
+                onReload(): void {
+                },
+                onSubmit(user: UserInfoVM, remember: boolean | undefined): void {
+                    authenticationService.doLogin()
+                }
 
             };
         }
 
         this.displayOptions = {
             containerId: 'bumed',
-            visible: false,
+            visible: true,
             appearClass: 'fadeIn',
             enterClass: 'fadeIn',
             exitClass: 'fadeOut',

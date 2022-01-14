@@ -118,7 +118,6 @@ export class UserProvider extends EntityProvider<UserInfo> implements IUserProvi
             super.sendGetSingle(id,
                 (responseData, reject) => this.getUserResponseConverter.convert(responseData[0], reject))
                 .then(user => {
-
                     if (user != null) {
                         this.getRole(id, user)
                             .then(user => {

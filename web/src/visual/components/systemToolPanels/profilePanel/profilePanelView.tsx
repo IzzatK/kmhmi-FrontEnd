@@ -12,8 +12,11 @@ import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
 import {ProfilePanelProps, ProfilePanelState, UserInfoVM} from "./profilePanelModel";
 import {UserRequestInfoView} from "./userRequestInfoView";
 import SearchBox from "../../../theme/widgets/searchBox/searchBox";
+import {userService} from "../../../../application/serviceComposition";
 
 class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
+
+    interval!: NodeJS.Timer;
 
     constructor(props: any) {
         super(props);
@@ -68,6 +71,22 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         const { currentUser } = this.props;
 
         this.setTmpUser(currentUser ? currentUser : {});
+
+
+        // this should probably be in presenter...or somewhere other than...here
+        if (this.props.permissions.canModify) {
+            this.interval = setInterval(() => {
+                userService.fetchUsers();
+            }, 60000); // refresh every 60 seconds
+            userService.fetchUsers();
+        }
+    }
+
+
+    componentWillUnmount() {
+        if (this.interval != null) {
+            clearInterval(this.interval);
+        }
     }
 
     componentDidUpdate(prevProps: Readonly<ProfilePanelProps>, prevState: Readonly<ProfilePanelState>, snapshot?: any) {

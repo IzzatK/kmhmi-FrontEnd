@@ -1,6 +1,6 @@
-import Keycloak from "keycloak-js";
+import Keycloak, {KeycloakError, KeycloakLoginOptions, KeycloakLogoutOptions, KeycloakProfile} from "keycloak-js";
 import {keycloakConfig, keycloakEnabled} from "../../config/config";
-import {IAuthenticationService, IUserService} from "../../api";
+import {IAuthenticationService, IUserProvider, IUserService} from "../../api";
 import {Nullable} from "../../framework/extras/typeUtils";
 import {IStorage} from "../../framework/api";
 import {Plugin} from "../../framework/extras/plugin";
@@ -31,10 +31,11 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
     private appDataStore: Nullable<IStorage> = null;
     private userService: Nullable<IUserService> = null;
 
-    private _kc: any;
+    private _kc!: Keycloak.KeycloakInstance;
     private readonly REDIRECT_URI: string;
-    private readonly loginOptions: any;
-    private readonly logoutOptions: any;
+    private readonly loginOptions: KeycloakLoginOptions;
+    private readonly logoutOptions: KeycloakLogoutOptions;
+    private userProvider!: IUserProvider;
 
     private model: AuthenticationSliceType;
 
@@ -42,9 +43,10 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
         super();
         this.appendClassName(AuthenticationService.class);
 
-        this._kc = Keycloak(keycloakConfig);
         this.REDIRECT_URI = '';
-        this.loginOptions = {};
+        this.loginOptions = {
+            prompt:"login"
+        };
         this.logoutOptions = { redirectUri : this.REDIRECT_URI };
 
         this.model = createSlice({
@@ -98,53 +100,127 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
         this.userService = userService;
     }
 
-    initKeycloak(onAuthenticatedCallback: any, onRegisterCallback: any) {
-        this._kc.init({onLoad: 'login-required'})
+    setUserProvider(userProvider: IUserProvider) {
+        this.userProvider = userProvider;
+    }
+
+    updateProfile(kcProfile: KeycloakProfile | undefined) {
+        if (kcProfile != null) {
+            let authenticationProfile: AuthenticationProfile = {
+                email: kcProfile.email || '',
+                firstName: kcProfile.firstName || "",
+                id: kcProfile.id || '',
+                lastName: kcProfile.lastName || "",
+                username: kcProfile.username || ""
+            }
+
+            this.appDataStore?.sendEvent(this.model.actions.setProfile(authenticationProfile));
+        }
+        else {
+            let authenticationProfile: AuthenticationProfile = {
+                email: '---',
+                firstName: '---',
+                id: '---',
+                lastName: '---',
+                username: '---',
+            }
+
+            this.appDataStore?.sendEvent(this.model.actions.setProfile(authenticationProfile));
+        }
+
+    }
+
+    doLogin() {
+        const s = document.createElement("script");
+        s.type = "text/javascript";
+        s.src = "https://auth.navyanalytics.com/auth/js/keycloak.js";
+        document.head.append(s)
+
+        s.onload = this.keyCloakLoadedHandler;
+    }
+
+    private keyCloakLoadedHandler(ev: any) {
+        this._kc = Keycloak(keycloakConfig);
+        this._kc.init({
+            // checkLoginIframe: true,
+            // checkLoginIframeInterval: 1000,
+            // silentCheckSsoRedirectUri: window.location.origin,
+            onLoad: "login-required",
+            // messageReceiveTimeout: 60000
+        })
             .then((authenticated: any) => {
+                // debugger;
+
+                // this._kc.login({
+                //     prompt: 'none',
+                //     redirectUri: window.location.origin
+                // }).then((ev => {
+                //     debugger;
+                // })).catch(ev => {
+                //     debugger
+                // }).finally(() => {
+                //     debugger;
+                // })
+
                 if (authenticated) {
                     //Authentication was successful, retrieve the user info
                     this._kc.loadUserProfile()
                         .then(() => {
 
-                            const userId = this._kc.profile?.id;
+                            let kcProfile = this._kc.profile;
+                            const userId = kcProfile?.id;
+                            // debugger
+                            this.updateProfile(kcProfile);
 
-                            this.appDataStore?.sendEvent(this.model.actions.setProfile(this._kc.profile));
-
-                            if (this.userService) {
+                            if (this.userService && userId != null) {
                                 this.userService.setCurrentUser(userId);
                             }
 
-                            console.log(JSON.stringify(this._kc.profile));
-                            onAuthenticatedCallback();
+                            // // check if user exists
+                            // if (userId != null) {
+                            //     this.userProvider?.getSingle(userId)
+                            //         .then(user => {
+                            //             debugger
+                            //             if (user != null) {
+                            //
+                            //             }
+                            //             else {
+                            //                 this.userService?.createUser({
+                            //
+                            //                 })
+                            //             }
+                            //         })
+                            //         .catch(ex => {
+                            //             debugger; // create the user
+                            //         })
+                            // }
                         })
-                        .catch(() => {
+                        .catch((ex) => {
+                            debugger
                             this.onError('No longer authenticated: Invalid Certificate\n')
                         })
                 } else {
                     this.onError('Not authenticated');
-                    onRegisterCallback();
                 }
 
             })
-            .catch((ex: any) => {
+            .catch((ex: KeycloakError) => {
+                debugger
                 this.onError('Failed to authenticate with keycloak: \n' + JSON.stringify(ex));
             })
     }
 
-    doLogin() {
-        return this._kc.login(this.loginOptions);
-    }
-
     doLogout() {
-        return this._kc.logout(this.logoutOptions);
+        this._kc.logout(this.logoutOptions).then(this._kc.clearToken);
     }
 
     getToken() {
-        return this._kc.token || '';
+        return this._kc?.token || '';
     }
 
     isLoggedIn() {
-        return !!this._kc.token;
+        return true;
+        // return !!this._kc?.token;
     }
 
     getAuthenticationState(): AuthenticationState {
@@ -163,14 +239,15 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
 
     updateToken(successCallback: any) {
         let prevToken = this.getToken();
-        return this._kc.updateToken(5)
+        return this._kc?.updateToken(5)
             .then(successCallback)
-            .catch(() => {
-                this.onError('Access Denied\n');
+            .catch((reason: any) => {
+                // debugger;
+                // this.onError('Access Denied\n');
             })
             .finally(() => {
                 if (this.getToken() !== prevToken) {
-                    this.appDataStore?.sendEvent(this.model.actions.setProfile(this._kc.profile));
+                    this.updateProfile(this._kc.profile);
                 }
             })
     }

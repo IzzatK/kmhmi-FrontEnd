@@ -84,6 +84,17 @@ export class HttpService extends BasePlugin implements IHttpService {
                         } else {
                             return response.json();
                         }
+
+                        // if (response.status >= 200 && response.status <= 299) {
+                        //     if (format === 'form') {
+                        //         return response.json();
+                        //     } else {
+                        //         return response.json();
+                        //     }
+                        // } else {
+                        //     debugger
+                        //     throw Error(response.statusText);
+                        // }
                     })
                     .then(function (result) {
                         // return object to caller
@@ -107,7 +118,7 @@ export class HttpService extends BasePlugin implements IHttpService {
             if (this.authenticationService.isLoggedIn()) {
                 return this.authenticationService.updateToken(fetchFxn);
             } else {
-                return this.authenticationService.doLogin();
+                // return this.authenticationService.doLogin();
             }
         } else {
             return fetchFxn();

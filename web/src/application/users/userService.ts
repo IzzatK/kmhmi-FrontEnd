@@ -85,7 +85,7 @@ export class UserService extends Plugin implements IUserService {
         return result;
     }
 
-    createUser(userData: any) {
+    createUser(userData: Record<string, string>) {
         // since we are posting and don't have an id yet, use a placeholder
         let tmpId = makeGuid();
         const userInfo: any = new UserInfo(tmpId);

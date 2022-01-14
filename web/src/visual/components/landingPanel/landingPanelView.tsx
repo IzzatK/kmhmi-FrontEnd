@@ -210,11 +210,11 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
                                 <div className={"d-flex h-gap-5 justify-content-start px-5"}>
                                     <div className={"d-flex h-gap-2"}>
                                         <div className={"align-self-center display-3 font-weight-semi-bold"}>Full Name:</div>
-                                        <div className={"align-self-center text-info font-weight-light display-4"}>{user.name}</div>
+                                        <div className={"align-self-center text-info font-weight-light display-4"}>{user?.name}</div>
                                     </div>
                                     <div className={"d-flex h-gap-2"}>
                                         <div className={"align-self-center display-3 font-weight-semi-bold"}>DoD ID:</div>
-                                        <div className={"align-self-center text-info font-weight-light display-4"}>{user.dodId}</div>
+                                        <div className={"align-self-center text-info font-weight-light display-4"}>{user?.dodId}</div>
                                     </div>
                                     <div className={"d-flex h-gap-2 pl-1"}>
                                         <div className={"align-self-center display-3 font-weight-semi-bold"}>Role:</div>
@@ -222,7 +222,7 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
                                     </div>
                                 </div>
                                 <div className={"px-5"}>
-                                    <TextArea value={tmpUser["request"] ? tmpUser["request"] : user.request} autoFocus={true} name={"request"}
+                                    <TextArea value={tmpUser["request"] ? tmpUser["request"] : user?.request} autoFocus={true} name={"request"}
                                         placeholder={"Please provide organizational affiliation and reason for accessing the CIC Knowledge Management System"}
                                         rows={9} cols={85} onSubmit={this.onTmpUserChanged}/>
                                 </div>
@@ -237,10 +237,10 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
                                     <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>User Name:</div>
                                     <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>Email:</div>
                                     <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>CAC PIN:</div>
-                                    <div className={"align-self-center text-info font-weight-light display-4"}>{user.dodId}</div>
-                                    <div className={"align-self-center text-info font-weight-light display-4"}>{user.name}</div>
-                                    <div className={"align-self-center text-info font-weight-light display-4"}>{user.email}</div>
-                                    <TextEdit value={tmpUser["pin"] ? tmpUser["pin"] : user.pin} name={"pin"} autoFocus={true} placeholder={"CAC PIN"} onSubmit={this.onTmpUserChanged}/>
+                                    <div className={"align-self-center text-info font-weight-light display-4"}>{user?.dodId}</div>
+                                    <div className={"align-self-center text-info font-weight-light display-4"}>{user?.name}</div>
+                                    <div className={"align-self-center text-info font-weight-light display-4"}>{user?.email}</div>
+                                    <TextEdit value={tmpUser["pin"] ? tmpUser["pin"] : user?.pin} name={"pin"} autoFocus={true} placeholder={"CAC PIN"} onSubmit={this.onTmpUserChanged}/>
                                 </div>
                                 <div className={"d-flex h-gap-2 justify-content-end px-5"}>
                                     <CheckBox selected={isRemember} onClick={() => this._toggleRemember()}/>
@@ -259,12 +259,12 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
                                     <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>Phone:</div>
                                     <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>Organization:</div>
                                     <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>PIN:</div>
-                                    <div className={"align-self-center text-info font-weight-light display-4"}>{user.dodId}</div>
-                                    <div className={"align-self-center text-info font-weight-light display-4"}>{user.name}</div>
-                                    <TextEdit value={tmpUser["email"] ? tmpUser["email"] : user.email} name={"email"} autoFocus={true} placeholder={"Email Address"} onSubmit={this.onTmpUserChanged}/>
-                                    <TextEdit value={tmpUser["phone"] ? tmpUser["phone"] : user.phone} name={"phone"} placeholder={"Phone Number"} onSubmit={this.onTmpUserChanged}/>
-                                    <TextEdit value={tmpUser["organization"] ? tmpUser["organization"] : user.organization} name={"organization"} placeholder={"Organization"} onSubmit={this.onTmpUserChanged}/>
-                                    <TextEdit value={tmpUser["pin"] ? tmpUser["pin"] : user.pin} name={"pin"} placeholder={"CAC PIN"} onSubmit={this.onTmpUserChanged}/>
+                                    <div className={"align-self-center text-info font-weight-light display-4"}>{user?.dodId}</div>
+                                    <div className={"align-self-center text-info font-weight-light display-4"}>{user?.name}</div>
+                                    <TextEdit value={tmpUser["email"] ? tmpUser["email"] : user?.email} name={"email"} autoFocus={true} placeholder={"Email Address"} onSubmit={this.onTmpUserChanged}/>
+                                    <TextEdit value={tmpUser["phone"] ? tmpUser["phone"] : user?.phone} name={"phone"} placeholder={"Phone Number"} onSubmit={this.onTmpUserChanged}/>
+                                    <TextEdit value={tmpUser["organization"] ? tmpUser["organization"] : user?.organization} name={"organization"} placeholder={"Organization"} onSubmit={this.onTmpUserChanged}/>
+                                    <TextEdit value={tmpUser["pin"] ? tmpUser["pin"] : user?.pin} name={"pin"} placeholder={"CAC PIN"} onSubmit={this.onTmpUserChanged}/>
                                 </div>
                                 <div className={"d-flex h-gap-2 justify-content-end px-5"}>
                                     <CheckBox selected={isRemember} onClick={() => this._toggleRemember()}/>
@@ -278,14 +278,14 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
                             <div className={"d-flex flex-column justify-content-center align-items-center v-gap-5 px-5 mx-5"}>
                                 <div className={"text-info font-weight-light display-3 pt-5"}>The following admin needs to authorize you in order to access CIC Knowledge Management</div>
                                 <div className={"d-flex admin header-2 h-gap-5 pt-5"}>
-                                    <div>{admin.name}</div>
+                                    <div>{admin && admin.name}</div>
                                     <div className={"d-flex h-gap-2"}>
                                         <div>PHONE</div>
-                                        <div>{admin.phone}</div>
+                                        <div>{admin && admin.phone}</div>
                                     </div>
                                     <div className={"d-flex h-gap-2"}>
                                         <div>EMAIL</div>
-                                        <div>{admin.email}</div>
+                                        <div>{admin && admin.email}</div>
                                     </div>
                                 </div>
                                 <div className={"text-info font-weight-light display-3 pt-5"}>Please check back once your authorization has been approved.</div>

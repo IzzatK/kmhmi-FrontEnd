@@ -151,6 +151,7 @@ permissionProvider.start();
 authenticationService.setLogService(logService);
 authenticationService.setRepositoryService(repoService);
 authenticationService.setUserService(userService);
+authenticationService.setUserProvider(userProvider);
 authenticationService.setAppDataStore(appDataStore);
 authenticationService.start();
 // authorization service

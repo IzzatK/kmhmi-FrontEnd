@@ -135,7 +135,7 @@ export class AuthorizationService extends Plugin implements IAuthorizationServic
         return this.permissionInfoSelector(this.getRepoState());
     }
 
-    hasPermission(entity: PERMISSION_ENTITY, operator: PERMISSION_OPERATOR, currentUserId: string, entityOwnerId: Nullable<string>): boolean {
+    hasPermission(entity: PERMISSION_ENTITY, operator: PERMISSION_OPERATOR, currentUserId?: string, entityOwnerId?: Nullable<string>): boolean {
         let result = false;
 
         let permissionLevel = this.getPermissionLevel(entity, operator);
@@ -149,8 +149,7 @@ export class AuthorizationService extends Plugin implements IAuthorizationServic
             }
         }
 
-        // return result;
-        return true;
+        return result;
     }
 
     setPermissionProvider(provider: IEntityProvider<PermissionInfo>): void {

@@ -7,17 +7,45 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="limit by role Document Panel">
+    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="limit functionality in the users panel">
+      <change afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/appModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/appPresenter.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/appView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/knowledgeManagementModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/knowledgeManagementPresenter.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/knowledgeManagementView.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/landing/landing.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/landing/landingModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/landing/landingPresenter.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/landing/landingView.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/api/authorization/iAuthorizationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/api/authorization/iAuthorizationService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/api/authentication/iAuthenticationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/api/authentication/iAuthenticationService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/api/users/iUserService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/api/users/iUserService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/application/authentication/authenticationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/application/authentication/authenticationService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/application/authorization/authorizationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/application/authorization/authorizationService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/application/serviceComposition.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/application/serviceComposition.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/application/users/providers/userProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/application/users/providers/userProvider.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/application/users/userService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/application/users/userService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profileInfoView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profileInfoView.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelPresenter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelPresenter.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/config/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/config/config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/framework.visual/extras/presenter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/framework.visual/extras/presenter.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/framework/extras/typeUtils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/framework/extras/typeUtils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/framework/services/httpService/httpService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/framework/services/httpService/httpService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/components/landingPanel/landingPanelModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/landingPanel/landingPanelModel.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/components/landingPanel/landingPanelPresenter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/landingPanel/landingPanelPresenter.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/components/landingPanel/landingPanelView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/landingPanel/landingPanelView.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelView.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/visual/components/systemToolbar/systemToolbarPresenter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolbar/systemToolbarPresenter.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/views/app/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/views/app/App.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/views/app/searchView/searchView.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/search/searchView.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/views/app/searchView/searchView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/search/searchView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/views/bumed.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/knowledgeManagement.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/views/bumed.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/views/landing/landing.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/views/landing/landing.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +81,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/web/src/application/authorization/converters" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/web/src/visual/views/bumed" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -64,14 +92,19 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Repos\km-hmi\web\src\visual\views\bumed" />
+      <recent name="C:\Repos\km-hmi\web\src\visual\views\landing" />
       <recent name="C:\Repos\km-hmi\web\src\application\authorization\converters" />
       <recent name="C:\Repos\km-hmi\web\src\model" />
       <recent name="C:\Repos\km-hmi\web\src\application\authentication\converters" />
-      <recent name="C:\Repos\km-hmi\web\src\application\authentication\providers" />
-      <recent name="C:\Repos\km-hmi\web\src\api" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Repos\km-hmi\web\src\visual\views\bumed" />
       <recent name="C:\Repos\km-hmi\web\src\application\authorization" />
+    </key>
+    <key name="es6.move.members.recent.items">
+      <recent name="C:\Repos\km-hmi\web\src\visual\views\app\appView.tsx" />
+      <recent name="C:\Repos\km-hmi\web\src\visual\views\app\AppModel.ts" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -84,7 +117,9 @@
       <updated>1641314890275</updated>
       <workItem from="1641314892135" duration="1941000" />
       <workItem from="1641329826785" duration="13922000" />
-      <workItem from="1641418866388" duration="34099000" />
+      <workItem from="1641418866388" duration="43700000" />
+      <workItem from="1641924273826" duration="1721000" />
+      <workItem from="1641931920849" duration="29820000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1641329914789</created>
@@ -107,7 +142,14 @@
       <option name="project" value="LOCAL" />
       <updated>1641848314010</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="limit functionality in the users panel">
+      <created>1641850433108</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1641850433108</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -131,6 +173,7 @@
     <MESSAGE value="initial commit" />
     <MESSAGE value="added logic for authorization service. currently only limiting document upload by role. need to limit functionality through the rest of the UI" />
     <MESSAGE value="limit by role Document Panel" />
-    <option name="LAST_COMMIT_MESSAGE" value="limit by role Document Panel" />
+    <MESSAGE value="limit functionality in the users panel" />
+    <option name="LAST_COMMIT_MESSAGE" value="limit functionality in the users panel" />
   </component>
 </project>

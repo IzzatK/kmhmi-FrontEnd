@@ -16,7 +16,7 @@ export interface IUserService extends IPlugin {
 
     getUsers(): Record<string, UserInfo>;
 
-    createUser(userData: any): void;
+    createUser(userData: Record<string, string>): void;
 
     updateUser(modifiedUser: UserInfo): void;
 
