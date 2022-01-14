@@ -19,6 +19,8 @@ export type LoginPanelDispatchProps = {
     onGetInfo: () => void;
     onReload: () => void;
     onClose: () => void;
+    onLogin: (user: UserInfoVM) => void;
+    onRegister: (user: UserInfoVM) => void;
 }
 
 export type LoginPanelProps = LoginPanelStateProps & LoginPanelDispatchProps;
@@ -31,7 +33,8 @@ export type LoginPanelState = {
 export type UserInfoVM = {
     [key: string]: any;
     dodId?: string;
-    name?: string;
+    fist_name?: string;
+    last_name?: string;
     email?: string;
     phone?: string;
     organization?: string;

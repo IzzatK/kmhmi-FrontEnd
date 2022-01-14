@@ -42,8 +42,13 @@ class LandingPanel extends Presenter {
                 },
                 onSubmit(user: UserInfoVM, remember: boolean | undefined): void {
                     authenticationService.doLogin()
-                }
+                },
+                onLogin(user: UserInfoVM): void {
+                    authenticationService.doLogin()
+                },
+                onRegister(user: UserInfoVM): void {
 
+                }
             };
         }
 

@@ -10,6 +10,7 @@ import {SystemToolbarPresenter} from "../../../components/systemToolbar/systemTo
 import {referenceService, statService, tagService} from "../../../../application/serviceComposition";
 import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {ReferenceType} from "../../../../model";
+import Button from "../../../theme/widgets/button/button";
 
 export class AppView extends Component<Props, State> {
     private interval!: NodeJS.Timer;
@@ -35,7 +36,7 @@ export class AppView extends Component<Props, State> {
     }
 
     render() {
-        const {className, currentSystemTool, docPreviewTool, permissions, ...rest} = this.props;
+        const {className, currentSystemTool, docPreviewTool, permissions, admin, ...rest} = this.props;
 
         const {visible: docVisible} = docPreviewTool || {};
 
@@ -62,11 +63,42 @@ export class AppView extends Component<Props, State> {
                 }
                 {
                     !permissions.canSearch &&
-                        <div className={'d-flex flex-fill align-items-center justify-content-center'}>
-                            <div className={'bg-info p-5'}>
-                                <div className={'display-1 font-weight-bold p-5'}>Waiting for Approval</div>
+                    <div className={"auth-pending d-flex flex-fill justify-content-center align-items-center"}>
+                        <div className={"d-flex flex-column popup v-gap-5"}>
+                            <div className={"text-selected font-weight-semi-bold px-5 pt-5"}>
+                                <div className={"d-flex justify-content-center mt-5 pt-5"}>Your Authorization is Pending...</div>
                             </div>
+
+                            <div className={"d-flex flex-column justify-content-center align-items-center v-gap-5 px-5 mx-5"}>
+                                {
+                                    admin &&
+                                    <div className={"d-flex flex-column justify-content-center align-items-center v-gap-5"}>
+                                        <div className={"text-info font-weight-light display-3 pt-5"}>The following admin needs to authorize you in order to access CIC Knowledge Management</div>
+                                        <div className={"d-flex admin header-2 h-gap-5 pt-5"}>
+                                            <div>{admin.name}</div>
+                                            <div className={"d-flex h-gap-2"}>
+                                                <div>PHONE</div>
+                                                <div>{admin.phone}</div>
+                                            </div>
+                                            <div className={"d-flex h-gap-2"}>
+                                                <div>EMAIL</div>
+                                                <div>{admin.email}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                <div className={"text-info font-weight-light display-3 pt-5"}>Please check back once your authorization has been approved.</div>
+                            </div>
+
+                            <div className={"d-flex justify-content-end py-4 pr-5 bg-advisory"}/>
                         </div>
+                    </div>
+
+                        // <div className={'d-flex flex-fill align-items-center justify-content-center'}>
+                        //     <div className={'bg-info p-5'}>
+                        //         <div className={'display-1 font-weight-bold p-5'}>Waiting for Approval</div>
+                        //     </div>
+                        // </div>
                 }
             </div>
         );
