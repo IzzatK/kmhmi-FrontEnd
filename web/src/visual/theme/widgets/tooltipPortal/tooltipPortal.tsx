@@ -1,11 +1,8 @@
-import ReactTooltip from "react-tooltip";
 import React from "react";
-import Button from "../button/button";
 import Portal from "../portal/portal";
 import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
-
 import {TooltipPortalProps, TooltipPortalState} from './tooltipPortalModel';
-
+import './tooltipPortal.css';
 
 export class TooltipPortal extends  React.Component<TooltipPortalProps, TooltipPortalState> {
 
