@@ -219,8 +219,8 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
     }
 
     isLoggedIn() {
-        return true;
-        // return !!this._kc?.token;
+        // return true;
+        return !!this._kc?.token;
     }
 
     getAuthenticationState(): AuthenticationState {
