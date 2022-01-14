@@ -4,9 +4,10 @@ import {LoginPanelDispatchProps, LoginPanelProps, LoginPanelStateProps, UserInfo
 import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
 import {createSelector} from "@reduxjs/toolkit";
 import {authenticationService, referenceService} from "../../../application/serviceComposition";
-import {ReferenceType} from "../../../model";
+import {ReferenceType, UserInfo} from "../../../model";
 import {RoleVM} from "../systemToolPanels/profilePanel/profilePanelModel";
 import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
+import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
 
 class LandingPanel extends Presenter {
     constructor() {
@@ -18,6 +19,7 @@ class LandingPanel extends Presenter {
 
         this.mapStateToProps = (state: any, props: any): LoginPanelStateProps => {
             return {
+                user: null,
                 admin: null,
                 className: "",
                 isAuthPending: false,
@@ -26,7 +28,6 @@ class LandingPanel extends Presenter {
                 isLogin: true,
                 isRegister: false,
                 isUnregistered: false, // not recognized as authorized user
-                user: null,
                 roles: this.getRolesVMs(state),
                 isLogout: false,
             };
@@ -34,20 +35,17 @@ class LandingPanel extends Presenter {
 
         this.mapDispatchToProps = (): LoginPanelDispatchProps => {
             return {
-                onClose(): void {
-                },
-                onGetInfo(): void {
-                },
-                onReload(): void {
-                },
-                onSubmit(user: UserInfoVM, remember: boolean | undefined): void {
+                onClose: () => {},
+                onGetInfo: () => {},
+                onReload: () => {},
+                onSubmit: () => {
                     authenticationService.login()
                 },
-                onLogin(user: UserInfoVM): void {
+                onLogin: () =>  {
                     authenticationService.login();
                 },
-                onRegister(user: UserInfoVM): void {
-
+                onRegister: (user: UserInfoVM) => {
+                    this.register(user);
                 }
             };
         }
@@ -59,6 +57,17 @@ class LandingPanel extends Presenter {
             enterClass: 'fadeIn',
             exitClass: 'fadeOut',
         }
+    }
+
+    register(userVM: UserInfoVM) {
+        let user = new UserInfo(makeGuid());
+
+        user.dod_id = userVM.dodId ? Number.parseFloat(userVM.dodId) : -1;
+        user.first_name = userVM.fist_name || '';
+        user.last_name = userVM.last_name || '';
+        user.email_address = userVM.email || '';
+
+        authenticationService.register(user);
     }
 
     getRolesVMs = createSelector(
@@ -81,3 +90,5 @@ export const {
     connectedPresenter: LandingPanelPresenter,
     componentId: LandingPanelId,
 } = createComponentWrapper(LandingPanel)
+
+

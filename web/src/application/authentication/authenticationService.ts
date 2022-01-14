@@ -1,6 +1,6 @@
 import Keycloak, {KeycloakError, KeycloakLoginOptions, KeycloakLogoutOptions, KeycloakProfile} from "keycloak-js";
 import {keycloakConfig, keycloakEnabled} from "../../config/config";
-import {IAuthenticationService, IUserProvider, IUserService} from "../../api";
+import {AuthenticationProfile, IAuthenticationService, IUserProvider, IUserService} from "../../api";
 import {Nullable} from "../../framework/extras/typeUtils";
 import {IStorage} from "../../framework/api";
 import {Plugin} from "../../framework/extras/plugin";
@@ -9,13 +9,6 @@ import {makeGuid} from "../../framework.visual/extras/utils/uniqueIdUtils";
 import {UserInfo} from "../../model";
 import {forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
 
-type AuthenticationProfile = {
-    id: string,
-    username: string,
-    firstName: string,
-    lastName: string,
-    email: string
-}
 
 type AuthenticationState = {
     hasError: boolean;
@@ -121,11 +114,11 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
         }
         else {
             let authenticationProfile: AuthenticationProfile = {
-                email: '---',
-                firstName: '---',
-                id: '---',
-                lastName: '---',
-                username: '---',
+                email: '',
+                firstName: '',
+                id: '',
+                lastName: '',
+                username: '',
             }
 
             this.appDataStore?.sendEvent(this.model.actions.setProfile(authenticationProfile));
@@ -136,7 +129,6 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
     login() {
         const s = document.createElement("script");
         s.type = "text/javascript";
-        // s.src = `${process.env.PUBLIC_URL}/keycloak.js`;
         s.src = "https://auth.navyanalytics.com/auth/js/keycloak.js";
         document.head.append(s)
 
@@ -153,19 +145,6 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
             // messageReceiveTimeout: 60000
         })
             .then((authenticated: any) => {
-                // debugger;
-
-                // this._kc.login({
-                //     prompt: 'none',
-                //     redirectUri: window.location.origin
-                // }).then((ev => {
-                //     debugger;
-                // })).catch(ev => {
-                //     debugger
-                // }).finally(() => {
-                //     debugger;
-                // })
-
                 if (authenticated) {
                     //Authentication was successful, retrieve the user info
                     this._kc.loadUserProfile()
@@ -176,9 +155,9 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
                             // debugger
                             this.updateProfile(kcProfile);
 
-                            if (this.userService && userId != null) {
-                                this.userService.setCurrentUser(userId);
-                            }
+                            // if (this.userService && userId != null) {
+                            //     this.userService.setCurrentUser(userId);
+                            // }
 
                             // // check if user exists
                             // if (userId != null) {
@@ -223,7 +202,6 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
     }
 
     isLoggedIn() {
-        // return true;
         return !!this._kc?.token;
     }
 
@@ -256,13 +234,8 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
             })
     }
 
-    register(userData: Record<string, string>) {
-        let tmpId = makeGuid();
-        const userInfo: any = new UserInfo(tmpId);
-        forEachKVP(userData, (key: string, value: string) => {
-            userInfo[key] = value;
-        })
-
+    register(userInfo: UserInfo) {
+        debugger
         this.userProvider?.create({user: userInfo},
             (updatedUserInfo => {
                 // we have the real id now, so remove the temp one and add the real one
@@ -288,13 +261,5 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
 
     getUserId() {
         return this.getAuthenticationState().profile.id;
-    }
-
-    hasRole(roles: any) {
-        return roles.some((role: any) => this._kc.hasRealmRole(role));
-    }
-
-    keyCloakEnabled(): boolean {
-        return keycloakEnabled;
     }
 }

@@ -76,18 +76,13 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
 
     onTmpUserChanged(name: string, value: string) {
         const { tmpUser } = this.state;
-        const { user } = this.props;
 
-        if (user) {
-            let nextUser = {
-                ...tmpUser,
-                [name]: value
-            };
-            if (user[name] === value) {
-                delete nextUser[name];
-            }
-            this.setTmpUser(nextUser);
-        }
+        let nextUser = {
+            ...tmpUser,
+            [name]: value
+        };
+
+        this.setTmpUser(nextUser);
     }
 
     setTmpUser(user: UserInfoVM) {

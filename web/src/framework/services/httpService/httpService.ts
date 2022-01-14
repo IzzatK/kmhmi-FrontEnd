@@ -114,16 +114,12 @@ export class HttpService extends BasePlugin implements IHttpService {
             });
         };
 
-        if (this.authenticationService?.keyCloakEnabled()) {
-            if (this.authenticationService.isLoggedIn()) {
-                return this.authenticationService.updateToken(fetchFxn);
-            } else {
-                // return this.authenticationService.doLogin();
-            }
+
+        if (this.authenticationService != null && this.authenticationService.isLoggedIn()) {
+            return this.authenticationService.updateToken(fetchFxn);
         } else {
             return fetchFxn();
         }
-
     }
 
     createFormAPI(url: string, formData: any) {
