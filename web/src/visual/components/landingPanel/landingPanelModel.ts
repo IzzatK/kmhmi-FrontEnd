@@ -8,6 +8,7 @@ export type LoginPanelStateProps = {
     isLogin: boolean;
     isRegister: boolean;
     isAuthRequest: boolean;
+    isAuthApproved: boolean;
     user: Nullable<UserInfoVM>;
     admin: Nullable<UserInfoVM>;
     roles?: Record<string, RoleVM>;

@@ -24,6 +24,7 @@ class LandingPanel extends Presenter {
                 className: "",
                 isAuthPending: false,
                 isAuthRequest: false,
+                isAuthApproved: false,
                 isError: false, // no common access card
                 isLogin: true,
                 isRegister: false,

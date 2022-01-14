@@ -238,7 +238,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
     render() {
         const {user, currentUser, onSelect, onUserUpdated, onUserRemoved, roles, departments, accountStatuses, userLookUp, permissions } = this.props;
 
-        const { isDirty, editProperties, tmpUser, selected } = this.state;
+        const { isDirty, editProperties, tmpUser, selected, showPopup } = this.state;
 
         let cn = "profile-info-header p-3 d-flex align-items-center justify-content-between";
 
@@ -392,6 +392,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                               cancelText={"Cancel"}
                               graphic={FileSVG}
                               padding={"65%"}
+                              isVisible={showPopup}
                               onCancel={() => this._setPopupVisible(false)}
                               onProceed={() => this.removeUser()}/>
                           <div className={`personal-info-grid w-100 ${isDirty ? 'dirty' : ''}`}>

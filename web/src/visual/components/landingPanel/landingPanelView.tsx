@@ -115,7 +115,7 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
     }
 
     render() {
-        const { className, isError, isUnregistered, isAuthPending, isLogin, isRegister, isAuthRequest, isLogout,
+        const { className, isError, isUnregistered, isAuthPending, isAuthApproved, isLogin, isRegister, isAuthRequest, isLogout,
         user, admin, roles } = this.props;
 
         const { isRemember, tmpUser } = this.state;
@@ -157,7 +157,7 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
                         </div>
 
                         {
-                            !isAuthPending &&
+                            !isAuthPending && !isAuthApproved &&
                             <div className={"d-flex flex-column popup v-gap-5"}>
                                 <div className={"text-selected font-weight-semi-bold px-5 pt-5"}>
                                     <div>New Users</div>
@@ -212,6 +212,23 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
                                             </div>
                                         }
                                         <div className={"text-info font-weight-light display-3 pt-5"}>Please check back once your authorization has been approved.</div>
+                                    </div>
+
+                                    <div className={"d-flex justify-content-end py-4 pr-5 bg-advisory"}/>
+                                </div>
+                            </div>
+                        }
+
+                        {
+                            isAuthApproved &&
+                            <div className={"d-flex justify-content-center align-items-center"}>
+                                <div className={"d-flex flex-column popup v-gap-5"}>
+                                    <div className={"text-selected font-weight-semi-bold px-5 pt-5"}>
+                                        <div className={"d-flex justify-content-center mt-5 pt-5"}>Authorization Complete</div>
+                                    </div>
+
+                                    <div className={"d-flex flex-column justify-content-center align-items-center v-gap-5 px-5 mx-5"}>
+                                        <div className={"text-info font-weight-light display-3 pt-5"}>You may now sign in.</div>
                                     </div>
 
                                     <div className={"d-flex justify-content-end py-4 pr-5 bg-advisory"}/>
