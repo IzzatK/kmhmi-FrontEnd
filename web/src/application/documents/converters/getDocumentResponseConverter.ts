@@ -3,6 +3,7 @@ import {getValueOrDefault} from "../../../framework/extras/typeUtils";
 import {DocumentInfo} from "../../../model";
 import {ErrorHandler} from "../../common/providers/entityProvider";
 import {Converter} from "../../common/converters/converter";
+import {getFormattedSize} from "../../../framework.visual/extras/utils/sizeUtils";
 
 export class GetDocumentResponseConverter extends Converter<any, DocumentInfo>{
     convert(fromData: any, reject: ErrorHandler): DocumentInfo {
@@ -21,7 +22,7 @@ export class GetDocumentResponseConverter extends Converter<any, DocumentInfo>{
 
         documentInfo.file_name = getValueOrDefault(item, 'file_name', '');
         documentInfo.file_page_count = getValueOrDefault(item, 'file_page_count', '');
-        documentInfo.file_size = getValueOrDefault(item, 'file_size', '');
+        documentInfo.file_size = getFormattedSize(getValueOrDefault(item, 'file_size', ''));
         documentInfo.file_type = getValueOrDefault(item, 'file_type', '');
         documentInfo.primary_sme_email = getValueOrDefault(item, 'primary_sme_email', '');
         documentInfo.primary_sme_name = getValueOrDefault(item, 'primary_sme_name', '');

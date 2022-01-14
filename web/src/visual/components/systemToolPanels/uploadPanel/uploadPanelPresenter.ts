@@ -88,7 +88,7 @@ class UploadPanel extends Presenter {
                     status = itemVM.status;
                 }
 
-                itemVMs[itemVM.id] = {
+                itemVMs[itemVM.file_name] = {
                     id: id,
                     file_name: file_name,
                     isUpdating: isUpdating,
@@ -98,6 +98,8 @@ class UploadPanel extends Presenter {
                 }
 
             });
+
+            console.log("itemVMs " + JSON.stringify(itemVMs));
 
             return itemVMs;
         }

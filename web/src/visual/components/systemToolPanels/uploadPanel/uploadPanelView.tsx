@@ -119,19 +119,23 @@ class UploadPanelView extends Component<UploadPanelProps, UploadPanelState> {
                 const { id, file_name, status, isUpdating, selected, deleted} = pendingDocument;
 
                 return (
-                    <CSSTransition key={id} timeout={300} classNames={getClassNames('fadeIn', 'fadeIn', 'slideRightOut') }>
+                    <CSSTransition key={file_name} timeout={300} classNames={getClassNames('fadeIn', 'fadeIn', 'slideRightOut') }>
                         <div className={'position-relative pending-item'}>
-                            <Card className={`d-flex flex-column align-items-stretch v-gap-3 p-0 ${isUpdating ? 'loading' : ''} ${deleted ? "deleted" : ""}`} selected={selected} onClick={() => this._onDocumentSelected(id)}
+                            <Card className={`d-flex flex-column align-items-stretch v-gap-3 p-0 ${isUpdating ? 'loading' : ''} ${deleted || status === "failed" ? "deleted" : ""}`} selected={selected} onClick={() => this._onDocumentSelected(id)}
                                   header={
                                       <div className={'d-flex'}>
                                           <div className={'flex-fill d-flex justify-content-between align-items-center pending-item-container'}>
                                               <div className={'pending-item-body flex-fill d-flex justify-content-between align-items-center shadow'}>
-                                                  <div className={`d-flex h-gap-1 px-3 pt-3 ${deleted ? "pb-3" : "pb-5"}`}>
+                                                  <div className={`d-flex h-gap-1 px-3 pt-3 ${deleted || status === "failed" ? "pb-3" : "pb-5"}`}>
                                                       {
                                                           deleted &&
                                                           <div className={"display-2 font-weight-semi-bold"}>Deleted</div>
                                                       }
-                                                      <div className={`display-2 ${deleted ? "text-info" : "text-secondary"}`}>{file_name}</div>
+                                                      {
+                                                          status === "failed" &&
+                                                          <div className={"display-2 font-weight-semi-bold"}>Failed</div>
+                                                      }
+                                                      <div className={`display-2 ${deleted || status === "failed" ? "text-info" : "text-secondary"}`}>{file_name}</div>
                                                   </div>
                                                   {
                                                       !deleted &&
@@ -145,14 +149,17 @@ class UploadPanelView extends Component<UploadPanelProps, UploadPanelState> {
 
                                               </div>
                                               {
-                                                  (!isUpdating && selected && !deleted) &&
+                                                  (!isUpdating && selected && !deleted && status !== "Processing") &&
                                                   <div className={'d-flex h-gap-3 px-4'}>
                                                       <Button className={'p-2 reject'} onClick={() => this._setPopupVisible(true)}>
                                                           <RemoveSVG className={"small-image-container"}/>
                                                       </Button>
-                                                      <Button className={'p-2 accept'} onClick={() => this._onApproved(id)}>
-                                                          <ApproveSVG className={"small-image-container"}/>
-                                                      </Button>
+                                                      {
+                                                          status !== "failed" &&
+                                                          <Button className={'p-2 accept'} onClick={() => this._onApproved(id)}>
+                                                              <ApproveSVG className={"small-image-container"}/>
+                                                          </Button>
+                                                      }
                                                   </div>
                                               }
                                           </div>
@@ -165,9 +172,9 @@ class UploadPanelView extends Component<UploadPanelProps, UploadPanelState> {
                                   }
                             />
                             {
-                                isUpdating &&
-                                <div className={"position-absolute"} style={{top: '0', right: '0', bottom: '0', left:'0'}}>
-                                    <LoadingIndicator/>
+                                (isUpdating || status === "Processing") &&
+                                <div className={"position-absolute"} style={{top: '0', right: '0', bottom: '1.6rem', left:'0', zIndex: 2}}>
+                                    <LoadingIndicator small={true}/>
                                 </div>
                             }
                         </div>

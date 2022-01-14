@@ -83,7 +83,7 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
                             this.getSingle(id)
                                 .then(latestDocument => {
                                     if (latestDocument != null) {
-                                        const {id, isUploading} = latestDocument;
+                                        const {id, isUploading, status} = latestDocument;
 
                                         latestDocument.isPending = true;
                                         onUpdated(latestDocument);
@@ -95,7 +95,7 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
                                                 delete this.pollAttempts[id];
                                                 // we are completely done.
                                                 resolve(latestDocument);
-                                            } else if (isUploading) {
+                                            } else if (isUploading || status === "failed") {
                                                 this.pollAttempts[id] = pollAttempt + 1;
                                                 setTimeout(fetchNow, this.POLLING_RATE);
                                             }
@@ -205,9 +205,11 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
             super.sendGetSingle(id,
                 (responseData, errorHandler) => this.getDocumentResponseConverter.convert(responseData, errorHandler))
                 .then(data => {
+                    console.log("data" + JSON.stringify(data));
                     resolve(data);
                 })
                 .catch(error => {
+                    console.log(error + "FAILED FAILED FAILED FAILED");
                     reject(error);
                 })
         });

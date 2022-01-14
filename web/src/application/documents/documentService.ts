@@ -292,11 +292,10 @@ export class DocumentService extends Plugin implements IDocumentService {
 
             this.documentProvider?.create(requestData,
                 (updatedDocument) => {
-                    const {id} = updatedDocument;
+                    const {id, status} = updatedDocument;
 
                     if (this.pendingFilesRaw[tmpId]) {
                         delete this.pendingFilesRaw[tmpId];
-                        this.removeAllById(DocumentInfo.class, tmpId);
 
                         // put the document back in with the new id
                         this.pendingFilesRaw[id] = file;
@@ -304,12 +303,16 @@ export class DocumentService extends Plugin implements IDocumentService {
                         updatedDocument.file_name = name;
                         updatedDocument.status = 'Processing';
                         updatedDocument.isPending = true;
+                    } else if (status === "failed") {
+                        updatedDocument.file_name = name;
+                        updatedDocument.status = 'Processing';
+                        updatedDocument.isPending = true;
                     }
-
 
                     this.addOrUpdateRepoItem(updatedDocument);
                 })
                 .then(document => {
+                    this.removeAllById(DocumentInfo.class, tmpId);
                     if (document != null) {
                         this.addOrUpdateRepoItem(document);
                     }

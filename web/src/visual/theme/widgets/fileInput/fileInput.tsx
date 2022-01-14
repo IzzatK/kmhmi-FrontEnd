@@ -27,6 +27,10 @@ class FileInput extends Component<FileInputProps, FileInputState>  {
 		}
 
 		this.setIsDragging(false);
+
+		if (this.fileInputRef.current) {
+			this.fileInputRef.current.value = "";
+		}
 	}
 
 	_dragEnter(event: { preventDefault: () => void; }) {
