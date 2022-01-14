@@ -41,10 +41,10 @@ class LandingPanel extends Presenter {
                 onReload(): void {
                 },
                 onSubmit(user: UserInfoVM, remember: boolean | undefined): void {
-                    authenticationService.doLogin()
+                    authenticationService.login()
                 },
                 onLogin(user: UserInfoVM): void {
-                    authenticationService.doLogin()
+                    authenticationService.login();
                 },
                 onRegister(user: UserInfoVM): void {
 

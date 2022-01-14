@@ -42,7 +42,7 @@ ReactDOM.render(
 
 if (document.location.href.includes('state=')) {
     if (!authenticationService.isLoggedIn()) {
-        authenticationService.doLogin();
+        authenticationService.login();
     }
 }
 

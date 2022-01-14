@@ -97,6 +97,7 @@ export class UserService extends Plugin implements IUserService {
 
         this.userProvider?.create({user: userInfo},
             (updatedUserInfo => {
+                // we have the real id now, so remove the temp one and add the real one
                 this.removeRepoItem(userInfo);
                 this.addOrUpdateRepoItem(updatedUserInfo);
             }))
