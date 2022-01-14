@@ -5,6 +5,9 @@ import {Nullable} from "../../framework/extras/typeUtils";
 import {IStorage} from "../../framework/api";
 import {Plugin} from "../../framework/extras/plugin";
 import {createSlice, PayloadAction, Slice} from "@reduxjs/toolkit";
+import {makeGuid} from "../../framework.visual/extras/utils/uniqueIdUtils";
+import {UserInfo} from "../../model";
+import {forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
 
 type AuthenticationProfile = {
     id: string,
@@ -104,7 +107,7 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
         this.userProvider = userProvider;
     }
 
-    updateProfile(kcProfile: KeycloakProfile | undefined) {
+    private updateProfile(kcProfile: KeycloakProfile | undefined) {
         if (kcProfile != null) {
             let authenticationProfile: AuthenticationProfile = {
                 email: kcProfile.email || '',
@@ -130,9 +133,10 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
 
     }
 
-    doLogin() {
+    login() {
         const s = document.createElement("script");
         s.type = "text/javascript";
+        // s.src = `${process.env.PUBLIC_URL}/keycloak.js`;
         s.src = "https://auth.navyanalytics.com/auth/js/keycloak.js";
         document.head.append(s)
 
@@ -210,7 +214,7 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
             })
     }
 
-    doLogout() {
+    logout() {
         this._kc.logout(this.logoutOptions).then(this._kc.clearToken);
     }
 
@@ -233,7 +237,7 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
 
             this.appDataStore?.sendEvent(this.model.actions.setHasError(true))
 
-            this.doLogout();
+            this.logout();
         }
     }
 
@@ -250,6 +254,28 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
                     this.updateProfile(this._kc.profile);
                 }
             })
+    }
+
+    register(userData: Record<string, string>) {
+        let tmpId = makeGuid();
+        const userInfo: any = new UserInfo(tmpId);
+        forEachKVP(userData, (key: string, value: string) => {
+            userInfo[key] = value;
+        })
+
+        this.userProvider?.create({user: userInfo},
+            (updatedUserInfo => {
+                // we have the real id now, so remove the temp one and add the real one
+                this.addOrUpdateRepoItem(updatedUserInfo);
+            }))
+            .then(latestUser => {
+                if (latestUser != null) {
+                    this.addOrUpdateRepoItem(latestUser);
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     getUsername() {

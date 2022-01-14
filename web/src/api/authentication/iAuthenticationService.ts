@@ -4,9 +4,11 @@ import {IUserService} from "../users/iUserService";
 import {IUserProvider} from "../users/IUserProvider";
 
 export interface IAuthenticationService extends IPlugin {
-    doLogin(): any;
+    login(): any;
 
-    doLogout(): any;
+    logout(): any;
+
+    register(userData: Record<string, string>): void;
 
     getToken(): string;
 
