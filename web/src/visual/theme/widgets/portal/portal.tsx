@@ -122,7 +122,7 @@ class Portal extends Component<PortalProps, PortalState> {
 
         const { isOpen, willChangeTo=null } = this.state;
 
-        let cn = "portal";
+        let cn = `portal position-absolute ${willChangeTo ? willChangeTo : ''}`;
         if (className) {
             cn += ` ${className}`;
         }
@@ -134,10 +134,10 @@ class Portal extends Component<PortalProps, PortalState> {
                 portalContent={({ relatedWidth }) => {
                     return (
                         autoLayout ?
-                            <div {...rest} className={`position-absolute ${willChangeTo ? willChangeTo : ''}`} style={{minWidth: relatedWidth, zIndex: zIndex}}>
+                            <div {...rest} className={cn} style={{minWidth: relatedWidth, zIndex: zIndex}}>
                                 {portalContent}
                             </div> :
-                            <div {...rest} className={`position-absolute ${willChangeTo ? willChangeTo : ''}`} style={{zIndex: zIndex}}>
+                            <div {...rest} className={cn} style={{zIndex: zIndex}}>
                                 {portalContent({relatedWidth})}
                             </div>
                     );

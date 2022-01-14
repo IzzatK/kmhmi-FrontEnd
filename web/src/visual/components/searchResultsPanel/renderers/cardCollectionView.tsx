@@ -39,9 +39,7 @@ class CardCollectionView extends Component<SearchResultsProps, SearchResultsStat
                                       <div className={'d-flex w-100 justify-content-between align-items-center'}>
                                           <div className={'d-flex h-gap-3 align-items-start'}>
                                               <TooltipPortal portalContent={
-                                                  <div className={'bg-primary shadow-lg text-wrap p-2 rounded border border-secondary'}>
-                                                      {title}
-                                                  </div>
+                                                  <div>{title}</div>
                                               }>
                                                   <div className={"font-weight-semi-bold overflow-hidden title text-break"}>{title}</div>
                                               </TooltipPortal>
@@ -54,9 +52,7 @@ class CardCollectionView extends Component<SearchResultsProps, SearchResultsStat
                                           <div>
                                               {
                                                   author &&
-                                                  <div className={'bg-primary shadow-lg text-wrap p-2 rounded border border-secondary'}>
-                                                      {author}
-                                                  </div>
+                                                  <div>{author}</div>
                                               }
                                           </div>
                                       }>
@@ -64,7 +60,7 @@ class CardCollectionView extends Component<SearchResultsProps, SearchResultsStat
                                               <div className={"overflow-hidden text-break text header-2"}>{author}</div>
                                           </div>
                                       </TooltipPortal>
-                                      <div className={'d-flex justify-content-start align-items-center'}>
+                                      <div className={'d-flex justify-content-start align-items-center overflow-hidden'}>
                                           <div className={'d-flex align-items-center h-gap-2'}>
                                               {
                                                   private_tag && private_tag.map((tag: string) => {

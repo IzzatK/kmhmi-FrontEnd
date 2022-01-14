@@ -63,9 +63,7 @@ class Button extends Component<ButtonProps, ButtonState> {
                 (
                     <TooltipPortal portalContent={
                         tooltip &&
-                        <div className={'bg-primary shadow-lg header-4 text-wrap p-2 rounded border border-secondary'}>
-                            {tooltip}
-                        </div>
+                        <div>{tooltip}</div>
                     }>
                         {buttonDiv}
                     </TooltipPortal>

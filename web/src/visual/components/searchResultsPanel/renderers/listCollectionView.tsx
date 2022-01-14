@@ -56,9 +56,7 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
                             <div className={"flex-fill align-self-stretch d-flex flex-column v-gap-3"}>
                                 <div className={"d-flex w-100 flex-nowrap h-gap-2 justify-content-between"}>
                                     <TooltipPortal portalContent={
-                                        <div className={'bg-primary shadow-lg header-4 text-wrap p-2 rounded'}>
-                                            {title}
-                                        </div>
+                                        <div>{title}</div>
                                     }>
                                         <div className={"font-weight-semi-bold title text-left text-break overflow-hidden"}>{title}</div>
                                     </TooltipPortal>
@@ -134,9 +132,7 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
                                     <div>
                                         {
                                             author &&
-                                            <div className={'bg-primary shadow-lg header-4 text-wrap p-2 rounded'}>
-                                                {author}
-                                            </div>
+                                            <div>{author}</div>
                                         }
                                     </div>
                                 }>

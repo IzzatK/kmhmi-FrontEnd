@@ -322,9 +322,7 @@ const TitleCellRender = ({ tableManager, value, field, data, column, colIndex, r
     return (
         <div className={cn}>
             <TooltipPortal portalContent={
-                <div className={'bg-primary shadow-lg header-4 text-wrap p-2 rounded border border-secondary'}>
-                    {value}
-                </div>
+                <div>{value}</div>
             }>
                 <div className={"cell-text text-break overflow-hidden display-3 title"}>{value}</div>
             </TooltipPortal>
@@ -348,9 +346,7 @@ const AuthorCellRender = ({ tableManager, value, field, data, column, colIndex, 
                 <div>
                     {
                         value &&
-                        <div className={'bg-primary shadow-lg header-4 text-wrap p-2 rounded border border-secondary'}>
-                            {value}
-                        </div>
+                        <div>{value}</div>
                     }
                 </div>
             }>

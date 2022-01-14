@@ -45,13 +45,20 @@ export class TooltipPortal extends  React.Component<TooltipPortalProps, TooltipP
     }
 
     render() {
-        const { portalContent, children, ...rest } = this.props;
+        const { className, portalContent, children, ...rest } = this.props;
 
         const { isShowing } = this.state;
+
+        let cn = "tooltip-portal bg-primary shadow-lg text-wrap p-4 header-3 text-selected";
+
+        if (className) {
+            cn += ` ${className}`;
+        }
 
         return (
             <div {...rest} onMouseEnter={this._onMouseEnter} onMouseLeave={this._onMouseLeave}>
                 <Portal
+                    className={cn}
                     isOpen={isShowing}
                     portalContent={portalContent}>
                     {children}
