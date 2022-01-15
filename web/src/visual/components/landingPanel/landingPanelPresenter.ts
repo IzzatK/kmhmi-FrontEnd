@@ -1,6 +1,6 @@
 import {Presenter} from "../../../framework.visual/extras/presenter";
 import LandingPanelView from "./landingPanelView";
-import {LoginPanelDispatchProps, LoginPanelProps, LoginPanelStateProps, UserInfoVM} from "./landingPanelModel";
+import {LoginPanelDispatchProps, LoginPanelStateProps, RegistrationStatusVMType, UserInfoVM} from "./landingPanelModel";
 import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
 import {createSelector} from "@reduxjs/toolkit";
 import {authenticationService, referenceService} from "../../../application/serviceComposition";
@@ -8,6 +8,7 @@ import {ReferenceType, UserInfo} from "../../../model";
 import {RoleVM} from "../systemToolPanels/profilePanel/profilePanelModel";
 import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
 import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
+import {RegistrationStatus} from "../../../api";
 
 class LandingPanel extends Presenter {
     constructor() {
@@ -19,29 +20,12 @@ class LandingPanel extends Presenter {
 
         this.mapStateToProps = (state: any, props: any): LoginPanelStateProps => {
             return {
-                user: null,
-                admin: null,
-                className: "",
-                isAuthPending: false,
-                isAuthRequest: false,
-                isAuthApproved: false,
-                isError: false, // no common access card
-                isLogin: true,
-                isRegister: false,
-                isUnregistered: false, // not recognized as authorized user
-                roles: this.getRolesVMs(state),
-                isLogout: false,
+                registrationStatus: this.getRegistrationStatus(authenticationService.getAuthenticationState()),
             };
         }
 
         this.mapDispatchToProps = (): LoginPanelDispatchProps => {
             return {
-                onClose: () => {},
-                onGetInfo: () => {},
-                onReload: () => {},
-                onSubmit: () => {
-                    authenticationService.login()
-                },
                 onLogin: () =>  {
                     authenticationService.login();
                 },
@@ -60,11 +44,36 @@ class LandingPanel extends Presenter {
         }
     }
 
+    getRegistrationStatus = createSelector<any, RegistrationStatus, RegistrationStatusVMType>(
+        [() => authenticationService.getRegistrationStatus()],
+        (registerStatus) => {
+            let result = RegistrationStatusVMType.NONE;
+
+            switch (registerStatus) {
+                case RegistrationStatus.NONE:
+                    result = RegistrationStatusVMType.NONE;
+                    break;
+                case RegistrationStatus.SUBMITTED:
+                    result = RegistrationStatusVMType.SUBMITTED;
+                    break;
+                case RegistrationStatus.APPROVED:
+                    result = RegistrationStatusVMType.APPROVED;
+                    break;
+                case RegistrationStatus.REJECTED:
+                    result = RegistrationStatusVMType.REJECTED;
+                    break;
+
+            }
+
+            return result;
+        }
+    )
+
     register(userVM: UserInfoVM) {
         let user = new UserInfo(makeGuid());
 
-        user.dod_id = userVM.dodId ? Number.parseFloat(userVM.dodId) : -1;
-        user.first_name = userVM.fist_name || '';
+        user.dod_id = userVM.dod_id ? Number.parseFloat(userVM.dod_id) : -1;
+        user.first_name = userVM.first_name || '';
         user.last_name = userVM.last_name || '';
         user.email_address = userVM.email || '';
 

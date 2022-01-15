@@ -1,25 +1,31 @@
 import Keycloak, {KeycloakError, KeycloakLoginOptions, KeycloakLogoutOptions, KeycloakProfile} from "keycloak-js";
-import {keycloakConfig, keycloakEnabled} from "../../config/config";
-import {AuthenticationProfile, IAuthenticationService, IUserProvider, IUserService} from "../../api";
+import {keycloakConfig} from "../../config/config";
+import {
+    AuthenticationProfile,
+    IAuthenticationService,
+    IUserProvider,
+    IUserService,
+    RegistrationStatus
+} from "../../api";
 import {Nullable} from "../../framework/extras/typeUtils";
 import {IStorage} from "../../framework/api";
 import {Plugin} from "../../framework/extras/plugin";
 import {createSlice, PayloadAction, Slice} from "@reduxjs/toolkit";
-import {makeGuid} from "../../framework.visual/extras/utils/uniqueIdUtils";
 import {UserInfo} from "../../model";
-import {forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
 
 
 type AuthenticationState = {
     hasError: boolean;
     profile: AuthenticationProfile,
     userId: string
+    registrationStatus: RegistrationStatus
 }
 
 type AuthenticationSliceType = Slice<AuthenticationState,
     {
         setHasError: (state: AuthenticationState, action: PayloadAction<boolean>) => void;
         setProfile: (state:AuthenticationState, action:PayloadAction<AuthenticationProfile>) => void;
+        setRegistrationStatus: (state:AuthenticationState, action:PayloadAction<RegistrationStatus>) => void;
     }>;
 
 export class AuthenticationService extends Plugin implements IAuthenticationService {
@@ -70,6 +76,9 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
                         email: action.payload.email,
                     };
                 },
+                setRegistrationStatus: (state, action) => {
+                    state.registrationStatus = action.payload;
+                }
             },
         });
     }
@@ -205,11 +214,19 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
         return !!this._kc?.token;
     }
 
+    getRegistrationStatus(): RegistrationStatus {
+        return this.getAuthenticationState().registrationStatus;
+    }
+
+    setRegistrationStatus(status: RegistrationStatus) {
+        this.appDataStore?.sendEvent(this.model.actions.setRegistrationStatus(status))
+    }
+
     getAuthenticationState(): AuthenticationState {
         return this.appDataStore?.getState()[this.model.name];
     }
 
-    onError(message: string) {
+    private onError(message: string) {
         if (!this.getAuthenticationState().hasError) {
             alert(message);
 
@@ -219,7 +236,7 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
         }
     }
 
-    updateToken(successCallback: any) {
+    updateToken(successCallback: () => void) {
         let prevToken = this.getToken();
         return this._kc?.updateToken(5)
             .then(successCallback)
@@ -235,15 +252,37 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
     }
 
     register(userInfo: UserInfo) {
-        debugger
+        this.setRegistrationStatus(RegistrationStatus.SUBMITTED);
+
         this.userProvider?.create({user: userInfo},
             (updatedUserInfo => {
-                // we have the real id now, so remove the temp one and add the real one
                 this.addOrUpdateRepoItem(updatedUserInfo);
+
+                // need to set a temporary id
             }))
             .then(latestUser => {
+
                 if (latestUser != null) {
                     this.addOrUpdateRepoItem(latestUser);
+                }
+
+                const fetchUser = () => {
+                    if (latestUser != null) {
+                        this.userProvider.getSingle(latestUser.id)
+                            .then(userInfo => {
+                                if (userInfo != null) {
+                                    if (userInfo.account_status === 'active') {
+                                        this.setRegistrationStatus(RegistrationStatus.APPROVED);
+
+                                        if (interval != null) {
+                                            clearInterval(interval);
+                                        }
+                                    }
+                                }
+                            })
+                    }
+
+                    let interval = setInterval(fetchUser, 5000);
                 }
             })
             .catch(error => {

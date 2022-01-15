@@ -1,12 +1,9 @@
 import React, {Component} from "react";
 import './landingPanel.css';
-import {LoginPanelProps, LoginPanelState, UserInfoVM} from "./landingPanelModel";
-import {bindInstanceMethods} from "../../../framework/extras/typeUtils";
+import {LoginPanelProps, LoginPanelState, RegistrationStatusVMType, UserInfoVM} from "./landingPanelModel";
+import {bindInstanceMethods, nameOf} from "../../../framework/extras/typeUtils";
 import Button from "../../theme/widgets/button/button";
-import ComboBox from "../../theme/widgets/comboBox/comboBox";
 import TextEdit from "../../theme/widgets/textEdit/textEdit";
-import CheckBox from "../../theme/widgets/checkBox/checkBox";
-import TextArea from "../../theme/widgets/textEdit/textArea";
 
 class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
     constructor(props: any, context: any) {
@@ -15,45 +12,29 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
         bindInstanceMethods(this);
 
         this.state = {
-            isRemember: false,
-            tmpUser: {},
+            tmpUser: {
+                dod_id: '',
+                first_name: '',
+                last_name: '',
+                email: '',
+                phone: ''
+            },
         }
     }
 
     componentDidMount() {
-        const { user } = this.props;
 
-        this.setTmpUser(user || {});
     }
 
     componentDidUpdate(prevProps: Readonly<LoginPanelProps>, prevState: Readonly<LoginPanelState>, snapshot?: any) {
-        const { user } = this.props;
 
-        if (user !== prevProps.user) {
-            const {id} = user || {};
-            const {id: prevId } = prevProps.user || {};
-
-            if (id !== prevId) {
-                this.setTmpUser(user || {});
-            }
-        }
-    }
-
-    _onSubmit() {
-        const { onSubmit } = this.props;
-        const { isRemember, tmpUser } = this.state;
-
-        if (onSubmit) {
-            onSubmit({...tmpUser}, isRemember);
-        }
     }
 
     _onLogin() {
         const {onLogin} = this.props;
-        const {tmpUser} = this.state;
 
-        if (onLogin) {
-            onLogin({...tmpUser});
+        if (onLogin != null) {
+            onLogin();
         }
     }
 
@@ -61,17 +42,11 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
         const { onRegister } = this.props;
         const { tmpUser } = this.state;
 
-        if (onRegister) {
-            onRegister({...tmpUser});
-        }
-    }
+        // need to validate the entries here TODO Josiah
 
-    _toggleRemember() {
-        const { isRemember } = this.state;
-        this.setState({
-            ...this.state,
-            isRemember: !isRemember,
-        })
+        if (onRegister != null) {
+            onRegister(tmpUser);
+        }
     }
 
     onTmpUserChanged(name: string, value: string) {
@@ -92,33 +67,10 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
         });
     }
 
-    _onReload() {
-        const { onReload } = this.props;
-        if (onReload) {
-            onReload();
-        }
-    }
-
-    _onGetInfo() {
-        const { onGetInfo } = this.props;
-        if (onGetInfo) {
-            onGetInfo();
-        }
-    }
-
-    _onClose() {
-        const { onClose } = this.props;
-        if (onClose) {
-            onClose();
-        }
-
-    }
-
     render() {
-        const { className, isError, isUnregistered, isAuthPending, isAuthApproved, isLogin, isRegister, isAuthRequest, isLogout,
-        user, admin, roles } = this.props;
+        const { className, registrationStatus } = this.props;
 
-        const { isRemember, tmpUser } = this.state;
+        const { tmpUser } = this.state;
 
         let cn = 'landing-panel d-flex flex-fill justify-content-center align-items-center';
         if (className) {
@@ -127,18 +79,6 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
         // if (!isError && !isUnregistered && !isLogout) {
         //     cn += " bg-transparent"
         // }
-
-        const originalValue = user ? user["role"] : '';
-        const editValue = tmpUser ? tmpUser["role"] : '';
-
-        let roleId = editValue ? editValue : originalValue;
-        let roleTitle = '';
-        if (roles && roles[roleId || ""]) {
-            roleTitle = roles[roleId || ""].title;
-        }
-        else {
-            roleTitle = roleId || "";
-        }
 
         return (
             <div className={cn}>
@@ -157,7 +97,7 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
                         </div>
 
                         {
-                            !isAuthPending && !isAuthApproved &&
+                            (registrationStatus === RegistrationStatusVMType.NONE) &&
                             <div className={"d-flex flex-column popup v-gap-5"}>
                                 <div className={"text-selected font-weight-semi-bold px-5 pt-5"}>
                                     <div>New Users</div>
@@ -170,12 +110,12 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
                                         <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>Last Name:</div>
                                         <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>Email:</div>
                                         <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>Phone:</div>
-                                        <TextEdit value={tmpUser["dodId"] ? tmpUser["dodId"] : user?.dodId} name={"dodId"} autoFocus={true} placeholder={"DoD ID"} onSubmit={this.onTmpUserChanged}/>
+                                        <TextEdit value={tmpUser.dod_id} name={nameOf<UserInfoVM>("dod_id")} autoFocus={true} placeholder={"DoD ID"} onSubmit={this.onTmpUserChanged}/>
                                         {/*<div className={"align-self-center text-info font-weight-light display-4"}>{user?.name}</div>*/}
-                                        <TextEdit value={tmpUser["first_name"] ? tmpUser["first_name"] : user?.first_name} name={"first_name"} autoFocus={true} placeholder={"First Name"} onSubmit={this.onTmpUserChanged}/>
-                                        <TextEdit value={tmpUser["last_name"] ? tmpUser["last_name"] : user?.last_name} name={"last_name"} autoFocus={true} placeholder={"Last Name"} onSubmit={this.onTmpUserChanged}/>
-                                        <TextEdit value={tmpUser["email"] ? tmpUser["email"] : user?.email} name={"email"} autoFocus={true} placeholder={"Email Address"} onSubmit={this.onTmpUserChanged}/>
-                                        <TextEdit value={tmpUser["phone"] ? tmpUser["phone"] : user?.phone} name={"phone"} placeholder={"Phone Number"} onSubmit={this.onTmpUserChanged}/>
+                                        <TextEdit value={tmpUser.first_name} name={nameOf<UserInfoVM>("first_name")} autoFocus={true} placeholder={"First Name"} onSubmit={this.onTmpUserChanged}/>
+                                        <TextEdit value={tmpUser.last_name} name={nameOf<UserInfoVM>("last_name")} autoFocus={true} placeholder={"Last Name"} onSubmit={this.onTmpUserChanged}/>
+                                        <TextEdit value={tmpUser.email} name={nameOf<UserInfoVM>("email")} autoFocus={true} placeholder={"Email Address"} onSubmit={this.onTmpUserChanged}/>
+                                        <TextEdit value={tmpUser.phone} name={nameOf<UserInfoVM>("phone")} placeholder={"Phone Number"} onSubmit={this.onTmpUserChanged}/>
                                     </div>
                                 </div>
 
@@ -186,7 +126,7 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
                         }
 
                         {
-                            isAuthPending &&
+                            (registrationStatus === RegistrationStatusVMType.SUBMITTED) &&
                             <div className={"d-flex justify-content-center align-items-center"}>
                                 <div className={"d-flex flex-column popup v-gap-5"}>
                                     <div className={"text-selected font-weight-semi-bold px-5 pt-5"}>
@@ -195,20 +135,19 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
 
                                     <div className={"d-flex flex-column justify-content-center align-items-center v-gap-5 px-5 mx-5"}>
                                         {
-                                            admin &&
                                             <div className={"d-flex flex-column justify-content-center align-items-center v-gap-5"}>
-                                                <div className={"text-info font-weight-light display-3 pt-5"}>The following admin needs to authorize you in order to access CIC Knowledge Management</div>
-                                                <div className={"d-flex admin header-2 h-gap-5 pt-5"}>
-                                                    <div>{admin.name}</div>
-                                                    <div className={"d-flex h-gap-2"}>
-                                                        <div>PHONE</div>
-                                                        <div>{admin.phone}</div>
-                                                    </div>
-                                                    <div className={"d-flex h-gap-2"}>
-                                                        <div>EMAIL</div>
-                                                        <div>{admin.email}</div>
-                                                    </div>
-                                                </div>
+                                                <div className={"text-info font-weight-light display-3 pt-5"}>An admin needs to authorize you in order to access CIC Knowledge Management</div>
+                                                {/*<div className={"d-flex admin header-2 h-gap-5 pt-5"}>*/}
+                                                {/*    <div>{admin.name}</div>*/}
+                                                {/*    <div className={"d-flex h-gap-2"}>*/}
+                                                {/*        <div>PHONE</div>*/}
+                                                {/*        <div>{admin.phone}</div>*/}
+                                                {/*    </div>*/}
+                                                {/*    <div className={"d-flex h-gap-2"}>*/}
+                                                {/*        <div>EMAIL</div>*/}
+                                                {/*        <div>{admin.email}</div>*/}
+                                                {/*    </div>*/}
+                                                {/*</div>*/}
                                             </div>
                                         }
                                         <div className={"text-info font-weight-light display-3 pt-5"}>Please check back once your authorization has been approved.</div>
@@ -220,7 +159,7 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
                         }
 
                         {
-                            isAuthApproved &&
+                            (registrationStatus === RegistrationStatusVMType.APPROVED) &&
                             <div className={"d-flex justify-content-center align-items-center"}>
                                 <div className={"d-flex flex-column popup v-gap-5"}>
                                     <div className={"text-selected font-weight-semi-bold px-5 pt-5"}>

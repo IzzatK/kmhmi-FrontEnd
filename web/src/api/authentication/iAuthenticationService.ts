@@ -14,6 +14,9 @@ export interface IAuthenticationService extends IPlugin {
     getToken(): string;
     getUserProfile(): {firstName: string, lastName: string, username: string, id: string, email: string };
     getUserId(): any;
+    getRegistrationStatus(): RegistrationStatus;
+
+    getAuthenticationState(): any;
 
     setAppDataStore(appDataStore: IStorage): void;
     setUserService(userService: IUserService): void;
@@ -26,4 +29,11 @@ export type AuthenticationProfile = {
     firstName: string,
     lastName: string,
     email: string
+}
+
+export enum RegistrationStatus {
+    NONE,
+    SUBMITTED,
+    APPROVED,
+    REJECTED
 }
