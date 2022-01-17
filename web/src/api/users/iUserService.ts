@@ -32,7 +32,7 @@ export interface IUserService extends IPlugin {
 
     getPendingUsers(): Record<string, UserInfo>;
 
-    acceptUserRequest(id: string): void;
+    acceptUserRequest(id: string, role: string): void;
 
     declineUserRequest(id: string): void;
 

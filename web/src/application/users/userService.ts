@@ -219,12 +219,13 @@ export class UserService extends Plugin implements IUserService {
         return this.getPendingUsersSelector(this.getRepoState());
     }
 
-    acceptUserRequest(id: string) {
+    acceptUserRequest(id: string, role: string) {
 
         let repoItem = this.getRepoItem<UserInfo>(UserInfo.class, id);
 
         if (repoItem != null) {
             repoItem.account_status = 'active';
+            repoItem.role = role;
             repoItem.approved_by = this.getCurrentUserId();
             repoItem.date_approved = getDateWithoutTime(new Date());
 
