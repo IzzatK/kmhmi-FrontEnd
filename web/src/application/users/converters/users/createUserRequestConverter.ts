@@ -45,10 +45,10 @@ export class CreateUserRequestConverter extends Converter<any,any>{
             phone_number: getTextValueOrDefault(nameOf<UserInfo>('phone_number'), ''),
             dept_id: 1004,
             preferred_results_view: '',
-            account_status: 'active',
+            account_status: getTextValueOrDefault(nameOf<UserInfo>('account_status'), 'inactive'),
             // roles: [1021],
-            approved_by: '2826e532-6277-4950-b534-0531583b2c6e',
-            date_approved: '2022-01-01'
+            approved_by: getTextValueOrDefault(nameOf<UserInfo>('approved_by'), '2826e532-6277-4950-b534-0531583b2c6e'),
+            date_approved: getTextValueOrDefault(nameOf<UserInfo>('date_approved'), '1979-01-01'),
         }
 
         return serverUser;
