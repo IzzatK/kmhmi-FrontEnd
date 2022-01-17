@@ -43,10 +43,10 @@ export class CreateUserRequestConverter extends Converter<any,any>{
             last_name: getTextValueOrDefault(nameOf<UserInfo>('last_name'), ''),
             email_address: getTextValueOrDefault(nameOf<UserInfo>('email_address'), ''),
             phone_number: getTextValueOrDefault(nameOf<UserInfo>('phone_number'), ''),
-            dept_id: 1007,
+            dept_id: 1004,
             preferred_results_view: '',
             account_status: 'Active',
-            roles: [1021],
+            // roles: [1021],
             approved_by: '2826e532-6277-4950-b534-0531583b2c6e',
             date_approved: '2022-01-01'
         }
