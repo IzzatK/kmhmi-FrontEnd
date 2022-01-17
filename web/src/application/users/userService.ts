@@ -42,7 +42,7 @@ export class UserService extends Plugin implements IUserService {
                     // }
                 })
 
-                return users;
+                return result;
             }
         )
 
@@ -58,7 +58,7 @@ export class UserService extends Plugin implements IUserService {
                     }
                 })
 
-                return users;
+                return result;
             }
         )
     }
