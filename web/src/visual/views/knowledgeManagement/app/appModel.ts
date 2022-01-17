@@ -23,5 +23,5 @@ export type UserInfoVM = {
 }
 
 export type State = {
-
+    loading: boolean;
 }

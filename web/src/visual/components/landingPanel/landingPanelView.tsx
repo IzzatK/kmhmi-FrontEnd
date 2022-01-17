@@ -83,22 +83,22 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
         return (
             <div className={cn}>
                 <div className={"d-flex flex-fill position-relative h-100"}>
-                    <div className={"landing-page-background position-absolute"}/>
-                    <div className={'d-flex flex-fill justify-content-around align-items-center'} style={{zIndex: 999}}>
+                    <div className={"position-absolute"}/>
+                    <div className={'d-flex flex-fill justify-content-between'} style={{zIndex: 999}}>
 
-                        <div className={"d-flex flex-column popup v-gap-5"}>
-                            <div className={"text-selected font-weight-semi-bold px-5 pt-5"}>
+                        <div className={"d-flex flex-column flex-fill v-gap-5 align-self-center"}>
+                            <div className={"d-flex text-selected font-weight-semi-bold px-5 pt-5 justify-content-center"}>
                                 <div>Existing Users</div>
                             </div>
 
-                            <div className={"d-flex justify-content-end py-4 px-5 bg-advisory"}>
+                            <div className={"d-flex justify-content-center py-4 px-5"}>
                                 <Button text={"Sign In"} light={true} onClick={() => this._onLogin()}/>
                             </div>
                         </div>
 
                         {
                             (registrationStatus === RegistrationStatusVMType.NONE) &&
-                            <div className={"d-flex flex-column popup v-gap-5"}>
+                            <div className={"popup v-gap-5 w-33"}>
                                 <div className={"text-selected font-weight-semi-bold px-5 pt-5"}>
                                     <div>New Users</div>
                                 </div>
@@ -119,7 +119,7 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
                                     </div>
                                 </div>
 
-                                <div className={"d-flex justify-content-end py-4 pr-5 bg-advisory"}>
+                                <div className={"d-flex justify-content-end py-4 pr-5 bg-advisory mx-5"}>
                                     <Button text={"Register"} light={true} onClick={() => this._onRegister()}/>
                                 </div>
                             </div>
@@ -127,34 +127,32 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
 
                         {
                             (registrationStatus === RegistrationStatusVMType.SUBMITTED) &&
-                            <div className={"d-flex justify-content-center align-items-center"}>
-                                <div className={"d-flex flex-column popup v-gap-5"}>
-                                    <div className={"text-selected font-weight-semi-bold px-5 pt-5"}>
-                                        <div className={"d-flex justify-content-center mt-5 pt-5"}>Your Authorization is Pending...</div>
-                                    </div>
-
-                                    <div className={"d-flex flex-column justify-content-center align-items-center v-gap-5 px-5 mx-5"}>
-                                        {
-                                            <div className={"d-flex flex-column justify-content-center align-items-center v-gap-5"}>
-                                                <div className={"text-info font-weight-light display-3 pt-5"}>An admin needs to authorize you in order to access CIC Knowledge Management</div>
-                                                {/*<div className={"d-flex admin header-2 h-gap-5 pt-5"}>*/}
-                                                {/*    <div>{admin.name}</div>*/}
-                                                {/*    <div className={"d-flex h-gap-2"}>*/}
-                                                {/*        <div>PHONE</div>*/}
-                                                {/*        <div>{admin.phone}</div>*/}
-                                                {/*    </div>*/}
-                                                {/*    <div className={"d-flex h-gap-2"}>*/}
-                                                {/*        <div>EMAIL</div>*/}
-                                                {/*        <div>{admin.email}</div>*/}
-                                                {/*    </div>*/}
-                                                {/*</div>*/}
-                                            </div>
-                                        }
-                                        <div className={"text-info font-weight-light display-3 pt-5"}>Please check back once your authorization has been approved.</div>
-                                    </div>
-
-                                    <div className={"d-flex justify-content-end py-4 pr-5 bg-advisory"}/>
+                            <div className={"popup v-gap-5 w-33"}>
+                                <div className={"text-selected font-weight-semi-bold px-5 pt-5"}>
+                                    <div className={"d-flex justify-content-center mt-5 pt-5"}>Your Authorization is Pending...</div>
                                 </div>
+
+                                <div className={"d-flex flex-column justify-content-center align-items-center v-gap-5 px-5 mx-5"}>
+                                    {
+                                        <div className={"d-flex flex-column justify-content-center align-items-center v-gap-5"}>
+                                            <div className={"text-info font-weight-light display-3 pt-5"}>An admin needs to authorize you in order to access CIC Knowledge Management</div>
+                                            {/*<div className={"d-flex admin header-2 h-gap-5 pt-5"}>*/}
+                                            {/*    <div>{admin.name}</div>*/}
+                                            {/*    <div className={"d-flex h-gap-2"}>*/}
+                                            {/*        <div>PHONE</div>*/}
+                                            {/*        <div>{admin.phone}</div>*/}
+                                            {/*    </div>*/}
+                                            {/*    <div className={"d-flex h-gap-2"}>*/}
+                                            {/*        <div>EMAIL</div>*/}
+                                            {/*        <div>{admin.email}</div>*/}
+                                            {/*    </div>*/}
+                                            {/*</div>*/}
+                                        </div>
+                                    }
+                                    <div className={"text-info font-weight-light display-3 pt-5"}>Please check back once your authorization has been approved.</div>
+                                </div>
+
+                                <div className={"d-flex justify-content-end py-4 pr-5 bg-advisory mx-5"}/>
                             </div>
                         }
 
