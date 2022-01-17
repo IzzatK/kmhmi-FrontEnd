@@ -3,7 +3,7 @@ import {forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
 import {ReferenceType} from "../../model";
 import {UserInfo} from "../../model";
 import {IAuthorizationService, IUserService} from "../../api";
-import {Nullable} from "../../framework/extras/typeUtils";
+import {nameOf, Nullable} from "../../framework/extras/typeUtils";
 import {ISelectionService} from "../../framework/api";
 import {IReferenceService} from "../../api";
 import {Plugin} from "../../framework/extras/plugin";
@@ -92,6 +92,8 @@ export class UserService extends Plugin implements IUserService {
         forEachKVP(userData, (key: string, value: string) => {
             userInfo[key] = value;
         })
+
+        userInfo[nameOf<UserInfo>('account_status')] = 'Active';
 
         this.addOrUpdateRepoItem(userInfo);
 
