@@ -14,9 +14,11 @@ export type ProfilePanelProps = {
     user?: UserInfoVM;
     onSelect?: () => void;
     onCancel?: () => void;
-    userRequests?: UserRequestInfoVM[];
-    userRequest?: UserRequestInfoVM;
-    onAcceptUserRequest?: (id: string) => void;
+    // userRequests?: UserRequestInfoVM[];
+    // userRequest?: UserRequestInfoVM;
+    userRequests?: UserInfoVM[];
+    userRequest?: UserInfoVM;
+    onAcceptUserRequest?: (id: string, role: string) => void;
     onDeclineUserRequest?: (id: string) => void;
     permissions: PermissionsVM;
 }

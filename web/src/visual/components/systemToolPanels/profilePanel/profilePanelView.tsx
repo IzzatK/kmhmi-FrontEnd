@@ -226,10 +226,11 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         })
     }
 
-    onAcceptUserRequest(id: string) {
+    onAcceptUserRequest(id: string, role: string) {
         const { onAcceptUserRequest } = this.props;
 
-        if (onAcceptUserRequest) onAcceptUserRequest(id);
+
+        if (onAcceptUserRequest) onAcceptUserRequest(id, role);
     }
 
     onDeclineUserRequest(id: string) {
@@ -389,10 +390,11 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                                     <div className={'py-3'}>User Requests</div>
                                 </div>
                                 <div className={'mr-4'}>
+                                    <div className={'v-gap-3 mr-4'}>
+                                        {userRequestViews}
+                                    </div>
                                     <ScrollBar renderTrackHorizontal={false}>
-                                        <div className={'v-gap-3 mr-4'}>
-                                            {userRequestViews}
-                                        </div>
+
                                     </ScrollBar>
                                 </div>
 

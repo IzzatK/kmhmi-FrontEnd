@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {ProfilePanelProps, ProfilePanelState} from "./profilePanelModel";
+import {ProfilePanelProps, ProfilePanelState, UserInfoVM} from "./profilePanelModel";
 import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
 import Button from "../../../theme/widgets/button/button";
 import Card from "../../../theme/widgets/card/card";
@@ -41,12 +41,57 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
         }
     }
 
+    onTmpUserChanged(name: string, value: string | undefined) {
+
+        const {tmpUser} = this.state;
+        const {userRequest} = this.props;
+        const {currentUser} = this.props;
+
+        if (name === 'account_status' && value === 'active') {
+            if (userRequest) {
+                let nextUser: UserInfoVM = {
+                    ...tmpUser,
+                    [name]: value,
+                    ['approved_by']: currentUser?  currentUser.id : "",
+                    ['date_approved']: Date.now().toString(),
+                };
+                if (userRequest[name] === value) {
+                    delete nextUser[name];
+                    delete nextUser['approved_by'];
+                    delete nextUser['date_approved'];
+                }
+                this.setTmpUser(nextUser);
+            }
+        } else {
+            if (userRequest) {
+                let nextUser = {
+                    ...tmpUser,
+                    [name]: value
+                };
+                if (userRequest[name] === value) {
+                    delete nextUser[name];
+                }
+                this.setTmpUser(nextUser);
+            }
+        }
+    }
+
+    setTmpUser(userRequest: UserInfoVM) {
+        this.setState({
+            ...this.state,
+            tmpUser: userRequest
+        });
+    }
+
     onAccept() {
         const { onAcceptUserRequest, userRequest } = this.props;
+        const { tmpUser } = this.state;
+
+        // this.onTmpUserChanged("account_status", "Active");
 
         if (userRequest) {
             const { id } = userRequest;
-            if (onAcceptUserRequest) onAcceptUserRequest(id);
+            if (onAcceptUserRequest) onAcceptUserRequest(id || "", tmpUser.role || "");
         }
     }
 
@@ -55,7 +100,7 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
 
         if (userRequest) {
             const { id } = userRequest;
-            if (onDeclineUserRequest) onDeclineUserRequest(id);
+            if (onDeclineUserRequest) onDeclineUserRequest(id || "");
         }
     }
 
@@ -77,7 +122,7 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
             }
         }
 
-        let durationTitle = userRequest?.duration || '';
+        // let durationTitle = userRequest?.duration || '';
 
         return (
             <Card className={'user-request flex-column justify-content-start header-4 align-items-stretch'}
@@ -86,31 +131,46 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
                           onClick={() => this.toggleSelected()}
                           className={cn}>
                           <div className={'d-flex h-gap-4 px-5 py-4'}>
-                              <div className={'header-1 font-weight-semi-bold'}>Request: {userRequest?.name}</div>
+                              <div className={'header-1 font-weight-semi-bold'}>Request: {userRequest?.first_name + (userRequest?.last_name ? " " + userRequest?.last_name : "")}</div>
                           </div>
                       </div>
                   }
                   body={
                       <div className={'p-3'}>
-                          <div className={'request-info-grid'}>
-                              <div className={'header-2 text-right'}>Role:</div>
-                              <div className={'header-2 text-right text-wrap'}>Reason for Authentication:</div>
-                              <div className={'d-flex justify-content-between'}>
-                                  <ComboBox title={roleTitle} disable={true}/>
-                                  <div className={'header-2 text-accent'}>for</div>
-                                  <ComboBox title={durationTitle} disable={true}/>
-                              </div>
-                              <div className={'header-1 font-italic font-weight-light text-info'}>{userRequest?.comment}</div>
+                          {/*<div className={'request-info-grid'}>*/}
+                          {/*    <div className={'header-2 text-right'}>Role:</div>*/}
+                          {/*    <div className={'header-2 text-right text-wrap'}>Reason for Authentication:</div>*/}
+                          {/*    <div className={'d-flex justify-content-between'}>*/}
+                          {/*        <ComboBox title={roleTitle} disable={true}/>*/}
+                          {/*        <div className={'header-2 text-accent'}>for</div>*/}
+                          {/*        <ComboBox title={durationTitle} disable={true}/>*/}
+                          {/*    </div>*/}
+                          {/*    <div className={'header-1 font-italic font-weight-light text-info'}>{userRequest?.comment}</div>*/}
+                          {/*</div>*/}
+
+                          <div className={'pending-user-grid'}>
+                              <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Email:</div>
+                              <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Phone:</div>
+                              <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Role:</div>
+                              <div className={'header-1 font-weight-semi-bold align-self-center'}>{userRequest?.email_address}</div>
+                              <div className={'header-1 font-weight-semi-bold align-self-center'}>{userRequest?.phone_number}</div>
+                              <ComboBox
+                                  className={"align-self-center"}
+
+                                  onSelect={(value: string) => this.onTmpUserChanged("role", value)}
+                                  title={roleTitle}
+                                  items={roles}
+                              />
                           </div>
 
-                          <div className={"d-flex justify-content-between"}>
-                              <div className={"d-flex info-button justify-content-start"}>
-                                  <div className={'d-flex h-gap-3 align-items-center'}>
-                                      <InfoSVG className={'small-image-container'}/>
-                                      <div className={'header-2'}>More Info</div>
-                                  </div>
-                              </div>
-                              <div className={'d-flex h-gap-2 justify-content-end'}>
+                          <div className={"d-flex flex-fill justify-content-between"}>
+                              {/*<div className={"d-flex info-button justify-content-start"}>*/}
+                              {/*    <div className={'d-flex h-gap-3 align-items-center'}>*/}
+                              {/*        <InfoSVG className={'small-image-container'}/>*/}
+                              {/*        <div className={'header-2'}>More Info</div>*/}
+                              {/*    </div>*/}
+                              {/*</div>*/}
+                              <div className={'d-flex flex-fill h-gap-2 justify-content-end'}>
                                   <Button text={"Decline"} highlight={true} orientation={"horizontal"} onClick={() => this.onDecline()} selected={false} disabled={false} className={"px-5"}/>
                                   <Button text={"Accept"} orientation={"horizontal"} onClick={() => this.onAccept()} selected={false} disabled={false} className={"px-5"}/>
                               </div>
