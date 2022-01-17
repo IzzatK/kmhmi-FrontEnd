@@ -120,7 +120,7 @@ class ProfilePanel extends Presenter {
     getCurrentUserVM = createSelector(
         [userService.getCurrentUser],
         (currentUser) => {
-            const { id="", dod_id=-1, first_name="", last_name="", email_address="", phone_number="", department="",
+            const { id="", dod_id='', first_name="", last_name="", email_address="", phone_number="", department="",
                 account_status="", role="", approved_by="", date_approved=""} = currentUser || {};
 
             let itemVM: UserInfoVM = {

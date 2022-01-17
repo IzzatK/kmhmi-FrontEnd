@@ -47,7 +47,7 @@ export type UserInfoVM = {
     role?: string;
     email_address?: string;
     phone_number?: string;
-    dod_id?: number;
+    dod_id?: string;
     account_status?: string;
     approved_by?: string;
     date_approved?: string;

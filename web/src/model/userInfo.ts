@@ -3,7 +3,7 @@ import {RepoItem} from "../framework/services/repoService/repoItem";
 export class UserInfo extends RepoItem  {
     public static class: string = 'UserInfo';
 
-    dod_id: number = -1;
+    dod_id: string = '';
     first_name: string = '';
     last_name: string = '';
     email_address: string = '';

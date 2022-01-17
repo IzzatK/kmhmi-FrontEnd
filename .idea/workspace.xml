@@ -7,13 +7,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="account status">
+    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="working on registration">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/application/users/converters/users/createUserRequestConverter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/application/users/converters/users/createUserRequestConverter.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/application/users/userService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/application/users/userService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/framework/services/httpService/httpService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/framework/services/httpService/httpService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/model/userInfo.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/model/userInfo.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/visual/components/landingPanel/landingPanelPresenter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/landingPanel/landingPanelPresenter.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profileInfoView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profileInfoView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelModel.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelPresenter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelPresenter.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +100,7 @@
       <workItem from="1641418866388" duration="43700000" />
       <workItem from="1641924273826" duration="1721000" />
       <workItem from="1641931920849" duration="29820000" />
-      <workItem from="1642428259768" duration="4718000" />
+      <workItem from="1642428259768" duration="5453000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1641329914789</created>
@@ -187,7 +186,14 @@
       <option name="project" value="LOCAL" />
       <updated>1642431812364</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="working on registration">
+      <created>1642433142249</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1642433142249</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -229,6 +235,7 @@
     <MESSAGE value="anthony broke stuff" />
     <MESSAGE value="hard code create user for testing" />
     <MESSAGE value="account status" />
-    <option name="LAST_COMMIT_MESSAGE" value="account status" />
+    <MESSAGE value="working on registration" />
+    <option name="LAST_COMMIT_MESSAGE" value="working on registration" />
   </component>
 </project>

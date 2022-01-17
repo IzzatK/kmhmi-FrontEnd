@@ -72,7 +72,7 @@ class LandingPanel extends Presenter {
     register(userVM: UserInfoVM) {
         let user = new UserInfo(makeGuid());
 
-        user.dod_id = userVM.dod_id ? Number.parseFloat(userVM.dod_id) : -1;
+        user.dod_id = userVM.dod_id || '';
         user.first_name = userVM.first_name || '';
         user.last_name = userVM.last_name || '';
         user.email_address = userVM.email || '';
