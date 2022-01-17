@@ -23,6 +23,8 @@ export class DocumentService extends Plugin implements IDocumentService {
 
     private readonly pendingFilesRaw: Record<string, any>;
 
+    private pendingFilesQueue: any[];
+
     getAllDocumentsSelector: OutputSelector<unknown, Record<string, DocumentInfo>, (res1: Record<string, DocumentInfo>, res2: any) => Record<string, DocumentInfo>>;
     getSearchDocumentsSelector: OutputSelector<unknown, Record<string, DocumentInfo>, (res: Record<string, DocumentInfo>) => Record<string, DocumentInfo>>;
     getPendingDocumentsSelector: OutputSelector<unknown, Record<string, DocumentInfo>, (res: Record<string, DocumentInfo>) => Record<string, DocumentInfo>>;
@@ -33,6 +35,8 @@ export class DocumentService extends Plugin implements IDocumentService {
         this.appendClassName(DocumentService.class);
 
         this.pendingFilesRaw = {};
+
+        this.pendingFilesQueue = [];
 
         this.getAllDocumentsSelector = createSelector(
             [() => this.getAll<DocumentInfo>(DocumentInfo.class), () => this.userService?.getCurrentUserId()],
@@ -264,8 +268,21 @@ export class DocumentService extends Plugin implements IDocumentService {
 
     startUpload(fileList: any) {
         forEach(fileList, (item: any) => {
+            this.pendingFilesQueue.push(item);
+        });
 
-            const file = item;
+        for(let i = 0; i < this.pendingFilesQueue.length; i++) {
+            console.log(JSON.stringify(this.pendingFilesQueue[i]));
+        }
+
+        let hasNext = false;
+
+        if (this.pendingFilesQueue[0]) {
+            hasNext = true;
+        }
+
+        do {
+            const file = this.pendingFilesQueue.shift();
 
             const {name} = file;
 
@@ -316,11 +333,77 @@ export class DocumentService extends Plugin implements IDocumentService {
                     if (document != null) {
                         this.addOrUpdateRepoItem(document);
                     }
+                    hasNext = this.pendingFilesQueue[0] !== undefined;
                 })
                 .catch(error => {
 
                 })
-        });
+
+        }
+        while (hasNext);
+
+        //TODO check if queue has items in it - before adding new items
+        //only run upload loop if queue is empty - if it is not empty, another loop is probably? running
+
+
+        // forEach(fileList, (item: any) => {
+        //
+        //     const file = item;
+        //
+        //     const {name} = file;
+        //
+        //     // since we are posting and don't have an id yet, use a placeholder
+        //     let tmpId = name;
+        //
+        //     // redux raw file
+        //     this.pendingFilesRaw[tmpId] = file;
+        //
+        //     // put the file in the pending documents list
+        //     // id will be auto generated client side
+        //     let tmpFileInfo = new DocumentInfo(tmpId);
+        //     tmpFileInfo.file_name = name;
+        //     tmpFileInfo.status = 'Uploading';
+        //     tmpFileInfo.isPending = true;
+        //
+        //     this.addOrUpdateRepoItem(tmpFileInfo)
+        //
+        //     let requestData = {
+        //         id: tmpId,
+        //         pendingFilesRaw: this.pendingFilesRaw,
+        //         file
+        //     };
+        //
+        //     this.documentProvider?.create(requestData,
+        //         (updatedDocument) => {
+        //             const {id, status} = updatedDocument;
+        //
+        //             if (this.pendingFilesRaw[tmpId]) {
+        //                 delete this.pendingFilesRaw[tmpId];
+        //
+        //                 // put the document back in with the new id
+        //                 this.pendingFilesRaw[id] = file;
+        //
+        //                 updatedDocument.file_name = name;
+        //                 updatedDocument.status = 'Processing';
+        //                 updatedDocument.isPending = true;
+        //             } else if (status === "failed") {
+        //                 updatedDocument.file_name = name;
+        //                 updatedDocument.status = 'Processing';
+        //                 updatedDocument.isPending = true;
+        //             }
+        //
+        //             this.addOrUpdateRepoItem(updatedDocument);
+        //         })
+        //         .then(document => {
+        //             this.removeAllById(DocumentInfo.class, tmpId);
+        //             if (document != null) {
+        //                 this.addOrUpdateRepoItem(document);
+        //             }
+        //         })
+        //         .catch(error => {
+        //
+        //         })
+        // });
     }
 
     cancelUpload(id: string) {
