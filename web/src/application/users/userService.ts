@@ -29,6 +29,19 @@ export class UserService extends Plugin implements IUserService {
         this.getActiveUsersSelector = createSelector<any, Record<string, UserInfo>, Record<string, UserInfo>>(
             [() => this.getAll<UserInfo>(UserInfo.class)],
             (users) => {
+
+                let result:Record<string, UserInfo> = {};
+                forEach(users, (user: UserInfo) => {
+                    let accountStatus = user.account_status || '';
+                    accountStatus = accountStatus.toUpperCase();
+                    if (accountStatus === 'ACTIVE') {
+                        result[user.id] = user;
+                    }
+                    // else if (accountStatus !== 'INACTIVE') {
+                    //     this.warn(`User with the id ${user.id} is has an account status of '${user.account_status}'. User will not appear in active or inactive lists `)
+                    // }
+                })
+
                 return users;
             }
         )
@@ -40,7 +53,7 @@ export class UserService extends Plugin implements IUserService {
                 let result:Record<string, UserInfo> = {};
                 forEach(users, (user: UserInfo) => {
                     let accountStatus = user.account_status || '';
-                    if (accountStatus.toUpperCase() === 'ACTIVE') {
+                    if (accountStatus.toUpperCase() !== 'ACTIVE') {
                         result[user.id] = user;
                     }
                 })
