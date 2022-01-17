@@ -76,6 +76,7 @@ class LandingPanel extends Presenter {
         user.first_name = userVM.first_name || '';
         user.last_name = userVM.last_name || '';
         user.email_address = userVM.email || '';
+        user.phone_number = userVM.phone || '';
 
         authenticationService.register(user);
     }

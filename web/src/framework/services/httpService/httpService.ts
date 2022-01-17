@@ -50,12 +50,12 @@ export class HttpService extends BasePlugin implements IHttpService {
         let firstName = userProfile?.firstName || '';
         let lastName = userProfile?.lastName || '';
 
-        headers.append('km_token', `bearer ${this.authenticationService?.getToken()}`);
-        headers.append('km_user_name', username);
-        headers.append('km_user_id', id);
-        headers.append('km_email', email);
-        headers.append('km_first_name', firstName);
-        headers.append('km_last_name', lastName);
+        headers.append('km-token', `bearer ${this.authenticationService?.getToken()}`);
+        headers.append('km-user-name', username);
+        headers.append('km-user-id', id);
+        headers.append('km-email', email);
+        headers.append('km-first-name', firstName);
+        headers.append('km-last-name', lastName);
 
         if (body) {
             if (format === 'form') {

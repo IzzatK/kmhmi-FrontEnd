@@ -22,19 +22,19 @@ export class CreateUserRequestConverter extends Converter<any,any>{
             return result;
         }
 
-        let roles = [];
-        if (dictionary['role']) {
-            roles.push(dictionary['role']);
-        }
-        else {
-            let references = repoService.getAll(ReferenceInfo.class);
-            forEach(references, (referenceInfo: ReferenceInfo) => {
-                if (referenceInfo.type === ReferenceType.ROLE && referenceInfo.title.toUpperCase() == 'VIEWER') {
-                    roles.push(referenceInfo.id)
-                    return true;
-                }
-            });
-        }
+        // let roles = [];
+        // if (dictionary['role']) {
+        //     roles.push(dictionary['role']);
+        // }
+        // else {
+        //     let references = repoService.getAll(ReferenceInfo.class);
+        //     forEach(references, (referenceInfo: ReferenceInfo) => {
+        //         if (referenceInfo.type === ReferenceType.ROLE && referenceInfo.title.toUpperCase() == 'VIEWER') {
+        //             roles.push(referenceInfo.id)
+        //             return true;
+        //         }
+        //     });
+        // }
 
         let serverUser = {
             dod_id: getTextValueOrDefault(nameOf<UserInfo>('dod_id'), '-1'),
@@ -45,7 +45,7 @@ export class CreateUserRequestConverter extends Converter<any,any>{
             phone_number: getTextValueOrDefault(nameOf<UserInfo>('phone_number'), ''),
             dept_id: 1004,
             preferred_results_view: '',
-            account_status: 'Active',
+            account_status: 'active',
             // roles: [1021],
             approved_by: '2826e532-6277-4950-b534-0531583b2c6e',
             date_approved: '2022-01-01'

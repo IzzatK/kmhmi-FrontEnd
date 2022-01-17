@@ -93,7 +93,7 @@ export class UserService extends Plugin implements IUserService {
             userInfo[key] = value;
         })
 
-        userInfo[nameOf<UserInfo>('account_status')] = 'Active';
+        userInfo[nameOf<UserInfo>('account_status')] = 'active';
 
         this.addOrUpdateRepoItem(userInfo);
 
