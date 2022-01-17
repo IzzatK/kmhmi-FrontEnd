@@ -45,7 +45,7 @@ class ProfilePanel extends Presenter {
         this.mapStateToProps = (state: any, props: any) => {
             return {
                 users: this.getManagedUserVMs(state),
-                userLookUp: userService.getUsers(),
+                userLookUp: userService.getActiveUsers(),
                 currentUser: this.getCurrentUserVM(state),
                 roles: this.getRolesVMs(state),
                 departments: this.getDepartmentVMs(state),
@@ -80,7 +80,7 @@ class ProfilePanel extends Presenter {
     )
 
     getManagedUserVMs = createSelector(
-        [userService.getUsers, userService.getCurrentUser],
+        [userService.getActiveUsers, userService.getCurrentUser],
         (items, currentUser) => {
             let itemVMs: Record<string, UserInfoVM> = {};
 

@@ -33,7 +33,7 @@ class SearchResultsPanel extends Presenter {
                 selectedResultView: this.getSelectedResultViewId(state),
                 sortTypes: this.getSortVMs(state),
                 selectedSort: this.getSelectedSort(state),
-                userLookup: userService.getUsers(),
+                userLookup: userService.getActiveUsers(),
             };
         }
 

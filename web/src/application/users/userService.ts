@@ -1,6 +1,6 @@
 import {makeGuid} from "../../framework.visual/extras/utils/uniqueIdUtils";
-import {forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
-import {ReferenceType} from "../../model";
+import {forEach, forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
+import {DocumentInfo, ReferenceType} from "../../model";
 import {UserInfo} from "../../model";
 import {IAuthorizationService, IUserService} from "../../api";
 import {nameOf, Nullable} from "../../framework/extras/typeUtils";
@@ -9,17 +9,44 @@ import {IReferenceService} from "../../api";
 import {Plugin} from "../../framework/extras/plugin";
 import {IEntityProvider} from "../../api";
 import {UserRequestInfo} from "../../model/userRequestInfo";
+import {createSelector, OutputSelector} from "@reduxjs/toolkit";
 
 export class UserService extends Plugin implements IUserService {
     public static readonly class: string = 'UserService';
     private selectionService: Nullable<ISelectionService> = null;
     private authorizationService: Nullable<IAuthorizationService> = null;
     private referenceService: Nullable<IReferenceService> = null;
-    private userProvider: Nullable<IEntityProvider<UserInfo>> = null
+    private userProvider: Nullable<IEntityProvider<UserInfo>> = null;
+
+    getActiveUsersSelector: OutputSelector<any, Record<string, UserInfo>, (res1: Record<string, UserInfo>) => Record<string, UserInfo>>;
+    getPendingUsersSelector: OutputSelector<any, Record<string, UserInfo>, (res1: Record<string, UserInfo>) => Record<string, UserInfo>>;
 
     constructor() {
         super();
         this.appendClassName(UserService.class);
+
+        this.getActiveUsersSelector = createSelector<any, Record<string, UserInfo>, Record<string, UserInfo>>(
+            [() => this.getAll<UserInfo>(UserInfo.class)],
+            (users) => {
+                return users;
+            }
+        )
+
+        this.getPendingUsersSelector = createSelector<any, Record<string, UserInfo>, Record<string, UserInfo>>(
+            [() => this.getAll<UserInfo>(UserInfo.class)],
+            (users) => {
+
+                let result:Record<string, UserInfo> = {};
+                forEach(users, (user: UserInfo) => {
+                    let accountStatus = user.account_status || '';
+                    if (accountStatus.toUpperCase() === 'ACTIVE') {
+                        result[user.id] = user;
+                    }
+                })
+
+                return users;
+            }
+        )
     }
 
     start() {
@@ -77,12 +104,8 @@ export class UserService extends Plugin implements IUserService {
         return super.getRepoItem<UserInfo>(UserInfo.class, id);
     }
 
-    getUsers(): Record<string, UserInfo> {
-        let result: Record<string, UserInfo> = {};
-
-        result = this.getAll<UserInfo>(UserInfo.class);
-
-        return result;
+    getActiveUsers(): Record<string, UserInfo> {
+        return this.getActiveUsersSelector(this.getRepoState());
     }
 
     createUser(userData: Record<string, string>) {
@@ -178,7 +201,27 @@ export class UserService extends Plugin implements IUserService {
         return result;
     }
 
+    getPendingUsers(): Record<string, UserInfo> {
+        return this.getPendingUsersSelector(this.getRepoState());
+    }
+
     acceptUserRequest(id: string) {
+
+        let modifiedUser = {
+            id,
+            account_status: 'active'
+        }
+
+        this.userProvider?.update(id, modifiedUser)
+            .then(user => {
+                if (user != null) {
+                    this.addOrUpdateRepoItem(user);
+                }
+            })
+            .catch(error => {
+                this.error(error);
+            })
+
         //TODO
     }
 

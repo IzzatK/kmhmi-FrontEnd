@@ -14,7 +14,7 @@ export interface IUserService extends IPlugin {
 
     getUser(id: string): Nullable<UserInfo>;
 
-    getUsers(): Record<string, UserInfo>;
+    getActiveUsers(): Record<string, UserInfo>;
 
     createUser(userData: Record<string, string>): void;
 
@@ -29,6 +29,8 @@ export interface IUserService extends IPlugin {
     getCurrentUserId(): string;
 
     getUserRequests(): Record<string, UserRequestInfo>;
+
+    getPendingUsers(): Record<string, UserInfo>;
 
     acceptUserRequest(id: string): void;
 
