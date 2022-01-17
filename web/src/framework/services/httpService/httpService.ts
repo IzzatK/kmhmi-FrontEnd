@@ -116,7 +116,7 @@ export class HttpService extends BasePlugin implements IHttpService {
 
 
         if (this.authenticationService != null && this.authenticationService.isLoggedIn()) {
-            return this.authenticationService.updateToken(fetchFxn);
+            return this.authenticationService.securedFetch(fetchFxn);
         } else {
             return fetchFxn();
         }

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Props, State} from "./appModel";
-import {SearchViewPresenter} from "./search/searchView";
+import {SearchPresenter} from "./search/searchPresenter";
 import {DocumentPanelPresenter} from "../../../components/documentPanel/documentPanelPresenter";
 import {UploadPanelPresenter} from "../../../components/systemToolPanels/uploadPanel/uploadPanelPresenter";
 import {ProfilePanelPresenter} from "../../../components/systemToolPanels/profilePanel/profilePanelPresenter";
@@ -10,8 +10,6 @@ import {SystemToolbarPresenter} from "../../../components/systemToolbar/systemTo
 import {referenceService, statService, tagService} from "../../../../application/serviceComposition";
 import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {ReferenceType} from "../../../../model";
-import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
-import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
 
 export class AppView extends Component<Props, State> {
     private interval!: NodeJS.Timer;
@@ -46,26 +44,25 @@ export class AppView extends Component<Props, State> {
         return (
             <div id={'analysis'} {...rest} className={cn}>
                 {
-                    permissions.canSearch &&
-                        <React.Fragment>
-                            <SearchViewPresenter className={"flex-fill flex-basis-0"} style={{zIndex: '1'}}/>
-                            <div className={docVisible ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
-                                <DocumentPanelPresenter className={docVisible ? 'flex-fill flex-basis-0' : ''}
-                                                        style={{zIndex: '9999'}}/>
-                            </div>
-                            <div className={currentSystemTool ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
-                                <UploadPanelPresenter/>
-                                <ProfilePanelPresenter/>
-                                <TagsPanelPresenter/>
-                                <StatsPanelPresenter/>
-                            </div>
-                            <SystemToolbarPresenter style={{zIndex: '1'}}/>
-                        </React.Fragment>
+                    permissions.canSearch ?
+                        <SearchPresenter className={"flex-fill flex-basis-0"} style={{zIndex: '1'}}/>
+                        :
+                        <div className={'flex-fill d-flex align-items-center justify-content-center'}>
+                            <div className={'display-1'}>You do not have permissions to perform this request (Search)</div>
+                        </div>
                 }
-                {
-                    !permissions.canSearch &&
-                    <LoadingIndicator size={Size.large}/>
-                }
+
+                <div className={docVisible ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
+                    <DocumentPanelPresenter className={docVisible ? 'flex-fill flex-basis-0' : ''}
+                                            style={{zIndex: '9999'}}/>
+                </div>
+                <div className={currentSystemTool ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
+                    <UploadPanelPresenter/>
+                    <ProfilePanelPresenter/>
+                    <TagsPanelPresenter/>
+                    <StatsPanelPresenter/>
+                </div>
+                <SystemToolbarPresenter style={{zIndex: '1'}}/>
             </div>
         );
     }

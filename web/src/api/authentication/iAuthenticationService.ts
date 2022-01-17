@@ -8,7 +8,7 @@ export interface IAuthenticationService extends IPlugin {
     login(): any;
     logout(): any;
     register(user: UserInfo): void;
-    updateToken(successCallback: any): any;
+    securedFetch(successCallback: any): any;
 
     isLoggedIn(): boolean;
     getToken(): string;

@@ -8,12 +8,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="authentication stuff">
+      <change afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/search/searchModel.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/search/searchPresenter.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/api/authentication/iAuthenticationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/api/authentication/iAuthenticationService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/application/authentication/authenticationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/application/authentication/authenticationService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/visual/components/landingPanel/landingPanelModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/landingPanel/landingPanelModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/visual/components/landingPanel/landingPanelPresenter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/landingPanel/landingPanelPresenter.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/visual/components/landingPanel/landingPanelView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/landingPanel/landingPanelView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/framework/services/httpService/httpService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/framework/services/httpService/httpService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/appView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/appView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/search/searchView.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/search/searchView.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/search/searchView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/search/searchView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/landing/landingModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/landing/landingModel.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/landing/landingView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/landing/landingView.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +66,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/web/src/visual/views/bumed" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/search" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -72,17 +77,18 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Repos\km-hmi\web\src\visual\views\knowledgeManagement\app\search" />
       <recent name="C:\Repos\km-hmi\web\src\visual\views\bumed" />
       <recent name="C:\Repos\km-hmi\web\src\visual\views\landing" />
       <recent name="C:\Repos\km-hmi\web\src\application\authorization\converters" />
       <recent name="C:\Repos\km-hmi\web\src\model" />
-      <recent name="C:\Repos\km-hmi\web\src\application\authentication\converters" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Repos\km-hmi\web\src\visual\views\bumed" />
       <recent name="C:\Repos\km-hmi\web\src\application\authorization" />
     </key>
     <key name="es6.move.members.recent.items">
+      <recent name="C:\Repos\km-hmi\web\src\visual\views\knowledgeManagement\app\search\searchModel.ts" />
       <recent name="C:\Repos\km-hmi\web\src\visual\views\app\appView.tsx" />
       <recent name="C:\Repos\km-hmi\web\src\visual\views\app\AppModel.ts" />
     </key>

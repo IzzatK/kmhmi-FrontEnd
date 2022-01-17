@@ -236,7 +236,7 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
         }
     }
 
-    updateToken(successCallback: () => void) {
+    securedFetch(successCallback: () => void) {
         let prevToken = this.getToken();
         return this._kc?.updateToken(5)
             .then(successCallback)

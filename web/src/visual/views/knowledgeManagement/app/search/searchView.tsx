@@ -1,54 +1,13 @@
 import React, {Component} from 'react';
 import './searchView.css';
-import {Presenter} from "../../../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../../../framework/wrappers/componentWrapper";
+
 import {SearchBannerPresenter} from "../../../../components/searchBanner/searchBannerPresenter";
 import {SearchResultsPanelPresenter} from "../../../../components/searchResultsPanel/searchResultsPanelPresenter";
 import {SearchGraphsPanelPresenter} from "../../../../components/searchGraphsPanel/searchGraphsPanelPresenter";
 
-import {displayService} from "../../../../../application/serviceComposition";
+import {Props, State} from "./searchModel";
 
-class SearchPresenter extends Presenter {
-    constructor(props: any) {
-        super();
-
-        this.id ='view/search';
-
-        this.view = SearchView;
-
-        this.displayOptions = {
-            containerId: 'view/app',
-            visible: true,
-            appearClass: '',
-            enterClass: '',
-            exitClass: '',
-            timeout: 0
-        };
-
-        this.mapDispatchToProps = (dispatch: any) => {
-            return {
-
-            }
-        }
-
-        this.mapStateToProps = (state: any, props: any) => {
-            return {
-                toolsVisible: displayService.getContainer('search-banner-tools').currentNodeId
-            }
-        }
-    }
-}
-
-type Props = {
-    className: string;
-    toolsVisible: boolean;
-}
-
-type State = {
-
-}
-
-class SearchView extends Component<Props, State> {
+export class SearchView extends Component<Props, State> {
     render() {
         const { className, toolsVisible, ...rest } = this.props;
 
@@ -75,9 +34,4 @@ class SearchView extends Component<Props, State> {
         );
     }
 }
-
-export const {
-    connectedPresenter: SearchViewPresenter,
-    componentId: SearchViewId
-} = createComponentWrapper(SearchPresenter);
 
