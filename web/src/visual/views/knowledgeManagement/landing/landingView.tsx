@@ -20,7 +20,7 @@ export class LandingView extends Component<LandingProps, LandingState> {
 
         this.timeout = setTimeout(() => {
             this.setLoading(false);
-        }, 1000);
+        }, 1500);
     }
 
 

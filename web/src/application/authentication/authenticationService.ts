@@ -164,9 +164,9 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
                             // debugger
                             this.updateProfile(kcProfile);
 
-                            // if (this.userService && userId != null) {
-                            //     this.userService.setCurrentUser(userId);
-                            // }
+                            if (this.userService && userId != null) {
+                                this.userService.setCurrentUser(userId);
+                            }
 
                             // // check if user exists
                             // if (userId != null) {

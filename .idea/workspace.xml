@@ -7,17 +7,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="authentication stuff">
-      <change afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/search/searchModel.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/search/searchPresenter.tsx" afterDir="false" />
+    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="worked on landing page synchronization">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/api/authentication/iAuthenticationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/api/authentication/iAuthenticationService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/application/authentication/authenticationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/application/authentication/authenticationService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/framework/services/httpService/httpService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/framework/services/httpService/httpService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/appView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/appView.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/search/searchView.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/search/searchView.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/search/searchView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/search/searchView.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/landing/landingModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/landing/landingModel.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/landing/landingView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/landing/landingView.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -106,6 +98,7 @@
       <workItem from="1641418866388" duration="43700000" />
       <workItem from="1641924273826" duration="1721000" />
       <workItem from="1641931920849" duration="29820000" />
+      <workItem from="1642428259768" duration="550000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1641329914789</created>
@@ -156,7 +149,14 @@
       <option name="project" value="LOCAL" />
       <updated>1642196851591</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="worked on landing page synchronization">
+      <created>1642427805870</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1642427805870</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -183,6 +183,7 @@
     <MESSAGE value="limit functionality in the users panel" />
     <MESSAGE value="working on authentication" />
     <MESSAGE value="authentication stuff" />
-    <option name="LAST_COMMIT_MESSAGE" value="authentication stuff" />
+    <MESSAGE value="worked on landing page synchronization" />
+    <option name="LAST_COMMIT_MESSAGE" value="worked on landing page synchronization" />
   </component>
 </project>
