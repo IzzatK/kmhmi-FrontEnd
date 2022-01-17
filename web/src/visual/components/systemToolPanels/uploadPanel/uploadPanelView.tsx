@@ -172,7 +172,7 @@ class UploadPanelView extends Component<UploadPanelProps, UploadPanelState> {
                                   }
                             />
                             {
-                                (isUpdating || status === "Processing") &&
+                                (isUpdating || status === "Processing" || status === "Uploading") &&
                                 <div className={"position-absolute"} style={{top: '0', right: '0', bottom: '1.6rem', left:'0', zIndex: 2}}>
                                     <LoadingIndicator small={true}/>
                                 </div>
