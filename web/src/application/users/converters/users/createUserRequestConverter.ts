@@ -44,11 +44,11 @@ export class CreateUserRequestConverter extends Converter<any,any>{
             email_address: getTextValueOrDefault(nameOf<UserInfo>('email_address'), ''),
             phone_number: getTextValueOrDefault(nameOf<UserInfo>('phone_number'), ''),
             dept_id: 1007,
-            preferred_results_view: 'Card',
-            account_status: 'Inactive',
+            preferred_results_view: '',
+            account_status: 'Active',
             roles: [1021],
-            approved_by: '',
-            date_approved: ''
+            approved_by: '2826e532-6277-4950-b534-0531583b2c6e',
+            date_approved: '2022-01-01'
         }
 
         return serverUser;
