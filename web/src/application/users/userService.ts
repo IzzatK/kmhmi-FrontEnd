@@ -10,6 +10,7 @@ import {Plugin} from "../../framework/extras/plugin";
 import {IEntityProvider} from "../../api";
 import {UserRequestInfo} from "../../model/userRequestInfo";
 import {createSelector, OutputSelector} from "@reduxjs/toolkit";
+import {getDateWithoutTime} from "../../framework.visual/extras/utils/timeUtils";
 
 export class UserService extends Plugin implements IUserService {
     public static readonly class: string = 'UserService';
@@ -207,25 +208,18 @@ export class UserService extends Plugin implements IUserService {
 
     acceptUserRequest(id: string) {
 
-        let modifiedUser = {
-            id,
-            account_status: 'active'
+        let repoItem = this.getRepoItem<UserInfo>(UserInfo.class, id);
+
+        if (repoItem != null) {
+            repoItem.account_status = 'active';
+            repoItem.approved_by = this.getCurrentUserId();
+            repoItem.date_approved = getDateWithoutTime(new Date());
+
+            this.updateUser(repoItem);
         }
-
-        this.userProvider?.update(id, modifiedUser)
-            .then(user => {
-                if (user != null) {
-                    this.addOrUpdateRepoItem(user);
-                }
-            })
-            .catch(error => {
-                this.error(error);
-            })
-
-        //TODO
     }
 
     declineUserRequest(id: string) {
-        //TODO
+        this.removeUser(id);
     }
 }
