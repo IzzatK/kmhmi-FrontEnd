@@ -55,7 +55,7 @@ class App extends Presenter {
         [() => userService.getCurrentUserId(), authorizationService.getPermissions],
         (currentUserId, permissionInfoLookup) => {
             let result: PermissionsVM = {
-                canSearch: authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.GET)
+                canSearch: authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.GET, currentUserId, currentUserId)
             }
             return result;
         }
