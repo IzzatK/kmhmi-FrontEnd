@@ -1,66 +1,91 @@
-image: node:12.16.2
+# Do not change version. This is the version of aws buildspec, not the version of your buldspec file.
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      #installs dependencies into the node_modules/ directory
+      - cd web
+      - npm install
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Compiling
+      - npm run build
+  post_build:
+    commands:
+      - echo Build completed on `date`
+# Include only the files required for your application to run.
+artifacts:
+  files:
+    - public/**/*
+    - src/**/*
+    - package.json
+    - appspec.yml
+    - scripts/**/*
 
 
-variables:
-  CI_BUILDS_DIR: "bumed/build/"
-  DEPLOY_DIR: "/opt/apps/kmweb"
-  SSH_PKEY: $SSH_PRIVATE_KEY
-  BUILD_ZIP: build.zip
-
-stages:
-  - deploy
-
-#build and deploy
-deploy:
-  stage: deploy
-  when: always
-  only:
-    - main
-#  when: on_success
-  before_script:
-#    install npm
-    - cd web
-    - npm install
-#    build app
-    - npm run remote-build
-#    set up dependencies
-    - apt-get update
-    - apt-get install zip openssh-client git -qq
-#    start ssh client and set up key
-    - eval $(ssh-agent -s)
-    - echo "$SSH_PKEY" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-#    create zip
-    - cd build
-    - zip -r $BUILD_ZIP .
-  script:
-#    make sure we have permission to write
-    - ssh -o StrictHostKeyChecking=no $CI_USER "sudo setfacl -R -m u:ec2-user:rwx $DEPLOY_DIR"
-#    clear deploy dir
-    - ssh -o StrictHostKeyChecking=no $CI_USER "sudo rm -r $DEPLOY_DIR/*"
-#    deploy zip
-    - scp -o StrictHostKeyChecking=no $BUILD_ZIP $CI_USER:$DEPLOY_DIR
-#    unzip files
-    - ssh -o StrictHostKeyChecking=no $CI_USER "cd $DEPLOY_DIR; sudo unzip -o $BUILD_ZIP"
-#    remove zip file
-    - ssh -o StrictHostKeyChecking=no $CI_USER "cd $DEPLOY_DIR; sudo rm build.zip"
-
+#image: node:12.16.2
+#
+#variables:
+#  CI_BUILDS_DIR: "bumed/build/"
+#  DEPLOY_DIR: "/opt/apps/kmweb"
+#  SSH_PKEY: $SSH_PRIVATE_KEY
+#  BUILD_ZIP: build.zip
+#
+#stages:
+#  - deploy
+#
+##build and deploy
 #deploy:
 #  stage: deploy
-#  tags:
-#    - windows
-#  script:
-#    - npm run build
- #   - echo $CI_BUILDS_DIR
- #   - xcopy *\* "\Apache\Apache24\htdocs" /s /e
-  #  - tar.exe -a -c -f "..\PLBuild.zip" *.*
+#  when: always
 #  only:
- #   - master
-# Publish tagged versions to npm
-  #publish:
-  #stage: deploy
-    #script:
-    #- npm run build
-    #- echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'>.npmrc
-    #- npm publish
+#    - main
+##  when: on_success
+#  before_script:
+##    install npm
+#    - cd web
+#    - npm install
+##    build app
+#    - npm run remote-build
+##    set up dependencies
+#    - apt-get update
+#    - apt-get install zip openssh-client git -qq
+##    start ssh client and set up key
+#    - eval $(ssh-agent -s)
+#    - echo "$SSH_PKEY" | tr -d '\r' | ssh-add -
+#    - mkdir -p ~/.ssh
+#    - chmod 700 ~/.ssh
+##    create zip
+#    - cd build
+#    - zip -r $BUILD_ZIP .
+#  script:
+##    make sure we have permission to write
+#    - ssh -o StrictHostKeyChecking=no $CI_USER "sudo setfacl -R -m u:ec2-user:rwx $DEPLOY_DIR"
+##    clear deploy dir
+#    - ssh -o StrictHostKeyChecking=no $CI_USER "sudo rm -r $DEPLOY_DIR/*"
+##    deploy zip
+#    - scp -o StrictHostKeyChecking=no $BUILD_ZIP $CI_USER:$DEPLOY_DIR
+##    unzip files
+#    - ssh -o StrictHostKeyChecking=no $CI_USER "cd $DEPLOY_DIR; sudo unzip -o $BUILD_ZIP"
+##    remove zip file
+#    - ssh -o StrictHostKeyChecking=no $CI_USER "cd $DEPLOY_DIR; sudo rm build.zip"
+#
+##deploy:
+##  stage: deploy
+##  tags:
+##    - windows
+##  script:
+##    - npm run build
+# #   - echo $CI_BUILDS_DIR
+# #   - xcopy *\* "\Apache\Apache24\htdocs" /s /e
+#  #  - tar.exe -a -c -f "..\PLBuild.zip" *.*
+##  only:
+# #   - master
+## Publish tagged versions to npm
+#  #publish:
+#  #stage: deploy
+#    #script:
+#    #- npm run build
+#    #- echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'>.npmrc
+#    #- npm publish
