@@ -269,27 +269,35 @@ export class DocumentService extends Plugin implements IDocumentService {
     enqueueFiles(fileList: any) {
         forEach(fileList, (item: any) => {
             this.pendingFilesQueue.push(item);
+
+            const file = item;
+            const {name} = file;
+
+            // since we are posting and don't have an id yet, use a placeholder
+            let tmpId = name;
+
+            // redux raw file
+            this.pendingFilesRaw[tmpId] = file;
+
+            // put the file in the pending documents list
+            // id will be auto generated client side
+            let tmpFileInfo = new DocumentInfo(tmpId);
+            tmpFileInfo.file_name = name;
+            tmpFileInfo.status = 'Uploading';
+            tmpFileInfo.isPending = true;
+
+            this.addOrUpdateRepoItem(tmpFileInfo)
         });
+
+
 
     }
 
-    startUpload(fileList: any) {
+    checkQueue() {
+        if (this.pendingFilesQueue.length !== 0) {
+            const file = this.pendingFilesQueue.shift();
 
-        for(let i = 0; i < this.pendingFilesQueue.length; i++) {
-            console.log(JSON.stringify(this.pendingFilesQueue[i]));
-        }
-
-        if (this.pendingFilesQueue.length === 0) {
-            this.enqueueFiles(fileList);
-            let hasNext = false;
-
-            if (this.pendingFilesQueue[0]) {
-                hasNext = true;
-            }
-
-            do {
-                const file = this.pendingFilesQueue.shift();
-
+            if (file) {
                 const {name} = file;
 
                 // since we are posting and don't have an id yet, use a placeholder
@@ -297,15 +305,6 @@ export class DocumentService extends Plugin implements IDocumentService {
 
                 // redux raw file
                 this.pendingFilesRaw[tmpId] = file;
-
-                // put the file in the pending documents list
-                // id will be auto generated client side
-                let tmpFileInfo = new DocumentInfo(tmpId);
-                tmpFileInfo.file_name = name;
-                tmpFileInfo.status = 'Uploading';
-                tmpFileInfo.isPending = true;
-
-                this.addOrUpdateRepoItem(tmpFileInfo)
 
                 let requestData = {
                     id: tmpId,
@@ -339,17 +338,30 @@ export class DocumentService extends Plugin implements IDocumentService {
                         if (document != null) {
                             this.addOrUpdateRepoItem(document);
                         }
-                        hasNext = this.pendingFilesQueue[0] !== undefined;
+
+                        if (this.pendingFilesQueue.length !== 0) {
+                            this.checkQueue();
+                        }
                     })
                     .catch(error => {
 
                     })
-
             }
-            while (hasNext);
+        }
+
+
+    }
+
+    startUpload(fileList: any) {
+        if (this.pendingFilesQueue.length === 0) {
+            this.enqueueFiles(fileList);
+
+            this.checkQueue();
         } else {
             this.enqueueFiles(fileList);
         }
+
+
 
 
 
