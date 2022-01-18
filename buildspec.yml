@@ -1,5 +1,26 @@
 # Do not change version. This is the version of aws buildspec, not the version of your buldspec file.
 version: 0.2
+
+#  CI_BUILDS_DIR: "bumed/build/"
+#  DEPLOY_DIR: "/opt/apps/kmweb"
+#  SSH_PKEY: $SSH_PRIVATE_KEY
+#  BUILD_ZIP: build.zip
+
+env:
+  shell: shell-tag
+  variables:
+    CI_BUILDS_DIR: "/web/build/"
+    DEPLOY_DIR: "/opt/apps/kmweb"
+    SSH_PKEY: $SSH_PRIVATE_KEY
+    BUILD_ZIP: build.zip
+#  parameter-store:
+#    key: "value"
+#  exported-variables:
+#    - variable
+#  secrets-manager:
+#    key: secret-id:json-key:version-stage:version-id
+#  git-credential-helper: no | yes
+
 phases:
   pre_build:
     commands:
@@ -10,10 +31,28 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Compiling
-      - npm run build
+      - npm run remote-build
+      - apt-get update
+      - apt-get install zip openssh-client git -qq
+      ##    start ssh client and set up key
+      - eval $(ssh-agent -s)
+      - echo "$SSH_PKEY" | tr -d '\r' | ssh-add -
+      - mkdir -p ~/.ssh
+      - chmod 700 ~/.ssh
   post_build:
     commands:
       - echo Build completed on `date`
+      #    make sure we have permission to write
+      - ssh -o StrictHostKeyChecking=no $CI_USER "sudo setfacl -R -m u:ec2-user:rwx $DEPLOY_DIR"
+      #    clear deploy dir
+      - ssh -o StrictHostKeyChecking=no $CI_USER "sudo rm -r $DEPLOY_DIR/*"
+      #    deploy zip
+      - scp -o StrictHostKeyChecking=no $BUILD_ZIP $CI_USER:$DEPLOY_DIR
+      #    unzip files
+      - ssh -o StrictHostKeyChecking=no $CI_USER "cd $DEPLOY_DIR; sudo unzip -o $BUILD_ZIP"
+      #    remove zip file
+      - ssh -o StrictHostKeyChecking=no $CI_USER "cd $DEPLOY_DIR; sudo rm build.zip"
+      # ssh to the deployment server and copy file over
 # Include only the files required for your application to run.
 artifacts:
   files:
