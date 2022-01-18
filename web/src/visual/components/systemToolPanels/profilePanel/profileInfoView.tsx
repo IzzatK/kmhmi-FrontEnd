@@ -68,6 +68,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
         const { user } = this.props;
 
         this.setTmpUser(user || {});
+        this._setPopupVisible(false);
     }
 
     componentDidUpdate(prevProps: Readonly<ProfilePanelProps>, prevState: Readonly<ProfilePanelState>, snapshot?: any) {
