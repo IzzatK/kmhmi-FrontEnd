@@ -38,6 +38,9 @@ phases:
       - echo "$SSH_PKEY" | tr -d '\r' | ssh-add -
       - mkdir -p ~/.ssh
       - chmod 700 ~/.ssh
+      #    create zip
+      - cd build
+      - zip -r $BUILD_ZIP .
   post_build:
     commands:
       - echo Build completed on `date`
