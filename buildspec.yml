@@ -7,7 +7,6 @@ version: 0.2
 #  BUILD_ZIP: build.zip
 
 env:
-  shell: shell-tag
   variables:
     CI_BUILDS_DIR: "/web/build/"
     DEPLOY_DIR: "/opt/apps/kmweb"
