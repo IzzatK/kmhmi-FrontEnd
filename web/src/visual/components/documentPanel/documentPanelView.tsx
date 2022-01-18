@@ -249,18 +249,34 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         switch (type) {
             case ParamType.NUMBER:
             case ParamType.STRING: {
-                cellRenderer = (
-                    <div key={id}>
-                        <TextEdit className={`text-field align-self-center ${long ? "w-100" : ""}`}
-                                  placeholder={title}
-                                  name={id}
-                                  dirty={dirty}
-                                  value={value}
-                                  disable={document_id === undefined}
-                                  edit={document_id !== undefined && canModify}
-                                  onSubmit={this.onTmpDocumentChanged}/>
-                    </div>
-                )
+                if (id === 'publication_date') {
+                    cellRenderer = (
+                        <div key={id}>
+                            <TextEdit className={`text-field align-self-center ${long ? "w-100" : ""}`}
+                                      type={'date'}
+                                      placeholder={title}
+                                      name={id}
+                                      dirty={dirty}
+                                      value={value}
+                                      disable={document_id === undefined}
+                                      edit={document_id !== undefined && canModify}
+                                      onSubmit={this.onTmpDocumentChanged}/>
+                        </div>
+                    )
+                } else {
+                    cellRenderer = (
+                        <div key={id}>
+                            <TextEdit className={`text-field align-self-center ${long ? "w-100" : ""}`}
+                                      placeholder={title}
+                                      name={id}
+                                      dirty={dirty}
+                                      value={value}
+                                      disable={document_id === undefined}
+                                      edit={document_id !== undefined && canModify}
+                                      onSubmit={this.onTmpDocumentChanged}/>
+                        </div>
+                    )
+                }
                 break;
             }
             case ParamType.ARRAY: {
@@ -320,8 +336,6 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                 else {
                     cbTitle = `Select ${title}`
                 }
-
-                console.log(JSON.stringify(Object.values(options)))
 
                 cellRenderer = (
                     <div key={id}>
@@ -496,7 +510,12 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                     }
                                 </div>
                                 <div className={'property-grid'}>
-
+                                    <div className={"d-flex h-gap-5"}>
+                                        <div className={'header-1 font-weight-semi-bold align-self-center text-right label'}>Date:</div>
+                                        {
+                                            this.getCellRenderer(tmpDocument, document, editProperties['publication_date'])
+                                        }
+                                    </div>
                                     <div className={"d-flex h-gap-5"}>
                                         <div className={'header-1 font-weight-semi-bold align-self-center text-right label'}>Dept:</div>
                                         {
@@ -530,13 +549,11 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                   body={
                                       <div className={'d-flex flex-column pt-5 text-info'}>
                                           <div className={'info-grid'}>
-                                              <div className={'align-self-center justify-self-end header-3'}>PUBLICATION DATE</div>
                                               <div className={'align-self-center justify-self-end header-3'}>ORIGINAL FILE NAME</div>
                                               <div className={'align-self-center justify-self-end header-3'}>UPLOADED BY</div>
                                               <div className={'align-self-center justify-self-end header-3'}>UPLOAD DATE</div>
                                               <div className={'align-self-center justify-self-end header-3'}>TYPE</div>
                                               <div className={'align-self-center justify-self-end header-3'}>SIZE</div>
-                                              <div className={'align-self-center header-2'}>{publication_date}</div>
                                               <div className={'align-self-center header-2'}>{file_name}</div>
                                               <div className={'align-self-center header-2'}>{uploaded_by}</div>
                                               <div className={'align-self-center header-2'}>{upload_date?.split(",")[0]}</div>
@@ -599,10 +616,17 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                             !isGlobal &&
                                             this.getCellRenderer(tmpDocument, document, editProperties['private_tag'], false)
                                         }
-                                        <div className={'tag-button text-primary header-1 cursor-pointer align-self-center'}
-                                             onClick={isGlobal ? this.addNewPublicTag : this.addNewPrivateTag}>+</div>
+                                        {
+                                            permissions.canModify &&
+                                            <div className={'tag-button text-primary header-1 cursor-pointer align-self-center'}
+                                                 onClick={isGlobal ? this.addNewPublicTag : this.addNewPrivateTag}>+</div>
+                                        }
                                     </div>
-                                    <Button className={"bg-transparent display-4 font-weight-light info-button"} text={"Static Field +"}/>
+                                    {
+                                        permissions.canModify &&
+                                        <Button className={"bg-transparent display-4 font-weight-light info-button"} text={"Static Field +"}/>
+                                    }
+
                                 </div>
                             </div>
                         </div>
