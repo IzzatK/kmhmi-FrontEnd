@@ -30,7 +30,8 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Compiling
-      - npm run remote-build
+      - python --vesionr
+# TODO      - npm run remote-build
 #      - apt-get update  -- we use base image each time OR we update build AND dev instance each time 
       - sudo yum -y install zip openssh-client git
       ##    start ssh client and set up key
