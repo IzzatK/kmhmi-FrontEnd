@@ -32,7 +32,7 @@ phases:
       - echo Compiling
       - npm run remote-build
 #      - apt-get update  -- we use base image each time OR we update build AND dev instance each time 
-      - sudo yum install -f zip openssh-client git
+      - sudo yum -y install zip openssh-client git
       ##    start ssh client and set up key
       - eval $(ssh-agent -s)
       - echo "$SSH_PKEY" | tr -d '\r' | ssh-add -
