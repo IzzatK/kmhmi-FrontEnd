@@ -106,7 +106,7 @@ class UploadPanelView extends Component<UploadPanelProps, UploadPanelState> {
 
         const { showPopup, selectedId } = this.state;
 
-        let cn = "system-tool-panel upload-panel p-4 d-flex flex-column align-items-start justify-content-between v-gap-5";
+        let cn = "system-tool-panel upload-panel p-4 d-flex flex-column align-items-start justify-content-between";
 
         if (className) {
             cn += ` ${className}`;
@@ -126,20 +126,31 @@ class UploadPanelView extends Component<UploadPanelProps, UploadPanelState> {
                                       <div className={'d-flex'}>
                                           <div className={'flex-fill d-flex justify-content-between align-items-center pending-item-container'}>
                                               <div className={'pending-item-body flex-fill d-flex justify-content-between align-items-center shadow'}>
-                                                  <div className={`d-flex h-gap-1 px-3 pt-3 ${deleted || status === "failed" ? "pb-3" : "pb-5"}`}>
+                                                  <div className={`d-flex h-gap-1 px-3 pt-3 ${deleted || status === "failed" || status === "Cancelled" ? "pb-3" : "pb-5"}`}>
                                                       {
-                                                          deleted &&
+                                                          deleted && status !== "Cancelled" &&
                                                           <div className={"display-2 font-weight-semi-bold"}>Deleted</div>
+                                                      }
+                                                      {
+                                                          status === "Cancelled" &&
+                                                          <div className={"display-2 font-weight-semi-bold"}>Cancelled</div>
                                                       }
                                                       {
                                                           status === "failed" &&
                                                           <div className={"display-2 font-weight-semi-bold"}>Failed</div>
                                                       }
-                                                      <div className={`display-2 ${deleted || status === "failed" ? "text-info" : "text-secondary"}`}>{file_name}</div>
+                                                      <div className={`display-2 ${deleted || status === "failed" || status === "Cancelled" ? "text-info" : "text-secondary"}`}>{file_name}</div>
                                                   </div>
                                                   {
-                                                      !deleted &&
-                                                      <div className={'d-flex align-items-center justify-content-center p-2'}>
+                                                      (isUpdating || status === "Processing" || status === "Uploading") &&
+                                                      <div className={"d-flex flex-fill"}>
+                                                          <LoadingIndicator className={"mr-4"} small={true}/>
+                                                      </div>
+
+                                                  }
+                                                  {
+                                                      (!deleted && (status === "Processing" || isUpdating || status === "Uploading")) &&
+                                                      <div className={'d-flex align-items-center justify-content-center p-2 mr-4'}>
                                                           <Button className={'btn-transparent loading-button'} onClick={(event) => this._onCancelUpload(event, id)}>
                                                               <RemoveSVG className={"small-image-container"}/>
                                                           </Button>
@@ -149,7 +160,7 @@ class UploadPanelView extends Component<UploadPanelProps, UploadPanelState> {
 
                                               </div>
                                               {
-                                                  (!isUpdating && selected && !deleted && status !== "Processing") &&
+                                                  (!isUpdating && selected && !deleted && status !== "Processing" && status !== "Uploading") &&
                                                   <div className={'d-flex h-gap-3 px-4'}>
                                                       <Button className={'p-2 reject'} onClick={() => this._setPopupVisible(true)}>
                                                           <RemoveSVG className={"small-image-container"}/>
@@ -163,22 +174,16 @@ class UploadPanelView extends Component<UploadPanelProps, UploadPanelState> {
                                                   </div>
                                               }
                                           </div>
-
-                                          {/*{*/}
-                                          {/*    percentComplete > 0 &&*/}
-                                          {/*    <ProgressBar className={'w-100'} percent={percentComplete} style={{height: '0.8rem'}}/>*/}
-                                          {/*}*/}
                                       </div>
                                   }
                             />
-                            {
-                                (isUpdating || status === "Processing" || status === "Uploading") &&
-                                <div className={"position-absolute"} style={{top: '0', right: '0', bottom: '1.6rem', left:'0', zIndex: 2}}>
-                                    <LoadingIndicator small={true}/>
-                                </div>
-                            }
+                            {/*{*/}
+                            {/*    (isUpdating || status === "Processing" || status === "Uploading") &&*/}
+                            {/*    <div className={"position-absolute"} style={{top: '0', right: '0', bottom: '1.6rem', left:'0', zIndex: 2}}>*/}
+                            {/*        <LoadingIndicator small={true}/>*/}
+                            {/*    </div>*/}
+                            {/*}*/}
                         </div>
-
                     </CSSTransition>
                 );
             })
@@ -202,7 +207,7 @@ class UploadPanelView extends Component<UploadPanelProps, UploadPanelState> {
                 {
                     pendingDocumentsDiv && pendingDocumentsDiv.length > 0 ?
                         <ScrollBar renderTrackHorizontal={false}>
-                            <div className={"search-results pr-3 v-gap-3"}>
+                            <div className={"search-results pr-3"}>
                                 <TransitionGroup component={null}>
                                     {pendingDocumentsDiv}
                                 </TransitionGroup>

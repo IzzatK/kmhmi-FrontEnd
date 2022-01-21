@@ -49,13 +49,28 @@
     min-height: 0;
 }
 
-.upload-panel .pending-item .card .pending-item-body .button {
+.upload-panel .pending-item .card .pending-item-body .loader-container {
+    background: transparent;
+    justify-content: end !important;
+}
+
+.upload-panel .pending-item .card .pending-item-body .loading-button {
     opacity: 0;
     fill: var(--pending-item-loading-button-color);
 }
 
-.upload-panel .pending-item .card.loading:hover .pending-item-body .button {
+.upload-panel .pending-item .card:hover .pending-item-body .loading-button {
     opacity: 1;
+}
+
+.upload-panel .pending-item .card:hover .pending-item-body .loading-button:hover {
+    transform: scale(1.235);
+    fill: var(--pending-item-button-hover-bg-color);
+}
+
+.upload-panel .pending-item .card:hover .pending-item-body .loading-button.disabled,
+.upload-panel .pending-item .card:hover .pending-item-body .loading-button.disabled:hover {
+    fill: transparent;
 }
 
 .upload-panel .pending-item .card.loading:hover .pending-item-body .button:hover {

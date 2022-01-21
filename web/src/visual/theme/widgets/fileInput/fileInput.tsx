@@ -96,7 +96,6 @@ class FileInput extends Component<FileInputProps, FileInputState>  {
 						   "application/vnd.openxmlformats-officedocument.wordprocessingml.document," +
 						   "application/vnd.openxmlformats-officedocument.wordprocessingml.template," +
 						   "application/vnd.ms-word.template.macroEnabled.12," +
-						   "text/html," +
 						   "application/pdf," +
 						   "application/vnd.ms-powerpoint.template.macroEnabled.12," +
 						   "application/vnd.openxmlformats-officedocument.presentationml.template," +
@@ -106,21 +105,14 @@ class FileInput extends Component<FileInputProps, FileInputState>  {
 						   "application/vnd.ms-powerpoint," +
 						   "application/vnd.ms-powerpoint.presentation.macroEnabled.12," +
 						   "application/vnd.openxmlformats-officedocument.presentationml.presentation," +
-						   "application/rtf," +
-						   "text/rtf," +
 						   "text/plain," +
 						   "text/csv," +
 						   "application/csv," +
-						   "application/json," +
 						   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet," +
 						   "application/vnd.ms-excel.sheet.binary.macroEnabled.12," +
 						   "application/vnd.ms-excel," +
 						   "application/vnd.ms-excel.sheet.macroEnabled.12," +
-						   "image/bmp," +
-						   "image/gif," +
-						   "image/jpeg," +
-						   "image/png," +
-						   "multipart/form-data"}
+						   "image/jpeg,"}
 				/>
 			</div>
 		);

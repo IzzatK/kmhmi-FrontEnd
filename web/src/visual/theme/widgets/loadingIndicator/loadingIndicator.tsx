@@ -7,7 +7,7 @@ export class LoadingIndicator extends Component<LoadingIndicatorProps, LoadingIn
     render () {
         const { className, small, ...rest } = this.props;
 
-        let cn = 'loader-container position-absolute w-100 h-100 d-flex align-items-center justify-content-center'
+        let cn = 'loader-container w-100 h-100 d-flex align-items-center justify-content-center'
         if (className) {
             cn += ` ${className}`;
         }

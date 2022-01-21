@@ -60,8 +60,6 @@ export class UpdateUserRequestConverter extends Converter<any, any> {
             date_approved: getDateWithoutTime(new Date()),
         }
 
-        console.log('converter ' + JSON.stringify(serverUser));
-
         return serverUser;
     }
 }

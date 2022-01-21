@@ -94,6 +94,10 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
                                             if (pollAttempt >= this.MAX_POLL_ATTEMPTS) {
                                                 delete this.pollAttempts[id];
                                                 // we are completely done.
+                                                latestDocument.isPending = true;
+                                                latestDocument.status = "error";
+                                                onUpdated(latestDocument);
+
                                                 resolve(latestDocument);
                                             } else if (isUploading || status === "failed") {
                                                 this.pollAttempts[id] = pollAttempt + 1;
@@ -164,7 +168,6 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
     }
 
     remove(id: string) : Promise<Nullable<DocumentInfo>> {
-
         return new Promise((resolve, reject) => {
 
                 // if we are currently polling for this document, then stop
@@ -205,11 +208,9 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
             super.sendGetSingle(id,
                 (responseData, errorHandler) => this.getDocumentResponseConverter.convert(responseData, errorHandler))
                 .then(data => {
-                    console.log("data" + JSON.stringify(data));
                     resolve(data);
                 })
                 .catch(error => {
-                    console.log(error + "FAILED FAILED FAILED FAILED");
                     reject(error);
                 })
         });
