@@ -14,6 +14,7 @@ import {ApproveSVG} from "../../../theme/svgs/approveSVG";
 import Popup from "../../../theme/widgets/popup/popup";
 import {FileSVG} from "../../../theme/svgs/fileSVG";
 import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
+import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
 
 class UploadPanelView extends Component<UploadPanelProps, UploadPanelState> {
     constructor(props: any, context: any) {
@@ -148,7 +149,7 @@ class UploadPanelView extends Component<UploadPanelProps, UploadPanelState> {
                                                   {
                                                       (status === "Processing") &&
                                                       <div className={"d-flex flex-fill"}>
-                                                          <LoadingIndicator className={"mr-4"} small={true}/>
+                                                          <LoadingIndicator className={"mr-4"} size={Size.small}/>
                                                       </div>
 
                                                   }
