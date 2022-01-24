@@ -1,25 +1,66 @@
 import {makeGuid} from "../../framework.visual/extras/utils/uniqueIdUtils";
-import {forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
-import {ReferenceType} from "../../model";
+import {forEach, forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
+import {DocumentInfo, ReferenceType} from "../../model";
 import {UserInfo} from "../../model";
 import {IAuthorizationService, IUserService} from "../../api";
-import {Nullable} from "../../framework/extras/typeUtils";
+import {nameOf, Nullable} from "../../framework/extras/typeUtils";
 import {ISelectionService} from "../../framework/api";
 import {IReferenceService} from "../../api";
 import {Plugin} from "../../framework/extras/plugin";
 import {IEntityProvider} from "../../api";
 import {UserRequestInfo} from "../../model/userRequestInfo";
+import {createSelector, OutputSelector} from "@reduxjs/toolkit";
+import {getDateWithoutTime} from "../../framework.visual/extras/utils/timeUtils";
 
 export class UserService extends Plugin implements IUserService {
     public static readonly class: string = 'UserService';
     private selectionService: Nullable<ISelectionService> = null;
     private authorizationService: Nullable<IAuthorizationService> = null;
     private referenceService: Nullable<IReferenceService> = null;
-    private userProvider: Nullable<IEntityProvider<UserInfo>> = null
+    private userProvider: Nullable<IEntityProvider<UserInfo>> = null;
+
+    getActiveUsersSelector: OutputSelector<any, Record<string, UserInfo>, (res1: Record<string, UserInfo>) => Record<string, UserInfo>>;
+    getPendingUsersSelector: OutputSelector<any, Record<string, UserInfo>, (res1: Record<string, UserInfo>) => Record<string, UserInfo>>;
 
     constructor() {
         super();
         this.appendClassName(UserService.class);
+
+        this.getActiveUsersSelector = createSelector<any, Record<string, UserInfo>, Record<string, UserInfo>>(
+            [() => this.getAll<UserInfo>(UserInfo.class)],
+            (users) => {
+
+                let result:Record<string, UserInfo> = {};
+                forEach(users, (user: UserInfo) => {
+                    let accountStatus = user.account_status || '';
+                    accountStatus = accountStatus.toUpperCase();
+                    if (accountStatus === 'ACTIVE') {
+                        result[user.id] = user;
+                    }
+                    // else if (accountStatus !== 'INACTIVE') {
+                    //     this.warn(`User with the id ${user.id} is has an account status of '${user.account_status}'. User will not appear in active or inactive lists `)
+                    // }
+                })
+
+                return result;
+            }
+        )
+
+        this.getPendingUsersSelector = createSelector<any, Record<string, UserInfo>, Record<string, UserInfo>>(
+            [() => this.getAll<UserInfo>(UserInfo.class)],
+            (users) => {
+
+                let result:Record<string, UserInfo> = {};
+                forEach(users, (user: UserInfo) => {
+                    let accountStatus = user.account_status || '';
+                    if (accountStatus.toUpperCase() !== 'ACTIVE') {
+                        result[user.id] = user;
+                    }
+                })
+
+                return result;
+            }
+        )
     }
 
     start() {
@@ -77,15 +118,11 @@ export class UserService extends Plugin implements IUserService {
         return super.getRepoItem<UserInfo>(UserInfo.class, id);
     }
 
-    getUsers(): Record<string, UserInfo> {
-        let result: Record<string, UserInfo> = {};
-
-        result = this.getAll<UserInfo>(UserInfo.class);
-
-        return result;
+    getActiveUsers(): Record<string, UserInfo> {
+        return this.getActiveUsersSelector(this.getRepoState());
     }
 
-    createUser(userData: any) {
+    createUser(userData: Record<string, string>) {
         // since we are posting and don't have an id yet, use a placeholder
         let tmpId = makeGuid();
         const userInfo: any = new UserInfo(tmpId);
@@ -93,10 +130,13 @@ export class UserService extends Plugin implements IUserService {
             userInfo[key] = value;
         })
 
+        userInfo[nameOf<UserInfo>('account_status')] = 'active';
+
         this.addOrUpdateRepoItem(userInfo);
 
         this.userProvider?.create({user: userInfo},
             (updatedUserInfo => {
+                // we have the real id now, so remove the temp one and add the real one
                 this.removeRepoItem(userInfo);
                 this.addOrUpdateRepoItem(updatedUserInfo);
             }))
@@ -175,11 +215,25 @@ export class UserService extends Plugin implements IUserService {
         return result;
     }
 
-    acceptUserRequest(id: string) {
-        //TODO
+    getPendingUsers(): Record<string, UserInfo> {
+        return this.getPendingUsersSelector(this.getRepoState());
+    }
+
+    acceptUserRequest(id: string, role: string) {
+
+        let repoItem = this.getRepoItem<UserInfo>(UserInfo.class, id);
+
+        if (repoItem != null) {
+            repoItem.account_status = 'active';
+            repoItem.role = role;
+            repoItem.approved_by = this.getCurrentUserId();
+            repoItem.date_approved = getDateWithoutTime(new Date());
+
+            this.updateUser(repoItem);
+        }
     }
 
     declineUserRequest(id: string) {
-        //TODO
+        this.removeUser(id);
     }
 }

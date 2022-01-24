@@ -1,12 +1,14 @@
 import {Presenter} from "../../../framework.visual/extras/presenter";
 import LandingPanelView from "./landingPanelView";
-import {LoginPanelProps} from "./landingPanelModel";
+import {LoginPanelDispatchProps, LoginPanelStateProps, RegistrationStatusVMType, UserInfoVM} from "./landingPanelModel";
 import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
 import {createSelector} from "@reduxjs/toolkit";
-import {referenceService} from "../../../application/serviceComposition";
-import {ReferenceType} from "../../../model";
+import {authenticationService, referenceService} from "../../../application/serviceComposition";
+import {ReferenceType, UserInfo} from "../../../model";
 import {RoleVM} from "../systemToolPanels/profilePanel/profilePanelModel";
 import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
+import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
+import {RegistrationStatus} from "../../../api";
 
 class LandingPanel extends Presenter {
     constructor() {
@@ -16,25 +18,67 @@ class LandingPanel extends Presenter {
 
         this.view = LandingPanelView;
 
-        this.mapStateToProps = (state: any, props: LoginPanelProps) => {
+        this.mapStateToProps = (state: any, props: any): LoginPanelStateProps => {
             return {
-                roles: this.getRolesVMs(state),
+                registrationStatus: this.getRegistrationStatus(authenticationService.getAuthenticationState()),
             };
         }
 
-        this.mapDispatchToProps = () => {
+        this.mapDispatchToProps = (): LoginPanelDispatchProps => {
             return {
-
+                onLogin: () =>  {
+                    authenticationService.login();
+                },
+                onRegister: (user: UserInfoVM) => {
+                    this.register(user);
+                }
             };
         }
 
         this.displayOptions = {
             containerId: 'bumed',
-            visible: false,
+            visible: true,
             appearClass: 'fadeIn',
             enterClass: 'fadeIn',
             exitClass: 'fadeOut',
         }
+    }
+
+    getRegistrationStatus = createSelector<any, RegistrationStatus, RegistrationStatusVMType>(
+        [() => authenticationService.getRegistrationStatus()],
+        (registerStatus) => {
+            let result = RegistrationStatusVMType.NONE;
+
+            switch (registerStatus) {
+                case RegistrationStatus.NONE:
+                    result = RegistrationStatusVMType.NONE;
+                    break;
+                case RegistrationStatus.SUBMITTED:
+                    result = RegistrationStatusVMType.SUBMITTED;
+                    break;
+                case RegistrationStatus.APPROVED:
+                    result = RegistrationStatusVMType.APPROVED;
+                    break;
+                case RegistrationStatus.REJECTED:
+                    result = RegistrationStatusVMType.REJECTED;
+                    break;
+
+            }
+
+            return result;
+        }
+    )
+
+    register(userVM: UserInfoVM) {
+        let user = new UserInfo(makeGuid());
+
+        user.dod_id = userVM.dod_id || '';
+        user.first_name = userVM.first_name || '';
+        user.last_name = userVM.last_name || '';
+        user.email_address = userVM.email || '';
+        user.phone_number = userVM.phone || '';
+
+        authenticationService.register(user);
     }
 
     getRolesVMs = createSelector(
@@ -57,3 +101,5 @@ export const {
     connectedPresenter: LandingPanelPresenter,
     componentId: LandingPanelId,
 } = createComponentWrapper(LandingPanel)
+
+

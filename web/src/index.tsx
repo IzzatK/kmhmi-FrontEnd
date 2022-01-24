@@ -5,45 +5,99 @@ import './index.css';
 import { Provider } from 'react-redux';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import {keycloakEnabled} from "./config/config";
 import {appDataStore, authenticationService} from "./application/serviceComposition";
+import { KnowledgeManagementPresenter } from './visual/views/knowledgeManagement/knowledgeManagementPresenter';
 
-const Bumed = React.lazy(() => import('./visual/views/bumed'));
+ReactDOM.render(
+    <React.StrictMode>
+        <Suspense fallback={<div></div>}>
+            <Provider store={appDataStore.getStorage()}>
+                {/*<ServiceContext.Provider value={application}>*/}
+                <DndProvider backend={HTML5Backend} >
+                    <KnowledgeManagementPresenter />
+                </DndProvider>
+                {/*</ServiceContext.Provider>*/}
+            </Provider>
+        </Suspense>
+    </React.StrictMode>,
+    document.getElementById('root')
+);
 
-const renderApp = () => {
-    ReactDOM.render(
-        <React.StrictMode>
-            <Suspense fallback={<div></div>}>
-                <Provider store={appDataStore.getStorage()}>
-                    {/*<ServiceContext.Provider value={application}>*/}
-                        <DndProvider backend={HTML5Backend} >
-                                <Bumed />
-                        </DndProvider>
-                    {/*</ServiceContext.Provider>*/}
-                </Provider>
-            </Suspense>
-        </React.StrictMode>,
-        document.getElementById('root')
-    );
-};
 
-const renderRegister = () => {
-    ReactDOM.render(
-        <React.StrictMode>
-            <Suspense fallback={<div></div>}>
-                <div className={'header-1 text-secondary'}>Please register</div>
-            </Suspense>
-        </React.StrictMode>,
-        document.getElementById('root')
-    );
-};
+// const interval = setInterval(() => {
+//     let href = document.location.href;
+//     if (href.includes('state=')) {
+//         clearInterval(interval);
+//         authenticationService.doLogin();
+//     }
+//
+//     if (authenticationService.isLoggedIn()) {
+//         clearInterval(interval);
+//     }
+//
+// }, 100);
+//
+// var oldHref = document.location.href;
 
-if (keycloakEnabled) {
-    authenticationService.initKeycloak(renderApp, renderRegister);
+
+if (document.location.href.includes('state=')) {
+    if (!authenticationService.isLoggedIn()) {
+        authenticationService.login();
+    }
 }
-else {
-    renderApp();
-}
+
+// window.onload = function() {
+//     const bodyList = document.querySelector("body")
+//
+//     const observer = new MutationObserver(function(mutations) {
+//         mutations.forEach(function(mutation) {
+//
+//             if (document.location.href.includes('state=')) {
+//                 if (!authenticationService.isLoggedIn()) {
+//                     authenticationService.doLogin();
+//                 }
+//             }
+//
+//             // if (oldHref != document.location.href) {
+//             //     oldHref = document.location.href;
+//             //     /* Changed ! your code here */
+//             // }
+//         });
+//     });
+//
+//     const config = {
+//         childList: true,
+//         subtree: true
+//     };
+//
+//     if (bodyList != null) {
+//         observer.observe(bodyList, config);
+//     }
+// };
+
+
+
+// const renderRegister = () => {
+//     ReactDOM.render(
+//         <React.StrictMode>
+//             <Suspense fallback={<div></div>}>
+//                 <div className={'header-1 text-secondary'}>Please register</div>
+//             </Suspense>
+//         </React.StrictMode>,
+//         document.getElementById('root')
+//     );
+// };
+
+// window.onunload = (ev => {
+//     alert('unloaded!')
+// });
+
+// if (keycloakEnabled) {
+//     authenticationService.initKeycloak(renderApp, renderRegister);
+// }
+// else {
+//     renderApp();
+// }
 
 
 // If you want your app to work offline and load faster, you can change

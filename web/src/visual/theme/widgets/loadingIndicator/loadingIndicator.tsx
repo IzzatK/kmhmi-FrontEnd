@@ -5,14 +5,14 @@ import {LoadingIndicatorProps, LoadingIndicatorState} from "./loadingIndicatorMo
 
 export class LoadingIndicator extends Component<LoadingIndicatorProps, LoadingIndicatorState> {
     render () {
-        const { className, small, ...rest } = this.props;
+        const { className, size="medium", ...rest } = this.props;
 
         let cn = 'loader-container w-100 h-100 d-flex align-items-center justify-content-center'
         if (className) {
             cn += ` ${className}`;
         }
-        if (small) {
-            cn += ` small`;
+        if (size) {
+            cn += ` ${size}`;
         }
 
         return (

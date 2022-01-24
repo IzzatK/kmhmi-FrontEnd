@@ -1,29 +1,31 @@
-import Keycloak from "keycloak-js";
-import {keycloakConfig, keycloakEnabled} from "../../config/config";
-import {IAuthenticationService, IUserService} from "../../api";
+import Keycloak, {KeycloakError, KeycloakLoginOptions, KeycloakLogoutOptions, KeycloakProfile} from "keycloak-js";
+import {keycloakConfig} from "../../config/config";
+import {
+    AuthenticationProfile,
+    IAuthenticationService,
+    IUserProvider,
+    IUserService,
+    RegistrationStatus
+} from "../../api";
 import {Nullable} from "../../framework/extras/typeUtils";
 import {IStorage} from "../../framework/api";
 import {Plugin} from "../../framework/extras/plugin";
 import {createSlice, PayloadAction, Slice} from "@reduxjs/toolkit";
+import {UserInfo} from "../../model";
 
-type AuthenticationProfile = {
-    id: string,
-    username: string,
-    firstName: string,
-    lastName: string,
-    email: string
-}
 
 type AuthenticationState = {
     hasError: boolean;
     profile: AuthenticationProfile,
     userId: string
+    registrationStatus: RegistrationStatus
 }
 
 type AuthenticationSliceType = Slice<AuthenticationState,
     {
         setHasError: (state: AuthenticationState, action: PayloadAction<boolean>) => void;
         setProfile: (state:AuthenticationState, action:PayloadAction<AuthenticationProfile>) => void;
+        setRegistrationStatus: (state:AuthenticationState, action:PayloadAction<RegistrationStatus>) => void;
     }>;
 
 export class AuthenticationService extends Plugin implements IAuthenticationService {
@@ -31,10 +33,11 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
     private appDataStore: Nullable<IStorage> = null;
     private userService: Nullable<IUserService> = null;
 
-    private _kc: any;
+    private _kc!: Keycloak.KeycloakInstance;
     private readonly REDIRECT_URI: string;
-    private readonly loginOptions: any;
-    private readonly logoutOptions: any;
+    private readonly loginOptions: KeycloakLoginOptions;
+    private readonly logoutOptions: KeycloakLogoutOptions;
+    private userProvider!: IUserProvider;
 
     private model: AuthenticationSliceType;
 
@@ -42,9 +45,10 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
         super();
         this.appendClassName(AuthenticationService.class);
 
-        this._kc = Keycloak(keycloakConfig);
         this.REDIRECT_URI = '';
-        this.loginOptions = {};
+        this.loginOptions = {
+            prompt:"login"
+        };
         this.logoutOptions = { redirectUri : this.REDIRECT_URI };
 
         this.model = createSlice({
@@ -72,6 +76,9 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
                         email: action.payload.email,
                     };
                 },
+                setRegistrationStatus: (state, action) => {
+                    state.registrationStatus = action.payload;
+                }
             },
         });
     }
@@ -98,81 +105,189 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
         this.userService = userService;
     }
 
-    initKeycloak(onAuthenticatedCallback: any, onRegisterCallback: any) {
-        this._kc.init({onLoad: 'login-required'})
+    setUserProvider(userProvider: IUserProvider) {
+        this.userProvider = userProvider;
+    }
+
+    private updateProfile(kcProfile: KeycloakProfile | undefined) {
+        if (kcProfile != null) {
+            let authenticationProfile: AuthenticationProfile = {
+                email: kcProfile.email || '',
+                firstName: kcProfile.firstName || "",
+                id: kcProfile.id || '',
+                lastName: kcProfile.lastName || "",
+                username: kcProfile.username || ""
+            }
+
+            this.appDataStore?.sendEvent(this.model.actions.setProfile(authenticationProfile));
+        }
+        else {
+            let authenticationProfile: AuthenticationProfile = {
+                email: '',
+                firstName: '',
+                id: '',
+                lastName: '',
+                username: '',
+            }
+
+            this.appDataStore?.sendEvent(this.model.actions.setProfile(authenticationProfile));
+        }
+
+    }
+
+    login() {
+        const s = document.createElement("script");
+        s.type = "text/javascript";
+        s.src = "https://auth.navyanalytics.com/auth/js/keycloak.js";
+        document.head.append(s)
+
+        s.onload = this.keyCloakLoadedHandler;
+    }
+
+    private keyCloakLoadedHandler(ev: any) {
+        this._kc = Keycloak(keycloakConfig);
+        this._kc.init({
+            // checkLoginIframe: true,
+            // checkLoginIframeInterval: 1000,
+            // silentCheckSsoRedirectUri: window.location.origin,
+            onLoad: "login-required",
+            // messageReceiveTimeout: 60000
+        })
             .then((authenticated: any) => {
                 if (authenticated) {
                     //Authentication was successful, retrieve the user info
                     this._kc.loadUserProfile()
                         .then(() => {
 
-                            const userId = this._kc.profile?.id;
+                            let kcProfile = this._kc.profile;
+                            const userId = kcProfile?.id;
+                            // debugger
+                            this.updateProfile(kcProfile);
 
-                            this.appDataStore?.sendEvent(this.model.actions.setProfile(this._kc.profile));
-
-                            if (this.userService) {
+                            if (this.userService && userId != null) {
                                 this.userService.setCurrentUser(userId);
                             }
 
-                            console.log(JSON.stringify(this._kc.profile));
-                            onAuthenticatedCallback();
+                            // // check if user exists
+                            // if (userId != null) {
+                            //     this.userProvider?.getSingle(userId)
+                            //         .then(user => {
+                            //             debugger
+                            //             if (user != null) {
+                            //
+                            //             }
+                            //             else {
+                            //                 this.userService?.createUser({
+                            //
+                            //                 })
+                            //             }
+                            //         })
+                            //         .catch(ex => {
+                            //             debugger; // create the user
+                            //         })
+                            // }
                         })
-                        .catch(() => {
+                        .catch((ex) => {
+                            debugger
                             this.onError('No longer authenticated: Invalid Certificate\n')
                         })
                 } else {
                     this.onError('Not authenticated');
-                    onRegisterCallback();
                 }
 
             })
-            .catch((ex: any) => {
+            .catch((ex: KeycloakError) => {
+                debugger
                 this.onError('Failed to authenticate with keycloak: \n' + JSON.stringify(ex));
             })
     }
 
-    doLogin() {
-        return this._kc.login(this.loginOptions);
-    }
-
-    doLogout() {
-        return this._kc.logout(this.logoutOptions);
+    logout() {
+        this._kc.logout(this.logoutOptions).then(this._kc.clearToken);
     }
 
     getToken() {
-        return this._kc.token || '';
+        return this._kc?.token || '';
     }
 
     isLoggedIn() {
-        return !!this._kc.token;
+        return !!this._kc?.token;
+    }
+
+    getRegistrationStatus(): RegistrationStatus {
+        return this.getAuthenticationState().registrationStatus;
+    }
+
+    setRegistrationStatus(status: RegistrationStatus) {
+        this.appDataStore?.sendEvent(this.model.actions.setRegistrationStatus(status))
     }
 
     getAuthenticationState(): AuthenticationState {
         return this.appDataStore?.getState()[this.model.name];
     }
 
-    onError(message: string) {
+    private onError(message: string) {
         if (!this.getAuthenticationState().hasError) {
             alert(message);
 
             this.appDataStore?.sendEvent(this.model.actions.setHasError(true))
 
-            this.doLogout();
+            this.logout();
         }
     }
 
-    updateToken(successCallback: any) {
+    securedFetch(successCallback: () => void) {
         let prevToken = this.getToken();
-        return this._kc.updateToken(5)
+        return this._kc?.updateToken(5)
             .then(successCallback)
-            .catch(() => {
-                this.onError('Access Denied\n');
+            .catch((reason: any) => {
+                // debugger;
+                // this.onError('Access Denied\n');
             })
             .finally(() => {
                 if (this.getToken() !== prevToken) {
-                    this.appDataStore?.sendEvent(this.model.actions.setProfile(this._kc.profile));
+                    this.updateProfile(this._kc.profile);
                 }
             })
+    }
+
+    register(userInfo: UserInfo) {
+        this.setRegistrationStatus(RegistrationStatus.SUBMITTED);
+
+        this.userProvider?.create({user: userInfo},
+            (updatedUserInfo => {
+                this.addOrUpdateRepoItem(updatedUserInfo);
+
+                // need to set a temporary id
+            }))
+            .then(latestUser => {
+
+                if (latestUser != null) {
+                    this.addOrUpdateRepoItem(latestUser);
+                }
+
+                const fetchUser = () => {
+                    if (latestUser != null) {
+                        this.userProvider.getSingle(latestUser.id)
+                            .then(userInfo => {
+                                if (userInfo != null) {
+                                    if (userInfo.account_status === 'active') {
+                                        this.setRegistrationStatus(RegistrationStatus.APPROVED);
+
+                                        if (interval != null) {
+                                            clearInterval(interval);
+                                        }
+                                    }
+                                }
+                            })
+                    }
+
+                    let interval = setInterval(fetchUser, 5000);
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     getUsername() {
@@ -185,13 +300,5 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
 
     getUserId() {
         return this.getAuthenticationState().profile.id;
-    }
-
-    hasRole(roles: any) {
-        return roles.some((role: any) => this._kc.hasRealmRole(role));
-    }
-
-    keyCloakEnabled(): boolean {
-        return keycloakEnabled;
     }
 }

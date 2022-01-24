@@ -1,33 +1,39 @@
 import {IPlugin} from "../../framework/api";
 import {IStorage} from "../../framework/api";
 import {IUserService} from "../users/iUserService";
+import {IUserProvider} from "../users/IUserProvider";
+import {UserInfo} from "../../model";
 
 export interface IAuthenticationService extends IPlugin {
-    initKeycloak(onAuthenticatedCallback: any, onRegisterCallback: any): void;
-
-    doLogin(): any;
-
-    doLogout(): any;
-
-    getToken(): string;
+    login(): any;
+    logout(): any;
+    register(user: UserInfo): void;
+    securedFetch(successCallback: any): any;
 
     isLoggedIn(): boolean;
-
-    onError(message: string): void;
-
-    updateToken(successCallback: any): any;
-
-    getUsername(): any;
-
+    getToken(): string;
     getUserProfile(): {firstName: string, lastName: string, username: string, id: string, email: string };
-
     getUserId(): any;
+    getRegistrationStatus(): RegistrationStatus;
 
-    hasRole(roles: any): any;
-
-    keyCloakEnabled(): boolean;
+    getAuthenticationState(): any;
 
     setAppDataStore(appDataStore: IStorage): void;
-
     setUserService(userService: IUserService): void;
+    setUserProvider(userProvider: IUserProvider): void;
+}
+
+export type AuthenticationProfile = {
+    id: string,
+    username: string,
+    firstName: string,
+    lastName: string,
+    email: string
+}
+
+export enum RegistrationStatus {
+    NONE,
+    SUBMITTED,
+    APPROVED,
+    REJECTED
 }

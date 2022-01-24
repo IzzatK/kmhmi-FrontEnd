@@ -44,7 +44,7 @@ class SystemBanner extends Presenter {
     }
 
     onLogout() {
-        authenticationService.doLogout();
+        authenticationService.logout();
         documentService.clearDocuments();
     }
 

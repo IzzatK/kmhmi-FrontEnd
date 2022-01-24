@@ -65,6 +65,11 @@ class DocumentPanel extends Presenter {
                 type: ParamType.STRING,
                 long: true,
             },
+            ['publication_date']: {
+                id: 'publication_date',
+                title: 'Publication Date',
+                type: ParamType.STRING,
+            },
             ['project']: {
                 id: 'project',
                 title: 'Project',

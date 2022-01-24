@@ -7,17 +7,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="limit by role Document Panel">
+    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="working on registration">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/api/authorization/iAuthorizationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/api/authorization/iAuthorizationService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/api/users/iUserService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/api/users/iUserService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/application/authorization/authorizationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/application/authorization/authorizationService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/application/users/userService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/application/users/userService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profileInfoView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profileInfoView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/model/userInfo.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/model/userInfo.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/visual/components/landingPanel/landingPanelPresenter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/landingPanel/landingPanelPresenter.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelModel.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelPresenter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelPresenter.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelView.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/visual/components/systemToolbar/systemToolbarPresenter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolbar/systemToolbarPresenter.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,7 +24,19 @@
       <option value="directory" />
     </option>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="development" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitSEFilterConfiguration">
@@ -53,7 +60,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/web/src/application/authorization/converters" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/search" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -64,14 +71,20 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Repos\km-hmi\web\src\visual\views\knowledgeManagement\app\search" />
+      <recent name="C:\Repos\km-hmi\web\src\visual\views\bumed" />
+      <recent name="C:\Repos\km-hmi\web\src\visual\views\landing" />
       <recent name="C:\Repos\km-hmi\web\src\application\authorization\converters" />
       <recent name="C:\Repos\km-hmi\web\src\model" />
-      <recent name="C:\Repos\km-hmi\web\src\application\authentication\converters" />
-      <recent name="C:\Repos\km-hmi\web\src\application\authentication\providers" />
-      <recent name="C:\Repos\km-hmi\web\src\api" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Repos\km-hmi\web\src\visual\views\bumed" />
       <recent name="C:\Repos\km-hmi\web\src\application\authorization" />
+    </key>
+    <key name="es6.move.members.recent.items">
+      <recent name="C:\Repos\km-hmi\web\src\visual\views\knowledgeManagement\app\search\searchModel.ts" />
+      <recent name="C:\Repos\km-hmi\web\src\visual\views\app\appView.tsx" />
+      <recent name="C:\Repos\km-hmi\web\src\visual\views\app\AppModel.ts" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -84,7 +97,10 @@
       <updated>1641314890275</updated>
       <workItem from="1641314892135" duration="1941000" />
       <workItem from="1641329826785" duration="13922000" />
-      <workItem from="1641418866388" duration="34099000" />
+      <workItem from="1641418866388" duration="43700000" />
+      <workItem from="1641924273826" duration="1721000" />
+      <workItem from="1641931920849" duration="29820000" />
+      <workItem from="1642428259768" duration="5453000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1641329914789</created>
@@ -107,11 +123,91 @@
       <option name="project" value="LOCAL" />
       <updated>1641848314010</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="limit functionality in the users panel">
+      <created>1641850433108</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1641850433108</updated>
+    </task>
+    <task id="LOCAL-00005" summary="working on authentication">
+      <created>1642179037346</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1642179037346</updated>
+    </task>
+    <task id="LOCAL-00006" summary="working on authentication">
+      <created>1642190190209</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1642190190209</updated>
+    </task>
+    <task id="LOCAL-00007" summary="authentication stuff">
+      <created>1642196851591</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1642196851591</updated>
+    </task>
+    <task id="LOCAL-00008" summary="worked on landing page synchronization">
+      <created>1642427805870</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1642427805870</updated>
+    </task>
+    <task id="LOCAL-00009" summary="set current user on login">
+      <created>1642428876062</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1642428876062</updated>
+    </task>
+    <task id="LOCAL-00010" summary="anthony broke stuff">
+      <created>1642430182432</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1642430182432</updated>
+    </task>
+    <task id="LOCAL-00011" summary="hard code create user for testing">
+      <created>1642430695458</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1642430695458</updated>
+    </task>
+    <task id="LOCAL-00012" summary="account status">
+      <created>1642431812364</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1642431812364</updated>
+    </task>
+    <task id="LOCAL-00013" summary="working on registration">
+      <created>1642433142249</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1642433142249</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -131,6 +227,15 @@
     <MESSAGE value="initial commit" />
     <MESSAGE value="added logic for authorization service. currently only limiting document upload by role. need to limit functionality through the rest of the UI" />
     <MESSAGE value="limit by role Document Panel" />
-    <option name="LAST_COMMIT_MESSAGE" value="limit by role Document Panel" />
+    <MESSAGE value="limit functionality in the users panel" />
+    <MESSAGE value="working on authentication" />
+    <MESSAGE value="authentication stuff" />
+    <MESSAGE value="worked on landing page synchronization" />
+    <MESSAGE value="set current user on login" />
+    <MESSAGE value="anthony broke stuff" />
+    <MESSAGE value="hard code create user for testing" />
+    <MESSAGE value="account status" />
+    <MESSAGE value="working on registration" />
+    <option name="LAST_COMMIT_MESSAGE" value="working on registration" />
   </component>
 </project>

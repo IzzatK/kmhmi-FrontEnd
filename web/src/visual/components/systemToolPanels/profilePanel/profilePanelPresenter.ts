@@ -45,7 +45,7 @@ class ProfilePanel extends Presenter {
         this.mapStateToProps = (state: any, props: any) => {
             return {
                 users: this.getManagedUserVMs(state),
-                userLookUp: userService.getUsers(),
+                userLookUp: userService.getActiveUsers(),
                 currentUser: this.getCurrentUserVM(state),
                 roles: this.getRolesVMs(state),
                 departments: this.getDepartmentVMs(state),
@@ -60,7 +60,7 @@ class ProfilePanel extends Presenter {
                 onUserAdded: (user: UserInfoVM) => userService.createUser(user),
                 onUserUpdated: (user: UserInfo) => userService.updateUser(user),
                 onUserRemoved: (id: string) => userService.removeUser(id),
-                onAcceptUserRequest: (id: string) => userService.acceptUserRequest(id),
+                onAcceptUserRequest: (id: string, role: string) => userService.acceptUserRequest(id, role),
                 onDeclineUserRequest: (id: string) => userService.declineUserRequest(id),
             };
         }
@@ -80,7 +80,7 @@ class ProfilePanel extends Presenter {
     )
 
     getManagedUserVMs = createSelector(
-        [userService.getUsers, userService.getCurrentUser],
+        [() => userService.getActiveUsers(), () => userService.getCurrentUser()],
         (items, currentUser) => {
             let itemVMs: Record<string, UserInfoVM> = {};
 
@@ -118,9 +118,9 @@ class ProfilePanel extends Presenter {
     )
 
     getCurrentUserVM = createSelector(
-        [userService.getCurrentUser],
+        [() => userService.getCurrentUser()],
         (currentUser) => {
-            const { id="", dod_id=-1, first_name="", last_name="", email_address="", phone_number="", department="",
+            const { id="", dod_id='', first_name="", last_name="", email_address="", phone_number="", department="",
                 account_status="", role="", approved_by="", date_approved=""} = currentUser || {};
 
             let itemVM: UserInfoVM = {
@@ -172,37 +172,62 @@ class ProfilePanel extends Presenter {
     )
 
     getUserRequestVMs = createSelector(
-        [userService.getUserRequests],
+        [() => userService.getPendingUsers()],
         (items) => {
-            let itemVMs: Record<string, UserRequestInfoVM> = {};
+            // let itemVMs: Record<string, UserRequestInfoVM> = {};
+            //
+            // forEach(items, (item: UserRequestInfo) => {
+            //     const {
+            //         id,
+            //         user_id,
+            //         role,
+            //         duration,
+            //         comment
+            //     } = item;
+            //
+            //     let name = "";
+            //     let user = userService.getUser(user_id);
+            //
+            //     if (user) {
+            //         name = user.first_name + user.last_name ? " " + user.last_name : "";
+            //     }
+            //
+            //     let itemVM: UserRequestInfoVM = {
+            //         id,
+            //         name,
+            //         role,
+            //         duration,
+            //         comment
+            //     }
+            //
+            //     itemVMs[id] = itemVM;
+            // });
+            //
+            // return Object.values(itemVMs);
 
-            forEach(items, (item: UserRequestInfo) => {
-                const {
+            let itemVMs: Record<string, UserInfoVM> = {};
+
+            forEach(items, (item: UserInfo) => {
+
+                const { id, dod_id, first_name, last_name, email_address, phone_number, department,
+                    account_status, role, approved_by, date_approved} = item;
+
+                let itemVM:UserInfoVM = {
                     id,
-                    user_id,
+                    dod_id: dod_id,
+                    first_name,
+                    last_name,
+                    email_address,
+                    phone_number,
+                    department,
+                    account_status,
                     role,
-                    duration,
-                    comment
-                } = item;
-
-                let name = "";
-                let user = userService.getUser(user_id);
-
-                if (user) {
-                    name = user.first_name + user.last_name ? " " + user.last_name : "";
-                }
-
-                let itemVM: UserRequestInfoVM = {
-                    id,
-                    name,
-                    role,
-                    duration,
-                    comment
-                }
+                    approved_by: approved_by ? approved_by : "",
+                    date_approved: date_approved ? date_approved : "",
+                };
 
                 itemVMs[id] = itemVM;
             });
-
             return Object.values(itemVMs);
         }
     )

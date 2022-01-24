@@ -2,8 +2,8 @@ import {bindActionCreators} from "redux";
 import {makeGuid} from "./utils/uniqueIdUtils";
 
 export class Presenter{
-    _mapStateToProps: any = null;
-    _mapDispatchToProps: any = null;
+    _mapStateToProps?: (state: any, props: any) => any;
+    _mapDispatchToProps?: (state: any, props: any) => any;
     _view: any = null;
     _id: any = null;
     _model: any = null;
