@@ -7,12 +7,44 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="working on registration">
+    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="build spec try it out">
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/00-base.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/README" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/autoindex.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/httpd-conf.tgz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/httpd-conf/httpd-conf.tar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/httpd-conf/httpd-conf/README" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/httpd-conf/httpd-conf/autoindex.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/httpd-conf/httpd-conf/kmweb.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/httpd-conf/httpd-conf/ssl.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/httpd-conf/httpd-conf/userdir.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/httpd-conf/httpd-conf/welcome.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/kmweb.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/ssl.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/userdir.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/welcome.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/00-base.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/00-dav.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/00-lua.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/00-mpm.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/00-optional.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/00-proxy.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/00-ssl.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/00-systemd.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/01-cgi.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/10-h2.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/10-proxy_h2.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/README" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/deploy2docker.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/docker/hmi_apache_server/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/docker/hmi_apache_server/httpd.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/environments/production/hmi_apacheconf/htmlfiles/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/environments/production/hmi_apacheconf/sites/techolaf.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/environments/test/hmi_apacheconf/htmlfiles/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/environments/test/hmi_apacheconf/sites/techolaf.conf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/model/userInfo.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/model/userInfo.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/visual/components/landingPanel/landingPanelPresenter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/landingPanel/landingPanelPresenter.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelPresenter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/visual/components/systemToolPanels/profilePanel/profilePanelPresenter.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/.env.development" beforeDir="false" afterPath="$PROJECT_DIR$/web/.env.development" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +92,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/web/src/visual/views/knowledgeManagement/app/search" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/ci/deployment_server/environments/testing" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -71,15 +103,18 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Repos\km-hmi\ci\deployment_server\environments\testing" />
+      <recent name="C:\Repos\km-hmi" />
       <recent name="C:\Repos\km-hmi\web\src\visual\views\knowledgeManagement\app\search" />
       <recent name="C:\Repos\km-hmi\web\src\visual\views\bumed" />
       <recent name="C:\Repos\km-hmi\web\src\visual\views\landing" />
-      <recent name="C:\Repos\km-hmi\web\src\application\authorization\converters" />
-      <recent name="C:\Repos\km-hmi\web\src\model" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Repos\km-hmi\web\src\visual\views\bumed" />
-      <recent name="C:\Repos\km-hmi\web\src\application\authorization" />
+      <recent name="C:\Repos\km-hmi\ci\deployment\_reference" />
+      <recent name="C:\Repos\km-hmi\ci\deployment_server\docker\apache_server" />
+      <recent name="C:\Repos\km-hmi\ci\deployment_server\config" />
+      <recent name="C:\Repos\km-hmi\ci\deployment_server\_reference" />
+      <recent name="C:\Repos\km-hmi\ci\deployment_server\environments\production" />
     </key>
     <key name="es6.move.members.recent.items">
       <recent name="C:\Repos\km-hmi\web\src\visual\views\knowledgeManagement\app\search\searchModel.ts" />
@@ -100,7 +135,9 @@
       <workItem from="1641418866388" duration="43700000" />
       <workItem from="1641924273826" duration="1721000" />
       <workItem from="1641931920849" duration="29820000" />
-      <workItem from="1642428259768" duration="5453000" />
+      <workItem from="1642428259768" duration="29135000" />
+      <workItem from="1643032955745" duration="10783000" />
+      <workItem from="1643058745633" duration="1031000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1641329914789</created>
@@ -193,7 +230,98 @@
       <option name="project" value="LOCAL" />
       <updated>1642433142249</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="working on registration">
+      <created>1642433814379</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1642433814379</updated>
+    </task>
+    <task id="LOCAL-00015" summary="working on registration">
+      <created>1642434531811</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1642434531811</updated>
+    </task>
+    <task id="LOCAL-00016" summary="added functionality for pending users and approve users">
+      <created>1642445793005</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1642445793005</updated>
+    </task>
+    <task id="LOCAL-00017" summary="accept and deny users">
+      <created>1642446363199</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1642446363199</updated>
+    </task>
+    <task id="LOCAL-00018" summary="accept and deny users">
+      <created>1642446791725</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1642446791725</updated>
+    </task>
+    <task id="LOCAL-00019" summary="josiah is so good at debugging my code">
+      <created>1642447460026</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1642447460026</updated>
+    </task>
+    <task id="LOCAL-00020" summary="update user request">
+      <created>1642448082073</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1642448082073</updated>
+    </task>
+    <task id="LOCAL-00021" summary="can search documents">
+      <created>1642449295004</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1642449295004</updated>
+    </task>
+    <task id="LOCAL-00022" summary="build spec">
+      <created>1642540198830</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1642540198830</updated>
+    </task>
+    <task id="LOCAL-00023" summary="build spec try it out">
+      <created>1642540855992</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1642540855992</updated>
+    </task>
+    <task id="LOCAL-00024" summary="build spec try it out">
+      <created>1642542554312</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1642542554312</updated>
+    </task>
+    <task id="LOCAL-00025" summary="build spec try it out">
+      <created>1642543089722</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1642543089722</updated>
+    </task>
+    <task id="LOCAL-00026" summary="build spec try it out">
+      <created>1642543796613</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1642543796613</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -236,6 +364,13 @@
     <MESSAGE value="hard code create user for testing" />
     <MESSAGE value="account status" />
     <MESSAGE value="working on registration" />
-    <option name="LAST_COMMIT_MESSAGE" value="working on registration" />
+    <MESSAGE value="added functionality for pending users and approve users" />
+    <MESSAGE value="accept and deny users" />
+    <MESSAGE value="josiah is so good at debugging my code" />
+    <MESSAGE value="update user request" />
+    <MESSAGE value="can search documents" />
+    <MESSAGE value="build spec" />
+    <MESSAGE value="build spec try it out" />
+    <option name="LAST_COMMIT_MESSAGE" value="build spec try it out" />
   </component>
 </project>
