@@ -8,12 +8,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="adding deployment for hmi web">
-      <change afterPath="$PROJECT_DIR$/ci/deployment/environments/example/hmi_apacheconf/htmlfiles/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ci/deployment/environments/example/hmi_apacheconf/sites/techolaf.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/docker-compose-production.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci/deployment/docker-compose-test.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/ci/deployment/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/environments/production/hmi_apacheconf/htmlfiles/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/ci/deployment/environments/production/hmi_apacheconf/htmlfiles/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/environments/test/hmi_apacheconf/htmlfiles/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/ci/deployment/environments/test/hmi_apacheconf/htmlfiles/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/deployment/deploy2docker.bat" beforeDir="false" afterPath="$PROJECT_DIR$/ci/deployment/deploy2docker.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/deployment/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/ci/deployment/docker-compose-all.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +60,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/ci/deployment/environments" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/ci/deployment" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -72,11 +71,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Repos\km-hmi\ci\deployment" />
       <recent name="C:\Repos\km-hmi\ci\deployment\environments" />
       <recent name="C:\Repos\km-hmi\ci\deployment_server\environments\testing" />
       <recent name="C:\Repos\km-hmi" />
       <recent name="C:\Repos\km-hmi\web\src\visual\views\knowledgeManagement\app\search" />
-      <recent name="C:\Repos\km-hmi\web\src\visual\views\bumed" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Repos\km-hmi\ci\deployment\_reference" />
@@ -106,7 +105,7 @@
       <workItem from="1641931920849" duration="29820000" />
       <workItem from="1642428259768" duration="29135000" />
       <workItem from="1643032955745" duration="10783000" />
-      <workItem from="1643058745633" duration="1983000" />
+      <workItem from="1643058745633" duration="2786000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1641329914789</created>
@@ -297,7 +296,14 @@
       <option name="project" value="LOCAL" />
       <updated>1643059876212</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="adding deployment for hmi web">
+      <created>1643060787851</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1643060787851</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
