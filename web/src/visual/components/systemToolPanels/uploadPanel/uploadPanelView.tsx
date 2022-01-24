@@ -142,7 +142,11 @@ class UploadPanelView extends Component<UploadPanelProps, UploadPanelState> {
                                                       <div className={`display-2 ${deleted || status === "failed" || status === "Cancelled" ? "text-info" : "text-secondary"}`}>{file_name}</div>
                                                   </div>
                                                   {
-                                                      (isUpdating || status === "Processing" || status === "Uploading") &&
+                                                      (status === "Uploading" || isUpdating) &&
+                                                      <div className={"d-flex flex-fill text-right justify-content-end display-2 font-weight-semi-bold text-info"}>Pending...</div>
+                                                  }
+                                                  {
+                                                      (status === "Processing") &&
                                                       <div className={"d-flex flex-fill"}>
                                                           <LoadingIndicator className={"mr-4"} small={true}/>
                                                       </div>
@@ -151,11 +155,12 @@ class UploadPanelView extends Component<UploadPanelProps, UploadPanelState> {
                                                   {
                                                       (!deleted && (status === "Processing" || isUpdating || status === "Uploading")) &&
                                                       <div className={'d-flex align-items-center justify-content-center p-2 mr-4'}>
-                                                          <Button className={'btn-transparent loading-button'} onClick={(event) => this._onCancelUpload(event, id)}>
+                                                          <Button className={'btn-transparent loading-button'} disabled={status !== "Uploading"} onClick={(event) => this._onCancelUpload(event, id)}>
                                                               <RemoveSVG className={"small-image-container"}/>
                                                           </Button>
                                                       </div>
                                                   }
+
 
 
                                               </div>

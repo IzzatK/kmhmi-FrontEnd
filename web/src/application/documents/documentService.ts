@@ -322,8 +322,6 @@ export class DocumentService extends Plugin implements IDocumentService {
                     this.addOrUpdateRepoItem(updatedDocument);
                 })
                 .then(document => {
-                    // this.removeAllById(DocumentInfo.class, tmpId);//TODO figure out what to do with tmp docs
-
                     if (document != null) {
                         const { id, file_name } = document;
 
@@ -351,7 +349,6 @@ export class DocumentService extends Plugin implements IDocumentService {
     }
 
     processQueue() {
-
         if (this.pendingFilesQueue.length !== 0) {
             this.dequeueFile();
         }
@@ -367,90 +364,9 @@ export class DocumentService extends Plugin implements IDocumentService {
         if (length === 0) {
             this.processQueue();
         }
-
-        // forEach(fileList, (item: any) => {
-        //
-        //     const file = item;
-        //
-        //     const {name} = file;
-        //
-        //     // since we are posting and don't have an id yet, use a placeholder
-        //     let tmpId = name;
-        //
-        //     // redux raw file
-        //     this.pendingFilesRaw[tmpId] = file;
-        //
-        //     // put the file in the pending documents list
-        //     // id will be auto generated client side
-        //     let tmpFileInfo = new DocumentInfo(tmpId);
-        //     tmpFileInfo.file_name = name;
-        //     tmpFileInfo.status = 'Uploading';
-        //     tmpFileInfo.isPending = true;
-        //
-        //     this.addOrUpdateRepoItem(tmpFileInfo)
-        //
-        //     let requestData = {
-        //         id: tmpId,
-        //         pendingFilesRaw: this.pendingFilesRaw,
-        //         file
-        //     };
-        //
-        //     this.documentProvider?.create(requestData,
-        //         (updatedDocument) => {
-        //             const {id, status} = updatedDocument;
-        //
-        //             if (this.pendingFilesRaw[tmpId]) {
-        //                 delete this.pendingFilesRaw[tmpId];
-        //
-        //                 // put the document back in with the new id
-        //                 this.pendingFilesRaw[id] = file;
-        //
-        //                 updatedDocument.file_name = name;
-        //                 updatedDocument.status = 'Processing';
-        //                 updatedDocument.isPending = true;
-        //             } else if (status === "failed") {
-        //                 updatedDocument.file_name = name;
-        //                 updatedDocument.status = 'Processing';
-        //                 updatedDocument.isPending = true;
-        //             } else if (status === "error") {
-        //                 updatedDocument.file_name = name;
-        //                 updatedDocument.status = 'failed';
-        //                 updatedDocument.isPending = true;
-        //             }
-        //
-        //             this.addOrUpdateRepoItem(updatedDocument);
-        //         })
-        //         .then(document => {
-        //             this.removeAllById(DocumentInfo.class, tmpId);
-        //             if (document != null) {
-        //                 this.addOrUpdateRepoItem(document);
-        //             }
-        //         })
-        //         .catch(error => {
-        //
-        //         })
-        // });
     }
 
     cancelUpload(id: string) {
-        // debugger;
-        // let pendingFile = this.getDocument(id);
-        //
-        // if (pendingFile) {
-        //     let { file_name } = pendingFile;
-        //     this.removeAllById(DocumentInfo.class, file_name);
-        // }
-        //
-        // this.removeDocument(id);
-        //
-        // // delete raw file
-        // if (this.pendingFilesRaw[id]) {
-        //     delete this.pendingFilesRaw[id];
-        // }
-        //
-        // // update in repo
-        // this.removeAllById(DocumentInfo.class, id);
-
         let pendingFile = this.getDocument(id);
 
         if (pendingFile) {
@@ -473,15 +389,11 @@ export class DocumentService extends Plugin implements IDocumentService {
 
                 delete this.pendingFilesRaw[file_name];
             }
-            console.log("pendingFilesQueue 1 " + JSON.stringify(this.pendingFilesQueue));
-
 
             this.pendingFilesQueue = this.pendingFilesQueue.filter(file => {
                 const {name} = file;
                 return name !== file_name;
             });
-
-            console.log("pendingFilesQueue 2 " + JSON.stringify(this.pendingFilesQueue));
 
             if (rawFile) {
 
@@ -525,55 +437,6 @@ export class DocumentService extends Plugin implements IDocumentService {
 
                 this.processQueue();
             }
-
-
-            // console.log("cancelUpload " + id + " " + this.pendingFilesQueue.indexOf(localFile) + " " + this.pendingFilesQueue.indexOf(pendingFile));
-            // console.log("cancelUpload " + JSON.stringify(this.pendingFilesRaw));
-
-            // if (this.pendingFilesQueue.includes(localFile)) {
-            //     this.pendingFilesQueue.filter(file => file.id !== id);
-            //     setTimeout(() => {
-            //         if (localFile) {
-            //             this.removeRepoItem(localFile);
-            //         }
-            //         if (pendingFile) {
-            //             this.removeRepoItem(pendingFile);
-            //         }
-            //     }, 3000);
-            // } else {
-            //     this.documentProvider?.remove(id)
-            //         .then(document => {
-            //             if (document != null) {
-            //                 let approvedFile = {
-            //                     ...document,
-            //                     isPending: true,
-            //                     isDeleted: true,
-            //                     status: "Cancelled",
-            //                 }
-            //                 this.addOrUpdateRepoItem(approvedFile);
-            //
-            //                 let { file_name } = document;
-            //
-            //                 setTimeout(() => {
-            //                     if (localFile) {
-            //                         this.removeRepoItem(localFile);
-            //                     }
-            //                     if (pendingFile) {
-            //                         this.removeRepoItem(pendingFile);
-            //                     }
-            //                 }, 3000);
-            //
-            //                 if (!this.pendingFilesQueue.includes(localFile)) {
-            //                     this.processQueue();
-            //                 }
-            //             }
-            //         })
-            //         .catch(error => {
-            //             this.error(error);
-            //         });
-            //
-            //     this.processQueue();
-            // }
         }
     }
 

@@ -99,8 +99,6 @@ class UploadPanel extends Presenter {
 
             });
 
-            console.log("itemVMs " + JSON.stringify(itemVMs));
-
             return itemVMs;
         }
     )
