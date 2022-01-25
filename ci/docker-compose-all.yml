@@ -3,8 +3,8 @@ version: "3.3"
 services:
   example:
     build:
-      context: ./docker/hmi_apache_server
-      dockerfile: ./Dockerfile
+      context: docker/hmi_apache_server
+      dockerfile: docker/hmi_apache_server/Dockerfile
     ports:
       - "90:80"
     volumes:
@@ -13,8 +13,8 @@ services:
 
   km-hmi-production:
     build:
-      context: ./docker/hmi_apache_server
-      dockerfile: ./Dockerfile
+      context: docker/hmi_apache_server
+      dockerfile: docker/hmi_apache_server/Dockerfile
     ports:
       - "91:80"
     volumes:
@@ -23,8 +23,8 @@ services:
 
   km-hmi-test:
     build:
-      context: ./docker/hmi_apache_server
-      dockerfile: ./Dockerfile
+      context: docker/hmi_apache_server
+      dockerfile: docker/hmi_apache_server/Dockerfile
     ports:
       - "92:80"
     volumes:

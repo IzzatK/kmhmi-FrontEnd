@@ -3,12 +3,12 @@ version: "3.3"
 services:
   km-hmi-production:
     build:
-      context: ./docker/hmi_apache_server
-      dockerfile: ./Dockerfile
+      context: docker/hmi_apache_server
+      dockerfile: docker/hmi_apache_server/Dockerfile
     ports:
       - "91:80"
     volumes:
       - ./environments/production/hmi_apacheconf/sites/:/usr/local/apache2/conf/sites
-      - ./environments/production/hmi_apacheconf/htmlfiles/:/usr/local/apache2/techolaf
+      - ./../web/build/:/usr/local/apache2/techolaf
 
 

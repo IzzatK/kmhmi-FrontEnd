@@ -14,6 +14,7 @@ RUN mkdir -p /usr/local/apache2/conf/sites/
 
 # To tell docker to expose this port
 EXPOSE 80
+EXPOSE 443
 
 # The Base command, This command should be used to start the container
 # Remember, A Container is a Process.As long as the base process (started by base cmd) is live the Container will be ALIVE.
