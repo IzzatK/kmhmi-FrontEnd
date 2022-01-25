@@ -1,5 +1,12 @@
 .tooltip-portal {
     margin-top: 0.5rem;
+    background: var(--tooltip-bg-color);
+    color: var(--tooltip-color);
+}
+
+.tooltip-portal.light {
+    background: var(--light-tooltip-bg-color);
+    color: var(--light-tooltip-color);
 }
 
 .tooltip-portal.portal::after {
@@ -10,5 +17,9 @@
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: transparent transparent var(--primary-color) transparent;
+    border-color: transparent transparent var(--tooltip-bg-color) transparent;
+}
+
+.tooltip-portal.light.portal::after {
+    border-color: transparent transparent var(--light-tooltip-bg-color) transparent;
 }

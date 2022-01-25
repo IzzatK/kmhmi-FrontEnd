@@ -40,9 +40,13 @@ body > * {
     /* Login Panel */
 
     --login-panel-background: var(--app-vulcan);
-    --login-panel-popup-background: var(--app-bunker);
+    --login-panel-popup-background: var(--app-vulcan);
+    --logim-panel-light-popup-background: var(--app-bleach);
     --login-panel-color: var(--app-bleach);
     --login-panel-accent-color: var(--app-airForceBlue);
+    --login-panel-info-color: var(--app-whiteSmoke);
+    --login-panel-light-info-color: var(--app-suvaGrey);
+    --login-panel-dark-bg-color: var(--app-bunker);
 
     /* Logout Panel */
 
@@ -119,6 +123,12 @@ body > * {
     --system-tool-header-background: var(--app-black);
     --system-tool-header-color: var(--app-whiteSmoke);
     --system-tool-color: var(--app-bleach);
+
+    /* Tooltip */
+    --tooltip-color: var(--app-whiteSmoke);
+    --light-tooltip-color: var(--app-bunker);
+    --tooltip-bg-color: var(--app-vulcan);
+    --light-tooltip-bg-color: var(--app-white);
 
     /* User Management */
     --profile-panel-color: var(--app-whiteSmoke);

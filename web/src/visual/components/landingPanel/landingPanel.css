@@ -3,9 +3,21 @@
     color: var(--login-panel-color);
 }
 
+.landing-panel .info {
+    color: var(--login-panel-info-color);
+}
+
+.landing-panel .light-info {
+    color: var(--login-panel-light-info-color);
+}
+
 .landing-panel .text-advisory {
     font-size: 4rem;
     line-height: 4rem;
+}
+
+.landing-panel .text-wrap {
+    max-width: 54rem;
 }
 
 .landing-panel .button {
@@ -16,7 +28,7 @@
 }
 
 .landing-panel .button.light {
-    width: 11.8rem;
+    min-width: 11.8rem;
     min-height: 3.8rem;
     font-size: 1.8rem;
     margin-top: 0 !important;
@@ -24,6 +36,18 @@
 
 .landing-panel .popup {
     background: var(--login-panel-popup-background);
+    min-width: 75.5rem;
+    min-height: 41rem;
+}
+
+.landing-panel .light-popup {
+    background: var(--logim-panel-light-popup-background);
+    min-width: 56rem;
+    min-height: 41rem;
+}
+
+.landing-panel .dark {
+    background: var(--login-panel-dark-bg-color);
 }
 
 .landing-panel .text-selected {

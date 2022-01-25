@@ -61,7 +61,7 @@ class Button extends Component<ButtonProps, ButtonState> {
         return (
             tooltip ?
                 (
-                    <TooltipPortal portalContent={
+                    <TooltipPortal light={true} portalContent={
                         tooltip &&
                         <div>{tooltip}</div>
                     }>

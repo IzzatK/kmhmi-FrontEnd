@@ -1,6 +1,7 @@
 export type TooltipPortalProps = {
     portalContent?: any,
-    className?: string
+    className?: string,
+    light?: boolean,
 }
 
 export type TooltipPortalState = {
