@@ -1,9 +1,8 @@
 version: "3.8"
 
 services:
-  proxy:
+  km_client_test:
     image: nginx:alpine
-    container_name: proxy
     # restart: unless-stopped
     ports:
       - 80:80
@@ -14,5 +13,6 @@ services:
       # SSL certificates
       - ./certs/:/etc/x509/https
       # Website static files can be placed here.
-      - ../web/build/:/usr/share/nginx/html/navy/
+#      - ../web/build/:/usr/share/nginx/html/navy/
 #      - ./ui/:/usr/share/nginx/html/navy/
+      - ./build/:/usr/share/nginx/html/navy/

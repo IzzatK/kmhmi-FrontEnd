@@ -5,3 +5,4 @@
 modules.xml
 vcs.xml
 workspace.xml
+/docker-deploy/build/
