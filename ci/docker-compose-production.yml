@@ -4,11 +4,13 @@ services:
   km-hmi-production:
     build:
       context: docker/hmi_apache_server
-      dockerfile: docker/hmi_apache_server/Dockerfile
+      dockerfile: ./Dockerfile
     ports:
       - "91:80"
     volumes:
       - ./environments/production/hmi_apacheconf/sites/:/usr/local/apache2/conf/sites
       - ./../web/build/:/usr/local/apache2/techolaf
+      #     Certificates
+      - ./certs/:/etc/ssl/certs
 
 

@@ -67,7 +67,6 @@ export class HttpService extends BasePlugin implements IHttpService {
         }
 
         options.headers = headers;
-        options.redirect = 'follow';
 
         const self = this;
         const fetchFxn = () => {

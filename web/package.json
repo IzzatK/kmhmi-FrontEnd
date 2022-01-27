@@ -2,7 +2,7 @@
   "name": "react-arch-testing",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/navy/",
+  "homepage": ".",
   "dependencies": {
     "@amcharts/amcharts4": "^4.10.22",
     "@codastic/react-positioning-portal": "^0.4.0",
