@@ -37,7 +37,7 @@ export class HttpService extends BasePlugin implements IHttpService {
 
     createAPI(url: string, command?: string, body?: any, format?: string) {
 
-        let options: any = {
+        let options: RequestInit = {
             method: command ? command : 'GET'
         }
 
@@ -67,6 +67,7 @@ export class HttpService extends BasePlugin implements IHttpService {
         }
 
         options.headers = headers;
+        options.redirect = 'follow';
 
         const self = this;
         const fetchFxn = () => {
@@ -116,7 +117,8 @@ export class HttpService extends BasePlugin implements IHttpService {
 
 
         if (this.authenticationService != null && this.authenticationService.isLoggedIn()) {
-            return this.authenticationService.securedFetch(fetchFxn);
+            return fetchFxn();
+            // return this.authenticationService.securedFetch(fetchFxn);
         } else {
             return fetchFxn();
         }

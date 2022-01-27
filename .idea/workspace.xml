@@ -7,49 +7,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="adding deployment for hmi web">
-      <change afterPath="$PROJECT_DIR$/ci/environments/test/hmi_apacheconf/sites/techolaf.conf" afterDir="false" />
+    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="working on web deployment">
+      <change afterPath="$PROJECT_DIR$/ci_2/data/certbot/conf/options-ssl-nginx.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci_2/data/certbot/conf/ssl-dhparams.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci_2/data/nginx/app.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci_2/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci_2/init-letsencrypt.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ci_2/init-letsencrypt.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/00-base.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/README" beforeDir="false" afterPath="$PROJECT_DIR$/ci/_reference/conf/conf.d/README" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/autoindex.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ci/_reference/conf/conf.d/autoindex.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/httpd-conf.tgz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/httpd-conf/httpd-conf.tar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/httpd-conf/httpd-conf/README" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/httpd-conf/httpd-conf/autoindex.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/httpd-conf/httpd-conf/kmweb.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/httpd-conf/httpd-conf/ssl.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ci/_reference/conf/conf.d/ssl.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/httpd-conf/httpd-conf/userdir.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ci/_reference/conf/conf.d/userdir.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/httpd-conf/httpd-conf/welcome.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ci/_reference/conf/conf.d/welcome.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/kmweb.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ci/_reference/conf/conf.d/kmweb.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/ssl.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/userdir.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.d/welcome.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/00-base.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-base.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/00-dav.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-dav.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/00-lua.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-lua.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/00-mpm.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-mpm.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/00-optional.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-optional.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/00-proxy.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-proxy.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/00-ssl.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-ssl.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/00-systemd.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-systemd.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/01-cgi.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/01-cgi.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/10-h2.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/10-h2.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/10-proxy_h2.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/10-proxy_h2.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/_reference/conf/conf.modules.d/README" beforeDir="false" afterPath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/README" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/deploy2docker.bat" beforeDir="false" afterPath="$PROJECT_DIR$/ci/deploy2docker.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/docker-compose-all.yml" beforeDir="false" afterPath="$PROJECT_DIR$/ci/docker-compose-all.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/docker-compose-production.yml" beforeDir="false" afterPath="$PROJECT_DIR$/ci/docker-compose-production.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/docker-compose-test.yml" beforeDir="false" afterPath="$PROJECT_DIR$/ci/docker-compose-test.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/docker/hmi_apache_server/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/ci/docker/hmi_apache_server/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/docker/hmi_apache_server/httpd.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ci/docker/hmi_apache_server/httpd.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/environments/example/hmi_apacheconf/htmlfiles/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/ci/environments/example/hmi_apacheconf/htmlfiles/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/environments/example/hmi_apacheconf/sites/techolaf.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ci/environments/example/hmi_apacheconf/sites/techolaf.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/environments/production/hmi_apacheconf/htmlfiles/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/ci/environments/production/hmi_apacheconf/htmlfiles/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/environments/production/hmi_apacheconf/sites/techolaf.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ci/environments/production/hmi_apacheconf/sites/techolaf.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/environments/test/hmi_apacheconf/htmlfiles/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/ci/environments/test/hmi_apacheconf/htmlfiles/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deployment/environments/test/hmi_apacheconf/sites/techolaf.conf" beforeDir="false" afterPath="$PROJECT_DIR$/ci/environments/test/hmi_apacheconf/sites/techolaf_orig.conf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/.env" beforeDir="false" afterPath="$PROJECT_DIR$/web/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/framework/services/httpService/httpService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/framework/services/httpService/httpService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +68,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/ci/deployment/environments/test/hmi_apacheconf/sites" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/ci_2" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -111,18 +79,18 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Repos\km-hmi\ci_2" />
       <recent name="C:\Repos\km-hmi\ci\deployment\environments\test\hmi_apacheconf\sites" />
       <recent name="C:\Repos\km-hmi\ci\deployment" />
       <recent name="C:\Repos\km-hmi\ci\deployment\environments" />
       <recent name="C:\Repos\km-hmi\ci\deployment_server\environments\testing" />
-      <recent name="C:\Repos\km-hmi" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Repos\km-hmi\ci" />
-      <recent name="C:\Repos\km-hmi\ci\deployment\_reference" />
-      <recent name="C:\Repos\km-hmi\ci\deployment_server\docker\apache_server" />
-      <recent name="C:\Repos\km-hmi\ci\deployment_server\config" />
-      <recent name="C:\Repos\km-hmi\ci\deployment_server\_reference" />
+      <recent name="C:\Repos\km-hmi\ci\_reference\2" />
+      <recent name="C:\Repos\km-hmi" />
+      <recent name="C:\Repos\km-hmi\ci_2" />
+      <recent name="C:\Repos\km-hmi\ci_2\data" />
+      <recent name="C:\Repos\km-hmi\ci_2\data\certbot-init" />
     </key>
     <key name="es6.move.members.recent.items">
       <recent name="C:\Repos\km-hmi\web\src\visual\views\knowledgeManagement\app\search\searchModel.ts" />
@@ -166,7 +134,8 @@
       <workItem from="1643123024915" duration="712000" />
       <workItem from="1643128037059" duration="1212000" />
       <workItem from="1643129272186" duration="365000" />
-      <workItem from="1643129651726" duration="8159000" />
+      <workItem from="1643129651726" duration="8319000" />
+      <workItem from="1643213251684" duration="19179000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1641329914789</created>
@@ -371,7 +340,14 @@
       <option name="project" value="LOCAL" />
       <updated>1643061624621</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="working on web deployment">
+      <created>1643153985916</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1643153985916</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -421,6 +397,7 @@
     <MESSAGE value="build spec" />
     <MESSAGE value="build spec try it out" />
     <MESSAGE value="adding deployment for hmi web" />
-    <option name="LAST_COMMIT_MESSAGE" value="adding deployment for hmi web" />
+    <MESSAGE value="working on web deployment" />
+    <option name="LAST_COMMIT_MESSAGE" value="working on web deployment" />
   </component>
 </project>
