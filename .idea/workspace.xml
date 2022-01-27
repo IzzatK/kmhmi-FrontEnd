@@ -7,53 +7,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="it worksssssssssssssssssssssssssss">
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/asset-manifest.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/favicon.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/logo192.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/logo512.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/manifest.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/robots.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/css/3.65e975b9.chunk.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/css/3.65e975b9.chunk.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/css/main.bdc9aa95.chunk.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/css/main.bdc9aa95.chunk.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/js/3.cd942a6c.chunk.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/js/3.cd942a6c.chunk.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/js/3.cd942a6c.chunk.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/js/4.aaaab55c.chunk.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/js/4.aaaab55c.chunk.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/js/5.5a84adc8.chunk.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/js/5.5a84adc8.chunk.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/js/5.5a84adc8.chunk.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/js/6.aa8d70d6.chunk.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/js/6.aa8d70d6.chunk.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/js/6.aa8d70d6.chunk.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/js/main.ed543048.chunk.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/js/main.ed543048.chunk.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/js/runtime-main.cc34cd20.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/js/runtime-main.cc34cd20.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/js/xlsx.39a36130.chunk.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/js/xlsx.39a36130.chunk.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/media/bumed_logo.b8387696.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/media/fontawesome-webfont.1e59d233.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/media/fontawesome-webfont.20fd1704.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/media/fontawesome-webfont.6878d55e.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/media/fontawesome-webfont.8b43027f.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/media/fontawesome-webfont.f691f37e.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/media/graph_bar.12be7497.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/media/graph_pie.676797cd.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/media/graph_timeline.a2dd5d1c.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/media/graphs.1ade1255.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/media/icofont.945e3502.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/media/icofont.d9d7c3f9.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/media/landing_page_bg.14ec9d6e.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/build/static/media/tektonux_logo.1c1cf17a.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/deploy2docker.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="update deployment stuffz">
+      <change afterPath="$PROJECT_DIR$/docker-deploy/copy2server.bat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-deploy/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-deploy/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -199,6 +155,7 @@
       <workItem from="1643129272186" duration="365000" />
       <workItem from="1643129651726" duration="8319000" />
       <workItem from="1643213251684" duration="38343000" />
+      <workItem from="1643321102944" duration="376000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1641329914789</created>
@@ -424,7 +381,14 @@
       <option name="project" value="LOCAL" />
       <updated>1643305386212</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="update deployment stuffz">
+      <created>1643321177817</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1643321177817</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -477,6 +441,7 @@
     <MESSAGE value="working on web deployment" />
     <MESSAGE value="working except within react app" />
     <MESSAGE value="it worksssssssssssssssssssssssssss" />
-    <option name="LAST_COMMIT_MESSAGE" value="it worksssssssssssssssssssssssssss" />
+    <MESSAGE value="update deployment stuffz" />
+    <option name="LAST_COMMIT_MESSAGE" value="update deployment stuffz" />
   </component>
 </project>
