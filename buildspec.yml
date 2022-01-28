@@ -39,12 +39,13 @@ phases:
       #    start ssh client and set up key
       - eval $(ssh-agent -s)
       - echo "$SSH_PKEY"
-      - echo "$SSH_PKEY" | tr -d '\r' | ssh-add
+#      - echo "$SSH_PKEY" | tr -d '\r' | ssh-add
+      - ssh-add .\ci\ssh\bumed-web-srv.pem
       - mkdir -p ~/.ssh
       - chmod 700 ~/.ssh
       #    create zip
-      - cd build
-      - zip -r $BUILD_ZIP .
+#      - cd build
+#      - zip -r $BUILD_ZIP .
   post_build:
     commands:
       - echo "Printing Variables"
@@ -54,7 +55,7 @@ phases:
       - echo "$BUILD_ZIP"
       - echo "$CI_USER"
       #    make sure we have permission to write
-      - ssh -o StrictHostKeyChecking=no $CI_USER "sudo setfacl -R -m u:ec2-user:rwx $DEPLOY_DIR"
+      - ssh -i  ./ci/ -o StrictHostKeyChecking=no $CI_USER "sudo setfacl -R -m u:ec2-user:rwx $DEPLOY_DIR"
       #    clear deploy dir
       - ssh -o StrictHostKeyChecking=no $CI_USER "sudo rm -r $DEPLOY_DIR/*"
       #    deploy zip
