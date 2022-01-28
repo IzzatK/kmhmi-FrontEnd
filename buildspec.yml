@@ -39,9 +39,9 @@ phases:
       - yum install zip openssh-clients -y
       #    start ssh client and set up key
       - eval $(ssh-agent -s)
-      - echo "$SSH_PKEY" | tr -d '\r' | ssh-add -
       - mkdir -p ~/.ssh
       - chmod 700 ~/.ssh
+      - echo "$SSH_PKEY" | tr -d '\r' | ssh-add -
 #      #    create zip
 #      - cd build
 #      - zip -r $BUILD_ZIP .
