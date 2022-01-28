@@ -39,10 +39,10 @@ phases:
 #      - apt-get install zip openssh-client git -qq
       - apt-get install openssh-client -qq
       #    start ssh client and set up key
-      - mkdir -p ~/.ssh
-      - chmod 700 ~/.ssh
-      - eval $(ssh-agent -s)
-      - echo "$SSH_PKEY" | tr -d '\r' | ssh-add -
+      - sudo mkdir -p ~/.ssh
+      - sudo chmod 700 ~/.ssh
+      - sudo eval $(ssh-agent -s)
+      - sudo echo "$SSH_PKEY" | tr -d '\r' | ssh-add -
 #      #    create zip
 #      - cd build
 #      - zip -r $BUILD_ZIP .
