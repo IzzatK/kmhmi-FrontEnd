@@ -8,7 +8,7 @@ version: 0.2
 
 env:
   variables:
-    DEPLOY_DIR: "/ci_test"
+    DEPLOY_DIR: "/ci_test/"
     BUILD_ZIP: "/ci/deploy.test.sh"
     CI_USER: "ec2-user@dev.navyanalytics.com"
 #  parameter-store:
