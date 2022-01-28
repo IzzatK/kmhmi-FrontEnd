@@ -8,7 +8,7 @@ version: 0.2
 
 env:
   variables:
-    DEPLOY_DIR: "/usr/share/nginx/html/navy/"
+    DEPLOY_DIR: "/km_deployment/docker-deploy/build/"
     BUILD_ZIP: "./ci/ui/index.html"
     CI_USER: "ec2-user@dev.navyanalytics.com"
 #  parameter-store:
