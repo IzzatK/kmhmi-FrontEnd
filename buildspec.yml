@@ -35,7 +35,6 @@ phases:
 #      #    build app
 #      - npm run remote-build
 #      #    set up dependencies
-      - yum check-update
       - yum install zip openssh-clients -y
       #    start ssh client and set up key
       - eval $(ssh-agent -s)
