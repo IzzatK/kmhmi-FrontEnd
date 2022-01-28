@@ -58,7 +58,7 @@ phases:
       #    make sure we have permission to write
       - ssh -i ./ci/ssh/bumed-web-srv.pem -o StrictHostKeyChecking=no $CI_USER "sudo setfacl -R -m u:ec2-user:rwx $DEPLOY_DIR"
       #    clear deploy dir
-      - ssh -i ./ci/ssh/bumed-web-srv.pem -o StrictHostKeyChecking=no $CI_USER "sudo rm -r $DEPLOY_DIR/*"
+      - ssh -i ./ci/ssh/bumed-web-srv.pem -o StrictHostKeyChecking=no $CI_USER "sudo rm -r $DEPLOY_DIR/* -f"
       #    deploy zip
       - scp -i ./ci/ssh/bumed-web-srv.pem -o StrictHostKeyChecking=no $BUILD_ZIP $CI_USER:$DEPLOY_DIR
       #    unzip files
