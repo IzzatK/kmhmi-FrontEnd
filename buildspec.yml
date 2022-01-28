@@ -8,9 +8,8 @@ version: 0.2
 
 env:
   variables:
-    CI_BUILDS_DIR: "/docker-deploy"
     DEPLOY_DIR: "/ci_test"
-    BUILD_ZIP: "/docker-deploy/default.template"
+    BUILD_ZIP: "/ci/deploy.test.sh"
     CI_USER: "ec2-user@dev.navyanalytics.com"
 #  parameter-store:
 #    SSH_PKEY: /CodeBuild/SSH_PRIVATE_KEY
