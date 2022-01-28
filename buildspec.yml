@@ -60,7 +60,7 @@ phases:
       #    clear deploy dir
       - ssh -i ../../ci/ssh/bumed-web-srv.pem -o StrictHostKeyChecking=no $CI_USER "sudo rm -r $DEPLOY_DIR/* -f"
       #    deploy zip
-      - scp -i ../../ci/ssh/bumed-web-srv.pem -o StrictHostKeyChecking=no ./web/build/$BUILD_ZIP $CI_USER:$DEPLOY_DIR
+      - scp -i ../../ci/ssh/bumed-web-srv.pem -o StrictHostKeyChecking=no $BUILD_ZIP $CI_USER:$DEPLOY_DIR
       #    unzip files
       - ssh -o StrictHostKeyChecking=no $CI_USER "cd $DEPLOY_DIR; sudo unzip -o $BUILD_ZIP"
       #    remove zip file
