@@ -12,8 +12,8 @@ env:
     DEPLOY_DIR: "/ci_test"
     BUILD_ZIP: "/docker-deploy/default.template"
     CI_USER: "ec2-user@dev.navyanalytics.com"
-  parameter-store:
-    SSH_PKEY: /CodeBuild/SSH_PRIVATE_KEY
+#  parameter-store:
+#    SSH_PKEY: /CodeBuild/SSH_PRIVATE_KEY
 #  exported-variables:
 #    - variable
 #  secrets-manager:
