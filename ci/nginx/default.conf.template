@@ -1,0 +1,40 @@
+
+server {
+    listen $NGINX_UI_PORT;
+    server_name _;
+
+    return 301 https://$host$request_uri;
+}
+
+server {
+    server_name  _;
+
+    # Listen on SSL
+    listen $NGINX_UI_SECURE_PORT ssl;
+
+    root /usr/share/nginx/html;
+
+    ssl_certificate_key /etc/x509/https/key.pem;
+    ssl_certificate /etc/x509/https/cert.pem;
+
+    # ----------------------------------------------------------------------------
+    # Common headers applied to all requests!
+    # ----------------------------------------------------------------------------
+
+
+    # --- [ HOME / ] -------------------------------------------------------------
+    location = / {
+        # When location exactly matches / redirect to navy
+        return 301 /navy;
+    }
+
+    # path here must match <base href="/navy/"> in index.html !
+    location = /navy {
+      index  index.html;
+      try_files $uri $uri/ /navy/index.html;
+    }
+
+    location /api/ {
+        proxy_pass              $KM_API_URL;
+    }
+}

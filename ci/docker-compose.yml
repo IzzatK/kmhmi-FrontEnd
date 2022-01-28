@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  km_ui:
+    image: nginx:alpine
+    ports:
+      - ${EXTERNAL_UI_PORT}:${INTERNAL_UI_PORT}
+      - ${EXTERNAL_UI_SECURE_PORT}:${INTERNAL_UI_SECURE_PORT}
+    environment:
+      NGINX_UI_PORT: ${INTERNAL_UI_PORT}
+      NGINX_UI_SECURE_PORT: ${INTERNAL_UI_SECURE_PORT}
+      KM_API_URL: ${KM_API_URL}
+    volumes:
+      # config
+      - ./nginx/:/etc/nginx/templates/
+      # SSL certificates
+      - ./certs/:/etc/x509/https
+      # Website static files can be placed here.
+      - ./ui/:/usr/share/nginx/html/navy/

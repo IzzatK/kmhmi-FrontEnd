@@ -7,20 +7,125 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="switch ci to ubuntu">
-      <change afterPath="$PROJECT_DIR$/docker-deploy/deploy.dev.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/deploy.prod.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/deploy.test.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/docker-compose-aws.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/env/env.dev" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/env/env.prod" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/env/env.test" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-deploy/nginx/default.conf.template" afterDir="false" />
+    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="environment variables / ci">
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.d/README" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.d/autoindex.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.d/httpd-conf.tgz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.d/kmweb.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.d/ssl.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.d/userdir.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.d/welcome.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/00-base.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/00-dav.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/00-lua.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/00-mpm.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/00-optional.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/00-proxy.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/00-ssl.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/00-systemd.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/01-cgi.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/10-h2.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/10-proxy_h2.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/README" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.d/README" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.d/autoindex.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.d/kmweb.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.d/ssl.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.d/userdir.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.d/welcome.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/00-base.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/00-dav.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/00-lua.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/00-mpm.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/00-optional.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/00-proxy.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/00-ssl.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/00-systemd.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/01-cgi.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/10-h2.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/10-proxy_h2.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/README" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/certs/cert.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/certs/key.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/deploy2docker.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/docker-compose-all.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/docker-compose-production.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/docker/hmi_apache_server/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/docker/hmi_apache_server/httpd.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/environments/example/hmi_apacheconf/htmlfiles/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/environments/example/hmi_apacheconf/sites/techolaf.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/environments/production/hmi_apacheconf/htmlfiles/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci/environments/production/hmi_apacheconf/sites/techolaf.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci_2/data/certbot/conf/options-ssl-nginx.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci_2/data/certbot/conf/ssl-dhparams.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci_2/data/certs/cert.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci_2/data/certs/key.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci_2/data/nginx/app.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci_2/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci_2/init-letsencrypt.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_ci_old/ci_2/init-letsencrypt.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buildspec.yml" beforeDir="false" afterPath="$PROJECT_DIR$/buildspec.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-deploy/deploy2docker.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.d/README" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.d/autoindex.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.d/httpd-conf.tgz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.d/kmweb.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.d/ssl.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.d/userdir.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.d/welcome.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/00-base.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/00-dav.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/00-lua.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/00-mpm.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/00-optional.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/00-proxy.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/00-ssl.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/00-systemd.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/01-cgi.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/10-h2.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/10-proxy_h2.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/README" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.d/README" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.d/autoindex.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.d/kmweb.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.d/ssl.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.d/userdir.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.d/welcome.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-base.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-dav.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-lua.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-mpm.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-optional.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-proxy.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-ssl.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-systemd.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/01-cgi.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/10-h2.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/10-proxy_h2.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/README" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/certs/cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/certs/key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/deploy2docker.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/docker-compose-all.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/docker-compose-production.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/docker/hmi_apache_server/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/docker/hmi_apache_server/httpd.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/environments/example/hmi_apacheconf/htmlfiles/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/environments/example/hmi_apacheconf/sites/techolaf.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/environments/production/hmi_apacheconf/htmlfiles/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/environments/production/hmi_apacheconf/sites/techolaf.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci_2/data/certbot/conf/options-ssl-nginx.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci_2/data/certbot/conf/ssl-dhparams.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci_2/data/certs/cert.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci_2/data/certs/key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci_2/data/nginx/app.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci_2/docker-compose.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci_2/init-letsencrypt.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci_2/init-letsencrypt.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-deploy/copy2server.bat" beforeDir="false" afterPath="$PROJECT_DIR$/docker-deploy/copy2server.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-deploy/docker-compose-aws.yml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-deploy/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-deploy/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-deploy/nginx.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-deploy/ui/index.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,11 +194,11 @@
       <recent name="C:\Repos\km-hmi\ci_2\data" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Repos\km-hmi\_ci_old" />
       <recent name="C:\Repos\km-hmi\docker-deploy\nginx" />
       <recent name="C:\Repos\km-hmi\docker-deploy\nginx_config" />
       <recent name="C:\Repos\km-hmi\ci\_reference\2" />
       <recent name="C:\Repos\km-hmi" />
-      <recent name="C:\Repos\km-hmi\ci_2" />
     </key>
     <key name="es6.move.members.recent.items">
       <recent name="C:\Repos\km-hmi\web\src\visual\views\knowledgeManagement\app\search\searchModel.ts" />
@@ -176,7 +281,7 @@
       <workItem from="1643129651726" duration="8319000" />
       <workItem from="1643213251684" duration="38343000" />
       <workItem from="1643321102944" duration="399000" />
-      <workItem from="1643372092270" duration="11102000" />
+      <workItem from="1643372092270" duration="11478000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1641329914789</created>
@@ -507,7 +612,14 @@
       <option name="project" value="LOCAL" />
       <updated>1643382703079</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="environment variables / ci">
+      <created>1643383357113</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1643383357113</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -537,7 +649,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="limit by role Document Panel" />
     <MESSAGE value="limit functionality in the users panel" />
     <MESSAGE value="working on authentication" />
     <MESSAGE value="authentication stuff" />
@@ -562,6 +673,7 @@
     <MESSAGE value="added helper to copy to server" />
     <MESSAGE value="working on ci builds" />
     <MESSAGE value="switch ci to ubuntu" />
-    <option name="LAST_COMMIT_MESSAGE" value="switch ci to ubuntu" />
+    <MESSAGE value="environment variables / ci" />
+    <option name="LAST_COMMIT_MESSAGE" value="environment variables / ci" />
   </component>
 </project>

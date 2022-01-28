@@ -1,0 +1,34 @@
+{
+  "files": {
+    "main.css": "./static/css/main.bdc9aa95.chunk.css",
+    "main.js": "./static/js/main.ed543048.chunk.js",
+    "main.js.map": "./static/js/main.ed543048.chunk.js.map",
+    "runtime-main.js": "./static/js/runtime-main.cc34cd20.js",
+    "runtime-main.js.map": "./static/js/runtime-main.cc34cd20.js.map",
+    "xlsx.js": "./static/js/xlsx.39a36130.chunk.js",
+    "xlsx.js.map": "./static/js/xlsx.39a36130.chunk.js.map",
+    "static/css/3.65e975b9.chunk.css": "./static/css/3.65e975b9.chunk.css",
+    "static/js/3.cd942a6c.chunk.js": "./static/js/3.cd942a6c.chunk.js",
+    "static/js/3.cd942a6c.chunk.js.map": "./static/js/3.cd942a6c.chunk.js.map",
+    "static/js/4.aaaab55c.chunk.js": "./static/js/4.aaaab55c.chunk.js",
+    "static/js/4.aaaab55c.chunk.js.map": "./static/js/4.aaaab55c.chunk.js.map",
+    "static/js/5.5a84adc8.chunk.js": "./static/js/5.5a84adc8.chunk.js",
+    "static/js/5.5a84adc8.chunk.js.map": "./static/js/5.5a84adc8.chunk.js.map",
+    "static/js/6.aa8d70d6.chunk.js": "./static/js/6.aa8d70d6.chunk.js",
+    "static/js/6.aa8d70d6.chunk.js.map": "./static/js/6.aa8d70d6.chunk.js.map",
+    "index.html": "./index.html",
+    "static/css/3.65e975b9.chunk.css.map": "./static/css/3.65e975b9.chunk.css.map",
+    "static/css/main.bdc9aa95.chunk.css.map": "./static/css/main.bdc9aa95.chunk.css.map",
+    "static/js/3.cd942a6c.chunk.js.LICENSE.txt": "./static/js/3.cd942a6c.chunk.js.LICENSE.txt",
+    "static/js/5.5a84adc8.chunk.js.LICENSE.txt": "./static/js/5.5a84adc8.chunk.js.LICENSE.txt",
+    "static/js/6.aa8d70d6.chunk.js.LICENSE.txt": "./static/js/6.aa8d70d6.chunk.js.LICENSE.txt",
+    "static/media/index.css": "./static/media/tektonux_logo.1c1cf17a.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.cc34cd20.js",
+    "static/css/3.65e975b9.chunk.css",
+    "static/js/3.cd942a6c.chunk.js",
+    "static/css/main.bdc9aa95.chunk.css",
+    "static/js/main.ed543048.chunk.js"
+  ]
+}

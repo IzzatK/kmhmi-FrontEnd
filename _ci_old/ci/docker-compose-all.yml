@@ -1,0 +1,34 @@
+version: "3.3"
+
+services:
+  example:
+    build:
+      context: docker/hmi_apache_server
+      dockerfile: docker/hmi_apache_server/Dockerfile
+    ports:
+      - "90:80"
+    volumes:
+      - ./environments/example/hmi_apacheconf/sites/:/usr/local/apache2/conf/sites
+      - ./environments/example/hmi_apacheconf/htmlfiles/:/usr/local/apache2/techolaf
+
+  km-hmi-production:
+    build:
+      context: docker/hmi_apache_server
+      dockerfile: docker/hmi_apache_server/Dockerfile
+    ports:
+      - "91:80"
+    volumes:
+      - ./environments/production/hmi_apacheconf/sites/:/usr/local/apache2/conf/sites
+      - ./environments/production/hmi_apacheconf/htmlfiles/:/usr/local/apache2/techolaf
+
+  km-hmi-test:
+    build:
+      context: docker/hmi_apache_server
+      dockerfile: docker/hmi_apache_server/Dockerfile
+    ports:
+      - "92:80"
+    volumes:
+      - ./environments/test/hmi_apacheconf/sites/:/usr/local/apache2/conf/sites
+      - ./environments/test/hmi_apacheconf/htmlfiles/:/usr/local/apache2/techolaf
+
+
