@@ -42,7 +42,7 @@ phases:
       #    start ssh client and set up key
       - sudo mkdir -p ~/.ssh
       - sudo chmod 700 ~/.ssh
-      - sudo eval $(ssh-agent -s)
+#      - sudo eval $(ssh-agent -s)
       - sudo echo "$SSH_PKEY" | tr -d '\r' | ssh-add -
 #      #    create zip
 #      - cd build

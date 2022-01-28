@@ -1,15 +1,19 @@
 version: "3.8"
 
 services:
-  km_client_test:
+  km_ui:
     image: nginx:alpine
     # restart: unless-stopped
     ports:
-      - 80:80
-      - 443:443
+      - ${EXTERNAL_UI_PORT}:${INTERNAL_UI_PORT}
+      - ${EXTERNAL_UI_SECURE_PORT}:${INTERNAL_UI_SECURE_PORT}
+    environment:
+      NGINX_UI_PORT: ${INTERNAL_UI_PORT}
+      NGINX_UI_SECURE_PORT: ${INTERNAL_UI_SECURE_PORT}
+      KM_API_URL: ${KM_API_URL}
     volumes:
       # config
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/:/etc/nginx/templates/
       # SSL certificates
       - ./certs/:/etc/x509/https
       # Website static files can be placed here.

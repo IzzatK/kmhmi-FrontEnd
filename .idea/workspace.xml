@@ -7,9 +7,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="update deployment stuffz">
-      <change afterPath="$PROJECT_DIR$/docker-deploy/copy2server.bat" afterDir="false" />
+    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="switch ci to ubuntu">
+      <change afterPath="$PROJECT_DIR$/docker-deploy/deploy.dev.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-deploy/deploy.prod.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-deploy/deploy.test.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-deploy/docker-compose-aws.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-deploy/env/env.dev" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-deploy/env/env.prod" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-deploy/env/env.test" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-deploy/nginx/default.conf.template" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/buildspec.yml" beforeDir="false" afterPath="$PROJECT_DIR$/buildspec.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-deploy/deploy2docker.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-deploy/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-deploy/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-deploy/nginx.conf" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,17 +83,17 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Repos\km-hmi\docker-deploy" />
+      <recent name="C:\Repos\km-hmi\docker-deploy\env" />
       <recent name="C:\Repos\km-hmi\ci" />
       <recent name="C:\Repos\km-hmi\apache" />
       <recent name="C:\Repos\km-hmi\ci_2\data" />
-      <recent name="C:\Repos\km-hmi\ci_2" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Repos\km-hmi\docker-deploy\nginx" />
       <recent name="C:\Repos\km-hmi\docker-deploy\nginx_config" />
       <recent name="C:\Repos\km-hmi\ci\_reference\2" />
       <recent name="C:\Repos\km-hmi" />
       <recent name="C:\Repos\km-hmi\ci_2" />
-      <recent name="C:\Repos\km-hmi\ci_2\data" />
     </key>
     <key name="es6.move.members.recent.items">
       <recent name="C:\Repos\km-hmi\web\src\visual\views\knowledgeManagement\app\search\searchModel.ts" />
@@ -90,7 +101,7 @@
       <recent name="C:\Repos\km-hmi\web\src\visual\views\app\AppModel.ts" />
     </key>
   </component>
-  <component name="RunManager" selected="Docker.docker-deploy: Compose Deployment">
+  <component name="RunManager" selected="Docker.docker-deploy/docker-compose-aws.yml: Compose Deployment">
     <configuration name="ci/docker-compose-production.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
@@ -115,6 +126,14 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <configuration name="docker-deploy/docker-compose-aws.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="sourceFilePath" value="docker-deploy/docker-compose-aws.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/web/package.json" />
       <command value="run" />
@@ -127,6 +146,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Docker.docker-deploy/docker-compose-aws.yml: Compose Deployment" />
         <item itemvalue="Docker.docker-deploy: Compose Deployment" />
         <item itemvalue="Docker.ci/docker-compose-production.yml: Compose Deployment" />
         <item itemvalue="Docker.ci/docker-compose-test.yml: Compose Deployment" />
@@ -155,7 +175,8 @@
       <workItem from="1643129272186" duration="365000" />
       <workItem from="1643129651726" duration="8319000" />
       <workItem from="1643213251684" duration="38343000" />
-      <workItem from="1643321102944" duration="376000" />
+      <workItem from="1643321102944" duration="399000" />
+      <workItem from="1643372092270" duration="11102000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1641329914789</created>
@@ -388,7 +409,105 @@
       <option name="project" value="LOCAL" />
       <updated>1643321177817</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="added helper to copy to server">
+      <created>1643321495331</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1643321495331</updated>
+    </task>
+    <task id="LOCAL-00035" summary="working on ci builds">
+      <created>1643372920570</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1643372920570</updated>
+    </task>
+    <task id="LOCAL-00036" summary="working on ci builds">
+      <created>1643373639478</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1643373639478</updated>
+    </task>
+    <task id="LOCAL-00037" summary="working on ci builds">
+      <created>1643373983025</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1643373983025</updated>
+    </task>
+    <task id="LOCAL-00038" summary="working on ci builds">
+      <created>1643374161169</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1643374161169</updated>
+    </task>
+    <task id="LOCAL-00039" summary="working on ci builds">
+      <created>1643374947642</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1643374947642</updated>
+    </task>
+    <task id="LOCAL-00040" summary="working on ci builds">
+      <created>1643376097461</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1643376097461</updated>
+    </task>
+    <task id="LOCAL-00041" summary="working on ci builds">
+      <created>1643376143236</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1643376143236</updated>
+    </task>
+    <task id="LOCAL-00042" summary="working on ci builds">
+      <created>1643376577923</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1643376577923</updated>
+    </task>
+    <task id="LOCAL-00043" summary="switch ci to ubuntu">
+      <created>1643379644725</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1643379644725</updated>
+    </task>
+    <task id="LOCAL-00044" summary="switch ci to ubuntu">
+      <created>1643379862872</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1643379862872</updated>
+    </task>
+    <task id="LOCAL-00045" summary="switch ci to ubuntu">
+      <created>1643379927262</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1643379927262</updated>
+    </task>
+    <task id="LOCAL-00046" summary="switch ci to ubuntu">
+      <created>1643381097957</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1643381097957</updated>
+    </task>
+    <task id="LOCAL-00047" summary="switch ci to ubuntu">
+      <created>1643382703079</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1643382703079</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -418,8 +537,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="initial commit" />
-    <MESSAGE value="added logic for authorization service. currently only limiting document upload by role. need to limit functionality through the rest of the UI" />
     <MESSAGE value="limit by role Document Panel" />
     <MESSAGE value="limit functionality in the users panel" />
     <MESSAGE value="working on authentication" />
@@ -442,6 +559,9 @@
     <MESSAGE value="working except within react app" />
     <MESSAGE value="it worksssssssssssssssssssssssssss" />
     <MESSAGE value="update deployment stuffz" />
-    <option name="LAST_COMMIT_MESSAGE" value="update deployment stuffz" />
+    <MESSAGE value="added helper to copy to server" />
+    <MESSAGE value="working on ci builds" />
+    <MESSAGE value="switch ci to ubuntu" />
+    <option name="LAST_COMMIT_MESSAGE" value="switch ci to ubuntu" />
   </component>
 </project>
