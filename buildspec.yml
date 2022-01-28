@@ -41,8 +41,9 @@ phases:
 #      - echo "$SSH_PKEY"
 #      - echo "$SSH_PKEY" | tr -d '\r' | ssh-add
 #      - ssh-add .\ci\ssh\bumed-web-srv.pem
-#      - mkdir -p ~/.ssh
-#      - chmod 700 ~/.ssh
+      - mkdir -p ~/.ssh
+      - chmod 700 ~/.ssh
+      - chmod 700 ./ci/ssh/bumed-web-srv.pem
       #    create zip
 #      - cd build
 #      - zip -r $BUILD_ZIP .
