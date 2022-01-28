@@ -35,9 +35,10 @@ phases:
 #      #    build app
 #      - npm run remote-build
 #      #    set up dependencies
-#      - apt-get update
-#      - apt-get install zip openssh-client git -qq
-      - apt-get install openssh-client -qq
+      - apt-get update
+#      - apt-get install sudo zip openssh-client git -y
+      - apt-get install sudo openssh-client -y
+      - usermod -aG sudo ec2-user
       #    start ssh client and set up key
       - sudo mkdir -p ~/.ssh
       - sudo chmod 700 ~/.ssh
