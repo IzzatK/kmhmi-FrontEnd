@@ -35,13 +35,14 @@ phases:
 #      #    build app
 #      - npm run remote-build
 #      #    set up dependencies
-      - apt-get update
-      - apt-get install zip openssh-client git -qq
+#      - apt-get update
+#      - apt-get install zip openssh-client git -qq
+      - apt-get install openssh-client -qq
       #    start ssh client and set up key
-      - eval $(ssh-agent -s)
-      - echo "$SSH_PKEY" | tr -d '\r' | ssh-add -
       - mkdir -p ~/.ssh
       - chmod 700 ~/.ssh
+      - eval $(ssh-agent -s)
+      - echo "$SSH_PKEY" | tr -d '\r' | ssh-add -
 #      #    create zip
 #      - cd build
 #      - zip -r $BUILD_ZIP .
