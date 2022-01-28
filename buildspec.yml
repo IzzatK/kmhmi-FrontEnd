@@ -35,12 +35,13 @@ phases:
 #      #    build app
 #      - npm run remote-build
 #      #    set up dependencies
-      - sudo yum install zip openssh-clients -y
+      - apt-get update
+      - apt-get install zip openssh-client git -qq
       #    start ssh client and set up key
-      - sudo eval $(ssh-agent -s)
-      - sudo echo "$SSH_PKEY" | tr -d '\r' | ssh-add -
-      - sudo mkdir -p ~/.ssh
-      - sudo chmod 700 ~/.ssh
+      - eval $(ssh-agent -s)
+      - echo "$SSH_PKEY" | tr -d '\r' | ssh-add -
+      - mkdir -p ~/.ssh
+      - chmod 700 ~/.ssh
 #      #    create zip
 #      - cd build
 #      - zip -r $BUILD_ZIP .
