@@ -8,8 +8,8 @@ version: 0.2
 
 env:
   variables:
-    DEPLOY_DIR: "/ci_test/"
-    BUILD_ZIP: "./ci/deploy.test.sh"
+    DEPLOY_DIR: "/usr/share/nginx/html/navy/"
+    BUILD_ZIP: "./ci/ui/index.html"
     CI_USER: "ec2-user@dev.navyanalytics.com"
 #  parameter-store:
 #    SSH_PKEY: /CodeBuild/SSH_PRIVATE_KEY
@@ -65,13 +65,13 @@ phases:
       #    remove zip file
 #      - ssh -o StrictHostKeyChecking=no $CI_USER "cd $DEPLOY_DIR; sudo rm build.zip"
 # Include only the files required for your application to run.
-artifacts:
-  files:
-    - public/**/*
-    - src/**/*
-    - package.json
-    - appspec.yml
-    - scripts/**/*
+#artifacts:
+#  files:
+#    - public/**/*
+#    - src/**/*
+#    - package.json
+#    - appspec.yml
+#    - scripts/**/*
 
 
 #image: node:12.16.2
