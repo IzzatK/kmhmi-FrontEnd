@@ -9,7 +9,7 @@ version: 0.2
 env:
   variables:
     DEPLOY_DIR: "/km_deployment/docker-deploy/build/"
-    BUILD_ZIP: "./ci/ui/index.html"
+    BUILD_ZIP: "build.zip"
     CI_USER: "ec2-user@dev.navyanalytics.com"
 #  parameter-store:
 #    SSH_PKEY: /CodeBuild/SSH_PRIVATE_KEY
@@ -28,10 +28,10 @@ phases:
   build:
     commands:
       #    install npm
-#      - cd web
-#      - npm install
+      - cd web
+      - npm install
       #    build app
-#      - npm run remote-build
+      - npm run build
       #    set up dependencies
       - apt-get update
       - apt-get install zip openssh-client git -qq
@@ -44,8 +44,10 @@ phases:
       - chmod 700 ~/.ssh
       - chmod 700 ./ci/ssh/bumed-web-srv.pem
       #    create zip
-#      - cd build
-#      - zip -r $BUILD_ZIP .
+      - cd build
+      - zip -r $BUILD_ZIP .
+      - cd .. # web
+      - cd .. # repo root
   post_build:
     commands:
       - echo "Printing Variables"
@@ -59,11 +61,11 @@ phases:
       #    clear deploy dir
       - ssh -i ./ci/ssh/bumed-web-srv.pem -o StrictHostKeyChecking=no $CI_USER "sudo rm -r $DEPLOY_DIR/* -f"
       #    deploy zip
-      - scp -i ./ci/ssh/bumed-web-srv.pem -o StrictHostKeyChecking=no $BUILD_ZIP $CI_USER:$DEPLOY_DIR
+      - scp -i ./ci/ssh/bumed-web-srv.pem -o StrictHostKeyChecking=no ./web/build/$BUILD_ZIP $CI_USER:$DEPLOY_DIR
       #    unzip files
-#      - ssh -o StrictHostKeyChecking=no $CI_USER "cd $DEPLOY_DIR; sudo unzip -o $BUILD_ZIP"
+      - ssh -o StrictHostKeyChecking=no $CI_USER "cd $DEPLOY_DIR; sudo unzip -o $BUILD_ZIP"
       #    remove zip file
-#      - ssh -o StrictHostKeyChecking=no $CI_USER "cd $DEPLOY_DIR; sudo rm build.zip"
+      - ssh -o StrictHostKeyChecking=no $CI_USER "cd $DEPLOY_DIR; sudo rm build.zip"
 # Include only the files required for your application to run.
 #artifacts:
 #  files:
