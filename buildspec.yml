@@ -38,11 +38,11 @@ phases:
       - apt-get install zip openssh-client git -qq
       #    start ssh client and set up key
       - eval $(ssh-agent -s)
-      - echo "$SSH_PKEY"
+#      - echo "$SSH_PKEY"
 #      - echo "$SSH_PKEY" | tr -d '\r' | ssh-add
-      - ssh-add .\ci\ssh\bumed-web-srv.pem
-      - mkdir -p ~/.ssh
-      - chmod 700 ~/.ssh
+#      - ssh-add .\ci\ssh\bumed-web-srv.pem
+#      - mkdir -p ~/.ssh
+#      - chmod 700 ~/.ssh
       #    create zip
 #      - cd build
 #      - zip -r $BUILD_ZIP .
@@ -55,11 +55,11 @@ phases:
       - echo "$BUILD_ZIP"
       - echo "$CI_USER"
       #    make sure we have permission to write
-      - ssh -i  ./ci/ -o StrictHostKeyChecking=no $CI_USER "sudo setfacl -R -m u:ec2-user:rwx $DEPLOY_DIR"
+      - ssh -i .\ci\ssh\bumed-web-srv.pem -o StrictHostKeyChecking=no $CI_USER "sudo setfacl -R -m u:ec2-user:rwx $DEPLOY_DIR"
       #    clear deploy dir
-      - ssh -o StrictHostKeyChecking=no $CI_USER "sudo rm -r $DEPLOY_DIR/*"
+      - ssh -i .\ci\ssh\bumed-web-srv.pem -o StrictHostKeyChecking=no $CI_USER "sudo rm -r $DEPLOY_DIR/*"
       #    deploy zip
-      - scp -o StrictHostKeyChecking=no $BUILD_ZIP $CI_USER:$DEPLOY_DIR
+      - scp -i .\ci\ssh\bumed-web-srv.pem -o StrictHostKeyChecking=no $BUILD_ZIP $CI_USER:$DEPLOY_DIR
       #    unzip files
 #      - ssh -o StrictHostKeyChecking=no $CI_USER "cd $DEPLOY_DIR; sudo unzip -o $BUILD_ZIP"
       #    remove zip file
