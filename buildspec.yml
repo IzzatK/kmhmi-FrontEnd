@@ -35,18 +35,24 @@ phases:
 #      #    build app
 #      - npm run remote-build
 #      #    set up dependencies
-#      - apt-get update
-#      - apt-get install zip openssh-client git -qq
-#      #    start ssh client and set up key
-#      - eval $(ssh-agent -s)
-#      - echo "$SSH_PKEY" | tr -d '\r' | ssh-add -
-#      - mkdir -p ~/.ssh
-#      - chmod 700 ~/.ssh
+      - apt-get update
+      - apt-get install zip openssh-client git -qq
+      #    start ssh client and set up key
+      - eval $(ssh-agent -s)
+      - echo "$SSH_PKEY" | tr -d '\r' | ssh-add -
+      - mkdir -p ~/.ssh
+      - chmod 700 ~/.ssh
 #      #    create zip
 #      - cd build
 #      - zip -r $BUILD_ZIP .
   post_build:
     commands:
+      - echo "Printing Variables"
+      - echo "$CI_BUILDS_DIR"
+      - echo "$DEPLOY_DIR"
+      - echo "$SSH_PKEY"
+      - echo "$BUILD_ZIP"
+      - echo "$CI_USER"
       #    make sure we have permission to write
       - ssh -o StrictHostKeyChecking=no $CI_USER "sudo setfacl -R -m u:ec2-user:rwx $DEPLOY_DIR"
       #    clear deploy dir
