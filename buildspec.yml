@@ -42,12 +42,11 @@ phases:
 #      - ssh-add .\ci\ssh\bumed-web-srv.pem
       - mkdir -p ~/.ssh
       - chmod 700 ~/.ssh
-      - chmod 700 ./ci/ssh/bumed-web-srv.pem
+      - chmod 700 ../ci/ssh/bumed-web-srv.pem
       #    create zip
       - cd build
       - zip -r $BUILD_ZIP .
-      - cd .. # web
-      - cd .. # repo root
+
   post_build:
     commands:
       - echo "Printing Variables"
