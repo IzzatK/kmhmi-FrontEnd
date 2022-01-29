@@ -1,5 +1,5 @@
-import {StatType} from "../../app";
-import {StatInfo} from "../../app";
+import {StatType} from "../../app.model";
+import {StatInfo} from "../../app.model";
 import {IRepoItem} from "../../framework/services/repoService/repoItem";
 import {IPlugin} from "../../framework.api";
 import {IEntityProvider} from "../common/iEntityProvider";

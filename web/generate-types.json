@@ -2,7 +2,7 @@
   "directory": [
     "./src/framework.api",
     "./src/framework/model",
-    "./src/api",
-    "./src/model"
+    "./src/app.core.api",
+    "./src/app.model"
   ]
 }

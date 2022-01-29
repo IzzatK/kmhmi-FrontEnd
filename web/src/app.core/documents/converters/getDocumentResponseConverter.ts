@@ -1,6 +1,6 @@
 import {KM_API_SERVER_URL} from "../../../app.config/config";
 import {getValueOrDefault} from "../../../framework/extras/typeUtils";
-import {DocumentInfo} from "../../../app";
+import {DocumentInfo} from "../../../app.model";
 import {ErrorHandler} from "../../common/providers/entityProvider";
 import {Converter} from "../../common/converters/converter";
 import {getFormattedSize} from "../../../framework.visual/extras/utils/sizeUtils";

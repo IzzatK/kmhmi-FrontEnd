@@ -3,7 +3,7 @@ import {Presenter} from "../../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../../framework/wrappers/componentWrapper";
 import {forEach, forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {createSelector} from "@reduxjs/toolkit";
-import {ReferenceType, UserInfo} from "../../../../app";
+import {ReferenceType, UserInfo} from "../../../../app.model";
 import {authorizationService, referenceService, userService} from "../../../../app.core/serviceComposition";
 import {AccountStatusVM, DepartmentVM, PermissionsVM, RoleVM, UserInfoVM, UserRequestInfoVM} from "./profilePanelModel";
 import {PermissionInfo} from "../../../../app.model/permissionInfo";

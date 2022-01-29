@@ -4,7 +4,7 @@ import Button from "../../theme/widgets/button/button";
 import TextEdit from "../../theme/widgets/textEdit/textEdit";
 import {arrayEquals, forEach} from "../../../framework.visual/extras/utils/collectionUtils";
 import {LoadingIndicator} from "../../theme/widgets/loadingIndicator/loadingIndicator";
-import {ParamType} from "../../../app";
+import {ParamType} from "../../../app.model";
 import ComboBox from "../../theme/widgets/comboBox/comboBox";
 import Tag from "../../theme/widgets/tag/tag";
 import GlobalSwitchButton from "../../theme/widgets/globalSwitchButton/globalSwitchButton";

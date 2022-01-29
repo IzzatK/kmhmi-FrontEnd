@@ -1,5 +1,5 @@
 import {getValueOrDefault, nameOf, Nullable} from "../../../../framework/extras/typeUtils";
-import {UserInfo} from "../../../../app";
+import {UserInfo} from "../../../../app.model";
 import {parseServerReferenceValueOrDefault} from "../../../common/converters/parsingUtils";
 import {Converter} from "../../../common/converters/converter";
 

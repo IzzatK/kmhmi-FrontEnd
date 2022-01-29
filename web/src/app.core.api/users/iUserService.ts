@@ -1,4 +1,4 @@
-import {UserInfo} from "../../app";
+import {UserInfo} from "../../app.model";
 import {IPlugin} from "../../framework.api";
 import {ISelectionService} from "../../framework.api";
 import {IReferenceService} from "../references/iReferenceService";

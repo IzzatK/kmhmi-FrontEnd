@@ -3,7 +3,7 @@ import {createSelector} from "@reduxjs/toolkit";
 import {Presenter} from "../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
 import DocumentPdfPreview from "./documentPdfPreview";
-import {DocumentInfo, ParamType, ReferenceType} from "../../../app";
+import {DocumentInfo, ParamType, ReferenceType} from "../../../app.model";
 import {
     authenticationService,
     authorizationService,

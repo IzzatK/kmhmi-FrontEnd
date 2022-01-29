@@ -3,7 +3,7 @@ import {Nullable} from "../../../framework/extras/typeUtils";
 import {GetPermissionArrayResponseConverter} from "../converters/getPermissionArrayResponseConverter";
 import {PermissionInfo} from "../../../app.model/permissionInfo";
 import {GetPermissionArrayRequestConverter} from "../converters/getPermissionArrayRequestConverter";
-import {ReferenceType} from "../../../app";
+import {ReferenceType} from "../../../app.model";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 

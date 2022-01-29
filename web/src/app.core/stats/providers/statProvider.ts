@@ -1,7 +1,7 @@
 import {EntityProvider} from "../../common/providers/entityProvider";
 import {GetStatsRequestConverter} from "../converters/getStatsRequestConverter";
 import {GetStatsResponseConverter} from "../converters/getStatsResponseConverter";
-import {StatInfo} from "../../../app";
+import {StatInfo} from "../../../app.model";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 

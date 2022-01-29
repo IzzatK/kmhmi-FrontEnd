@@ -1,5 +1,5 @@
 import {EntityProvider} from "../../common/providers/entityProvider";
-import {TagInfo} from "../../../app";
+import {TagInfo} from "../../../app.model";
 import {GetTagArrayRequestConverter} from "../converters/getTagArrayRequestConverter";
 import {GetTagArrayResponseConverter} from "../converters/getTagArrayResponseConverter";
 import {GetTagResponseConverter} from "../converters/getTagResponseConverter";

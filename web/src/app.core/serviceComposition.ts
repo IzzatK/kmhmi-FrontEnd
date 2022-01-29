@@ -24,16 +24,17 @@ import {IUserService} from "../app.core.api";
 import {IEntityProvider} from "../app.core.api";
 import {HttpService} from "../framework/services/httpService/httpService";
 import {IHttpService} from "../framework.api";
-import {DocumentInfo} from "../app";
+import {
+    DocumentInfo,
+    ReferenceInfo,
+    StatInfo,
+    TagInfo,
+    RoleInfo} from "../app.model";
 import {DocumentProvider} from "./documents/providers/documentProvider";
-import {ReferenceInfo} from "../app";
 import {ReferenceProvider} from "./references/providers/referenceProvider";
-import {StatInfo} from "../app";
 import {StatProvider} from "./stats/providers/statProvider";
-import {TagInfo} from "../app";
 import {TagProvider} from "./tags/providers/tagProvider";
 import {IUserProvider} from "../app.core.api";
-import {RoleInfo} from "../app";
 import {RoleProvider} from "./users/providers/roleProvider";
 import {AppDataStore} from "../framework/redux/reduxStore";
 import {PermissionInfo} from "../app.model/permissionInfo";

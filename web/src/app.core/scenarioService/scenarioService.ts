@@ -1,11 +1,11 @@
-import {SearchBannerMenuItem, SearchParamInfo} from "../../app";
+import {SearchBannerMenuItem, SearchParamInfo} from "../../app.model";
 import {RepoItem} from "../../framework/services/repoService/repoItem";
 import {nameOf, Nullable} from "../../framework/extras/typeUtils";
-import {ParamType} from "../../app";
+import {ParamType} from "../../app.model";
 import {forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
-import {ReferenceType} from "../../app";
+import {ReferenceType} from "../../app.model";
 import {getDateWithoutTime} from "../../framework.visual/extras/utils/timeUtils";
-import {SortPropertyInfo} from "../../app";
+import {SortPropertyInfo} from "../../app.model";
 import {IStorage} from "../../framework.api";
 import {IScenarioService} from "../../app.core.api";
 import {Plugin} from "../../framework/extras/plugin";

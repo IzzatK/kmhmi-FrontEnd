@@ -1,5 +1,5 @@
 import {Nullable} from "../../framework/extras/typeUtils";
-import {DocumentInfo, SearchParamInfo, SortPropertyInfo} from "../../app";
+import {DocumentInfo, SearchParamInfo, SortPropertyInfo} from "../../app.model";
 import {IPlugin} from "../../framework.api";
 import {IUserService} from "../users/iUserService";
 import {IEntityProvider} from "../common/iEntityProvider";

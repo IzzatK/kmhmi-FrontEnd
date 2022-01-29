@@ -2,7 +2,7 @@ import SystemBannerView from './systemBannerView'
 import {Presenter} from "../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
 import {authenticationService, documentService, userService} from "../../../app.core/serviceComposition";
-import {UserInfo} from "../../../app";
+import {UserInfo} from "../../../app.model";
 import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
 
 class SystemBanner extends Presenter {

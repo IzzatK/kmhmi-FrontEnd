@@ -1,4 +1,4 @@
-import {UserInfo} from "../../../app";
+import {UserInfo} from "../../../app.model";
 import { GetUserArrayRequestConverter } from "../converters/users/getUserArrayRequestConverter";
 import { GetUserArrayResponseConverter } from "../converters/users/getUserArrayResponseConverter";
 import { GetUserResponseConverter } from "../converters/users/getUserResponseConverter";
@@ -9,7 +9,7 @@ import {forEach} from "../../../framework.visual/extras/utils/collectionUtils";
 import {Nullable, promiseFulfilled} from "../../../framework/extras/typeUtils";
 import {EntityProvider} from "../../common/providers/entityProvider";
 import {IEntityProvider, IUserProvider} from "../../../app.core.api";
-import {RoleInfo} from "../../../app";
+import {RoleInfo} from "../../../app.model";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 

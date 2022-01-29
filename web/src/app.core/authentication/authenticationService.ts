@@ -11,7 +11,7 @@ import {Nullable} from "../../framework/extras/typeUtils";
 import {IStorage} from "../../framework.api";
 import {Plugin} from "../../framework/extras/plugin";
 import {createSlice, PayloadAction, Slice} from "@reduxjs/toolkit";
-import {UserInfo} from "../../app";
+import {UserInfo} from "../../app.model";
 
 
 type AuthenticationState = {

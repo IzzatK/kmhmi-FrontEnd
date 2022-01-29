@@ -1,4 +1,4 @@
-import {RoleInfo} from "../../../app";
+import {RoleInfo} from "../../../app.model";
 import {EntityProvider} from "../../common/providers/entityProvider";
 import {Nullable} from "../../../framework/extras/typeUtils";
 import { GetSingleRoleResponseConverter } from "../converters/roles/getSingleRoleResponseConverter";

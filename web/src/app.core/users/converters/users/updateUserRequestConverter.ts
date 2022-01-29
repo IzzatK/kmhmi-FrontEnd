@@ -1,9 +1,9 @@
 import {nameOf} from "../../../../framework/extras/typeUtils";
-import {UserInfo} from "../../../../app";
+import {UserInfo} from "../../../../app.model";
 import {getDateWithoutTime} from "../../../../framework.visual/extras/utils/timeUtils";
-import {ReferenceType} from "../../../../app";
+import {ReferenceType} from "../../../../app.model";
 import {forEach} from "../../../../framework.visual/extras/utils/collectionUtils";
-import {ReferenceInfo} from "../../../../app";
+import {ReferenceInfo} from "../../../../app.model";
 import {repoService} from "../../../serviceComposition";
 import {Converter} from "../../../common/converters/converter";
 

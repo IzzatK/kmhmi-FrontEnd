@@ -5,7 +5,7 @@ import {createSelector} from "@reduxjs/toolkit";
 import {tagService} from "../../../../app.core/serviceComposition";
 import {TagInfoVM} from "./tagsPanelModel";
 import {forEach} from "../../../../framework.visual/extras/utils/collectionUtils";
-import {TagInfo} from "../../../../app";
+import {TagInfo} from "../../../../app.model";
 
 class TagsPanel extends Presenter {
     constructor() {

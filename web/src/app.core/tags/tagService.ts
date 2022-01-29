@@ -1,5 +1,5 @@
 import {createSelector, Selector} from "@reduxjs/toolkit";
-import {MetadataInfo, TagInfo} from "../../app";
+import {MetadataInfo, TagInfo} from "../../app.model";
 import {IEntityProvider, ITagService} from "../../app.core.api";
 import {Plugin} from "../../framework/extras/plugin";
 import {Nullable} from "../../framework/extras/typeUtils";

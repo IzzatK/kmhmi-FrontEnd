@@ -1,6 +1,6 @@
 import {IConverter} from "../../../../app.core.api";
 import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
-import {UserInfo} from "../../../../app";
+import {UserInfo} from "../../../../app.model";
 import {Converter} from "../../../common/converters/converter";
 import {Nullable} from "../../../../framework/extras/typeUtils";
 

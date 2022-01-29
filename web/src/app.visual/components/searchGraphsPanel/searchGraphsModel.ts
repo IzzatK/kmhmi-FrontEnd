@@ -1,4 +1,4 @@
-import {ReferenceType} from "../../../app";
+import {ReferenceType} from "../../../app.model";
 
 export type SearchGraphsProps = {
     className: string;

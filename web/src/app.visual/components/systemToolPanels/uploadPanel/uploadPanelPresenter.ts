@@ -4,7 +4,7 @@ import {createComponentWrapper} from "../../../../framework/wrappers/componentWr
 import {createSelector} from "@reduxjs/toolkit";
 import {forEach} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {DocumentPanelId} from "../../documentPanel/documentPanelPresenter";
-import {DocumentInfo, ReferenceType} from "../../../../app";
+import {DocumentInfo, ReferenceType} from "../../../../app.model";
 import {
     displayService,
     documentService,

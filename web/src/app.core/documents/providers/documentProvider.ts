@@ -1,5 +1,5 @@
 import {EntityProvider} from "../../common/providers/entityProvider";
-import {DocumentInfo, ParamType, ReferenceInfo, SearchParamInfo, SortPropertyInfo, TagInfo} from "../../../app";
+import {DocumentInfo, ParamType, ReferenceInfo, SearchParamInfo, SortPropertyInfo, TagInfo} from "../../../app.model";
 import {Nullable} from "../../../framework/extras/typeUtils";
 import {DeleteDocumentResponseConverter} from "../converters/deleteDocumentResponseConverter";
 import {DocumentResponseConverter} from "../converters/documentResponseConverter";

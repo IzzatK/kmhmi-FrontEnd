@@ -3,7 +3,7 @@ import {createViewModelConnector} from "./viewModelWrapper";
 import {createDisplayConnector} from "./displayWrapper";
 import React, {Component} from "react";
 import {createMetadataConnector} from "./metadataWrapper";
-import {MetadataInfo} from "../../app";
+import {MetadataInfo} from "../../app.model";
 import {appDataStore, displayService, repoService} from "../../app.core/serviceComposition";
 
 export const createComponentWrapper = (presenterTemplate: any) => {

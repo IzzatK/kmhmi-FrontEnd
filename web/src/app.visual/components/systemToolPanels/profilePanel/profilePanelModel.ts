@@ -1,4 +1,4 @@
-import {UserInfo} from "../../../../app";
+import {UserInfo} from "../../../../app.model";
 
 export type ProfilePanelProps = {
     className?: string;

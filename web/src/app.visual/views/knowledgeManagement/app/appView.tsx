@@ -9,7 +9,7 @@ import {StatsPanelPresenter} from "../../../components/systemToolPanels/statsPan
 import {SystemToolbarPresenter} from "../../../components/systemToolbar/systemToolbarPresenter";
 import {referenceService, statService, tagService} from "../../../../app.core/serviceComposition";
 import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
-import {ReferenceType} from "../../../../app";
+import {ReferenceType} from "../../../../app.model";
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
 import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
 import {LandingPanelPresenter} from "../../../components/landingPanel/landingPanelPresenter";

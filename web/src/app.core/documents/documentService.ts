@@ -1,6 +1,6 @@
 import {createSelector, OutputSelector} from "@reduxjs/toolkit";
 import {forEach} from "../../framework.visual/extras/utils/collectionUtils";
-import {DocumentInfo, MetadataInfo, MetadataType, ParamType, SearchParamInfo, SortPropertyInfo} from "../../app";
+import {DocumentInfo, MetadataInfo, MetadataType, ParamType, SearchParamInfo, SortPropertyInfo} from "../../app.model";
 import {Nullable} from "../../framework/extras/typeUtils";
 
 import {IDocumentService, IEntityProvider, IUserService} from "../../app.core.api";

@@ -1,6 +1,6 @@
-import {StatInfo} from "../../app";
+import {StatInfo} from "../../app.model";
 import {createSelector, Selector} from "@reduxjs/toolkit";
-import {StatType} from "../../app";
+import {StatType} from "../../app.model";
 import {forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
 import {IStatService} from "../../app.core.api";
 import {Plugin} from "../../framework/extras/plugin";

@@ -1,4 +1,4 @@
-import {ReferenceInfo} from "../../../app";
+import {ReferenceInfo} from "../../../app.model";
 import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
 import {repoService} from "../../serviceComposition";
 import {Nullable} from "../../../framework/extras/typeUtils";

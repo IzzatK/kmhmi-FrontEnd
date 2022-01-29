@@ -4,7 +4,7 @@ import {Presenter} from "../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
 import {forEach, forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
 import {DocumentPanelId} from "../documentPanel/documentPanelPresenter";
-import {DocumentInfo, MetadataType, ReferenceInfo, ReferenceType, SortPropertyInfo} from "../../../app";
+import {DocumentInfo, MetadataType, ReferenceInfo, ReferenceType, SortPropertyInfo} from "../../../app.model";
 import {
     displayService,
     documentService,

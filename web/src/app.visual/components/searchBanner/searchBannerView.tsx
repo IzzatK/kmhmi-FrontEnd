@@ -2,7 +2,7 @@ import React, {Component, ReactNode} from 'react';
 import './searchBanner.css';
 import SearchBox from "../../theme/widgets/searchBox/searchBox";
 import Button from "../../theme/widgets/button/button";
-import {ParamType} from "../../../app";
+import {ParamType} from "../../../app.model";
 import ComboBox from "../../theme/widgets/comboBox/comboBox";
 import Portal from "../../theme/widgets/portal/portal";
 import TextEdit from "../../theme/widgets/textEdit/textEdit";

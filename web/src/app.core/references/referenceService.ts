@@ -1,6 +1,6 @@
 import {createSelector, Selector} from "@reduxjs/toolkit";
 import {forEach,} from "../../framework.visual/extras/utils/collectionUtils";
-import {MetadataInfo, MetadataType, ReferenceInfo, ReferenceType} from "../../app";
+import {MetadataInfo, MetadataType, ReferenceInfo, ReferenceType} from "../../app.model";
 import {IEntityProvider, IReferenceService} from "../../app.core.api";
 import {Plugin} from "../../framework/extras/plugin";
 import {Nullable} from "../../framework/extras/typeUtils";

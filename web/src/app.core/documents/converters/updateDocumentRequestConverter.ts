@@ -1,5 +1,5 @@
 import {nameOf} from "../../../framework/extras/typeUtils";
-import {DocumentInfo} from "../../../app";
+import {DocumentInfo} from "../../../app.model";
 import {Converter} from "../../common/converters/converter";
 
 export class UpdateDocumentRequestConverter extends Converter<any, any>{

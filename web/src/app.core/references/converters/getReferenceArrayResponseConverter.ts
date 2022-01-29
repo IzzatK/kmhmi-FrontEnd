@@ -1,6 +1,6 @@
 import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
-import {ReferenceType} from "../../../app";
-import {ReferenceInfo} from "../../../app";
+import {ReferenceType} from "../../../app.model";
+import {ReferenceInfo} from "../../../app.model";
 import {Converter} from "../../common/converters/converter";
 
 export class GetReferenceArrayResponseConverter extends Converter<any, ReferenceInfo[]>{

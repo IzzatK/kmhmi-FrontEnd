@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {MetadataInfo} from "../../app";
+import {MetadataInfo} from "../../app.model";
 import {repoService} from "../../app.core/serviceComposition";
 import {bindInstanceMethods} from "../extras/typeUtils";
 

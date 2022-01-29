@@ -10,7 +10,7 @@ import {
     repoService,
     tagService
 } from "../../../app.core/serviceComposition";
-import {ReferenceInfo, ReferenceType, SearchBannerMenuItem, SearchParamInfo, TagInfo} from "../../../app";
+import {ReferenceInfo, ReferenceType, SearchBannerMenuItem, SearchParamInfo, TagInfo} from "../../../app.model";
 import {MenuItemVM} from "../../../framework.visual/model/menuItemVM";
 import {SearchParamItemVM} from "./searchBannerModel";
 

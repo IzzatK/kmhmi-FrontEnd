@@ -1,5 +1,5 @@
 import {EntityProvider} from "../../common/providers/entityProvider";
-import {ReferenceInfo, ReferenceType} from "../../../app";
+import {ReferenceInfo, ReferenceType} from "../../../app.model";
 import {GetReferenceArrayRequestConverter} from "../converters/getReferenceArrayRequestConverter";
 import {GetReferenceArrayResponseConverter} from "../converters/getReferenceArrayResponseConverter";
 

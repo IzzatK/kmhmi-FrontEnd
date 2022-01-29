@@ -4,7 +4,7 @@ import {LoginPanelDispatchProps, LoginPanelStateProps, RegistrationStatusVMType,
 import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
 import {createSelector} from "@reduxjs/toolkit";
 import {authenticationService, referenceService} from "../../../app.core/serviceComposition";
-import {ReferenceType, UserInfo} from "../../../app";
+import {ReferenceType, UserInfo} from "../../../app.model";
 import {RoleVM} from "../systemToolPanels/profilePanel/profilePanelModel";
 import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
 import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";

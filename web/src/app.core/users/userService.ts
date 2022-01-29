@@ -1,6 +1,6 @@
 import {makeGuid} from "../../framework.visual/extras/utils/uniqueIdUtils";
 import {forEach, forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
-import {UserInfo} from "../../app";
+import {UserInfo} from "../../app.model";
 import {IAuthorizationService, IUserService, IReferenceService, IEntityProvider} from "../../app.core.api";
 import {nameOf, Nullable} from "../../framework/extras/typeUtils";
 import {ISelectionService} from "../../framework.api";

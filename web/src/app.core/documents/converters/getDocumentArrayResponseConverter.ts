@@ -2,7 +2,7 @@ import {forEach, sortByProperty} from "../../../framework.visual/extras/utils/co
 import {IConverter} from "../../../app.core.api";
 import {KM_API_SERVER_URL} from "../../../app.config/config";
 import {getValueOrDefault, Nullable} from "../../../framework/extras/typeUtils";
-import {DocumentInfo, SearchParamInfo} from "../../../app";
+import {DocumentInfo, SearchParamInfo} from "../../../app.model";
 import {Converter} from "../../common/converters/converter";
 
 

@@ -2,7 +2,7 @@ import {IPlugin} from "../../framework.api";
 import {IStorage} from "../../framework.api";
 import {IUserService} from "../users/iUserService";
 import {IUserProvider} from "../users/IUserProvider";
-import {UserInfo} from "../../app";
+import {UserInfo} from "../../app.model";
 
 export interface IAuthenticationService extends IPlugin {
     login(): any;

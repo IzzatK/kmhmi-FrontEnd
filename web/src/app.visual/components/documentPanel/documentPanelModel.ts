@@ -1,4 +1,4 @@
-import {ParamType} from "../../../app";
+import {ParamType} from "../../../app.model";
 
 export type DocumentPanelProps = {
     className: string;

@@ -2,7 +2,7 @@ import {SearchGraphsPanelView} from './searchGraphsPanelView'
 import {Presenter} from "../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
 import {createSelector} from "@reduxjs/toolkit";
-import {ReferenceInfo, ReferenceType, StatType} from "../../../app";
+import {ReferenceInfo, ReferenceType, StatType} from "../../../app.model";
 import {forEach, forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
 import {documentService, referenceService, statService} from "../../../app.core/serviceComposition";
 import {ReferenceInfoVM, StatVM} from "./searchGraphsModel";

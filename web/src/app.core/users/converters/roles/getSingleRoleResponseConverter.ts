@@ -1,6 +1,6 @@
-import {RoleInfo} from "../../../../app";
+import {RoleInfo} from "../../../../app.model";
 import {forEach, forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
-import {ReferenceType} from "../../../../app";
+import {ReferenceType} from "../../../../app.model";
 import {Nullable} from "../../../../framework/extras/typeUtils";
 import {referenceService} from "../../../serviceComposition";
 import {Converter} from "../../../common/converters/converter";
