@@ -6,15 +6,13 @@ import {IAuthenticationService} from "../../../api";
 export interface IHttpService extends IBasePlugin, ILogger{
     setAuthenticationService(authenticationService: Nullable<IAuthenticationService>): void;
 
-    createAPI(url: string, command?: string, body?: any, format?: string): any;
+    createFormAPI(url: string, formData: any): Promise<any>;
 
-    createFormAPI(url: string, formData: any): any;
+    createGET(url: string): Promise<any>;
 
-    createGET(url: string): any;
+    createPUT(url: string, body: any): Promise<any>;
 
-    createPUT(url: string, body: any): any;
+    createDELETE(url: string): Promise<any>;
 
-    createDELETE(url: string): any;
-
-    createPOST(url: string, body: any): any;
+    createPOST(url: string, body: any): Promise<any>;
 }

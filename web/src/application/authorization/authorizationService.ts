@@ -11,6 +11,7 @@ import {Plugin} from "../../framework/extras/plugin";
 import {createSelector, OutputSelector, Selector} from "@reduxjs/toolkit";
 import {PermissionInfo} from "../../model/permissionInfo";
 import {forEach} from "../../framework.visual/extras/utils/collectionUtils";
+import {isDev} from "../../framework/extras/environmentUtils";
 
 // type AuthorizationState = {
 //     // permissions: Nullable<PERMISSION_TYPE[]>
@@ -149,7 +150,7 @@ export class AuthorizationService extends Plugin implements IAuthorizationServic
             }
         }
 
-        return result;
+        return isDev() ? true : result;
     }
 
     setPermissionProvider(provider: IEntityProvider<PermissionInfo>): void {

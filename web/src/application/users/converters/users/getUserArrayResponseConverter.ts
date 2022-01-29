@@ -11,8 +11,8 @@ export class GetUserArrayResponseConverter extends Converter<any,UserInfo[]> {
     convert(fromData: any, reject?: any): UserInfo[] {
         const result: UserInfo[] = [];
 
-        if (Array.isArray(fromData)) {
-            forEachKVP(fromData, (itemKey:string, itemValue: string[]) => {
+        if (Array.isArray(fromData[0])) {
+            forEachKVP(fromData[0], (itemKey:string, itemValue: string[]) => {
                 let model = this._singleConverter.convert(itemValue, reject);
 
                 if (model != null) {

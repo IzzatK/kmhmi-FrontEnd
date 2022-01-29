@@ -35,13 +35,11 @@ export class HttpService extends BasePlugin implements IHttpService {
         }
     }
 
-    createAPI(url: string, command?: string, body?: any, format?: string) {
+    private createAPI(url: string, command?: string, body?: any, format?: string): Promise<any> {
 
-        let options: RequestInit = {
+        const options: RequestInit = {
             method: command ? command : 'GET'
         }
-
-        let headers = new Headers();
 
         let userProfile = this.authenticationService?.getUserProfile();
         let username = userProfile?.username || '';
@@ -50,6 +48,7 @@ export class HttpService extends BasePlugin implements IHttpService {
         let firstName = userProfile?.firstName || '';
         let lastName = userProfile?.lastName || '';
 
+        const headers = new Headers();
         headers.append('km-token', `bearer ${this.authenticationService?.getToken()}`);
         headers.append('km-user-name', username);
         headers.append('km-user-id', id);
@@ -84,17 +83,6 @@ export class HttpService extends BasePlugin implements IHttpService {
                         } else {
                             return response.json();
                         }
-
-                        // if (response.status >= 200 && response.status <= 299) {
-                        //     if (format === 'form') {
-                        //         return response.json();
-                        //     } else {
-                        //         return response.json();
-                        //     }
-                        // } else {
-                        //     debugger
-                        //     throw Error(response.statusText);
-                        // }
                     })
                     .then(function (result) {
                         // return object to caller
@@ -116,8 +104,7 @@ export class HttpService extends BasePlugin implements IHttpService {
 
 
         if (this.authenticationService != null && this.authenticationService.isLoggedIn()) {
-            return fetchFxn();
-            // return this.authenticationService.securedFetch(fetchFxn);
+            return this.authenticationService.securedFetch(fetchFxn);
         } else {
             return fetchFxn();
         }

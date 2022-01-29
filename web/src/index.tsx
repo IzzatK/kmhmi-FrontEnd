@@ -7,6 +7,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import {appDataStore, authenticationService} from "./application/serviceComposition";
 import { KnowledgeManagementPresenter } from './visual/views/knowledgeManagement/knowledgeManagementPresenter';
+import {isDev} from "./framework/extras/environmentUtils";
 
 ReactDOM.render(
     <React.StrictMode>
@@ -44,6 +45,9 @@ if (document.location.href.includes('state=')) {
     if (!authenticationService.isLoggedIn()) {
         authenticationService.login();
     }
+}
+else if (isDev()) {
+    authenticationService.login();
 }
 
 // window.onload = function() {
