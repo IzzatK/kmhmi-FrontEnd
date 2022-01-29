@@ -1,5 +1,5 @@
 @import "framework.visual/theme/stylesheets/index.css";
-@import "visual/theme/stylesheets/index.css";
+@import "app.visual/theme/stylesheets/index.css";
 
 html {
   font-size: 8px;

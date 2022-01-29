@@ -3,8 +3,8 @@ import {createViewModelConnector} from "./viewModelWrapper";
 import {createDisplayConnector} from "./displayWrapper";
 import React, {Component} from "react";
 import {createMetadataConnector} from "./metadataWrapper";
-import {MetadataInfo} from "../../model";
-import {appDataStore, displayService, repoService} from "../../core/serviceComposition";
+import {MetadataInfo} from "../../app";
+import {appDataStore, displayService, repoService} from "../../app.core/serviceComposition";
 
 export const createComponentWrapper = (presenterTemplate: any) => {
     const presenter = new presenterTemplate();

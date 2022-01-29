@@ -1,7 +1,7 @@
 import {IBasePlugin} from "../IBasePlugin";
 import {ILogger} from "../logService/iLogger";
 import {Nullable} from "../../framework/extras/typeUtils";
-import {IAuthenticationService} from "../../core.api";
+import {IAuthenticationService} from "../../app.core.api";
 
 export interface IHttpService extends IBasePlugin, ILogger{
     setAuthenticationService(authenticationService: Nullable<IAuthenticationService>): void;
