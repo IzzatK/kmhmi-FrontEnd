@@ -1,1 +1,1 @@
-docker-compose --env-file=./env/env.dev -p tbe-test up -d --force-recreate --remove-orphans
+docker-compose --env-file=./env/env.test -p tbe-test up -d --force-recreate --remove-orphans
