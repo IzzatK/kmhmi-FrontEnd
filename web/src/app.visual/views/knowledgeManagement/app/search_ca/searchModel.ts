@@ -1,8 +1,4 @@
-import React, {ElementType} from "react";
-
-export type SearchWrapperState = {
-
-}
+import {ElementType} from "react";
 
 export type SearchAppStateModel = {
 

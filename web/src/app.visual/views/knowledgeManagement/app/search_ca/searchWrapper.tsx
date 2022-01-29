@@ -4,8 +4,7 @@ import {
     SearchAppDispatchModel,
     SearchAppModel,
     SearchAppStateModel,
-    SearchViewModel,
-    SearchWrapperState
+    SearchViewModel
 } from "./searchModel";
 import {connect} from "react-redux";
 import {createDisplayConnector} from "../../../../../framework/wrappers/displayWrapper";
@@ -14,14 +13,14 @@ import {SearchViewSmall} from "./searchViewSmall";
 
 
 
-// wrapped ties all the pieces together
+// wrapper ties all the pieces together
 // app state, presenter, view
 
 
 // responsible for
 // 1. setting up the presenter as a provider to the view
 // 2. selecting which view to use
-class _SearchWrapper extends Component<SearchAppModel, SearchWrapperState> {
+class _SearchWrapper extends Component<SearchAppModel> {
 
     componentDidMount() {
         // initiate any remote data source fetching
