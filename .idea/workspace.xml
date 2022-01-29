@@ -7,125 +7,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="environment variables / ci">
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.d/README" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.d/autoindex.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.d/httpd-conf.tgz" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.d/kmweb.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.d/ssl.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.d/userdir.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.d/welcome.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/00-base.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/00-dav.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/00-lua.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/00-mpm.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/00-optional.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/00-proxy.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/00-ssl.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/00-systemd.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/01-cgi.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/10-h2.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/10-proxy_h2.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/2/conf.modules.d/README" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.d/README" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.d/autoindex.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.d/kmweb.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.d/ssl.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.d/userdir.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.d/welcome.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/00-base.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/00-dav.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/00-lua.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/00-mpm.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/00-optional.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/00-proxy.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/00-ssl.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/00-systemd.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/01-cgi.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/10-h2.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/10-proxy_h2.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/_reference/conf/conf.modules.d/README" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/certs/cert.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/certs/key.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/deploy2docker.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/docker-compose-all.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/docker-compose-production.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/docker/hmi_apache_server/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/docker/hmi_apache_server/httpd.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/environments/example/hmi_apacheconf/htmlfiles/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/environments/example/hmi_apacheconf/sites/techolaf.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/environments/production/hmi_apacheconf/htmlfiles/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci/environments/production/hmi_apacheconf/sites/techolaf.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci_2/data/certbot/conf/options-ssl-nginx.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci_2/data/certbot/conf/ssl-dhparams.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci_2/data/certs/cert.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci_2/data/certs/key.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci_2/data/nginx/app.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci_2/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci_2/init-letsencrypt.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_ci_old/ci_2/init-letsencrypt.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="cd8088b8-60a0-4119-b345-294d1145ee21" name="Changes" comment="ci stuffz">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.d/README" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.d/autoindex.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.d/httpd-conf.tgz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.d/kmweb.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.d/ssl.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.d/userdir.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.d/welcome.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/00-base.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/00-dav.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/00-lua.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/00-mpm.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/00-optional.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/00-proxy.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/00-ssl.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/00-systemd.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/01-cgi.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/10-h2.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/10-proxy_h2.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/2/conf.modules.d/README" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.d/README" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.d/autoindex.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.d/kmweb.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.d/ssl.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.d/userdir.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.d/welcome.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-base.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-dav.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-lua.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-mpm.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-optional.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-proxy.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-ssl.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/00-systemd.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/01-cgi.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/10-h2.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/10-proxy_h2.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/_reference/conf/conf.modules.d/README" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/certs/cert.pem" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/certs/key.pem" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/deploy2docker.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/docker-compose-all.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/docker-compose-production.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/docker/hmi_apache_server/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/docker/hmi_apache_server/httpd.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/environments/example/hmi_apacheconf/htmlfiles/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/environments/example/hmi_apacheconf/sites/techolaf.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/environments/production/hmi_apacheconf/htmlfiles/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci/environments/production/hmi_apacheconf/sites/techolaf.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci_2/data/certbot/conf/options-ssl-nginx.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci_2/data/certbot/conf/ssl-dhparams.pem" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci_2/data/certs/cert.pem" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci_2/data/certs/key.pem" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci_2/data/nginx/app.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci_2/docker-compose.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci_2/init-letsencrypt.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ci_2/init-letsencrypt.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-deploy/copy2server.bat" beforeDir="false" afterPath="$PROJECT_DIR$/docker-deploy/copy2server.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-deploy/docker-compose-aws.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-deploy/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-deploy/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-deploy/ui/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ci/copy2server.test.bat" beforeDir="false" afterPath="$PROJECT_DIR$/ci/init-server.test.bat" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,6 +25,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -173,10 +58,11 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/docker-deploy" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/ci/ui" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -187,11 +73,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Repos\km-hmi\ci\ui" />
+      <recent name="C:\Repos\km-hmi\ci\ssh" />
       <recent name="C:\Repos\km-hmi\docker-deploy" />
       <recent name="C:\Repos\km-hmi\docker-deploy\env" />
       <recent name="C:\Repos\km-hmi\ci" />
-      <recent name="C:\Repos\km-hmi\apache" />
-      <recent name="C:\Repos\km-hmi\ci_2\data" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Repos\km-hmi\_ci_old" />
@@ -282,174 +168,7 @@
       <workItem from="1643213251684" duration="38343000" />
       <workItem from="1643321102944" duration="399000" />
       <workItem from="1643372092270" duration="11478000" />
-    </task>
-    <task id="LOCAL-00001" summary="initial commit">
-      <created>1641329914789</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1641329914789</updated>
-    </task>
-    <task id="LOCAL-00002" summary="added logic for authorization service. currently only limiting document upload by role. need to limit functionality through the rest of the UI">
-      <created>1641566016215</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1641566016215</updated>
-    </task>
-    <task id="LOCAL-00003" summary="limit by role Document Panel">
-      <created>1641848314010</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1641848314010</updated>
-    </task>
-    <task id="LOCAL-00004" summary="limit functionality in the users panel">
-      <created>1641850433108</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1641850433108</updated>
-    </task>
-    <task id="LOCAL-00005" summary="working on authentication">
-      <created>1642179037346</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1642179037346</updated>
-    </task>
-    <task id="LOCAL-00006" summary="working on authentication">
-      <created>1642190190209</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1642190190209</updated>
-    </task>
-    <task id="LOCAL-00007" summary="authentication stuff">
-      <created>1642196851591</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1642196851591</updated>
-    </task>
-    <task id="LOCAL-00008" summary="worked on landing page synchronization">
-      <created>1642427805870</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1642427805870</updated>
-    </task>
-    <task id="LOCAL-00009" summary="set current user on login">
-      <created>1642428876062</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1642428876062</updated>
-    </task>
-    <task id="LOCAL-00010" summary="anthony broke stuff">
-      <created>1642430182432</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1642430182432</updated>
-    </task>
-    <task id="LOCAL-00011" summary="hard code create user for testing">
-      <created>1642430695458</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1642430695458</updated>
-    </task>
-    <task id="LOCAL-00012" summary="account status">
-      <created>1642431812364</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1642431812364</updated>
-    </task>
-    <task id="LOCAL-00013" summary="working on registration">
-      <created>1642433142249</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1642433142249</updated>
-    </task>
-    <task id="LOCAL-00014" summary="working on registration">
-      <created>1642433814379</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1642433814379</updated>
-    </task>
-    <task id="LOCAL-00015" summary="working on registration">
-      <created>1642434531811</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1642434531811</updated>
-    </task>
-    <task id="LOCAL-00016" summary="added functionality for pending users and approve users">
-      <created>1642445793005</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1642445793005</updated>
-    </task>
-    <task id="LOCAL-00017" summary="accept and deny users">
-      <created>1642446363199</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1642446363199</updated>
-    </task>
-    <task id="LOCAL-00018" summary="accept and deny users">
-      <created>1642446791725</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1642446791725</updated>
-    </task>
-    <task id="LOCAL-00019" summary="josiah is so good at debugging my code">
-      <created>1642447460026</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1642447460026</updated>
-    </task>
-    <task id="LOCAL-00020" summary="update user request">
-      <created>1642448082073</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1642448082073</updated>
-    </task>
-    <task id="LOCAL-00021" summary="can search documents">
-      <created>1642449295004</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1642449295004</updated>
-    </task>
-    <task id="LOCAL-00022" summary="build spec">
-      <created>1642540198830</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1642540198830</updated>
-    </task>
-    <task id="LOCAL-00023" summary="build spec try it out">
-      <created>1642540855992</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1642540855992</updated>
-    </task>
-    <task id="LOCAL-00024" summary="build spec try it out">
-      <created>1642542554312</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1642542554312</updated>
+      <workItem from="1643383791173" duration="15300000" />
     </task>
     <task id="LOCAL-00025" summary="build spec try it out">
       <created>1642543089722</created>
@@ -619,7 +338,182 @@
       <option name="project" value="LOCAL" />
       <updated>1643383357113</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="environment variables / ci">
+      <created>1643383812956</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1643383812956</updated>
+    </task>
+    <task id="LOCAL-00050" summary="environment variables / ci">
+      <created>1643406768589</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1643406768589</updated>
+    </task>
+    <task id="LOCAL-00051" summary="environment variables / ci">
+      <created>1643407443731</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1643407443731</updated>
+    </task>
+    <task id="LOCAL-00052" summary="environment variables / ci">
+      <created>1643407770379</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1643407770379</updated>
+    </task>
+    <task id="LOCAL-00053" summary="environment variables / ci">
+      <created>1643408010723</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1643408010723</updated>
+    </task>
+    <task id="LOCAL-00054" summary="environment variables / ci">
+      <created>1643408172438</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1643408172438</updated>
+    </task>
+    <task id="LOCAL-00055" summary="environment variables / ci">
+      <created>1643409203994</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1643409203994</updated>
+    </task>
+    <task id="LOCAL-00056" summary="environment variables / ci">
+      <created>1643409827085</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1643409827085</updated>
+    </task>
+    <task id="LOCAL-00057" summary="environment variables / ci">
+      <created>1643409883975</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1643409883975</updated>
+    </task>
+    <task id="LOCAL-00058" summary="environment variables / ci">
+      <created>1643409969744</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1643409969744</updated>
+    </task>
+    <task id="LOCAL-00059" summary="environment variables / ci">
+      <created>1643410285336</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1643410285336</updated>
+    </task>
+    <task id="LOCAL-00060" summary="environment variables / ci">
+      <created>1643410523542</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1643410523542</updated>
+    </task>
+    <task id="LOCAL-00061" summary="environment variables / ci">
+      <created>1643410749061</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1643410749061</updated>
+    </task>
+    <task id="LOCAL-00062" summary="environment variables / ci">
+      <created>1643410944646</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1643410944646</updated>
+    </task>
+    <task id="LOCAL-00063" summary="environment variables / ci">
+      <created>1643411129151</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1643411129151</updated>
+    </task>
+    <task id="LOCAL-00064" summary="environment variables / ci">
+      <created>1643411302224</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1643411302224</updated>
+    </task>
+    <task id="LOCAL-00065" summary="environment variables / ci">
+      <created>1643411691763</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1643411691763</updated>
+    </task>
+    <task id="LOCAL-00066" summary="environment variables / ci">
+      <created>1643412177408</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1643412177408</updated>
+    </task>
+    <task id="LOCAL-00067" summary="environment variables / ci">
+      <created>1643412609156</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1643412609156</updated>
+    </task>
+    <task id="LOCAL-00068" summary="environment variables / ci">
+      <created>1643412982107</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1643412982107</updated>
+    </task>
+    <task id="LOCAL-00069" summary="environment variables / ci">
+      <created>1643413474962</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1643413474962</updated>
+    </task>
+    <task id="LOCAL-00070" summary="environment variables / ci">
+      <created>1643413827101</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1643413827101</updated>
+    </task>
+    <task id="LOCAL-00071" summary="environment variables / ci">
+      <created>1643415368380</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1643415368380</updated>
+    </task>
+    <task id="LOCAL-00072" summary="ci stuffz">
+      <created>1643428007606</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1643428007606</updated>
+    </task>
+    <task id="LOCAL-00073" summary="ci stuffz">
+      <created>1643428414333</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1643428414333</updated>
+    </task>
+    <option name="localTasksCounter" value="74" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -643,13 +537,62 @@
             <State />
           </value>
         </entry>
+        <entry key="bed90096-b4c9-48b0-acf8-0b297af7d9f0">
+          <value>
+            <State>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="structure">
+                    <value>
+                      <list>
+                        <option value="dir:C:/Repos/km-hmi/ci/ui" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+        <entry key="c3ae975d-c8dd-4cb9-bd71-ad94908f817c">
+          <value>
+            <State>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="structure">
+                    <value>
+                      <list>
+                        <option value="dir:C:/Repos/km-hmi/ci/build" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
       </map>
     </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="limit functionality in the users panel" />
     <MESSAGE value="working on authentication" />
     <MESSAGE value="authentication stuff" />
     <MESSAGE value="worked on landing page synchronization" />
@@ -674,6 +617,7 @@
     <MESSAGE value="working on ci builds" />
     <MESSAGE value="switch ci to ubuntu" />
     <MESSAGE value="environment variables / ci" />
-    <option name="LAST_COMMIT_MESSAGE" value="environment variables / ci" />
+    <MESSAGE value="ci stuffz" />
+    <option name="LAST_COMMIT_MESSAGE" value="ci stuffz" />
   </component>
 </project>
