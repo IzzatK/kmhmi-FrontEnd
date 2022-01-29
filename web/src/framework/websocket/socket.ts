@@ -1,4 +1,4 @@
-import * as documentAPI from "../../application/documents/providers/documentProvider";
+import * as documentAPI from "../../core/documents/providers/documentProvider";
 // import * as documents from "../../application/documents/documents";
 
 

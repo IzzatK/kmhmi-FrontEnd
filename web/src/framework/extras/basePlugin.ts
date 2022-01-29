@@ -1,9 +1,9 @@
-import {IBasePlugin} from "../api";
-import {ILogger} from "../api";
+import {IBasePlugin} from "../../framework.api";
+import {ILogger} from "../../framework.api";
 import {LoggablePlugin} from "./loggablePlugin";
-import {ILogService} from "../api";
+import {ILogService} from "../../framework.api";
 import {bindInstanceMethods, Nullable} from "./typeUtils";
-import {ILoggablePlugin} from "../api";
+import {ILoggablePlugin} from "../../framework.api";
 
 export abstract class BasePlugin extends LoggablePlugin implements IBasePlugin, ILoggablePlugin {
     private className: string = ''

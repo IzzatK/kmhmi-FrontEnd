@@ -5,7 +5,7 @@ import './index.css';
 import { Provider } from 'react-redux';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import {appDataStore, authenticationService} from "./application/serviceComposition";
+import {appDataStore, authenticationService} from "./core/serviceComposition";
 import { KnowledgeManagementPresenter } from './visual/views/knowledgeManagement/knowledgeManagementPresenter';
 import {isDev} from "./framework/extras/environmentUtils";
 

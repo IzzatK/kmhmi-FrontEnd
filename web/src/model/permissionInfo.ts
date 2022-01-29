@@ -1,5 +1,5 @@
 import {RepoItem} from "../framework/services/repoService/repoItem";
-import {PERMISSION_ENTITY, PERMISSION_LEVEL, PERMISSION_OPERATOR} from "../api";
+import {PERMISSION_ENTITY, PERMISSION_LEVEL, PERMISSION_OPERATOR} from "../core.api";
 
 export class PermissionInfo extends RepoItem {
   public static class: string = 'PermissionInfo';

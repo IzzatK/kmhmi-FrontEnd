@@ -4,7 +4,7 @@ import {createDisplayConnector} from "./displayWrapper";
 import React, {Component} from "react";
 import {createMetadataConnector} from "./metadataWrapper";
 import {MetadataInfo} from "../../model";
-import {appDataStore, displayService, repoService} from "../../application/serviceComposition";
+import {appDataStore, displayService, repoService} from "../../core/serviceComposition";
 
 export const createComponentWrapper = (presenterTemplate: any) => {
     const presenter = new presenterTemplate();

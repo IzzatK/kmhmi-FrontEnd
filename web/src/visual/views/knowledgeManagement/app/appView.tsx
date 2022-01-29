@@ -7,7 +7,7 @@ import {ProfilePanelPresenter} from "../../../components/systemToolPanels/profil
 import {TagsPanelPresenter} from "../../../components/systemToolPanels/tagsPanel/tagsPanelPresenter";
 import {StatsPanelPresenter} from "../../../components/systemToolPanels/statsPanel/statsPanelPresenter";
 import {SystemToolbarPresenter} from "../../../components/systemToolbar/systemToolbarPresenter";
-import {referenceService, statService, tagService} from "../../../../application/serviceComposition";
+import {referenceService, statService, tagService} from "../../../../core/serviceComposition";
 import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {ReferenceType} from "../../../../model";
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";

@@ -1,7 +1,7 @@
 import {Nullable} from "../../extras/typeUtils";
 import {BasePlugin} from "../../extras/basePlugin";
-import {IHttpService} from "../../api";
-import {IAuthenticationService} from "../../../api";
+import {IHttpService} from "../../../framework.api";
+import {IAuthenticationService} from "../../../core.api";
 
 export class HttpService extends BasePlugin implements IHttpService {
     private authenticationService: Nullable<IAuthenticationService> = null;

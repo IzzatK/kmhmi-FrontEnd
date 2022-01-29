@@ -1,8 +1,7 @@
 {
   "directory": [
-    "./src/framework/api",
+    "./src/framework.api",
     "./src/framework/model",
-    "./src/framework.visual/api",
     "./src/api",
     "./src/model"
   ]

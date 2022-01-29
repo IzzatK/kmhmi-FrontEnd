@@ -11,9 +11,9 @@ import {
     referenceService,
     selectionService,
     userService,
-} from "../../../application/serviceComposition";
+} from "../../../core/serviceComposition";
 import {DocumentInfoVM, PermissionsVM} from "./documentPanelModel";
-import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../api";
+import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../core.api";
 import {PermissionInfo} from "../../../model/permissionInfo";
 
 class DocumentPanel extends Presenter {

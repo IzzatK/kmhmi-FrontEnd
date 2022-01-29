@@ -1,7 +1,7 @@
 import SystemBannerView from './systemBannerView'
 import {Presenter} from "../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
-import {authenticationService, documentService, userService} from "../../../application/serviceComposition";
+import {authenticationService, documentService, userService} from "../../../core/serviceComposition";
 import {UserInfo} from "../../../model";
 import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
 

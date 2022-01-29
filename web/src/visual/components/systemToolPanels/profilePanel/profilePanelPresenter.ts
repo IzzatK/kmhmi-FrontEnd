@@ -4,11 +4,10 @@ import {createComponentWrapper} from "../../../../framework/wrappers/componentWr
 import {forEach, forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {createSelector} from "@reduxjs/toolkit";
 import {ReferenceType, UserInfo} from "../../../../model";
-import {authorizationService, referenceService, userService} from "../../../../application/serviceComposition";
+import {authorizationService, referenceService, userService} from "../../../../core/serviceComposition";
 import {AccountStatusVM, DepartmentVM, PermissionsVM, RoleVM, UserInfoVM, UserRequestInfoVM} from "./profilePanelModel";
 import {PermissionInfo} from "../../../../model/permissionInfo";
-import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../../api";
-import {UserRequestInfo} from "../../../../model/userRequestInfo";
+import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../../core.api";
 
 class ProfilePanel extends Presenter {
     private readonly accountStatuses: AccountStatusVM[];

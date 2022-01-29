@@ -1,5 +1,5 @@
 import React from 'react';
-import {displayService} from "../../../../../application/serviceComposition";
+import {displayService} from "../../../../../core/serviceComposition";
 import {Presenter} from '../../../../../framework.visual/extras/presenter';
 import {SearchView} from "./searchView";
 import {createComponentWrapper} from "../../../../../framework/wrappers/componentWrapper";

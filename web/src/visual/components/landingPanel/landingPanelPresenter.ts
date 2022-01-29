@@ -3,12 +3,12 @@ import LandingPanelView from "./landingPanelView";
 import {LoginPanelDispatchProps, LoginPanelStateProps, RegistrationStatusVMType, UserInfoVM} from "./landingPanelModel";
 import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
 import {createSelector} from "@reduxjs/toolkit";
-import {authenticationService, referenceService} from "../../../application/serviceComposition";
+import {authenticationService, referenceService} from "../../../core/serviceComposition";
 import {ReferenceType, UserInfo} from "../../../model";
 import {RoleVM} from "../systemToolPanels/profilePanel/profilePanelModel";
 import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
 import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
-import {RegistrationStatus} from "../../../api";
+import {RegistrationStatus} from "../../../core.api";
 
 class LandingPanel extends Presenter {
     constructor() {

@@ -9,7 +9,7 @@ import {
     referenceService,
     repoService,
     tagService
-} from "../../../application/serviceComposition";
+} from "../../../core/serviceComposition";
 import {ReferenceInfo, ReferenceType, SearchBannerMenuItem, SearchParamInfo, TagInfo} from "../../../model";
 import {MenuItemVM} from "../../../framework.visual/model/menuItemVM";
 import {SearchParamItemVM} from "./searchBannerModel";

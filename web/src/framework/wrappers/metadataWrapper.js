@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {MetadataInfo} from "../../model";
-import {repoService} from "../../application/serviceComposition";
+import {repoService} from "../../core/serviceComposition";
 import {bindInstanceMethods} from "../extras/typeUtils";
 
 export const createMetadataConnector = (WrappedComponent, metadataId) => {

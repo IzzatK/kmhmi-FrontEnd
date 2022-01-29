@@ -11,7 +11,7 @@ import {
     referenceService,
     repoService,
     selectionService, userService
-} from "../../../application/serviceComposition";
+} from "../../../core/serviceComposition";
 import {SearchResultsMenuItem} from "../../model/searchResultsMenuItem";
 import {MenuItemVM} from "../../../framework.visual/model/menuItemVM";
 import {DocumentInfoVM, ReferenceInfoVM, SortPropertyInfoVM} from "./searchResultsModel";

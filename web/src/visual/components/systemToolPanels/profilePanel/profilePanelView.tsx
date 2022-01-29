@@ -12,7 +12,7 @@ import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
 import {ProfilePanelProps, ProfilePanelState, UserInfoVM} from "./profilePanelModel";
 import {UserRequestInfoView} from "./userRequestInfoView";
 import SearchBox from "../../../theme/widgets/searchBox/searchBox";
-import {userService} from "../../../../application/serviceComposition";
+import {userService} from "../../../../core/serviceComposition";
 
 class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
 

@@ -1,8 +1,8 @@
-import {ILogger} from "../api";
+import {ILogger} from "../../framework.api";
 import {DefaultLogger} from "../services/logService/defaultLogger";
 import {Nullable} from "./typeUtils";
-import {ILoggablePlugin} from "../api";
-import {LogLevel} from "../api";
+import {ILoggablePlugin} from "../../framework.api";
+import {LogLevel} from "../../framework.api";
 import {forEach} from "../../framework.visual/extras/utils/collectionUtils";
 
 export abstract class LoggablePlugin implements ILoggablePlugin{

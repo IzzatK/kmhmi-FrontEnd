@@ -1,7 +1,7 @@
 import {BasePlugin} from "../../extras/basePlugin";
 import {createSlice, PayloadAction, Slice} from "@reduxjs/toolkit";
 import {Nullable} from "../../extras/typeUtils";
-import {IDisplayService, IStorage} from "../../api";
+import {IDisplayService, IStorage} from "../../../framework.api";
 
 type NodeInfo = {
     containerId?: string,

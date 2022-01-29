@@ -10,10 +10,10 @@ import {
     displayService,
     repoService,
     selectionService
-} from "../../../application/serviceComposition";
+} from "../../../core/serviceComposition";
 import {SystemToolMenuItem} from "../../model/systemToolMenuItem";
 import {SystemToolVM} from "./systemToolbarModel";
-import {PERMISSION_ENTITY, PERMISSION_LEVEL, PERMISSION_OPERATOR} from "../../../api";
+import {PERMISSION_ENTITY, PERMISSION_LEVEL, PERMISSION_OPERATOR} from "../../../core.api";
 
 
 export const SYSTEM_TOOLBAR_VIEW_ID = 'system-tool-panel';

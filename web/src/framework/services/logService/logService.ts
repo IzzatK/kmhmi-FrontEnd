@@ -1,8 +1,8 @@
 import {BasePlugin} from "../../extras/basePlugin";
-import {ILogService} from "../../api";
-import {ILogger} from "../../api";
+import {ILogService} from "../../../framework.api";
+import {ILogger} from "../../../framework.api";
 import {DefaultLogger} from "./defaultLogger";
-import {LogLevel} from "../../api";
+import {LogLevel} from "../../../framework.api";
 import {getRootLogger, JsonLayout, Level, PatternLayout, PopUpAppender} from "log4javascript";
 import {Nullable} from "../../extras/typeUtils";
 

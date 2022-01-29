@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 import config from "../../config/config";
 import {combineReducers} from "redux";
 import {bindInstanceMethods} from "../extras/typeUtils";
-import {IStorage} from "../api";
+import {IStorage} from "../../framework.api";
 
 
 function root(state = config, action: PayloadAction) {

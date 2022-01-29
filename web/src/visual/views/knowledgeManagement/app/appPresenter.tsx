@@ -3,8 +3,6 @@ import './App.css';
 import {DocumentPanelId} from "../../../components/documentPanel/documentPanelPresenter";
 import {Presenter} from "../../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../../framework/wrappers/componentWrapper";
-import {ReferenceType} from "../../../../model";
-import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {
     authorizationService,
     displayService,
@@ -12,12 +10,12 @@ import {
     statService,
     tagService,
     userService
-} from "../../../../application/serviceComposition";
+} from "../../../../core/serviceComposition";
 import {AppView} from "./appView";
 import {PermissionsVM, StateProps} from "./appModel";
 import {createSelector} from "@reduxjs/toolkit";
 import {PermissionInfo} from "../../../../model/permissionInfo";
-import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../../api";
+import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../../core.api";
 
 class App extends Presenter {
     constructor() {

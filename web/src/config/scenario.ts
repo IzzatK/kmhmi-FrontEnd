@@ -1,6 +1,6 @@
 import {MetadataInfo} from "../model";
 import {RepoItem} from "../framework/services/repoService/repoItem";
-import {repoService} from "../application/serviceComposition";
+import {repoService} from "../core/serviceComposition";
 
 let result: Record<string, Record<string, RepoItem>> = {};
 

@@ -3,8 +3,8 @@ import {forEach, forEachKVP} from "../../../framework.visual/extras/utils/collec
 import {IRepoItem} from "./repoItem";
 import {BasePlugin} from "../../extras/basePlugin";
 import {Nullable} from "../../extras/typeUtils";
-import {IStorage} from "../../api";
-import {IRepositoryService} from "../../api";
+import {IStorage} from "../../../framework.api";
+import {IRepositoryService} from "../../../framework.api";
 
 interface RepoState {
     storage: Record<string, Record<string, IRepoItem>> // redux by class, then by id

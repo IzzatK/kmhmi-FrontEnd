@@ -1,6 +1,6 @@
 import {createSelector, createSlice, PayloadAction, Slice} from "@reduxjs/toolkit";
 import {BasePlugin} from "../../extras/basePlugin";
-import {ISelectionService, IStorage} from "../../api";
+import {ISelectionService, IStorage} from "../../../framework.api";
 import {Nullable} from "../../extras/typeUtils";
 
 interface ContextHandlerAction {
