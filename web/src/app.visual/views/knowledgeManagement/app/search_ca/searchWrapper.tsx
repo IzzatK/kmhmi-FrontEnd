@@ -1,76 +1,87 @@
-import React, {Component, ElementType} from "react";
+import React from "react";
 import {SearchView} from "./searchView";
 import {
     SearchAppDispatchModel,
-    SearchAppModel,
     SearchAppStateModel,
-    SearchViewModel
+    SearchViewModel,
+    SearchWrapperProps, SearchWrapperState, SearchViewProps, SearchViewController
 } from "./searchModel";
 import {connect} from "react-redux";
 import {createDisplayConnector} from "../../../../../framework/wrappers/displayWrapper";
 import {SearchPresenter} from "./searchPresenter";
-import {SearchViewSmall} from "./searchViewSmall";
-
+import {SearchController} from "./searchController";
+import {Wrapper} from "../../../../../framework.visual/ca/wrapper";
+import {makeGuid} from "../../../../../framework.visual/extras/utils/uniqueIdUtils";
+import {UserInfo} from "../../../../../app.model";
+import {userService} from "../../../../../app.core/serviceComposition";
 
 
 // wrapper ties all the pieces together
 // app state, presenter, view
 
-
 // responsible for
 // 1. setting up the presenter as a provider to the view
 // 2. selecting which view to use
-class _SearchWrapper extends Component<SearchAppModel> {
+class _SearchWrapper extends Wrapper<SearchWrapperProps, SearchWrapperState, SearchViewModel, SearchViewController, SearchViewProps> {
+    presenterSupplier = SearchPresenter;
+    controllerSupplier = SearchController;
+
+    constructor(props: SearchWrapperProps, context: any) {
+        super(props, context);
+
+        this.state = {
+            counter: 1,
+        }
+    }
+
 
     componentDidMount() {
-        // initiate any remote data source fetching
+        super.componentDidMount();
+
+        setInterval(() => {
+            this.setState({
+                ...this.state,
+                counter: this.state.counter + 1
+            })
+        }, 1000);
     }
 
-    componentWillUnmount() {
-        // stop any remote data source fetching
-    }
-
-    getView(): ElementType<SearchViewModel> {
-        let result: ElementType<SearchViewModel>;
-
-        if (Math.random() < 0.5) {
-            result = SearchView;
-        }
-        else {
-            result = SearchViewSmall;
-        }
-
+    getView(): React.ElementType<SearchViewProps> {
         return SearchView;
     }
 
     render() {
+        const View = this.getView();
+
         return (
-          <SearchPresenter viewSupplier={this.getView}/>
+          <View viewModel={this.state.viewModel} viewController={this.state.viewController}/>
         )
     }
 }
 
 // responsible for selecting data out of the app store
-export function createWrappedConnector(WrappedComponent: React.ElementType<SearchAppModel>) {
+export function createWrappedConnector(WrappedComponent: typeof _SearchWrapper) {
     // If the mapStateToProps argument supplied to connect returns a function instead of an object,
     // it will be used to create an individual mapStateToProps function for each instance of the container.
     function mapStateToProps(state: any): SearchAppStateModel {
         // grab any necessary info from redux here
         return {
-
+            user: new UserInfo(makeGuid())
         }
-    };
+    }
 
     function mapDispatchToProps(dispatch: any): SearchAppDispatchModel {
         return {
-
+            updateUser(user: UserInfo) {
+                userService.updateUser(user);
+            }
         }
     }
 
     return connect(mapStateToProps, mapDispatchToProps)(WrappedComponent);
 };
 
-export const SearchWrapper = createDisplayConnector(createWrappedConnector(_SearchWrapper), 'search');
+export const SearchWrapper = createWrappedConnector(_SearchWrapper);
 
 
 

@@ -13,6 +13,7 @@ import {ReferenceType} from "../../../../app.model";
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
 import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
 import {LandingPanelPresenter} from "../../../components/landingPanel/landingPanelPresenter";
+import {SearchWrapper} from "./search_ca/searchWrapper";
 
 export class AppView extends Component<Props, State> {
     private interval!: NodeJS.Timer;
@@ -70,7 +71,8 @@ export class AppView extends Component<Props, State> {
             <div id={'analysis'} {...rest} className={cn}>
                 {
                     permissions.canSearch ?
-                        <SearchPresenter className={"flex-fill flex-basis-0"} style={{zIndex: '1'}}/>
+                        // <SearchPresenter className={"flex-fill flex-basis-0"} style={{zIndex: '1'}}/>
+                        <SearchWrapper/>
                         :
                         <div className={"d-flex flex-fill"}>
                             {
