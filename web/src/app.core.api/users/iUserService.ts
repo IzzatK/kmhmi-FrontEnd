@@ -6,9 +6,10 @@ import {IEntityProvider} from "../common/iEntityProvider";
 import {Nullable} from "../../framework/extras/typeUtils";
 import {IAuthorizationService} from "../authorization/iAuthorizationService";
 import {UserRequestInfo} from "../../app.model/userRequestInfo";
+import {IAuthenticationService} from "../authentication/iAuthenticationService";
 
 export interface IUserService extends IPlugin {
-    fetchUser(id: string): void;
+    fetchUser(id: string): Promise<Nullable<UserInfo>>;
 
     fetchUsers(): void;
 
@@ -39,6 +40,8 @@ export interface IUserService extends IPlugin {
     setSelectionService(selectionService: ISelectionService): void;
 
     setAuthorizationService(authorizationService: IAuthorizationService): void;
+
+    setAuthenticationService(authenticationService: IAuthenticationService): void;
 
     setReferenceService(referenceService: IReferenceService): void;
 

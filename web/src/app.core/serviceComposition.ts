@@ -188,6 +188,7 @@ userService.setSelectionService(selectionService);
 userService.setReferenceService(referenceService);
 userService.setUserProvider(userProvider);
 userService.setAuthorizationService(authorizationService);
+userService.setAuthenticationService(authenticationService);
 userService.start();
 
 // for the UI Components, using the Provider/Consumer pattern seems to be the way to go

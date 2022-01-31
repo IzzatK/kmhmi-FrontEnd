@@ -1,8 +1,8 @@
 import {Nullable} from "./typeUtils";
-import {IRepositoryService} from "../../framework.api";
+import {IBasePlugin, IRepositoryService} from "../../framework.api";
 import {IRepoItem} from "../services/repoService/repoItem";
 import {BasePlugin} from "./basePlugin";
-import {IBasePlugin} from "../../framework.api";
+import {RegistrationStatus} from "../../app.core.api";
 
 
 export abstract class Plugin extends BasePlugin implements IBasePlugin {

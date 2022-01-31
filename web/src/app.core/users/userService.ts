@@ -1,7 +1,14 @@
 import {makeGuid} from "../../framework.visual/extras/utils/uniqueIdUtils";
 import {forEach, forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
 import {UserInfo} from "../../app.model";
-import {IAuthorizationService, IUserService, IReferenceService, IEntityProvider} from "../../app.core.api";
+import {
+    IAuthenticationService,
+    IAuthorizationService,
+    IEntityProvider,
+    IReferenceService,
+    IUserService,
+    RegistrationStatus
+} from "../../app.core.api";
 import {nameOf, Nullable} from "../../framework/extras/typeUtils";
 import {ISelectionService} from "../../framework.api";
 import {Plugin} from "../../framework/extras/plugin";
@@ -13,6 +20,7 @@ export class UserService extends Plugin implements IUserService {
     public static readonly class: string = 'UserService';
     private selectionService: Nullable<ISelectionService> = null;
     private authorizationService: Nullable<IAuthorizationService> = null;
+    private authenticationService: Nullable<IAuthenticationService> = null;
     private referenceService: Nullable<IReferenceService> = null;
     private userProvider: Nullable<IEntityProvider<UserInfo>> = null;
 
@@ -29,11 +37,11 @@ export class UserService extends Plugin implements IUserService {
 
                 let result:Record<string, UserInfo> = {};
                 forEach(users, (user: UserInfo) => {
-                    let accountStatus = user.account_status || '';
-                    accountStatus = accountStatus.toUpperCase();
-                    if (accountStatus === 'ACTIVE') {
+
+                    if (user.account_status === RegistrationStatus.APPROVED) {
                         result[user.id] = user;
                     }
+
                     // else if (accountStatus !== 'INACTIVE') {
                     //     this.warn(`User with the id ${user.id} is has an account status of '${user.account_status}'. User will not appear in active or inactive lists `)
                     // }
@@ -49,8 +57,7 @@ export class UserService extends Plugin implements IUserService {
 
                 let result:Record<string, UserInfo> = {};
                 forEach(users, (user: UserInfo) => {
-                    let accountStatus = user.account_status || '';
-                    if (accountStatus.toUpperCase() !== 'ACTIVE') {
+                    if (user.account_status !== RegistrationStatus.APPROVED) {
                         result[user.id] = user;
                     }
                 })
@@ -80,25 +87,37 @@ export class UserService extends Plugin implements IUserService {
         this.authorizationService = authorizationService;
     }
 
+    setAuthenticationService(authenticationService: IAuthenticationService): void {
+        this.authenticationService = authenticationService;
+    }
+
+
+
     setReferenceService(referenceService: IReferenceService) {
         this.referenceService = referenceService;
     }
 
-    fetchUser(id: string) {
-        this.userProvider?.getSingle(id)
-            .then(latestUser => {
-                let localUser: any = this.getUser(id) || {};
+    fetchUser(id: string): Promise<Nullable<UserInfo>> {
+        return new Promise<Nullable<UserInfo>>(
+            ((resolve, reject) => {
+                this.userProvider?.getSingle(id)
+                    .then(latestUser => {
+                        let localUser: any = this.getUser(id) || {};
 
-                let nextUser = {
-                    ...latestUser,
-                    ...localUser,
-                }
+                        let nextUser = {
+                            ...latestUser,
+                            ...localUser,
+                        }
 
-                this.addOrUpdateRepoItem(nextUser);
+                        this.addOrUpdateRepoItem(nextUser);
+
+                        resolve(nextUser);
+                    })
+                    .catch(error => {
+                        reject(null);
+                    });
             })
-            .catch(error => {
-                console.log(error);
-            });
+        )
     }
 
     fetchUsers() {
@@ -127,7 +146,7 @@ export class UserService extends Plugin implements IUserService {
             userInfo[key] = value;
         })
 
-        userInfo[nameOf<UserInfo>('account_status')] = 'Active';
+        userInfo[nameOf<UserInfo>('account_status')] = RegistrationStatus.APPROVED
 
         this.addOrUpdateRepoItem(userInfo);
 
@@ -221,7 +240,7 @@ export class UserService extends Plugin implements IUserService {
         let repoItem = this.getRepoItem<UserInfo>(UserInfo.class, id);
 
         if (repoItem != null) {
-            repoItem.account_status = 'Active';
+            repoItem.account_status = RegistrationStatus.APPROVED;
             repoItem.role = role;
             repoItem.approved_by = this.getCurrentUserId();
             repoItem.date_approved = getDateWithoutTime(new Date());

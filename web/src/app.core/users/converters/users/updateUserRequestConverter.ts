@@ -6,6 +6,7 @@ import {forEach} from "../../../../framework.visual/extras/utils/collectionUtils
 import {ReferenceInfo} from "../../../../app.model";
 import {repoService} from "../../../serviceComposition";
 import {Converter} from "../../../common/converters/converter";
+import {RegistrationStatus} from "../../../../app.core.api";
 
 export class UpdateUserRequestConverter extends Converter<any, any> {
 
@@ -29,18 +30,38 @@ export class UpdateUserRequestConverter extends Converter<any, any> {
 
         let dodid = `${Math.floor(Math.random() * 1000000000)}`;
 
-        let roles = [];
+        let tmpRoles = [];
         if (modifiedUser['role']) {
-            roles.push(modifiedUser['role']);
+            tmpRoles.push(modifiedUser['role']);
         }
         else {
             let references = repoService.getAll(ReferenceInfo.class);
             forEach(references, (referenceInfo: ReferenceInfo) => {
                 if (referenceInfo.type === ReferenceType.ROLE && referenceInfo.title.toUpperCase() == 'VIEWER') {
-                    roles.push(referenceInfo.id)
+                    tmpRoles.push(referenceInfo.id)
                     return true;
                 }
             });
+        }
+
+
+        let tmpAccountStatus: RegistrationStatus = getTextValueOrDefault(nameOf<UserInfo>('account_status'), '');
+        let serverAccountStatus = '';
+        if (tmpAccountStatus) {
+            switch (tmpAccountStatus) {
+                case RegistrationStatus.NONE:
+                    break;
+                case RegistrationStatus.SUBMITTED:
+                    serverAccountStatus = 'Created';
+                    break;
+                case RegistrationStatus.APPROVED:
+                    serverAccountStatus = 'Active';
+                    break;
+                case RegistrationStatus.REJECTED:
+                    serverAccountStatus = 'Rejected';
+                    break;
+
+            }
         }
 
 
@@ -54,8 +75,8 @@ export class UpdateUserRequestConverter extends Converter<any, any> {
             phone_number: getTextValueOrDefault(nameOf<UserInfo>('phone_number'), ''),
             dept_id: getTextValueOrDefault(nameOf<UserInfo>('department'), ''),
             preferred_results_view: getTextValueOrDefault(nameOf<UserInfo>('preferred_results_view'), 'Card'),
-            account_status: getTextValueOrDefault(nameOf<UserInfo>('account_status'), ''),
-            roles: roles,
+            accountStatus: serverAccountStatus,
+            roles: tmpRoles,
             approved_by: getTextValueOrDefault(nameOf<UserInfo>('approved_by'), ''),
             date_approved: getDateWithoutTime(new Date()),
         }

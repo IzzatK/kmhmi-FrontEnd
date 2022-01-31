@@ -161,7 +161,7 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
                         .then(() => {
 
                             let kcProfile = this._kc.profile;
-                            const userId = kcProfile?.id;
+                            const userId = kcProfile?.id || '';
                             // debugger
                             this.updateProfile(kcProfile);
 
@@ -169,26 +169,32 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
                                 this.userService.setCurrentUser(userId);
                             }
 
-                            this.setRegistrationStatus(RegistrationStatus.APPROVED);
 
-                            // // check if user exists
-                            // if (userId != null) {
-                            //     this.userProvider?.getSingle(userId)
-                            //         .then(user => {
-                            //             debugger
-                            //             if (user != null) {
-                            //
-                            //             }
-                            //             else {
-                            //                 this.userService?.createUser({
-                            //
-                            //                 })
-                            //             }
-                            //         })
-                            //         .catch(ex => {
-                            //             debugger; // create the user
-                            //         })
-                            // }
+                            if (userId) {
+                                const fetchUser = () => {
+                                    this.userProvider.getSingle(userId)
+                                        .then(userInfo => {
+                                            if (userInfo != null) {
+                                                this.addOrUpdateRepoItem(userInfo);
+                                                this.setRegistrationStatus(userInfo.account_status);
+
+                                                if (userInfo.account_status != RegistrationStatus.APPROVED) {
+                                                    setTimeout(() => {
+                                                        fetchUser();
+                                                    }, 5000);
+                                                }
+                                            }
+                                            else {
+                                                // user got deleted from the system
+                                                this.setRegistrationStatus(RegistrationStatus.REJECTED);
+                                            }
+                                        })
+                                }
+
+                                fetchUser();
+                            }
+
+
                         })
                         .catch((ex) => {
                             debugger
@@ -264,28 +270,8 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
                 // need to set a temporary id
             }))
             .then(latestUser => {
-
                 if (latestUser != null) {
-                    this.addOrUpdateRepoItem(latestUser);
-                }
-
-                const fetchUser = () => {
-                    if (latestUser != null) {
-                        this.userProvider.getSingle(latestUser.id)
-                            .then(userInfo => {
-                                if (userInfo != null) {
-                                    if (userInfo.account_status === 'active') {
-                                        this.setRegistrationStatus(RegistrationStatus.APPROVED);
-
-                                        if (interval != null) {
-                                            clearInterval(interval);
-                                        }
-                                    }
-                                }
-                            })
-                    }
-
-                    let interval = setInterval(fetchUser, 5000);
+                    this.login();
                 }
             })
             .catch(error => {
