@@ -1,3 +1,27 @@
 .tags-panel {
 
 }
+
+.tags-panel .letter-header {
+    font-size: 4.8rem;
+    line-height: 4.8rem;
+    background: var(--tags-panel-header-background);
+    color: var(--tags-panel-header-color);
+}
+
+.tags-panel .tag {
+    height: 2.55rem;
+    background: transparent;
+}
+
+.tags-panel .tag:hover {
+    background: var(--tag-bg-color);
+    color: var(--tag-color);
+}
+
+.tags-panel .tag-grid {
+    display: grid;
+    grid-template-rows: repeat(auto-fill, 3.5rem);
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 0 3rem;
+}

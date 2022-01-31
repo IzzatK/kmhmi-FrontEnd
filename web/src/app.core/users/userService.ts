@@ -127,7 +127,7 @@ export class UserService extends Plugin implements IUserService {
             userInfo[key] = value;
         })
 
-        userInfo[nameOf<UserInfo>('account_status')] = 'active';
+        userInfo[nameOf<UserInfo>('account_status')] = 'Active';
 
         this.addOrUpdateRepoItem(userInfo);
 
@@ -221,7 +221,7 @@ export class UserService extends Plugin implements IUserService {
         let repoItem = this.getRepoItem<UserInfo>(UserInfo.class, id);
 
         if (repoItem != null) {
-            repoItem.account_status = 'active';
+            repoItem.account_status = 'Active';
             repoItem.role = role;
             repoItem.approved_by = this.getCurrentUserId();
             repoItem.date_approved = getDateWithoutTime(new Date());

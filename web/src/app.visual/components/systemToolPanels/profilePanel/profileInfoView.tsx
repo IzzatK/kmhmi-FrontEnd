@@ -146,7 +146,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
         const {user} = this.props;
         const {currentUser} = this.props;
 
-        if (name === 'account_status' && value === 'active') {
+        if (name === 'account_status' && value === 'Active') {
             if (user) {
                 let nextUser: UserInfoVM = {
                     ...tmpUser,

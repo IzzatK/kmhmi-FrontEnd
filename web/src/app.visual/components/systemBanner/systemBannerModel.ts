@@ -8,6 +8,8 @@ export type SystemBannerProps = {
     onLogout: () => void;
     userName: string;
     classification: Classification;
+    role: string;
+    isLoggedIn: boolean;
 }
 
 export type SystemBannerState = {

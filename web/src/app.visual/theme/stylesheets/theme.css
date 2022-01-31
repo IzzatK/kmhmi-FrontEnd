@@ -124,11 +124,9 @@ body > * {
     --system-tool-header-color: var(--app-whiteSmoke);
     --system-tool-color: var(--app-bleach);
 
-    /* Tooltip */
-    --tooltip-color: var(--app-whiteSmoke);
-    --light-tooltip-color: var(--app-bunker);
-    --tooltip-bg-color: var(--app-vulcan);
-    --light-tooltip-bg-color: var(--app-white);
+    /* Tags Panel */
+    --tags-panel-header-background: var(--app-shuttleGrey);
+    --tags-panel-header-color: var(--app-whiteSmoke);
 
     /* User Management */
     --profile-panel-color: var(--app-whiteSmoke);
@@ -382,6 +380,12 @@ body > * {
     /*--light-toggle-button-armed-bg-color: ;*/
     /*--light-toggle-button-disabled-color: ;*/
     /*--light-toggle-button-disabled-bg-color: ;*/
+
+    /* Tooltip */
+    --tooltip-color: var(--app-whiteSmoke);
+    --light-tooltip-color: var(--app-bunker);
+    --tooltip-bg-color: var(--app-vulcan);
+    --light-tooltip-bg-color: var(--app-white);
 
     /*NOT USED*/
     /* Advanced Search */

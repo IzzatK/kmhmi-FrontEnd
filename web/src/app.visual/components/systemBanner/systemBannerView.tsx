@@ -30,7 +30,7 @@ class SystemBannerView extends Component<SystemBannerProps, SystemBannerState> {
     }
 
     render() {
-        const {className, onLogout, userName, onReturnHome, ...rest} = this.props;
+        const {className, onLogout, userName, role, isLoggedIn, onReturnHome, ...rest} = this.props;
 
         let cn = 'system-banner d-flex p-3';
         if (className) {
@@ -50,9 +50,13 @@ class SystemBannerView extends Component<SystemBannerProps, SystemBannerState> {
                 </div>
                 <div className={"flex-fill flex-basis-0"}/>
                 <div className={"d-flex flex-fill flex-shrink-0 align-self-stretch justify-content-end"}>
-                    <div className={`d-flex align-items-center h-gap-5`}>
-                        <Button>{userName}</Button>
-                        <Button onClick={this._onLogout}>Logout</Button>
+                    <div className={`d-flex align-items-center h-gap-5 mr-3`}>
+                        <div className={"header-1 font-weight-semi-bold title"}>{userName}</div>
+                        <div className={"header-1 font-weight-light text-info"}>{role}</div>
+                        {
+                            isLoggedIn &&
+                            <Button onClick={this._onLogout}>Logout</Button>
+                        }
                     </div>
                 </div>
             </div>

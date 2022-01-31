@@ -166,7 +166,7 @@ class UploadPanelView extends Component<UploadPanelProps, UploadPanelState> {
 
                                               </div>
                                               {
-                                                  (!isUpdating && selected && !deleted && status !== "Processing" && status !== "Uploading") &&
+                                                  (!isUpdating && selected && !deleted && status !== "Processing" && status !== "Uploading" && status !== "failed") &&
                                                   <div className={'d-flex h-gap-3 px-4'}>
                                                       <Button className={'p-2 reject'} onClick={() => this._setPopupVisible(true)}>
                                                           <RemoveSVG className={"small-image-container"}/>

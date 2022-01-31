@@ -3,7 +3,6 @@ import {ProfilePanelProps, ProfilePanelState, UserInfoVM} from "./profilePanelMo
 import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
 import Button from "../../../theme/widgets/button/button";
 import Card from "../../../theme/widgets/card/card";
-import {InfoSVG} from "../../../theme/svgs/infoSVG";
 import ComboBox from "../../../theme/widgets/comboBox/comboBox";
 
 
@@ -21,11 +20,22 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
     }
 
     componentDidMount() {
+        const { user } = this.props;
 
+        this.setTmpUser(user || {});
     }
 
     componentDidUpdate(prevProps: Readonly<ProfilePanelProps>, prevState: Readonly<ProfilePanelState>, snapshot?: any) {
+        const { user } = this.props;
 
+        if (user !== prevProps.user) {
+            const {id} = user || {};
+            const {id: prevId } = prevProps.user || {};
+
+            if (id !== prevId) {
+                this.setTmpUser(user || {});
+            }
+        }
     }
 
     toggleSelected() {
@@ -47,7 +57,7 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
         const {userRequest} = this.props;
         const {currentUser} = this.props;
 
-        if (name === 'account_status' && value === 'active') {
+        if (name === 'account_status' && value === 'Active') {
             if (userRequest) {
                 let nextUser: UserInfoVM = {
                     ...tmpUser,
@@ -107,11 +117,15 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
     render() {
         const { userRequest, roles } = this.props;
 
-        const { selected } = this.state;
+        const { selected, tmpUser } = this.state;
 
         let cn = "user-request-header p-3 d-flex align-items-center justify-content-between";
 
-        let roleId = userRequest?.role;
+        const originalValue = userRequest ? userRequest.role : '';
+        const editValue = tmpUser ? tmpUser["role"] : '';
+
+        let roleId = editValue ? editValue : originalValue;
+
         let roleTitle = '';
         if (roleId) {
             if (roles && roles[roleId]) {
@@ -156,7 +170,6 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
                               <div className={'header-1 font-weight-semi-bold align-self-center'}>{userRequest?.phone_number}</div>
                               <ComboBox
                                   className={"align-self-center"}
-
                                   onSelect={(value: string) => this.onTmpUserChanged("role", value)}
                                   title={roleTitle}
                                   items={roles}

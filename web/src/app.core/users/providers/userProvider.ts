@@ -114,9 +114,11 @@ export class UserProvider extends EntityProvider<UserInfo> implements IUserProvi
 
     getSingle(id: string): Promise<Nullable<UserInfo>> {
         return new Promise((resolve, reject) => {
+            // debugger;
             super.sendGetSingle(id,
                 (responseData, reject) => this.getUserResponseConverter.convert(responseData[0], reject))
                 .then(user => {
+                    // debugger;
                     if (user != null) {
                         this.getRole(id, user)
                             .then(user => {
@@ -207,14 +209,13 @@ export class UserProvider extends EntityProvider<UserInfo> implements IUserProvi
 
     remove(id: string): Promise<UserInfo> {
         return new Promise((resolve, reject) => {
-
             this.getSingle(id)
                 .then(user => {
                     if (user != null) {
                         super.sendDelete(id,
                             (responseData, errorHandler) => this.userStatusResponseConverter.convert(responseData, errorHandler))
                             .then(data => {
-                                if (data.id == user.id) {
+                                if (data.id === user.id) {
                                     resolve(user);
                                 }
                                 else {

@@ -1,15 +1,17 @@
-import {getValueOrDefault, nameOf, Nullable} from "../../../../framework/extras/typeUtils";
+import {getValueOrDefault, Nullable} from "../../../../framework/extras/typeUtils";
 import {UserInfo} from "../../../../app.model";
 import {parseServerReferenceValueOrDefault} from "../../../common/converters/parsingUtils";
 import {Converter} from "../../../common/converters/converter";
 
 export class GetUserResponseConverter extends Converter<any, Nullable<UserInfo>>{
     convert(fromData: any, reject?: any): Nullable<UserInfo> {
-        // console.log("converter " + JSON.stringify(fromData))
-        const item = fromData;
+
+        let item = fromData;
+        if (Array.isArray(fromData)) {
+            item = fromData[0];
+        }
 
         const userInfo: UserInfo = new UserInfo(getValueOrDefault(item, 'user_id', ''));
-
 
         let department = '';
         if (item['dept_id']) {

@@ -10,10 +10,36 @@ import Button from "../../../theme/widgets/button/button";
 import {DeleteSVG} from "../../../theme/svgs/deleteSVG";
 import {AcceptSVG} from "../../../theme/svgs/acceptSVG";
 import Tag from "../../../theme/widgets/tag/tag";
+import Portal from "../../../theme/widgets/portal/portal";
 
 class TagsPanelView extends Component<TagsPanelProps, TagsPanelState> {
     constructor(props: any, context: any) {
         super(props, context);
+    }
+
+    _onClickHandler = () => {
+        // const { selected } = this.state;
+
+        // if (selected) {
+        //     this._close();
+        // }
+        // else {
+        //     this._open();
+        // }
+    };
+
+    _open() {
+        this.setState({
+            ...this.state,
+            selected: true,
+        });
+    }
+
+    _close() {
+        this.setState({
+            ...this.state,
+            selected: false,
+        });
     }
 
     render() {
@@ -62,8 +88,53 @@ class TagsPanelView extends Component<TagsPanelProps, TagsPanelState> {
             })
         }
 
-        let tagDivs = Object.entries(tags).map(([key, tag]) => {
-        })
+        let tagDivs = Object.entries(tags).map(([key, tagVMs]) => {
+
+            let letter = key;
+
+            let tagDivs = Object.entries(tagVMs).map(([key, tag]) => {
+                const {id, title, selected} = tag;
+
+                return (
+                    <div>
+                        <Portal
+                            isOpen={selected}
+                            zIndex={9999}
+                            enterClass={'growVertical'}
+                            exitClass={'shrinkVertical'}
+                            timeout={200}
+                            onShouldClose={this._onClickHandler}
+                            portalContent={
+                                <div className={`position-absolute w-100`}>
+                                    <ul className={"w-100 list-items"}>
+                                        <div>Search by Tag...</div>
+                                        <div>Add Tag to Document</div>
+                                        <div>Edit Tag</div>
+                                        <div>Delete Tag</div>
+                                    </ul>
+
+                                </div>
+
+                            }>
+                            <div
+                                className={"tag font-weight-light text-accent display-3 d-flex rounded-pill cursor-pointer"}>{title}</div>
+                        </Portal>
+                    </div>
+
+                );
+            });
+
+            return (
+                <div className={"d-flex flex-column"}>
+
+                    <div className={"py-3 pr-3 pl-5 font-weight-light letter-header"}>{letter}</div>
+                    <div className={"tag-grid"}>
+                        {tagDivs}
+                    </div>
+                </div>
+
+            );
+        });
 
         return (
             <div className={cn}>

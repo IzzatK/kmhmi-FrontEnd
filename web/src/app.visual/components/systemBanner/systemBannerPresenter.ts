@@ -15,7 +15,9 @@ class SystemBanner extends Presenter {
 
         this.mapStateToProps = (state: any, props: any) => {
             return {
-                userName: this.formatUserName()
+                userName: this.formatUserName(),
+                role: userService.getCurrentUser()?.role,
+                isLoggedIn: userService.getCurrentUser() !== null,
             }
         }
 

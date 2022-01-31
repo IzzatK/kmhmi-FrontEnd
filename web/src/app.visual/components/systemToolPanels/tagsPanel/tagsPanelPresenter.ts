@@ -57,7 +57,20 @@ class TagsPanel extends Presenter {
                 return a.title.localeCompare(b.title);
             })
 
-            return sortedArray;
+            let alphabetArray: Record<string, TagInfoVM[]> = {};
+
+            sortedArray.map((itemVM) => {
+                const { title } = itemVM;
+                let letter = title.charAt(0).toUpperCase();
+
+                if (!alphabetArray[letter]) {
+                    alphabetArray[letter] = [];
+                }
+
+                alphabetArray[letter].push(itemVM);
+            });
+
+            return alphabetArray;
         }
     )
 }

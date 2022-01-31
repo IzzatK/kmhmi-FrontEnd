@@ -1,7 +1,7 @@
 export type TagsPanelProps = {
     className: string;
     nominatedTags?: Record<string, NominatedTagVM>;
-    tags: Record<string, TagInfoVM>
+    tags: Record<string, TagInfoVM[]>;
 }
 
 export type TagsPanelState = {
@@ -16,4 +16,5 @@ export type NominatedTagVM = {
 export type TagInfoVM = {
     id: string;
     title: string;
+    selected?: boolean;
 }
