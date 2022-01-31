@@ -16,7 +16,6 @@ export class GetUserResponseConverter extends Converter<any, Nullable<UserInfo>>
         const userInfo: UserInfo = new UserInfo(getValueOrDefault(item, 'user_id', ''));
 
         let department = '';
-        debugger
         if (item['dept_id']) {
             department = getValueOrDefault(item, 'dept_id', '');
         }

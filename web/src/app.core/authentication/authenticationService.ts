@@ -205,7 +205,6 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
 
             })
             .catch((ex: KeycloakError) => {
-                debugger
                 this.onError('Failed to authenticate with keycloak: \n' + JSON.stringify(ex));
             })
     }

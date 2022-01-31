@@ -75,7 +75,7 @@ export class UpdateUserRequestConverter extends Converter<any, any> {
             phone_number: getTextValueOrDefault(nameOf<UserInfo>('phone_number'), ''),
             dept_id: getTextValueOrDefault(nameOf<UserInfo>('department'), ''),
             preferred_results_view: getTextValueOrDefault(nameOf<UserInfo>('preferred_results_view'), 'Card'),
-            accountStatus: serverAccountStatus,
+            account_status: serverAccountStatus,
             roles: tmpRoles,
             approved_by: getTextValueOrDefault(nameOf<UserInfo>('approved_by'), ''),
             date_approved: getDateWithoutTime(new Date()),
