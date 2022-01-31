@@ -32,8 +32,8 @@ export type AuthenticationProfile = {
 }
 
 export enum RegistrationStatus {
-    NONE,
-    SUBMITTED,
-    APPROVED,
-    REJECTED
+    NONE='NONE',
+    SUBMITTED='SUBMITTED',
+    APPROVED='APPROVED',
+    REJECTED='REJECTED'
 }
