@@ -1,6 +1,6 @@
 import {Presenter} from "../../../framework.visual/extras/presenter";
 import LandingPanelView from "./landingPanelView";
-import {LoginPanelDispatchProps, LoginPanelStateProps, RegistrationStatusVMType, UserInfoVM} from "./landingPanelModel";
+import {LoginPanelDispatchProps, LoginPanelStateProps, UserInfoVM} from "./landingPanelModel";
 import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
 import {createSelector} from "@reduxjs/toolkit";
 import {authenticationService, referenceService} from "../../../app.core/serviceComposition";
@@ -9,6 +9,7 @@ import {RoleVM} from "../systemToolPanels/profilePanel/profilePanelModel";
 import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
 import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
 import {RegistrationStatus} from "../../../app.core.api";
+import {RegistrationStatusType} from "../../model/registrationStatusType";
 
 class LandingPanel extends Presenter {
     constructor() {
@@ -44,23 +45,23 @@ class LandingPanel extends Presenter {
         }
     }
 
-    getRegistrationStatus = createSelector<any, RegistrationStatus, RegistrationStatusVMType>(
+    getRegistrationStatus = createSelector<any, RegistrationStatus, RegistrationStatusType>(
         [() => authenticationService.getRegistrationStatus()],
         (registerStatus) => {
-            let result = RegistrationStatusVMType.NONE;
+            let result = RegistrationStatusType.NONE;
 
             switch (registerStatus) {
                 case RegistrationStatus.NONE:
-                    result = RegistrationStatusVMType.NONE;
+                    result = RegistrationStatusType.NONE;
                     break;
                 case RegistrationStatus.SUBMITTED:
-                    result = RegistrationStatusVMType.SUBMITTED;
+                    result = RegistrationStatusType.SUBMITTED;
                     break;
                 case RegistrationStatus.APPROVED:
-                    result = RegistrationStatusVMType.APPROVED;
+                    result = RegistrationStatusType.APPROVED;
                     break;
                 case RegistrationStatus.REJECTED:
-                    result = RegistrationStatusVMType.REJECTED;
+                    result = RegistrationStatusType.REJECTED;
                     break;
 
             }

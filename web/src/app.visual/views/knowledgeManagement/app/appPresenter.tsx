@@ -16,6 +16,7 @@ import {PermissionsVM, StateProps} from "./appModel";
 import {createSelector} from "@reduxjs/toolkit";
 import {PermissionInfo} from "../../../../app.model/permissionInfo";
 import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../../app.core.api";
+import {RegistrationStatusType} from "../../../model/registrationStatusType";
 
 class App extends Presenter {
     constructor() {
@@ -44,7 +45,8 @@ class App extends Presenter {
             return {
                 currentSystemTool: displayService.getSelectedNodeId('system-tool-panel'),
                 docPreviewTool: displayService.getNodeInfo(DocumentPanelId),
-                permissions: this.getPermissions(state)
+                permissions: this.getPermissions(state),
+                registrationStatus: RegistrationStatusType.APPROVED
             }
         }
     }

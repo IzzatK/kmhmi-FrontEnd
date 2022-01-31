@@ -12,8 +12,7 @@ import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUt
 import {ReferenceType} from "../../../../app.model";
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
 import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
-import {LandingPanelPresenter} from "../../../components/landingPanel/landingPanelPresenter";
-import {SearchWrapper} from "./search_ca/searchWrapper";
+import {RegistrationStatusType} from "../../../model/registrationStatusType";
 
 export class AppView extends Component<Props, State> {
     private interval!: NodeJS.Timer;
@@ -44,11 +43,13 @@ export class AppView extends Component<Props, State> {
     }
 
     fetchData() {
-        statService.fetchStats();
-        tagService.fetchTags();
-        forEachKVP(ReferenceType, (key: any, value: ReferenceType) => {
-            referenceService.fetchReferences(value);
-        });
+        if (this.props.permissions.canSearch) {
+            statService.fetchStats();
+            tagService.fetchTags();
+            forEachKVP(ReferenceType, (key: any, value: ReferenceType) => {
+                referenceService.fetchReferences(value);
+            });
+        }
     }
 
     setLoading(value: boolean) {
@@ -59,7 +60,7 @@ export class AppView extends Component<Props, State> {
     }
 
     render() {
-        const {className, currentSystemTool, docPreviewTool, permissions, admin, ...rest} = this.props;
+        const {className, currentSystemTool, docPreviewTool, permissions, admin, registrationStatus, ...rest} = this.props;
 
         const { loading } = this.state;
 
@@ -70,33 +71,50 @@ export class AppView extends Component<Props, State> {
         return (
             <div id={'analysis'} {...rest} className={cn}>
                 {
-                    permissions.canSearch ?
-                        <SearchPresenter className={"flex-fill flex-basis-0"} style={{zIndex: '1'}}/>
-                        // <SearchWrapper/>
-                        :
-                        <div className={"d-flex flex-fill"}>
-                            {
-                                loading ?
-                                    <LoadingIndicator size={Size.large}/> :
-                                    <div className={'flex-fill d-flex align-items-center justify-content-center'}>
-                                        <div className={'display-1'}>You do not have permissions to perform this request (Search)</div>
-                                    </div>
-
-                            }
-                        </div>
-
+                    registrationStatus == RegistrationStatusType.SUBMITTED &&
+                    <div className={'flex-fill d-flex align-items-center justify-content-center'}>
+                        <div className={'display-1'}>YOu must sit and wait for your approval to the Jedi Order</div>
+                    </div>
                 }
+                {
+                    registrationStatus == RegistrationStatusType.REJECTED &&
+                    <div className={'flex-fill d-flex align-items-center justify-content-center'}>
+                        <div className={'display-1'}>You have been rejected from the Jedi Order</div>
+                    </div>
+                }
+                {
+                    registrationStatus == RegistrationStatusType.APPROVED &&
+                    <React.Fragment>
+                        {
+                            permissions.canSearch ?
+                                <SearchPresenter className={"flex-fill flex-basis-0"} style={{zIndex: '1'}}/>
+                                // <SearchWrapper/>
+                                :
+                                <div className={"d-flex flex-fill"}>
+                                    {
+                                        loading ?
+                                            <LoadingIndicator size={Size.large}/> :
+                                            <div className={'flex-fill d-flex align-items-center justify-content-center'}>
+                                                <div className={'display-1'}>You do not have permissions to perform this request (Search)</div>
+                                            </div>
 
-                <div className={docVisible ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
-                    <DocumentPanelPresenter className={docVisible ? 'flex-fill flex-basis-0' : ''}
-                                            style={{zIndex: '9999'}}/>
-                </div>
-                <div className={currentSystemTool ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
-                    <UploadPanelPresenter/>
-                    <ProfilePanelPresenter/>
-                    <TagsPanelPresenter/>
-                    <StatsPanelPresenter/>
-                </div>
+                                    }
+                                </div>
+
+                        }
+
+                        <div className={docVisible ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
+                            <DocumentPanelPresenter className={docVisible ? 'flex-fill flex-basis-0' : ''}
+                                                    style={{zIndex: '9999'}}/>
+                        </div>
+                        <div className={currentSystemTool ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
+                            <UploadPanelPresenter/>
+                            <ProfilePanelPresenter/>
+                            <TagsPanelPresenter/>
+                            <StatsPanelPresenter/>
+                        </div>
+                    </React.Fragment>
+                }
                 <SystemToolbarPresenter style={{zIndex: '1'}}/>
             </div>
         );

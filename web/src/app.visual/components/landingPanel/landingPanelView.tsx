@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import './landingPanel.css';
-import {LoginPanelProps, LoginPanelState, RegistrationStatusVMType, UserInfoVM} from "./landingPanelModel";
+import {LoginPanelProps, LoginPanelState, UserInfoVM} from "./landingPanelModel";
 import {bindInstanceMethods, nameOf} from "../../../framework/extras/typeUtils";
 import Button from "../../theme/widgets/button/button";
 import TextEdit from "../../theme/widgets/textEdit/textEdit";
+import {RegistrationStatusType} from "../../model/registrationStatusType";
 
 class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
     constructor(props: any, context: any) {
@@ -105,7 +106,7 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
 
 
                         {
-                            (registrationStatus === RegistrationStatusVMType.NONE) &&
+                            (registrationStatus === RegistrationStatusType.NONE) &&
                             <div className={"d-flex flex-column dark w-50 align-items-center justify-content-center"}>
                                 <div className={"d-flex flex-column"}>
                                     <div className={"d-flex flex-column popup v-gap-5"}>
@@ -139,7 +140,7 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
                         }
 
                         {
-                            (registrationStatus === RegistrationStatusVMType.SUBMITTED) &&
+                            (registrationStatus === RegistrationStatusType.SUBMITTED) &&
                             <div className={"popup v-gap-5 w-33"}>
                                 <div className={"text-selected font-weight-semi-bold px-5 pt-5"}>
                                     <div className={"d-flex justify-content-center mt-5 pt-5"}>Your Authorization is Pending...</div>
@@ -170,7 +171,7 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
                         }
 
                         {
-                            (registrationStatus === RegistrationStatusVMType.APPROVED) &&
+                            (registrationStatus === RegistrationStatusType.APPROVED) &&
                             <div className={"d-flex justify-content-center align-items-center"}>
                                 <div className={"d-flex flex-column popup v-gap-5"}>
                                     <div className={"text-selected font-weight-semi-bold px-5 pt-5"}>

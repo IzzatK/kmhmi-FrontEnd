@@ -1,13 +1,8 @@
+import {RegistrationStatusType} from "../../model/registrationStatusType";
+
 export type LoginPanelStateProps = {
     className?: string;
-    registrationStatus: RegistrationStatusVMType;
-}
-
-export enum RegistrationStatusVMType {
-    NONE,
-    SUBMITTED,
-    APPROVED,
-    REJECTED
+    registrationStatus: RegistrationStatusType;
 }
 
 export type LoginPanelDispatchProps = {
