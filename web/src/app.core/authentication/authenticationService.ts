@@ -165,14 +165,14 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
                             // debugger
                             this.updateProfile(kcProfile);
 
-                            if (this.userService && userId != null) {
-                                this.userService.setCurrentUser(userId);
-                            }
+                            if (userId != null) {
+                                if (this.userService != null) {
+                                    this.userService.setCurrentUser(userId);
+                                }
 
-
-                            if (userId) {
+                                const me = this;
                                 const fetchUser = () => {
-                                    this.userProvider.getSingle(userId)
+                                    me.userProvider.getSingle(userId)
                                         .then(userInfo => {
                                             if (userInfo != null) {
                                                 this.addOrUpdateRepoItem(userInfo);
@@ -184,20 +184,19 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
                                                     }, 5000);
                                                 }
                                             }
-                                            else {
-                                                // user got deleted from the system
-                                                this.setRegistrationStatus(RegistrationStatus.REJECTED);
-                                            }
+                                        })
+                                        .catch(error => {
+                                            this.setRegistrationStatus(RegistrationStatus.REJECTED);
                                         })
                                 }
-
                                 fetchUser();
                             }
-
+                            else {
+                                this.error(`Invalid user id for profile: ${JSON.stringify(kcProfile)}`);
+                            }
 
                         })
                         .catch((ex) => {
-                            debugger
                             this.onError('No longer authenticated: Invalid Certificate\n')
                         })
                 } else {
