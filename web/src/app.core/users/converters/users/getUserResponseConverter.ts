@@ -6,6 +6,7 @@ import {RegistrationStatus} from "../../../../app.core.api";
 
 export class GetUserResponseConverter extends Converter<any, Nullable<UserInfo>>{
     convert(fromData: any, reject?: any): Nullable<UserInfo> {
+        if (fromData == null) return null;
 
         let item = fromData;
         if (Array.isArray(fromData)) {
@@ -15,6 +16,7 @@ export class GetUserResponseConverter extends Converter<any, Nullable<UserInfo>>
         const userInfo: UserInfo = new UserInfo(getValueOrDefault(item, 'user_id', ''));
 
         let department = '';
+        debugger
         if (item['dept_id']) {
             department = getValueOrDefault(item, 'dept_id', '');
         }
