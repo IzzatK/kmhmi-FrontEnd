@@ -62,6 +62,7 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
                     lastName: '',
                     email: ''
                 },
+                registrationStatus: RegistrationStatus.NONE
             } as AuthenticationState,
             reducers: {
                 setHasError: (state, action) => {
@@ -167,6 +168,8 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
                             if (this.userService && userId != null) {
                                 this.userService.setCurrentUser(userId);
                             }
+
+                            this.setRegistrationStatus(RegistrationStatus.APPROVED);
 
                             // // check if user exists
                             // if (userId != null) {
