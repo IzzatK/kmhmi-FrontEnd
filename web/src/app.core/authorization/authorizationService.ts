@@ -150,7 +150,7 @@ export class AuthorizationService extends Plugin implements IAuthorizationServic
             }
         }
 
-        return isDev() ? true : result;
+        return result;
     }
 
     setPermissionProvider(provider: IEntityProvider<PermissionInfo>): void {

@@ -268,8 +268,9 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
                 // need to set a temporary id
             }))
             .then(latestUser => {
+                debugger;
                 if (latestUser != null) {
-                    this.login();
+                    // this.login();
                 }
             })
             .catch(error => {
