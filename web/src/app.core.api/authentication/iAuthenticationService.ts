@@ -12,7 +12,7 @@ export interface IAuthenticationService extends IPlugin {
 
     isLoggedIn(): boolean;
     getToken(): string;
-    getUserProfile(): {firstName: string, lastName: string, username: string, id: string, email: string };
+    getUserProfile(): AuthenticationProfile;
     getUserId(): any;
     getRegistrationStatus(): RegistrationStatus;
 

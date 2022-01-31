@@ -46,7 +46,8 @@ class App extends Presenter {
                 currentSystemTool: displayService.getSelectedNodeId('system-tool-panel'),
                 docPreviewTool: displayService.getNodeInfo(DocumentPanelId),
                 permissions: this.getPermissions(state),
-                registrationStatus: RegistrationStatusType.APPROVED
+                registrationStatus: RegistrationStatusType.APPROVED,
+                hasAccess: false
             }
         }
     }

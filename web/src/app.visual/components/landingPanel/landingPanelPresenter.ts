@@ -1,14 +1,10 @@
 import {Presenter} from "../../../framework.visual/extras/presenter";
 import LandingPanelView from "./landingPanelView";
-import {LoginPanelDispatchProps, LoginPanelStateProps, UserInfoVM} from "./landingPanelModel";
+import {LandingPanelStateProps, LoginPanelDispatchProps, UserInfoVM} from "./landingPanelModel";
 import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
 import {createSelector} from "@reduxjs/toolkit";
-import {authenticationService, referenceService} from "../../../app.core/serviceComposition";
-import {ReferenceType, UserInfo} from "../../../app.model";
-import {RoleVM} from "../systemToolPanels/profilePanel/profilePanelModel";
-import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
-import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
-import {RegistrationStatus} from "../../../app.core.api";
+import {authenticationService} from "../../../app.core/serviceComposition";
+import {AuthenticationProfile, RegistrationStatus} from "../../../app.core.api";
 import {RegistrationStatusType} from "../../model/registrationStatusType";
 
 class LandingPanel extends Presenter {
@@ -19,20 +15,16 @@ class LandingPanel extends Presenter {
 
         this.view = LandingPanelView;
 
-        this.mapStateToProps = (state: any, props: any): LoginPanelStateProps => {
+        this.mapStateToProps = (state: any, props: any): LandingPanelStateProps => {
             return {
                 registrationStatus: this.getRegistrationStatus(authenticationService.getAuthenticationState()),
+                user: this.getCurrentUserProfile(authenticationService.getAuthenticationState())
             };
         }
 
         this.mapDispatchToProps = (): LoginPanelDispatchProps => {
             return {
-                onLogin: () =>  {
-                    authenticationService.login();
-                },
-                onRegister: (user: UserInfoVM) => {
-                    this.register(user);
-                }
+
             };
         }
 
@@ -70,30 +62,17 @@ class LandingPanel extends Presenter {
         }
     )
 
-    register(userVM: UserInfoVM) {
-        let user = new UserInfo(makeGuid());
+    getCurrentUserProfile = createSelector<any, AuthenticationProfile, UserInfoVM>(
+        [() => authenticationService.getUserProfile()],
+        (userProfile) => {
+            let userVM: UserInfoVM = {
+                id: userProfile.id,
+                email: userProfile.email,
+                first_name: userProfile.firstName,
+                last_name: userProfile.lastName
+            };
 
-        user.dod_id = userVM.dod_id || '';
-        user.first_name = userVM.first_name || '';
-        user.last_name = userVM.last_name || '';
-        user.email_address = userVM.email || '';
-        user.phone_number = userVM.phone || '';
-
-        authenticationService.register(user);
-    }
-
-    getRolesVMs = createSelector(
-        [() => referenceService.getAllReferences(ReferenceType.ROLE)],
-        (roles) => {
-            let itemVMs: Record<string, RoleVM> = {};
-
-            forEachKVP(roles, (itemKey: string, itemValue: RoleVM) => {
-                itemVMs[itemKey] = {
-                    ...itemValue
-                };
-            })
-
-            return itemVMs;
+            return userVM;
         }
     )
 }

@@ -13,6 +13,7 @@ import {ReferenceType} from "../../../../app.model";
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
 import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
 import {RegistrationStatusType} from "../../../model/registrationStatusType";
+import { LandingPanelPresenter } from "../../../components/landingPanel/landingPanelPresenter";
 
 export class AppView extends Component<Props, State> {
     private interval!: NodeJS.Timer;
@@ -60,9 +61,7 @@ export class AppView extends Component<Props, State> {
     }
 
     render() {
-        const {className, currentSystemTool, docPreviewTool, permissions, admin, registrationStatus, ...rest} = this.props;
-
-        const { loading } = this.state;
+        const {className, currentSystemTool, docPreviewTool, permissions, admin, registrationStatus, hasAccess, ...rest} = this.props;
 
         const {visible: docVisible} = docPreviewTool || {};
 
@@ -71,34 +70,19 @@ export class AppView extends Component<Props, State> {
         return (
             <div id={'analysis'} {...rest} className={cn}>
                 {
-                    registrationStatus == RegistrationStatusType.SUBMITTED &&
-                    <div className={'flex-fill d-flex align-items-center justify-content-center'}>
-                        <div className={'display-1'}>YOu must sit and wait for your approval to the Jedi Order</div>
-                    </div>
+                    !hasAccess &&
+                    <LandingPanelPresenter/>
                 }
                 {
-                    registrationStatus == RegistrationStatusType.REJECTED &&
-                    <div className={'flex-fill d-flex align-items-center justify-content-center'}>
-                        <div className={'display-1'}>You have been rejected from the Jedi Order</div>
-                    </div>
-                }
-                {
-                    registrationStatus == RegistrationStatusType.APPROVED &&
+                    hasAccess &&
                     <React.Fragment>
                         {
                             permissions.canSearch ?
                                 <SearchPresenter className={"flex-fill flex-basis-0"} style={{zIndex: '1'}}/>
                                 // <SearchWrapper/>
                                 :
-                                <div className={"d-flex flex-fill"}>
-                                    {
-                                        loading ?
-                                            <LoadingIndicator size={Size.large}/> :
-                                            <div className={'flex-fill d-flex align-items-center justify-content-center'}>
-                                                <div className={'display-1'}>You do not have permissions to perform this request (Search)</div>
-                                            </div>
-
-                                    }
+                                <div className={"d-flex flex-fil align-items-center justify-content-center"}>
+                                   <div className={'display-1 text-secondary'}>You do not have search permissions</div>
                                 </div>
 
                         }
@@ -113,9 +97,9 @@ export class AppView extends Component<Props, State> {
                             <TagsPanelPresenter/>
                             <StatsPanelPresenter/>
                         </div>
+                        <SystemToolbarPresenter style={{zIndex: '1'}}/>
                     </React.Fragment>
                 }
-                <SystemToolbarPresenter style={{zIndex: '1'}}/>
             </div>
         );
     }

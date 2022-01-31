@@ -1,0 +1,84 @@
+.login-panel {
+    /*background: var(--login-panel-background);*/
+    color: var(--login-panel-color);
+}
+
+.login-panel .info {
+    color: var(--login-panel-info-color);
+}
+
+.login-panel .light-info {
+    color: var(--login-panel-light-info-color);
+}
+
+.login-panel .text-advisory {
+    font-size: 4rem;
+    line-height: 4rem;
+}
+
+.login-panel .text-wrap {
+    max-width: 54rem;
+}
+
+.login-panel .button {
+    min-width: 19rem;
+    min-height: 4.6rem;
+    font-size: 2.2rem;
+    margin-top: 10rem !important;
+}
+
+.login-panel .button.light {
+    min-width: 11.8rem;
+    min-height: 3.8rem;
+    font-size: 1.8rem;
+    margin-top: 0 !important;
+}
+
+.login-panel .popup {
+    background: var(--login-panel-popup-background);
+    min-width: 75.5rem;
+    min-height: 41rem;
+}
+
+.login-panel .light-popup {
+    background: var(--logim-panel-light-popup-background);
+    min-width: 56rem;
+    min-height: 41rem;
+}
+
+.login-panel .dark {
+    background: var(--login-panel-dark-bg-color);
+}
+
+.login-panel .text-selected {
+    font-size: 4rem;
+    line-height: 4rem;
+}
+
+.login-panel .combo-box {
+    min-width: 13.8rem;
+}
+
+.login-panel .login-grid {
+    display: inline-grid;
+    grid-template-rows:    repeat(4, 3.5rem);
+    grid-template-columns: 10rem 33rem;
+    grid-gap: 0 3rem;
+    grid-auto-flow: column;
+}
+
+.login-panel .text-edit {
+    max-width: 18.8rem;
+}
+
+.login-panel .register-grid {
+    display: inline-grid;
+    grid-template-rows:    repeat(5, 3.5rem);
+    grid-template-columns: 10rem 33rem;
+    grid-gap: 0 3rem;
+    grid-auto-flow: column;
+}
+
+.login-panel .admin {
+    color: var(--login-panel-accent-color);
+}

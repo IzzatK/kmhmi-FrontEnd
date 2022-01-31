@@ -1,23 +1,23 @@
 import {RegistrationStatusType} from "../../model/registrationStatusType";
 
-export type LoginPanelStateProps = {
+export type LandingPanelStateProps = {
     className?: string;
     registrationStatus: RegistrationStatusType;
+    user: UserInfoVM;
 }
 
 export type LoginPanelDispatchProps = {
-    onLogin: () => void;
-    onRegister: (user: UserInfoVM) => void;
+
 }
 
-export type LoginPanelProps = LoginPanelStateProps & LoginPanelDispatchProps;
+export type LoginPanelProps = LandingPanelStateProps & LoginPanelDispatchProps;
 
 export type LoginPanelState = {
-    tmpUser: UserInfoVM;
+
 }
 
 export type UserInfoVM = {
-    dod_id: string;
+    id: string;
     first_name: string;
     last_name: string;
     email: string;

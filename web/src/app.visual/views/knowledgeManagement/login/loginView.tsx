@@ -1,14 +1,14 @@
 import React, {Component} from "react";
-import {LandingProps, LandingState} from "./landingModel";
-import {LandingPanelPresenter} from "../../../components/landingPanel/landingPanelPresenter";
+import {LoginProps, LoginState} from "./loginModel";
 import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
+import { LoginPanelPresenter } from "../../../components/loginPanel/loginPanelPresenter";
 
-export class LandingView extends Component<LandingProps, LandingState> {
+export class LoginView extends Component<LoginProps, LoginState> {
 
     timeout!: NodeJS.Timeout;
 
-    constructor(props: Readonly<LandingProps> | LandingProps) {
+    constructor(props: Readonly<LoginProps> | LoginProps) {
         super(props);
 
         this.state = {
@@ -17,7 +17,6 @@ export class LandingView extends Component<LandingProps, LandingState> {
     }
 
     componentDidMount() {
-
         this.timeout = setTimeout(() => {
             this.setLoading(false);
         }, 1500);
@@ -43,12 +42,11 @@ export class LandingView extends Component<LandingProps, LandingState> {
         let cn = `${className ? className : ''} d-flex flex h-100`;
 
         return (
-            <div id={'landing'} {...rest} className={cn}>
+            <div id={'login'} {...rest} className={cn}>
                 {
                     loading ?
                         <LoadingIndicator size={Size.large}/> :
-                        <LandingPanelPresenter/>
-
+                        <LoginPanelPresenter/>
                 }
             </div>
         );

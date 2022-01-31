@@ -1,19 +1,19 @@
 import React from 'react';
-import './landing.css';
+import './login.css';
 
 import {Presenter} from "../../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../../framework/wrappers/componentWrapper";
-import {LandingDispatchProps, LandingStateProps} from "./landingModel";
-import {LandingView} from "./landingView";
+import {LoginDispatchProps, LoginStateProps} from "./loginModel";
+import {LoginView} from "./loginView";
 
 
-class Landing extends Presenter {
+class Login extends Presenter {
     constructor() {
         super();
 
-        this.id ='view/landing';
+        this.id ='view/login';
 
-        this.view = LandingView;
+        this.view = LoginView;
 
         this.displayOptions = {
             containerId: 'view/knowledge-management',
@@ -24,13 +24,13 @@ class Landing extends Presenter {
             timeout: 0
         };
 
-        this.mapDispatchToProps = (dispatch: any): LandingDispatchProps => {
+        this.mapDispatchToProps = (dispatch: any): LoginDispatchProps => {
             return {
 
             }
         }
 
-        this.mapStateToProps = (state: any, props: any): LandingStateProps => {
+        this.mapStateToProps = (state: any, props: any): LoginStateProps => {
             return {
 
             }
@@ -39,7 +39,7 @@ class Landing extends Presenter {
 }
 
 export const {
-    connectedPresenter: LandingPresenter,
-    componentId: LandingId
-} = createComponentWrapper(Landing);
+    connectedPresenter: LoginPresenter,
+    componentId: LoginId
+} = createComponentWrapper(Login);
 

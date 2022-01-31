@@ -8,6 +8,7 @@ export type StateProps = {
     permissions: PermissionsVM;
     admin?: Nullable<UserInfoVM>;
     registrationStatus: RegistrationStatusType;
+    hasAccess: boolean;
 }
 export type DispatchProps = {};
 

@@ -1,6 +1,6 @@
 export enum RegistrationStatusType {
-    NONE,
-    SUBMITTED,
-    APPROVED,
-    REJECTED
+    NONE='NONE',
+    SUBMITTED='SUBMITTED',
+    APPROVED='APPROVED',
+    REJECTED='REJECTED'
 }
