@@ -77,7 +77,7 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         if (this.props.permissions.canModify) {
             this.interval = setInterval(() => {
                 userService.fetchUsers();
-            }, 60000); // refresh every 60 seconds
+            }, 30000); // refresh every 60 seconds
             userService.fetchUsers();
         }
     }

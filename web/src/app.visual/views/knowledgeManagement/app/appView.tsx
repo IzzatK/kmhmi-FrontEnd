@@ -75,19 +75,13 @@ export class AppView extends Component<Props, State> {
                     hasAccess &&
                     <React.Fragment>
                         {
-                            <div className={'flex-fill d-flex '}>
-                                {
-                                    permissions.canSearch ?
-                                    <SearchPresenter className={"flex-fill flex-basis-0"} style={{zIndex: '1'}}/>
-                                    :
-                                    <div className={"d-flex flex-fill align-items-center justify-content-center"}>
-                                        <div className={'display-1 text-secondary'}>You do not have search permissions
-                                        </div>
+                            permissions.canSearch ?
+                                <SearchPresenter className={"d-flex flex-fill flex-basis-0"} style={{zIndex: '1'}}/>
+                                :
+                                <div className={"d-flex flex-fill align-items-center justify-content-center"}>
+                                    <div className={'display-1 text-secondary'}>You do not have search permissions
                                     </div>
-                                }
-                            </div>
-
-
+                                </div>
                         }
 
                         <div className={isDocumentVisible ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
