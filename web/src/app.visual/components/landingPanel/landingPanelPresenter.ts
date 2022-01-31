@@ -1,6 +1,6 @@
 import {Presenter} from "../../../framework.visual/extras/presenter";
 import LandingPanelView from "./landingPanelView";
-import {LandingPanelStateProps, LoginPanelDispatchProps, UserInfoVM} from "./landingPanelModel";
+import {LandingPanelStateProps, LandingPanelDispatchProps, UserInfoVM} from "./landingPanelModel";
 import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
 import {createSelector} from "@reduxjs/toolkit";
 import {authenticationService} from "../../../app.core/serviceComposition";
@@ -22,7 +22,7 @@ class LandingPanel extends Presenter {
             };
         }
 
-        this.mapDispatchToProps = (): LoginPanelDispatchProps => {
+        this.mapDispatchToProps = (): LandingPanelDispatchProps => {
             return {
 
             };

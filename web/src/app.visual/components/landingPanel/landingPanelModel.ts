@@ -6,14 +6,14 @@ export type LandingPanelStateProps = {
     user: UserInfoVM;
 }
 
-export type LoginPanelDispatchProps = {
+export type LandingPanelDispatchProps = {
 
 }
 
-export type LoginPanelProps = LandingPanelStateProps & LoginPanelDispatchProps;
+export type LandingPanelProps = LandingPanelStateProps & LandingPanelDispatchProps;
 
-export type LoginPanelState = {
-
+export type LandingPanelState = {
+    loading: boolean;
 }
 
 export type UserInfoVM = {

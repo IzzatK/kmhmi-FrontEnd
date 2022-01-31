@@ -1,27 +1,53 @@
 import React, {Component} from "react";
 import './landingPanel.css';
-import {LoginPanelProps, LoginPanelState} from "./landingPanelModel";
+import {LandingPanelProps, LandingPanelState} from "./landingPanelModel";
 import {bindInstanceMethods} from "../../../framework/extras/typeUtils";
 import {RegistrationStatusType} from "../../model/registrationStatusType";
 
-class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
+class LandingPanelView extends Component<LandingPanelProps, LandingPanelState> {
+    private timeout!: NodeJS.Timeout ;
+
     constructor(props: any, context: any) {
         super(props, context);
 
         bindInstanceMethods(this);
+
+        this.state = {
+            loading: false,
+        }
     }
 
     componentDidMount() {
 
+        const {registrationStatus } = this.props;
+
+        if (registrationStatus == RegistrationStatusType.NONE) {
+            this.setLoading(true);
+
+            this.timeout = setTimeout(() => {
+                this.setLoading(false);
+            }, 1000);
+        }
     }
 
-    componentDidUpdate(prevProps: Readonly<LoginPanelProps>, prevState: Readonly<LoginPanelState>, snapshot?: any) {
 
+    componentWillUnmount() {
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+        }
     }
 
+    setLoading(value: boolean) {
+        this.setState({
+            ...this.state,
+            loading: value
+        })
+    }
 
     render() {
         const { className, user, registrationStatus } = this.props;
+
+        const { loading } = this.state;
 
         let cn = 'landing-panel d-flex flex-fill justify-content-center align-items-center';
         if (className) {
@@ -63,7 +89,7 @@ class LandingPanelView extends Component<LoginPanelProps, LoginPanelState> {
                             </div>
                         }
                         {
-                            registrationStatus == RegistrationStatusType.NONE &&
+                            (registrationStatus == RegistrationStatusType.NONE && !loading) &&
                             <div className={'d-flex align-items-center justify-content-center'}>
                                 <div className={'display-1 text-secondary'}>Unable to retrieve account status</div>
                             </div>

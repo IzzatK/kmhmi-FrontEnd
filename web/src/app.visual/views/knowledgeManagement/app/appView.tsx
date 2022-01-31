@@ -60,6 +60,8 @@ export class AppView extends Component<Props, State> {
     render() {
         const {className, currentSystemTool, isDocumentVisible, permissions, hasAccess, ...rest} = this.props;
 
+        const { loading } = this.state;
+
 
         let cn = `${className ? className : ''} d-flex h-100`;
 
