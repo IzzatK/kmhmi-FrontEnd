@@ -71,8 +71,8 @@ export class AppView extends Component<Props, State> {
             <div id={'analysis'} {...rest} className={cn}>
                 {
                     permissions.canSearch ?
-                        // <SearchPresenter className={"flex-fill flex-basis-0"} style={{zIndex: '1'}}/>
-                        <SearchWrapper/>
+                        <SearchPresenter className={"flex-fill flex-basis-0"} style={{zIndex: '1'}}/>
+                        // <SearchWrapper/>
                         :
                         <div className={"d-flex flex-fill"}>
                             {
