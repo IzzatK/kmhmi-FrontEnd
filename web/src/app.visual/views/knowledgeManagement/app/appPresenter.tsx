@@ -4,19 +4,18 @@ import {DocumentPanelId} from "../../../components/documentPanel/documentPanelPr
 import {Presenter} from "../../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../../framework/wrappers/componentWrapper";
 import {
+    authenticationService,
     authorizationService,
     displayService,
-    referenceService,
-    statService,
-    tagService,
     userService
 } from "../../../../app.core/serviceComposition";
 import {AppView} from "./appView";
 import {PermissionsVM, StateProps} from "./appModel";
 import {createSelector} from "@reduxjs/toolkit";
 import {PermissionInfo} from "../../../../app.model/permissionInfo";
-import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../../app.core.api";
-import {RegistrationStatusType} from "../../../model/registrationStatusType";
+import {PERMISSION_ENTITY, PERMISSION_OPERATOR, RegistrationStatus} from "../../../../app.core.api";
+import {NodeInfo} from "../../../../framework/services/displayService/displayService";
+import {node} from "prop-types";
 
 class App extends Presenter {
     constructor() {
@@ -44,13 +43,25 @@ class App extends Presenter {
         this.mapStateToProps = (state: any, props: any): StateProps => {
             return {
                 currentSystemTool: displayService.getSelectedNodeId('system-tool-panel'),
-                docPreviewTool: displayService.getNodeInfo(DocumentPanelId),
+                isDocumentVisible: this.isDocumentVisible(state),
                 permissions: this.getPermissions(state),
-                registrationStatus: RegistrationStatusType.APPROVED,
-                hasAccess: false
+                hasAccess: this.hasAppAccess(authenticationService.getAuthenticationState())
             }
         }
     }
+
+    isDocumentVisible = createSelector<any, NodeInfo, boolean>(
+        [() => displayService.getNodeInfo(DocumentPanelId)],
+        (nodeInfo) => {
+            let result = false;
+
+            if (nodeInfo && nodeInfo.visible) {
+                result = true;
+            }
+
+            return result;
+        }
+    )
 
     getPermissions = createSelector<any, string, Record<string, PermissionInfo>, PermissionsVM>(
         [() => userService.getCurrentUserId(), authorizationService.getPermissions],
@@ -58,6 +69,19 @@ class App extends Presenter {
             let result: PermissionsVM = {
                 canSearch: authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.GET, currentUserId, currentUserId)
             }
+            return result;
+        }
+    )
+
+    hasAppAccess = createSelector<any, RegistrationStatus, boolean>(
+        [() => authenticationService.getRegistrationStatus()],
+        (registerStatus) => {
+            let result = false;
+
+            if (registerStatus === RegistrationStatus.APPROVED) {
+                result = true;
+            }
+
             return result;
         }
     )

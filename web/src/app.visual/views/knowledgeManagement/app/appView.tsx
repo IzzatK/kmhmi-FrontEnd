@@ -10,9 +10,6 @@ import {SystemToolbarPresenter} from "../../../components/systemToolbar/systemTo
 import {referenceService, statService, tagService} from "../../../../app.core/serviceComposition";
 import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {ReferenceType} from "../../../../app.model";
-import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
-import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
-import {RegistrationStatusType} from "../../../model/registrationStatusType";
 import { LandingPanelPresenter } from "../../../components/landingPanel/landingPanelPresenter";
 
 export class AppView extends Component<Props, State> {
@@ -61,9 +58,8 @@ export class AppView extends Component<Props, State> {
     }
 
     render() {
-        const {className, currentSystemTool, docPreviewTool, permissions, admin, registrationStatus, hasAccess, ...rest} = this.props;
+        const {className, currentSystemTool, isDocumentVisible, permissions, hasAccess, ...rest} = this.props;
 
-        const {visible: docVisible} = docPreviewTool || {};
 
         let cn = `${className ? className : ''} d-flex h-100`;
 
@@ -87,8 +83,8 @@ export class AppView extends Component<Props, State> {
 
                         }
 
-                        <div className={docVisible ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
-                            <DocumentPanelPresenter className={docVisible ? 'flex-fill flex-basis-0' : ''}
+                        <div className={isDocumentVisible ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
+                            <DocumentPanelPresenter className={isDocumentVisible ? 'flex-fill flex-basis-0' : ''}
                                                     style={{zIndex: '9999'}}/>
                         </div>
                         <div className={currentSystemTool ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>

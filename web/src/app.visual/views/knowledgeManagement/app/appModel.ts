@@ -1,13 +1,10 @@
 import {Nullable} from "../../../../framework/extras/typeUtils";
-import {RegistrationStatusType} from "../../../model/registrationStatusType";
 
 export type StateProps = {
     className?: string;
     currentSystemTool: any;
-    docPreviewTool: any;
+    isDocumentVisible: any;
     permissions: PermissionsVM;
-    admin?: Nullable<UserInfoVM>;
-    registrationStatus: RegistrationStatusType;
     hasAccess: boolean;
 }
 export type DispatchProps = {};
