@@ -4,6 +4,8 @@ import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
 import Button from "../../../theme/widgets/button/button";
 import Card from "../../../theme/widgets/card/card";
 import ComboBox from "../../../theme/widgets/comboBox/comboBox";
+import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
+import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
 
 
 export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
@@ -16,6 +18,7 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
             tmpUser: {},
             editProperties: [],
             selected: false,
+            isUpdating: false,
         }
     }
 
@@ -97,7 +100,10 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
         const { onAcceptUserRequest, userRequest } = this.props;
         const { tmpUser } = this.state;
 
-        // this.onTmpUserChanged("account_status", "Active");
+        this.setState({
+            ...this.state,
+            isUpdating: true,
+        })
 
         if (userRequest) {
             const { id } = userRequest;
@@ -107,6 +113,11 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
 
     onDecline() {
         const { onDeclineUserRequest, userRequest } = this.props;
+
+        this.setState({
+            ...this.state,
+            isUpdating: true,
+        })
 
         if (userRequest) {
             const { id } = userRequest;
@@ -119,7 +130,9 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
 
         const { selected, tmpUser } = this.state;
 
-        let cn = "user-request-header p-3 d-flex align-items-center justify-content-between";
+        let isUpdating = userRequest?.isUpdating;
+
+        let cn = "user-request-header p-3 d-flex align-items-center justify-content-between position-relative";
 
         const originalValue = userRequest ? userRequest.role : '';
         const editValue = tmpUser ? tmpUser["role"] : '';
@@ -141,12 +154,14 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
         return (
             <Card className={'user-request flex-column justify-content-start header-4 align-items-stretch'}
                   header={
-                      <div
-                          onClick={() => this.toggleSelected()}
-                          className={cn}>
+                      <div onClick={() => this.toggleSelected()} className={cn}>
                           <div className={'d-flex h-gap-4 px-5 py-4'}>
                               <div className={'header-1 font-weight-semi-bold'}>Request: {userRequest?.first_name + (userRequest?.last_name ? " " + userRequest?.last_name : "")}</div>
                           </div>
+                          {
+                              isUpdating &&
+                              <LoadingIndicator size={Size.small} className={"loading position-absolute"}/>
+                          }
                       </div>
                   }
                   body={
@@ -173,6 +188,7 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
                                   onSelect={(value: string) => this.onTmpUserChanged("role", value)}
                                   title={roleTitle}
                                   items={roles}
+                                  disable={isUpdating}
                               />
                           </div>
 
@@ -184,8 +200,21 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
                               {/*    </div>*/}
                               {/*</div>*/}
                               <div className={'d-flex flex-fill h-gap-2 justify-content-end'}>
-                                  <Button text={"Decline"} highlight={true} orientation={"horizontal"} onClick={() => this.onDecline()} selected={false} disabled={false} className={"px-5"}/>
-                                  <Button text={"Accept"} orientation={"horizontal"} onClick={() => this.onAccept()} selected={false} disabled={false} className={"px-5"}/>
+                                  <Button
+                                      text={"Decline"}
+                                      highlight={true}
+                                      orientation={"horizontal"}
+                                      onClick={() => this.onDecline()}
+                                      selected={false}
+                                      disabled={isUpdating}
+                                      className={"px-5"}/>
+                                  <Button
+                                      text={"Accept"}
+                                      orientation={"horizontal"}
+                                      onClick={() => this.onAccept()}
+                                      selected={false}
+                                      disabled={isUpdating}
+                                      className={"px-5"}/>
                               </div>
 
                           </div>

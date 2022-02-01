@@ -9,6 +9,8 @@ import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
 import {ProfilePanelProps, ProfilePanelState, UserInfoVM} from "./profilePanelModel";
 import Popup from "../../../theme/widgets/popup/popup";
 import {FileSVG} from "../../../theme/svgs/fileSVG";
+import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
+import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
 
 class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
 
@@ -241,7 +243,9 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
 
         const { isDirty, editProperties, tmpUser, selected, showPopup } = this.state;
 
-        let cn = "profile-info-header p-3 d-flex align-items-center justify-content-between";
+        let isUpdating = user?.isUpdating;
+
+        let cn = "profile-info-header p-3 d-flex align-items-center justify-content-between position-relative";
 
         if (isDirty) {
             cn += ` dirty`;
@@ -274,7 +278,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                     renderDiv = (
                         <ComboBox
                             className={cn}
-                            disable={!isDirty}
+                            disable={!isDirty || isUpdating}
                             onSelect={(value: string) => this.onTmpUserChanged(id, value)}
                             title={departmentTitle}
                             items={departments}
@@ -294,7 +298,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                     renderDiv = (
                         <ComboBox
                             className={cn}
-                            disable={!isDirty}
+                            disable={!isDirty || isUpdating}
                             onSelect={(value: string) => this.onTmpUserChanged(id, value)}
                             title={roleTitle}
                             items={roles}
@@ -313,7 +317,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                     renderDiv = (
                         <ComboBox
                             className={cn}
-                            disable={!isDirty}
+                            disable={!isDirty || isUpdating}
                             onSelect={(value: string) => this.onTmpUserChanged(id, value)}
                             title={accountStatusTitle}
                             items={accountStatuses}
@@ -340,7 +344,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                     renderDiv =(
                         <TextEdit
                             className={cn}
-                            disable={!readonly ? !isDirty : true}
+                            disable={!readonly ? !isDirty || isUpdating : true}
                             placeholder={placeholder}
                             name={id}
                             dirty={!!editValue}
@@ -358,7 +362,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                     renderDiv = (
                         <TextEdit
                             className={cn}
-                            disable={!readonly ? !isDirty : true}
+                            disable={!readonly ? !isDirty || isUpdating : true}
                             placeholder={placeholder}
                             name={id}
                             dirty={!!editValue}
@@ -381,7 +385,10 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                           <div className={'d-flex h-gap-4 px-5 py-4'}>
                               <div className={'header-1 font-weight-semi-bold'}>{user?.first_name + ' ' + user?.last_name}</div>
                           </div>
-
+                          {
+                              isUpdating &&
+                              <LoadingIndicator size={Size.small} className={"loading position-absolute"}/>
+                          }
                           {/*<div className={"header-4"}>{Company}</div>*/}
                       </div>
                   }
@@ -392,7 +399,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                               proceedText={"Remove"}
                               cancelText={"Cancel"}
                               graphic={FileSVG}
-                              padding={"65%"}
+                              padding={"40%"}
                               isVisible={showPopup}
                               onCancel={() => this._setPopupVisible(false)}
                               onProceed={() => this.removeUser()}/>
@@ -411,7 +418,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                           {
                               !isDirty &&
                               <div className={"d-flex justify-content-end h-gap-2"}>
-                                  <Button text={"Edit"} orientation={"horizontal"} onClick={() => this.toggleEdit()} selected={false} disabled={false} className={"px-5"}/>
+                                  <Button text={"Edit"} orientation={"horizontal"} onClick={() => this.toggleEdit()} selected={false} disabled={isUpdating} className={"px-5"}/>
                               </div>
                           }
                           {
@@ -419,10 +426,10 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                               <div className={"d-flex h-gap-2 justify-content-end"}>
                                   {
                                       permissions.canDelete &&
-                                      <Button text={"Remove User"} orientation={"horizontal"} highlight={true} onClick={() => this._setPopupVisible(true)} selected={false} disabled={false} className={"px-5"}/>
+                                      <Button text={"Remove User"} orientation={"horizontal"} highlight={true} onClick={() => this._setPopupVisible(true)} selected={false} disabled={isUpdating} className={"px-5"}/>
                                   }
-                                  <Button text={"Cancel"} orientation={"horizontal"} highlight={true} onClick={() => this.cancelEdit()} selected={false} disabled={false} className={"px-5"}/>
-                                  <Button text={"Save"} orientation={"horizontal"} onClick={() => this.updateUser()} selected={false} disabled={false} className={"px-5"}/>
+                                  <Button text={"Cancel"} orientation={"horizontal"} highlight={true} onClick={() => this.cancelEdit()} selected={false} disabled={isUpdating} className={"px-5"}/>
+                                  <Button text={"Save"} orientation={"horizontal"} onClick={() => this.updateUser()} selected={false} disabled={isUpdating} className={"px-5"}/>
                               </div>
                           }
                       </div>

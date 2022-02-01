@@ -88,7 +88,7 @@ class ProfilePanel extends Presenter {
             forEach(items, (item: UserInfo) => {
 
                 const { id, dod_id, first_name, last_name, email_address, phone_number, department,
-                    account_status, role, approved_by, date_approved} = item;
+                    account_status, role, approved_by, date_approved, isUpdating} = item;
 
                 let itemVM:UserInfoVM = {
                     id,
@@ -102,6 +102,7 @@ class ProfilePanel extends Presenter {
                     role,
                     approved_by: approved_by ? approved_by : "",
                     date_approved: date_approved ? date_approved : "",
+                    isUpdating,
                 };
 
                 if (currentUserId) {
@@ -120,7 +121,7 @@ class ProfilePanel extends Presenter {
         [() => userService.getCurrentUser()],
         (currentUser) => {
             const { id="", dod_id='', first_name="", last_name="", email_address="", phone_number="", department="",
-                account_status="", role="", approved_by="", date_approved=""} = currentUser || {};
+                account_status="", role="", approved_by="", date_approved="", isUpdating} = currentUser || {};
 
             let itemVM: UserInfoVM = {
                 id,
@@ -134,6 +135,7 @@ class ProfilePanel extends Presenter {
                 role,
                 approved_by: approved_by ? approved_by : "",
                 date_approved: date_approved ? date_approved : "",
+                isUpdating,
             };
 
             return itemVM;
@@ -209,7 +211,9 @@ class ProfilePanel extends Presenter {
             forEach(items, (item: UserInfo) => {
 
                 const { id, dod_id, first_name, last_name, email_address, phone_number, department,
-                    account_status, role, approved_by, date_approved} = item;
+                    account_status, role, approved_by, date_approved, isUpdating} = item;
+
+                console.log("isUpdating " + isUpdating);
 
                 let itemVM:UserInfoVM = {
                     id,
@@ -223,6 +227,7 @@ class ProfilePanel extends Presenter {
                     role,
                     approved_by: approved_by ? approved_by : "",
                     date_approved: date_approved ? date_approved : "",
+                    isUpdating,
                 };
 
                 itemVMs[id] = itemVM;

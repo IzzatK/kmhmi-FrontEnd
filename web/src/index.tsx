@@ -46,9 +46,9 @@ if (document.location.href.includes('state=')) {
         authenticationService.login();
     }
 }
-// else if (isDev()) {
-//     authenticationService.login();
-// }
+else if (isDev()) {
+    // authenticationService.login();
+}
 
 // window.onload = function() {
 //     const bodyList = document.querySelector("body")

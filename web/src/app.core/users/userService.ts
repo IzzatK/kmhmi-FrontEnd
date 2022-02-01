@@ -91,8 +91,6 @@ export class UserService extends Plugin implements IUserService {
         this.authenticationService = authenticationService;
     }
 
-
-
     setReferenceService(referenceService: IReferenceService) {
         this.referenceService = referenceService;
     }
@@ -169,7 +167,10 @@ export class UserService extends Plugin implements IUserService {
     updateUser(modifiedUser: UserInfo) {
         const { id } = modifiedUser;
 
-        this.userProvider?.update(id, {id, modifiedUser})
+        this.userProvider?.update(id, {id, modifiedUser},
+            (updatedUser) => {
+                this.addOrUpdateRepoItem(updatedUser);
+             })
             .then(user => {
                 if (user != null) {
                     this.addOrUpdateRepoItem(user);
@@ -178,7 +179,10 @@ export class UserService extends Plugin implements IUserService {
     }
 
     removeUser(id: string) {
-        this.userProvider?.remove(id)
+        this.userProvider?.remove(id,
+            (updatedUser) => {
+                this.addOrUpdateRepoItem(updatedUser);
+            })
             .then(user => {
                 if (user != null) {
                     this.removeRepoItem(user);

@@ -170,11 +170,17 @@ export class UserProvider extends EntityProvider<UserInfo> implements IUserProvi
         )
     }
 
-    update(id: string, uiRequestData: { id: string, modifiedUser: Record<string, any> }): Promise<Nullable<UserInfo>> {
+    update(id: string, uiRequestData: { id: string, modifiedUser: Record<string, any> }, onUpdated?: (user: UserInfo) => void): Promise<Nullable<UserInfo>> {
         return new Promise((resolve, reject) => {
                 this.getSingle(id)
                     .then(latestUser => {
                         if (latestUser != null) {
+                            latestUser.isUpdating = true;
+
+                            if (onUpdated) {
+                                onUpdated(latestUser);
+                            }
+
                             let converterData = {
                                 id: uiRequestData.id,
                                 modifiedUser: uiRequestData.modifiedUser,
@@ -191,7 +197,7 @@ export class UserProvider extends EntityProvider<UserInfo> implements IUserProvi
                                             .then(user => {
                                                 resolve(user);
                                             });
-                                    }, 3000);
+                                    }, 0);
 
                                 })
                                 .catch(error => {
@@ -206,11 +212,16 @@ export class UserProvider extends EntityProvider<UserInfo> implements IUserProvi
         )
     }
 
-    remove(id: string): Promise<UserInfo> {
+    remove(id: string, onUpdated?: (user: UserInfo) => void): Promise<UserInfo> {
         return new Promise((resolve, reject) => {
             this.getSingle(id)
                 .then(user => {
                     if (user != null) {
+                        user.isUpdating = true;
+
+                        if (onUpdated) {
+                            onUpdated(user);
+                        }
                         super.sendDelete(id,
                             (responseData, errorHandler) => this.userStatusResponseConverter.convert(responseData, errorHandler))
                             .then(data => {

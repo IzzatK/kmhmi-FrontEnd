@@ -317,6 +317,11 @@ export class DocumentService extends Plugin implements IDocumentService {
                         updatedDocument.file_name = name;
                         updatedDocument.status = 'failed';
                         updatedDocument.isPending = true;
+
+                        setTimeout(() => {
+                            this.removeAllById(DocumentInfo.class, id);
+                            this.removeAllById(DocumentInfo.class, name);
+                        }, 3000);
                     }
 
                     this.addOrUpdateRepoItem(updatedDocument);
@@ -380,13 +385,9 @@ export class DocumentService extends Plugin implements IDocumentService {
             // delete raw file
             if (this.pendingFilesRaw[id]) {
                 rawFile = this.pendingFilesRaw[id];
-
-
                 delete this.pendingFilesRaw[id];
             } else if (this.pendingFilesRaw[file_name]) {
                 rawFile = this.pendingFilesRaw[file_name];
-
-
                 delete this.pendingFilesRaw[file_name];
             }
 

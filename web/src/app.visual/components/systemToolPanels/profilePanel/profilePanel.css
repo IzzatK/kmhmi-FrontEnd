@@ -133,3 +133,20 @@
     grid-gap: 0 3rem;
     grid-auto-flow: column;
 }
+
+.user-request .card-body.expanded {
+    min-height: 10rem;
+    max-height: 20rem;
+}
+
+.user-request .card-body::-webkit-scrollbar,
+.profile-info .card-body::-webkit-scrollbar {
+    width: 0 !important;
+}
+
+.user-request .loading,
+.profile-info .loading {
+    top: 0;
+    left: 40%;
+    background: transparent;
+}

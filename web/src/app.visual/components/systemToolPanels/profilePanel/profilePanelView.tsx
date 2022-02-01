@@ -262,7 +262,7 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         let userRequestViews;
 
         if (userRequests) {
-            userRequestViews = userRequests.map((userRequest) => {
+            userRequestViews = userRequests.map((userRequest: UserInfoVM) => {
                 return (
                     <UserRequestInfoView permissions={permissions} roles={roles} userRequest={userRequest} onAcceptUserRequest={this.onAcceptUserRequest}
                                          onDeclineUserRequest={this.onDeclineUserRequest}/>

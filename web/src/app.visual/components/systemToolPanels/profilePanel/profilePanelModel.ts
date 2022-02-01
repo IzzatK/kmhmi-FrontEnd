@@ -38,6 +38,7 @@ export type ProfilePanelState = {
     editProperties: EditPropertyVM[];
     selected?: boolean;
     showPopup?: boolean;
+    isUpdating?: boolean;
 }
 
 export type UserInfoVM = {
@@ -53,6 +54,7 @@ export type UserInfoVM = {
     account_status?: string;
     approved_by?: string;
     date_approved?: string;
+    isUpdating?: boolean;
 }
 
 export type RoleVM = {
@@ -80,4 +82,5 @@ export type UserRequestInfoVM = {
     role?: string;
     duration?: string;
     comment?: string;
+    isUpdating?: boolean;
 }

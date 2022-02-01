@@ -1,9 +1,17 @@
 import SystemBannerView from './systemBannerView'
 import {Presenter} from "../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
-import {authenticationService, documentService, userService} from "../../../app.core/serviceComposition";
-import {UserInfo} from "../../../app.model";
+import {
+    authenticationService,
+    documentService,
+    referenceService,
+    userService
+} from "../../../app.core/serviceComposition";
+import {ReferenceType, UserInfo} from "../../../app.model";
 import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
+import {createSelector} from "@reduxjs/toolkit";
+import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
+import {RoleVM} from "./systemBannerModel";
 
 class SystemBanner extends Presenter {
     constructor() {
@@ -16,7 +24,7 @@ class SystemBanner extends Presenter {
         this.mapStateToProps = (state: any, props: any) => {
             return {
                 userName: this.formatUserName(),
-                role: userService.getCurrentUser()?.role,
+                role: this.getRoleVM(state),
                 isLoggedIn: userService.getCurrentUser() !== null,
             }
         }
@@ -28,6 +36,21 @@ class SystemBanner extends Presenter {
             };
         }
     }
+
+    getRoleVM = createSelector(
+        [() => referenceService.getAllReferences(ReferenceType.ROLE), () => userService.getCurrentUser()],
+        (roles) => {
+            let itemVM: string = "";
+
+            forEachKVP(roles, (itemKey: string, itemValue: RoleVM) => {
+                if (userService.getCurrentUser()?.role == itemValue.id) {
+                    itemVM = itemValue.title;
+                }
+            })
+
+            return itemVM;
+        }
+    )
 
     formatUserName() {
         const {id, first_name, last_name } = userService.getCurrentUser() || new UserInfo(makeGuid());

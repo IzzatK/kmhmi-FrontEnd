@@ -10,9 +10,9 @@ export interface IEntityProvider<EntityType> extends IBasePlugin, ILoggablePlugi
 
     create(uiRequestData: any, onUpdated?: (item: EntityType) => void): Promise<Nullable<EntityType>>;
 
-    update(id: string, uiRequestData: any): Promise<Nullable<EntityType>>;
+    update(id: string, uiRequestData: any, onUpdated?: (item: EntityType) => void): Promise<Nullable<EntityType>>;
 
-    remove(id: string): Promise<Nullable<EntityType>>;
+    remove(id: string, onUpdated?: (item: EntityType) => void): Promise<Nullable<EntityType>>;
 
     setHttpService(value: Nullable<IHttpService>): void;
 

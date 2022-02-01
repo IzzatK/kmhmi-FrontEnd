@@ -14,3 +14,8 @@ export type SystemBannerProps = {
 
 export type SystemBannerState = {
 }
+
+export type RoleVM = {
+    id: string;
+    title: string;
+}
