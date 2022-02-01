@@ -12,7 +12,7 @@ export class GetSingleRoleResponseConverter extends Converter<any, Nullable<Role
 
         if (body === undefined) return null;
 
-        const { role_name:roleNames } = body;
+        const { role_name:roleNames } = body[0];
 
         let rolesInfos = referenceService.getAllReferences(ReferenceType.ROLE);
 
