@@ -114,18 +114,17 @@ export class UserProvider extends EntityProvider<UserInfo> implements IUserProvi
 
     getSingle(id: string): Promise<Nullable<UserInfo>> {
         return new Promise((resolve, reject) => {
-            // debugger;
             super.sendGetSingle(id,
                 (responseData, reject) => this.getUserResponseConverter.convert(responseData[0], reject))
                 .then(user => {
-                    // debugger;
                     if (user != null) {
                         this.getRole(id, user)
                             .then(user => {
                                 resolve(user);
                             })
                             .catch(error => {
-                                reject(error);
+                                // if the role failed to return, still resolve
+                                resolve(user);
                             })
                     }
                     else {

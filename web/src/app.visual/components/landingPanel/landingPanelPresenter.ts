@@ -1,10 +1,10 @@
 import {Presenter} from "../../../framework.visual/extras/presenter";
 import LandingPanelView from "./landingPanelView";
-import {LandingPanelStateProps, LandingPanelDispatchProps, UserInfoVM} from "./landingPanelModel";
+import {LandingPanelDispatchProps, LandingPanelStateProps, UserInfoVM} from "./landingPanelModel";
 import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
 import {createSelector} from "@reduxjs/toolkit";
-import {authenticationService} from "../../../app.core/serviceComposition";
-import {AuthenticationProfile, RegistrationStatus} from "../../../app.core.api";
+import {authenticationService, authorizationService} from "../../../app.core/serviceComposition";
+import {AuthenticationProfile, AuthenticationStatus} from "../../../app.core.api";
 import {RegistrationStatusType} from "../../model/registrationStatusType";
 
 class LandingPanel extends Presenter {
@@ -17,8 +17,8 @@ class LandingPanel extends Presenter {
 
         this.mapStateToProps = (state: any, props: any): LandingPanelStateProps => {
             return {
-                registrationStatus: this.getRegistrationStatus(authenticationService.getAuthenticationState()),
-                user: this.getCurrentUserProfile(authenticationService.getAuthenticationState())
+                registrationStatus: this.getAccountStatus(authenticationService.getState()),
+                user: this.getCurrentUserProfile(authenticationService.getState())
             };
         }
 
@@ -37,24 +37,30 @@ class LandingPanel extends Presenter {
         }
     }
 
-    getRegistrationStatus = createSelector<any, RegistrationStatus, RegistrationStatusType>(
-        [() => authenticationService.getRegistrationStatus()],
-        (registerStatus) => {
+    getAccountStatus = createSelector<any, AuthenticationStatus, boolean, RegistrationStatusType>(
+        [() => authenticationService.getAuthenticationStatus(), () => authorizationService.isAuthorized()],
+        (registerStatus, isAuthorized) => {
             let result = RegistrationStatusType.NONE;
 
-            switch (registerStatus) {
-                case RegistrationStatus.NONE:
-                    result = RegistrationStatusType.NONE;
-                    break;
-                case RegistrationStatus.SUBMITTED:
-                    result = RegistrationStatusType.SUBMITTED;
-                    break;
-                case RegistrationStatus.APPROVED:
-                    result = RegistrationStatusType.APPROVED;
-                    break;
-                case RegistrationStatus.REJECTED:
-                    result = RegistrationStatusType.REJECTED;
-                    break;
+            if (isAuthorized) {
+               result = RegistrationStatusType.ACTIVE;
+            }
+            else {
+                switch (registerStatus) {
+                    case AuthenticationStatus.NONE:
+                        result = RegistrationStatusType.NONE;
+                        break;
+                    case AuthenticationStatus.CREATED:
+                        result = RegistrationStatusType.CREATED;
+                        break;
+                    case AuthenticationStatus.ACTIVE:
+                        result = RegistrationStatusType.ACTIVE;
+                        break;
+                    case AuthenticationStatus.REJECTED:
+                        result = RegistrationStatusType.REJECTED;
+                        break;
+
+                }
 
             }
 

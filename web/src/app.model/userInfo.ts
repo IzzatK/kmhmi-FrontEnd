@@ -1,5 +1,5 @@
 import {RepoItem} from "../framework/services/repoService/repoItem";
-import {RegistrationStatus} from "../app.core.api";
+import {AuthenticationStatus} from "../app.core.api";
 
 export class UserInfo extends RepoItem  {
     public static class: string = 'UserInfo';
@@ -11,7 +11,7 @@ export class UserInfo extends RepoItem  {
     phone_number: string = '';
     department: string = '';
     preferred_results_view?: string = '';
-    account_status: RegistrationStatus = RegistrationStatus.NONE;
+    account_status: AuthenticationStatus = AuthenticationStatus.NONE;
     role: string = '';
 
     approved_by?: string = '';

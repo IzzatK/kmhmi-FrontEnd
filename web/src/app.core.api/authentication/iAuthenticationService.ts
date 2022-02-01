@@ -1,8 +1,7 @@
-import {IPlugin} from "../../framework.api";
-import {IStorage} from "../../framework.api";
-import {IUserService} from "../users/iUserService";
-import {IUserProvider} from "../users/IUserProvider";
+import {IPlugin, IStorage} from "../../framework.api";
 import {UserInfo} from "../../app.model";
+import {IAuthorizationService} from "../authorization/iAuthorizationService";
+import {IUserProvider} from "../users/IUserProvider";
 
 export interface IAuthenticationService extends IPlugin {
     login(): any;
@@ -11,16 +10,20 @@ export interface IAuthenticationService extends IPlugin {
     securedFetch(successCallback: any): any;
 
     isLoggedIn(): boolean;
+    isAuthenticating(): boolean;
     getToken(): string;
     getUserProfile(): AuthenticationProfile;
     getUserId(): any;
-    getRegistrationStatus(): RegistrationStatus;
+    getAuthenticationStatus(): AuthenticationStatus;
 
-    getAuthenticationState(): any;
+    getState(): any;
 
     setAppDataStore(appDataStore: IStorage): void;
-    setUserService(userService: IUserService): void;
+
     setUserProvider(userProvider: IUserProvider): void;
+    setAuthorizationService(authorizationService: IAuthorizationService): void;
+
+    setRegistrationStatus(status: AuthenticationStatus): void;
 }
 
 export type AuthenticationProfile = {
@@ -31,9 +34,9 @@ export type AuthenticationProfile = {
     email: string
 }
 
-export enum RegistrationStatus {
-    NONE='NONE',
-    SUBMITTED='SUBMITTED',
-    APPROVED='APPROVED',
-    REJECTED='REJECTED'
+export enum AuthenticationStatus {
+    NONE='None',
+    CREATED='Created',
+    ACTIVE='Active',
+    REJECTED='Rejected'
 }

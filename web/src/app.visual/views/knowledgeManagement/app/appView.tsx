@@ -11,17 +11,14 @@ import {referenceService, statService, tagService} from "../../../../app.core/se
 import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {ReferenceType} from "../../../../app.model";
 import { LandingPanelPresenter } from "../../../components/landingPanel/landingPanelPresenter";
+import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
+import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
 
 export class AppView extends Component<Props, State> {
     private interval!: NodeJS.Timer;
-    private timeout!: NodeJS.Timeout;
 
     constructor(props: StateProps | Readonly<StateProps>) {
         super(props);
-
-        this.state = {
-            loading: true,
-        }
     }
 
     componentDidMount() {
@@ -29,15 +26,10 @@ export class AppView extends Component<Props, State> {
             this.fetchData();
         }, 300000); // 5 minutes
         this.fetchData();
-
-        this.timeout = setTimeout(() => {
-            this.setLoading(false);
-        }, 1000);
     }
 
     componentWillUnmount() {
         clearInterval(this.interval);
-        clearTimeout(this.timeout);
     }
 
     fetchData() {
@@ -50,17 +42,8 @@ export class AppView extends Component<Props, State> {
         }
     }
 
-    setLoading(value: boolean) {
-        this.setState({
-            ...this.state,
-            loading: value
-        })
-    }
-
     render() {
-        const {className, currentSystemTool, isDocumentVisible, permissions, hasAccess, ...rest} = this.props;
-
-        const { loading } = this.state;
+        const {className, currentSystemTool, isDocumentVisible, permissions, isAuthorized, isAuthorizing, ...rest} = this.props;
 
 
         let cn = `${className ? className : ''} d-flex h-100`;
@@ -68,34 +51,35 @@ export class AppView extends Component<Props, State> {
         return (
             <div id={'analysis'} {...rest} className={cn}>
                 {
-                    !hasAccess &&
-                    <LandingPanelPresenter/>
-                }
-                {
-                    hasAccess &&
-                    <React.Fragment>
-                        {
-                            permissions.canSearch ?
-                                <SearchPresenter className={"d-flex flex-fill flex-basis-0"} style={{zIndex: '1'}}/>
-                                :
-                                <div className={"d-flex flex-fill align-items-center justify-content-center"}>
-                                    <div className={'display-1 text-secondary'}>You do not have search permissions
-                                    </div>
-                                </div>
-                        }
+                    // show loading indicator when fetching user status
+                    isAuthorizing ?
+                    <LoadingIndicator size={Size.large}/> :
+                        !isAuthorized ?
+                            // is user status not authorized, then show landing page
+                            <LandingPanelPresenter/> :
+                            <React.Fragment>
+                                {
+                                    permissions.canSearch ?
+                                        <SearchPresenter className={"d-flex flex-fill flex-basis-0"} style={{zIndex: '1'}}/>
+                                        :
+                                        <div className={"d-flex flex-fill align-items-center justify-content-center"}>
+                                            <div className={'display-1 text-secondary'}>You do not have search permissions
+                                            </div>
+                                        </div>
+                                }
 
-                        <div className={isDocumentVisible ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
-                            <DocumentPanelPresenter className={isDocumentVisible ? 'flex-fill flex-basis-0' : ''}
-                                                    style={{zIndex: '9999'}}/>
-                        </div>
-                        <div className={currentSystemTool ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
-                            <UploadPanelPresenter/>
-                            <ProfilePanelPresenter/>
-                            <TagsPanelPresenter/>
-                            <StatsPanelPresenter/>
-                        </div>
-                        <SystemToolbarPresenter style={{zIndex: '1'}}/>
-                    </React.Fragment>
+                                <div className={isDocumentVisible ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
+                                    <DocumentPanelPresenter className={isDocumentVisible ? 'flex-fill flex-basis-0' : ''}
+                                                            style={{zIndex: '9999'}}/>
+                                </div>
+                                <div className={currentSystemTool ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
+                                    <UploadPanelPresenter/>
+                                    <ProfilePanelPresenter/>
+                                    <TagsPanelPresenter/>
+                                    <StatsPanelPresenter/>
+                                </div>
+                                <SystemToolbarPresenter style={{zIndex: '1'}}/>
+                            </React.Fragment>
                 }
             </div>
         );

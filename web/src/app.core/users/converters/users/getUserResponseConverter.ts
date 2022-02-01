@@ -2,7 +2,7 @@ import {getValueOrDefault, Nullable} from "../../../../framework/extras/typeUtil
 import {UserInfo} from "../../../../app.model";
 import {parseServerReferenceValueOrDefault} from "../../../common/converters/parsingUtils";
 import {Converter} from "../../../common/converters/converter";
-import {RegistrationStatus} from "../../../../app.core.api";
+import {AuthenticationStatus} from "../../../../app.core.api";
 
 export class GetUserResponseConverter extends Converter<any, Nullable<UserInfo>>{
     convert(fromData: any, reject?: any): Nullable<UserInfo> {
@@ -40,17 +40,17 @@ export class GetUserResponseConverter extends Converter<any, Nullable<UserInfo>>
         let accountStatus = getValueOrDefault(item, 'account_status', '');
 
         if (accountStatus) {
-            let registrationStatus: RegistrationStatus = RegistrationStatus.NONE;
+            let registrationStatus: AuthenticationStatus = AuthenticationStatus.NONE;
             let accountStatusUpper = accountStatus.toUpperCase();
             switch (accountStatusUpper) {
                 case 'CREATED':
-                    registrationStatus = RegistrationStatus.SUBMITTED;
+                    registrationStatus = AuthenticationStatus.CREATED;
                     break;
                 case 'ACTIVE':
-                    registrationStatus = RegistrationStatus.APPROVED;
+                    registrationStatus = AuthenticationStatus.ACTIVE;
                     break;
                 case 'REJECTED':
-                    registrationStatus = RegistrationStatus.REJECTED;
+                    registrationStatus = AuthenticationStatus.REJECTED;
                     break;
             }
             userInfo.account_status = registrationStatus;

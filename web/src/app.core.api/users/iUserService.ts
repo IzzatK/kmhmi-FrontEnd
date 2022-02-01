@@ -23,8 +23,6 @@ export interface IUserService extends IPlugin {
 
     removeUser(id: string): void;
 
-    setCurrentUser(id: string): void;
-
     getCurrentUser(): Nullable<UserInfo>;
 
     getCurrentUserId(): string;

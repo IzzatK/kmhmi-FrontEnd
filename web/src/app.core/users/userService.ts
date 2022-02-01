@@ -7,7 +7,7 @@ import {
     IEntityProvider,
     IReferenceService,
     IUserService,
-    RegistrationStatus
+    AuthenticationStatus
 } from "../../app.core.api";
 import {nameOf, Nullable} from "../../framework/extras/typeUtils";
 import {ISelectionService} from "../../framework.api";
@@ -38,7 +38,7 @@ export class UserService extends Plugin implements IUserService {
                 let result:Record<string, UserInfo> = {};
                 forEach(users, (user: UserInfo) => {
 
-                    if (user.account_status === RegistrationStatus.APPROVED) {
+                    if (user.account_status === AuthenticationStatus.ACTIVE) {
                         result[user.id] = user;
                     }
 
@@ -57,7 +57,7 @@ export class UserService extends Plugin implements IUserService {
 
                 let result:Record<string, UserInfo> = {};
                 forEach(users, (user: UserInfo) => {
-                    if (user.account_status !== RegistrationStatus.APPROVED) {
+                    if (user.account_status !== AuthenticationStatus.ACTIVE) {
                         result[user.id] = user;
                     }
                 })
@@ -146,7 +146,7 @@ export class UserService extends Plugin implements IUserService {
             userInfo[key] = value;
         })
 
-        userInfo[nameOf<UserInfo>('account_status')] = RegistrationStatus.APPROVED
+        userInfo[nameOf<UserInfo>('account_status')] = AuthenticationStatus.ACTIVE
 
         this.addOrUpdateRepoItem(userInfo);
 
@@ -189,14 +189,6 @@ export class UserService extends Plugin implements IUserService {
             });
     }
 
-    setCurrentUser(id: string) {
-        this.fetchUser(id);
-
-        this.authorizationService?.fetchPermissions(id);
-
-        this.selectionService?.setContext('current-user', id);
-    }
-
     getCurrentUser(): Nullable<UserInfo> {
         let result = null;
 
@@ -212,8 +204,8 @@ export class UserService extends Plugin implements IUserService {
     getCurrentUserId() {
         let result = '';
 
-        if (this.selectionService != null) {
-            result = this.selectionService.getContext('current-user');
+        if (this.authenticationService != null) {
+            result = this.authenticationService.getUserId();
         }
 
         return result;
@@ -240,7 +232,7 @@ export class UserService extends Plugin implements IUserService {
         let repoItem = this.getRepoItem<UserInfo>(UserInfo.class, id);
 
         if (repoItem != null) {
-            repoItem.account_status = RegistrationStatus.APPROVED;
+            repoItem.account_status = AuthenticationStatus.ACTIVE;
             repoItem.role = role;
             repoItem.approved_by = this.getCurrentUserId();
             repoItem.date_approved = getDateWithoutTime(new Date());

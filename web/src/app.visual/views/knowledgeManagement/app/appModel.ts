@@ -1,11 +1,10 @@
-import {Nullable} from "../../../../framework/extras/typeUtils";
-
 export type StateProps = {
     className?: string;
     currentSystemTool: any;
     isDocumentVisible: any;
     permissions: PermissionsVM;
-    hasAccess: boolean;
+    isAuthorizing: boolean;
+    isAuthorized: boolean;
 }
 export type DispatchProps = {};
 
@@ -23,5 +22,5 @@ export type UserInfoVM = {
 }
 
 export type State = {
-    loading: boolean;
+
 }

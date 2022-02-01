@@ -6,7 +6,7 @@ import {forEach} from "../../../../framework.visual/extras/utils/collectionUtils
 import {ReferenceInfo} from "../../../../app.model";
 import {repoService} from "../../../serviceComposition";
 import {Converter} from "../../../common/converters/converter";
-import {RegistrationStatus} from "../../../../app.core.api";
+import {AuthenticationStatus} from "../../../../app.core.api";
 
 export class UpdateUserRequestConverter extends Converter<any, any> {
 
@@ -45,19 +45,19 @@ export class UpdateUserRequestConverter extends Converter<any, any> {
         }
 
 
-        let tmpAccountStatus: RegistrationStatus = getTextValueOrDefault(nameOf<UserInfo>('account_status'), '');
+        let tmpAccountStatus: AuthenticationStatus = getTextValueOrDefault(nameOf<UserInfo>('account_status'), '');
         let serverAccountStatus = '';
         if (tmpAccountStatus) {
             switch (tmpAccountStatus) {
-                case RegistrationStatus.NONE:
+                case AuthenticationStatus.NONE:
                     break;
-                case RegistrationStatus.SUBMITTED:
+                case AuthenticationStatus.CREATED:
                     serverAccountStatus = 'Created';
                     break;
-                case RegistrationStatus.APPROVED:
+                case AuthenticationStatus.ACTIVE:
                     serverAccountStatus = 'Active';
                     break;
-                case RegistrationStatus.REJECTED:
+                case AuthenticationStatus.REJECTED:
                     serverAccountStatus = 'Rejected';
                     break;
 

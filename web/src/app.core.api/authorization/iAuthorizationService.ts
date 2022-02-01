@@ -1,7 +1,9 @@
-import {IPlugin} from "../../framework.api";
+import {IPlugin, IStorage} from "../../framework.api";
 import {IEntityProvider} from "../common/iEntityProvider";
 import {PermissionInfo} from "../../app.model/permissionInfo";
 import {Nullable} from "../../framework/extras/typeUtils";
+import {UserInfo} from "../../app.model";
+import {IAuthenticationService} from "../authentication/iAuthenticationService";
 
 export enum PERMISSION_ENTITY {
     NONE='NONE',
@@ -29,10 +31,18 @@ export enum PERMISSION_LEVEL {
 }
 
 export interface IAuthorizationService extends IPlugin {
+    setAppDataStore(appDataStore: IStorage): void;
+
     fetchPermissions(userId: string): void;
     getPermissionLevel(entity: PERMISSION_ENTITY, operator: PERMISSION_OPERATOR): PERMISSION_LEVEL;
     getPermissions(): Record<string, PermissionInfo>;
     hasPermission(entity: PERMISSION_ENTITY, operator: PERMISSION_OPERATOR, currentUserId?: string, entityOwnerId?: Nullable<string>) : boolean;
 
     setPermissionProvider(provider: IEntityProvider<PermissionInfo>): void;
+    setUserProvider(provider: IEntityProvider<UserInfo>): void;
+    setAuthenticationService(service: IAuthenticationService): void;
+
+    authorizeUser(userId: string): void;
+    isAuthorizing(): boolean;
+    isAuthorized(): boolean;
 }

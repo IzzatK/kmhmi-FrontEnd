@@ -32,20 +32,11 @@ class KnowledgeManagement extends Presenter {
 
         this.mapStateToProps = (state: any, props: any): KnowledgeManagementStateProps => {
             return {
-                isAuthenticated: authenticationService.isLoggedIn()
+                isAuthenticated: authenticationService.isLoggedIn(),
+                isAuthenticating: authenticationService.isAuthenticating()
             }
         }
     }
-
-    // getPermissions = createSelector<any, string, Record<string, PermissionInfo>, PermissionsVM>(
-    //     [() => userService.getCurrentUserId(), authorizationService.getPermissions],
-    //     (currentUserId, permissionInfoLookup) => {
-    //         let result: PermissionsVM = {
-    //             canSearch: authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.GET)
-    //         }
-    //         return result;
-    //     }
-    // )
 }
 
 const tmp:{connectedPresenter: any, componentId: string} = createComponentWrapper(KnowledgeManagement);

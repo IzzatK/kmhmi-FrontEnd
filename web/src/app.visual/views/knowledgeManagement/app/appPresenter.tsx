@@ -13,9 +13,8 @@ import {AppView} from "./appView";
 import {PermissionsVM, StateProps} from "./appModel";
 import {createSelector} from "@reduxjs/toolkit";
 import {PermissionInfo} from "../../../../app.model/permissionInfo";
-import {PERMISSION_ENTITY, PERMISSION_OPERATOR, RegistrationStatus} from "../../../../app.core.api";
+import {PERMISSION_ENTITY, PERMISSION_OPERATOR, AuthenticationStatus} from "../../../../app.core.api";
 import {NodeInfo} from "../../../../framework/services/displayService/displayService";
-import {node} from "prop-types";
 
 class App extends Presenter {
     constructor() {
@@ -45,7 +44,8 @@ class App extends Presenter {
                 currentSystemTool: displayService.getSelectedNodeId('system-tool-panel'),
                 isDocumentVisible: this.isDocumentVisible(state),
                 permissions: this.getPermissions(state),
-                hasAccess: this.hasAppAccess(authenticationService.getAuthenticationState())
+                isAuthorized: authorizationService.isAuthorized(),
+                isAuthorizing: authorizationService.isAuthorizing()
             }
         }
     }
@@ -69,19 +69,6 @@ class App extends Presenter {
             let result: PermissionsVM = {
                 canSearch: authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.GET, currentUserId, currentUserId)
             }
-            return result;
-        }
-    )
-
-    hasAppAccess = createSelector<any, RegistrationStatus, boolean>(
-        [() => authenticationService.getRegistrationStatus()],
-        (registerStatus) => {
-            let result = false;
-
-            if (registerStatus === RegistrationStatus.APPROVED) {
-                result = true;
-            }
-
             return result;
         }
     )

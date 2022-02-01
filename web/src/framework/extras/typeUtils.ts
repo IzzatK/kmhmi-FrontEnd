@@ -42,7 +42,7 @@ export const bindInstanceMethods = (o: object) => {
             // }
         }
         catch (ex) {
-            // debugger;
+
         }
 
     });

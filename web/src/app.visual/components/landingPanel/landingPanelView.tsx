@@ -1,53 +1,11 @@
 import React, {Component} from "react";
 import './landingPanel.css';
 import {LandingPanelProps, LandingPanelState} from "./landingPanelModel";
-import {bindInstanceMethods} from "../../../framework/extras/typeUtils";
 import {RegistrationStatusType} from "../../model/registrationStatusType";
 
 class LandingPanelView extends Component<LandingPanelProps, LandingPanelState> {
-    private timeout!: NodeJS.Timeout ;
-
-    constructor(props: any, context: any) {
-        super(props, context);
-
-        bindInstanceMethods(this);
-
-        this.state = {
-            loading: false,
-        }
-    }
-
-    componentDidMount() {
-
-        const {registrationStatus } = this.props;
-
-        if (registrationStatus == RegistrationStatusType.NONE) {
-            this.setLoading(true);
-
-            this.timeout = setTimeout(() => {
-                this.setLoading(false);
-            }, 1000);
-        }
-    }
-
-
-    componentWillUnmount() {
-        if (this.timeout) {
-            clearTimeout(this.timeout);
-        }
-    }
-
-    setLoading(value: boolean) {
-        this.setState({
-            ...this.state,
-            loading: value
-        })
-    }
-
     render() {
         const { className, user, registrationStatus } = this.props;
-
-        const { loading } = this.state;
 
         let cn = 'landing-panel d-flex flex-fill justify-content-center align-items-center';
         if (className) {
@@ -64,7 +22,7 @@ class LandingPanelView extends Component<LandingPanelProps, LandingPanelState> {
                             </div>
                         </div>
                         {
-                            (registrationStatus === RegistrationStatusType.SUBMITTED) &&
+                            registrationStatus == RegistrationStatusType.CREATED &&
                             <div className={"popup v-gap-5 w-33"}>
                                 <div className={"text-selected font-weight-semi-bold px-5 pt-5"}>
                                     <div className={"d-flex justify-content-center mt-5 pt-5"}>Your Authorization is Pending...</div>
@@ -83,13 +41,13 @@ class LandingPanelView extends Component<LandingPanelProps, LandingPanelState> {
                             </div>
                         }
                         {
-                            registrationStatus == RegistrationStatusType.REJECTED &&
+                            registrationStatus === RegistrationStatusType.REJECTED &&
                             <div className={'d-flex align-items-center justify-content-center'}>
                                 <div className={'display-1 text-secondary'}>You have been rejected from the Jedi Order</div>
                             </div>
                         }
                         {
-                            (registrationStatus == RegistrationStatusType.NONE && !loading) &&
+                            registrationStatus === RegistrationStatusType.NONE &&
                             <div className={'d-flex align-items-center justify-content-center'}>
                                 <div className={'display-1 text-secondary'}>Unable to retrieve account status</div>
                             </div>
