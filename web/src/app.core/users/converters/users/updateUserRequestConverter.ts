@@ -32,9 +32,13 @@ export class UpdateUserRequestConverter extends Converter<any, any> {
 
         let tmpRoles = [];
         if (modifiedUser['role']) {
+            //check if role has been changed
             tmpRoles.push(modifiedUser['role']);
-        }
-        else {
+        } else if (latestUser['role']) {
+            //fetch role
+            tmpRoles.push(latestUser['role']);
+        } else {
+            //if no role set it to VIEWER
             let references = repoService.getAll(ReferenceInfo.class);
             forEach(references, (referenceInfo: ReferenceInfo) => {
                 if (referenceInfo.type === ReferenceType.ROLE && referenceInfo.title.toUpperCase() == 'VIEWER') {
@@ -43,7 +47,6 @@ export class UpdateUserRequestConverter extends Converter<any, any> {
                 }
             });
         }
-
 
         let tmpAccountStatus: AuthenticationStatus = getTextValueOrDefault(nameOf<UserInfo>('account_status'), '');
         let serverAccountStatus = '';
@@ -63,7 +66,6 @@ export class UpdateUserRequestConverter extends Converter<any, any> {
 
             }
         }
-
 
         let serverUser = {
             // id: id,
