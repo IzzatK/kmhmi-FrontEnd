@@ -4,10 +4,16 @@ import {createComponentWrapper} from "../../../../framework/wrappers/componentWr
 import {forEach, forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {createSelector} from "@reduxjs/toolkit";
 import {ReferenceType, UserInfo} from "../../../../app.model";
-import {authorizationService, referenceService, userService} from "../../../../app.core/serviceComposition";
-import {AccountStatusVM, DepartmentVM, PermissionsVM, RoleVM, UserInfoVM, UserRequestInfoVM} from "./profilePanelModel";
+import {
+    authorizationService,
+    displayService, documentService,
+    referenceService,
+    userService
+} from "../../../../app.core/serviceComposition";
+import {AccountStatusVM, DepartmentVM, PermissionsVM, RoleVM, UserInfoVM} from "./profilePanelModel";
 import {PermissionInfo} from "../../../../app.model/permissionInfo";
-import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../../app.core.api";
+import {AuthenticationStatus, PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../../app.core.api";
+import {RegistrationStatusType} from "../../../model/registrationStatusType";
 
 class ProfilePanel extends Presenter {
     private readonly accountStatuses: AccountStatusVM[];
@@ -28,15 +34,15 @@ class ProfilePanel extends Presenter {
         // this does not belong here
         this.accountStatuses = [
             {
-                id: 'Created',
+                id: RegistrationStatusType.CREATED,
                 title: 'Created',
             },
             {
-                id: 'Active',
+                id: RegistrationStatusType.ACTIVE,
                 title: 'Active',
             },
             {
-                id: 'Inactive',
+                id: RegistrationStatusType.NONE,
                 title: 'Inactive',
             },
         ]
@@ -51,18 +57,59 @@ class ProfilePanel extends Presenter {
                 accountStatuses: this.accountStatuses,
                 permissions: this.getPermissions(state),
                 userRequests: this.getUserRequestVMs(state),
+                searchText: userService.getSearchText(),
             }
         }
 
         this.mapDispatchToProps = () => {
             return {
                 onUserAdded: (user: UserInfoVM) => userService.createUser(user),
-                onUserUpdated: (user: UserInfo) => userService.updateUser(user),
+                onUserUpdated: (user: UserInfoVM) => userService.updateUser(this.convertUserInfoVMToUserInfo(user)),
                 onUserRemoved: (id: string) => userService.removeUser(id),
                 onAcceptUserRequest: (id: string, role: string) => userService.acceptUserRequest(id, role),
                 onDeclineUserRequest: (id: string) => userService.declineUserRequest(id),
+                onSearch: () => userService.fetchUsers(),
+                onSearchTextChanged: (value: string) => userService.setSearchText(value),
+                onClearSearch: () => userService.clearSearch(),
             };
         }
+    }
+
+    convertUserInfoVMToUserInfo = (userInfoVM: UserInfoVM) => {
+        const { id, first_name, last_name, email_address, phone_number, department, account_status: registration_status, role,
+            date_approved, dod_id, approved_by } = userInfoVM;
+
+        let account_status: AuthenticationStatus = AuthenticationStatus.ACTIVE;
+
+        if (registration_status) {
+            switch (registration_status) {
+                case RegistrationStatusType.ACTIVE:
+                    account_status = AuthenticationStatus.ACTIVE;
+                    break;
+                case RegistrationStatusType.CREATED:
+                    account_status = AuthenticationStatus.CREATED;
+                    break;
+                case RegistrationStatusType.REJECTED:
+                    account_status = AuthenticationStatus.REJECTED;
+                    break;
+                default:
+                    account_status = AuthenticationStatus.NONE;
+                    break;
+            }
+        }
+
+        let user: UserInfo = new UserInfo(id || "");
+
+        user.account_status = account_status;
+        user.department = department || "";
+        user.dod_id = dod_id || "";
+        user.email_address = email_address || "";
+        user.first_name = first_name || "";
+        user.last_name = last_name || "";
+        user.phone_number = phone_number || "";
+        user.role = role || "";
+
+        return user;
     }
 
     getPermissions = createSelector<any, string, Record<string, PermissionInfo>, PermissionsVM>(
@@ -79,7 +126,7 @@ class ProfilePanel extends Presenter {
     )
 
     getManagedUserVMs = createSelector(
-        [() => userService.getActiveUsers(), () => userService.getCurrentUser()],
+        [() => userService.getSearchUsers(), () => userService.getCurrentUser()],
         (items, currentUser) => {
             let itemVMs: Record<string, UserInfoVM> = {};
 
@@ -90,6 +137,22 @@ class ProfilePanel extends Presenter {
                 const { id, dod_id, first_name, last_name, email_address, phone_number, department,
                     account_status, role, approved_by, date_approved, isUpdating} = item;
 
+                let registration_status: RegistrationStatusType = RegistrationStatusType.NONE;
+
+                switch (account_status) {
+                    case AuthenticationStatus.ACTIVE:
+                        registration_status = RegistrationStatusType.ACTIVE;
+                        break;
+                    case AuthenticationStatus.CREATED:
+                        registration_status = RegistrationStatusType.CREATED;
+                        break;
+                    case AuthenticationStatus.REJECTED:
+                        registration_status = RegistrationStatusType.REJECTED;
+                        break;
+                    default:
+                        break;
+                }
+
                 let itemVM:UserInfoVM = {
                     id,
                     dod_id: dod_id,
@@ -98,7 +161,7 @@ class ProfilePanel extends Presenter {
                     email_address,
                     phone_number,
                     department,
-                    account_status,
+                    account_status: registration_status,
                     role,
                     approved_by: approved_by ? approved_by : "",
                     date_approved: date_approved ? date_approved : "",
@@ -123,6 +186,22 @@ class ProfilePanel extends Presenter {
             const { id="", dod_id='', first_name="", last_name="", email_address="", phone_number="", department="",
                 account_status="", role="", approved_by="", date_approved="", isUpdating} = currentUser || {};
 
+            let registration_status: RegistrationStatusType = RegistrationStatusType.NONE;
+
+            switch (account_status) {
+                case AuthenticationStatus.ACTIVE:
+                    registration_status = RegistrationStatusType.ACTIVE;
+                    break;
+                case AuthenticationStatus.CREATED:
+                    registration_status = RegistrationStatusType.CREATED;
+                    break;
+                case AuthenticationStatus.REJECTED:
+                    registration_status = RegistrationStatusType.REJECTED;
+                    break;
+                default:
+                    break;
+            }
+
             let itemVM: UserInfoVM = {
                 id,
                 dod_id: dod_id,
@@ -131,7 +210,7 @@ class ProfilePanel extends Presenter {
                 email_address,
                 phone_number,
                 department,
-                account_status,
+                account_status: registration_status,
                 role,
                 approved_by: approved_by ? approved_by : "",
                 date_approved: date_approved ? date_approved : "",
@@ -213,7 +292,21 @@ class ProfilePanel extends Presenter {
                 const { id, dod_id, first_name, last_name, email_address, phone_number, department,
                     account_status, role, approved_by, date_approved, isUpdating} = item;
 
-                console.log("isUpdating " + isUpdating);
+                let registration_status: RegistrationStatusType = RegistrationStatusType.NONE;
+
+                switch (account_status) {
+                    case AuthenticationStatus.ACTIVE:
+                        registration_status = RegistrationStatusType.ACTIVE;
+                        break;
+                    case AuthenticationStatus.CREATED:
+                        registration_status = RegistrationStatusType.CREATED;
+                        break;
+                    case AuthenticationStatus.REJECTED:
+                        registration_status = RegistrationStatusType.REJECTED;
+                        break;
+                    default:
+                        break;
+                }
 
                 let itemVM:UserInfoVM = {
                     id,
@@ -223,7 +316,7 @@ class ProfilePanel extends Presenter {
                     email_address,
                     phone_number,
                     department,
-                    account_status,
+                    account_status: registration_status,
                     role,
                     approved_by: approved_by ? approved_by : "",
                     date_approved: date_approved ? date_approved : "",

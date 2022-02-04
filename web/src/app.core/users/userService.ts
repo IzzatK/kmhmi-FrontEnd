@@ -1,6 +1,6 @@
 import {makeGuid} from "../../framework.visual/extras/utils/uniqueIdUtils";
 import {forEach, forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
-import {UserInfo} from "../../app.model";
+import {SearchParamInfo, UserInfo} from "../../app.model";
 import {
     IAuthenticationService,
     IAuthorizationService,
@@ -26,6 +26,7 @@ export class UserService extends Plugin implements IUserService {
 
     getActiveUsersSelector: OutputSelector<any, Record<string, UserInfo>, (res1: Record<string, UserInfo>) => Record<string, UserInfo>>;
     getPendingUsersSelector: OutputSelector<any, Record<string, UserInfo>, (res1: Record<string, UserInfo>) => Record<string, UserInfo>>;
+    getSearchUsersSelector: OutputSelector<unknown, Record<string, UserInfo>, (res: Record<string, UserInfo>) => Record<string, UserInfo>>;
 
     constructor() {
         super();
@@ -65,6 +66,21 @@ export class UserService extends Plugin implements IUserService {
                 return result;
             }
         )
+
+        this.getSearchUsersSelector = createSelector(
+            [() => this.getActiveUsers()],
+            (items) => {
+                let result:Record<string, UserInfo> = {};
+
+                forEach(items, (item:UserInfo) => {
+                    const { id } = item;
+
+                    result[id] = item;
+                });
+
+                return result;
+            }
+        );
     }
 
     start() {
@@ -119,8 +135,15 @@ export class UserService extends Plugin implements IUserService {
     }
 
     fetchUsers() {
-        this.userProvider?.getAll('NULL')
+        let searchText = "NULL";
+
+        if (this.getSearchText() !== "") {
+            searchText = this.getSearchText();
+        }
+
+        this.userProvider?.getAll(searchText)
             .then(users => {
+                this.clearSearch();
                 this.addOrUpdateAllRepoItems(users);
             })
             .catch(error => {
@@ -247,5 +270,42 @@ export class UserService extends Plugin implements IUserService {
 
     declineUserRequest(id: string) {
         this.removeUser(id);
+    }
+
+    clearSearch(): void {
+        this.setSearchText("");
+        let currentUser = this.getCurrentUser();
+
+        let users = Object.assign({}, this.getPendingUsers());
+
+        this.removeAllByType(UserInfo.class);
+
+        this.addOrUpdateRepoItem(<UserInfo>currentUser);
+        this.addOrUpdateAllRepoItems(<UserInfo[]>Object.values(users));
+    }
+
+    getSearchText(): string {
+        let result = '';
+
+        let repoItem: any = super.getRepoItem(SearchParamInfo.class, 'user_search_request');
+        if (repoItem != null) {
+            result = repoItem.value;
+        }
+
+        return result;
+    }
+
+    setSearchText(value: string): void {
+        let repoItem = super.getRepoItem(SearchParamInfo.class, 'user_search_request');
+
+        if (repoItem != null) {
+            let next = Object.assign(new SearchParamInfo('user_search_request'), repoItem);
+            next.value = value;
+            this.addOrUpdateRepoItem(next);
+        }
+    }
+
+    getSearchUsers(): Record<string, UserInfo> {
+        return this.getSearchUsersSelector(super.getRepoState());
     }
 }

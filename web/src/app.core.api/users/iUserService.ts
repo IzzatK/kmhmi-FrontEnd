@@ -44,4 +44,12 @@ export interface IUserService extends IPlugin {
     setReferenceService(referenceService: IReferenceService): void;
 
     setUserProvider(provider: IEntityProvider<UserInfo>): void;
+
+    clearSearch(): void;
+
+    setSearchText(value: string): void;
+
+    getSearchText(): string;
+
+    getSearchUsers(): Record<string, UserInfo>;
 }

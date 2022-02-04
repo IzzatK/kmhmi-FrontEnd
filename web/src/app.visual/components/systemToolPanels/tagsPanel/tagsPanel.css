@@ -7,6 +7,7 @@
     line-height: 4.8rem;
     background: var(--tags-panel-header-background);
     color: var(--tags-panel-header-color);
+    width: 7.5rem;
 }
 
 .tags-panel .tag {

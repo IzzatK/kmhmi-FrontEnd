@@ -100,7 +100,7 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
                             </div>
                         </div>
 
-                        <div className={"d-flex flex-column dark w-50 align-items-center justify-content-center"}>
+                        <div className={"d-flex flex-column dark align-items-center justify-content-center"} style={{width: "60%"}}>
                             <div className={"d-flex flex-column"}>
                                 <div className={"d-flex flex-column popup v-gap-5"}>
                                     <div className={"text-selected font-weight-semi-bold px-5 pt-5"}>

@@ -1,4 +1,5 @@
 import {UserInfo} from "../../../../app.model";
+import {RegistrationStatusType} from "../../../model/registrationStatusType";
 
 export type ProfilePanelProps = {
     className?: string;
@@ -21,6 +22,9 @@ export type ProfilePanelProps = {
     onAcceptUserRequest?: (id: string, role: string) => void;
     onDeclineUserRequest?: (id: string) => void;
     permissions: PermissionsVM;
+    searchText?: string;
+    onSearch?: () => void;
+    onSearchTextChanged?: (value: string) => void;
 }
 
 export type PermissionsVM = {
@@ -51,7 +55,7 @@ export type UserInfoVM = {
     email_address?: string;
     phone_number?: string;
     dod_id?: string;
-    account_status?: string;
+    account_status?: RegistrationStatusType;
     approved_by?: string;
     date_approved?: string;
     isUpdating?: boolean;

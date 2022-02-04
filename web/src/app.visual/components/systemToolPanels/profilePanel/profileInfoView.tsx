@@ -67,25 +67,33 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
     }
 
     componentDidMount() {
-        const { user } = this.props;
+        // const { user } = this.props;
+        //
+        // if (user) {
+        //     this.setTmpUser(user);
+        // }
 
-        this.setTmpUser(user || {});
         this._setPopupVisible(false);
     }
 
     componentDidUpdate(prevProps: Readonly<ProfilePanelProps>, prevState: Readonly<ProfilePanelState>, snapshot?: any) {
-        const { user } = this.props;
-
-        if (user !== prevProps.user) {
-            this.refreshDirtyFlag();
-
-            const {id} = user || {};
-            const {id: prevId } = prevProps.user || {};
-
-            if (id !== prevId) {
-                this.setTmpUser(user || {});
-            }
-        }
+        // const { user } = this.props;
+        //
+        // if (user && prevProps.user) {
+        //     if (user !== prevProps.user) {
+        //         this.refreshDirtyFlag();
+        //
+        //         const {id} = user;
+        //         const {id: prevId } = prevProps.user;
+        //
+        //         if (id && prevId) {
+        //             if (id !== prevId) {
+        //                 this.setTmpUser(user);
+        //             }
+        //         }
+        //
+        //     }
+        // }
     }
 
     setTmpUser(user: UserInfoVM) {
@@ -146,56 +154,53 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
 
         const {tmpUser} = this.state;
         const {user} = this.props;
-        const {currentUser} = this.props;
 
-        if (name === 'account_status' && value === 'Active') {
-            if (user) {
-                let nextUser: UserInfoVM = {
-                    ...tmpUser,
-                    [name]: value,
-                    ['approved_by']: currentUser?  currentUser.id : "",
-                    ['date_approved']: Date.now().toString(),
-                };
-                if (user[name] === value) {
-                    delete nextUser[name];
-                    delete nextUser['approved_by'];
-                    delete nextUser['date_approved'];
-                }
-                this.setTmpUser(nextUser);
+        if (user) {
+            let nextUser = {
+                ...tmpUser,
+                [name]: value
+            };
+            if (user[name] === value) {
+                delete nextUser[name];
             }
-        } else {
-            if (user) {
-                let nextUser = {
-                    ...tmpUser,
-                    [name]: value
-                };
-                if (user[name] === value) {
-                    delete nextUser[name];
-                }
-                this.setTmpUser(nextUser);
-            }
+            this.setTmpUser(nextUser);
         }
     }
 
     updateUser() {
-        const { onUserUpdated } = this.props;
+        const { onUserUpdated, user } = this.props;
         const { isDirty, tmpUser } = this.state;
+
+        if (user) {
+            const { id } = user;
+
+            if (id) {
+                let updatedUser = {
+                    ...tmpUser,
+                    ['id']: id,
+                }
+
+                if (onUserUpdated) {
+                    onUserUpdated({...updatedUser});
+                }
+            }
+        }
 
         this.setState({
             ...this.state,
             isDirty: !isDirty,
         });
-
-        if (onUserUpdated) {
-            onUserUpdated({...tmpUser});
-        }
     }
 
     removeUser() {
         const { onUserRemoved, user } = this.props;
 
         if (user && onUserRemoved) {
-            onUserRemoved(user.id || "");
+            const { id } = user;
+
+            if (id) {
+                onUserRemoved(id);
+            }
         }
 
         this._setPopupVisible(false);

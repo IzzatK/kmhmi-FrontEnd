@@ -1,11 +1,8 @@
-import {SearchBannerMenuItem, SearchParamInfo} from "../../app.model";
+import {ParamType, ReferenceType, SearchBannerMenuItem, SearchParamInfo, SortPropertyInfo} from "../../app.model";
 import {RepoItem} from "../../framework/services/repoService/repoItem";
 import {nameOf, Nullable} from "../../framework/extras/typeUtils";
-import {ParamType} from "../../app.model";
 import {forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
-import {ReferenceType} from "../../app.model";
 import {getDateWithoutTime} from "../../framework.visual/extras/utils/timeUtils";
-import {SortPropertyInfo} from "../../app.model";
 import {IStorage} from "../../framework.api";
 import {IScenarioService} from "../../app.core.api";
 import {Plugin} from "../../framework/extras/plugin";
@@ -14,7 +11,6 @@ import {GraphSVG} from "../../app.visual/theme/svgs/graphSVG";
 import {SystemToolMenuItem} from "../../app.visual/model/systemToolMenuItem";
 import {UploadSVG} from "../../app.visual/theme/svgs/uploadSVG";
 import {TagsSVG} from "../../app.visual/theme/svgs/tagsSVG";
-import {StatsSVG} from "../../app.visual/theme/svgs/statsSVG";
 import {ProfileSVG} from "../../app.visual/theme/svgs/profileSVG";
 import {SearchResultsMenuItem} from "../../app.visual/model/searchResultsMenuItem";
 import {CardsSVG} from "../../app.visual/theme/svgs/cardsSVG";
@@ -119,6 +115,7 @@ export class ScenarioService extends Plugin implements IScenarioService {
                 end_date: getDateWithoutTime(new Date())
             },
             null, null, 'Publication Date', true, true, false);
+        this.createSearchParamInfo('user_search_request', ParamType.STRING, '', null, null, '', false, false, false);
     }
 
     createSortPropertyInfos() {

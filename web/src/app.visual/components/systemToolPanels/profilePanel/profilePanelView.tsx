@@ -104,6 +104,23 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         }
     }
 
+    _onSearch() {
+        const { onSearch } = this.props;
+
+        if (onSearch) {
+            onSearch();
+        }
+    }
+
+    _onSearchTextChanged(value: string) {
+        console.log(value);
+        const { onSearchTextChanged } = this.props;
+
+        if (onSearchTextChanged) {
+            onSearchTextChanged(value);
+        }
+    }
+
     setTmpUser(currentUser: UserInfoVM) {
         this.setState({
             ...this.state,
@@ -241,7 +258,7 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
 
     render() {
         const { className, users, currentUser, onUserUpdated, onUserRemoved, onUserAdded, roles, departments,
-            accountStatuses, userLookUp, userRequests, permissions, ...rest } = this.props;
+            accountStatuses, userLookUp, userRequests, permissions, searchText, ...rest } = this.props;
 
         const { editProperties, tmpUser, isDirty, isAddingNewUser } = this.state;
 
@@ -398,16 +415,25 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                                     </ScrollBar>
                                 </div>
 
-                                <div className={"header d-flex align-items-center justify-content-between mt-3 mb-5 mr-4 position-sticky"}>
-                                    <div className={'py-3'}>User Manager</div>
-                                    <SearchBox placeholder={"Search for User"}/>
-                                    {
-                                        permissions.canCreate &&
-                                        <Button text={"Add User"} orientation={"horizontal"} onClick={() => this.toggleIsAddingNewUser()} selected={false} disabled={false} className={"px-5 mr-5"}/>
-                                    }
+                                <div className={"search-box-container d-flex flex-column position-sticky v-gap-3 pb-5 position-sticky mr-4"}>
+                                    <div className={"header d-flex align-items-center justify-content-between mt-3"}>
+                                        <div className={'py-3'}>User Manager</div>
+                                        {
+                                            permissions.canCreate &&
+                                            <Button text={"Add User"} orientation={"horizontal"} onClick={() => this.toggleIsAddingNewUser()} selected={false} disabled={false} className={"px-5 mr-5"}/>
+                                        }
+                                    </div>
+                                    <div className={'mr-4'}>
+                                        <div className={'v-gap-3 mr-4'}>
+                                            <SearchBox placeholder={"Search for User"} onSearch={this._onSearch} text={searchText}
+                                                       onTextChange={this._onSearchTextChanged} className={"mr-3 ml-5 position-sticky"}/>
+                                        </div>
+                                    </div>
                                 </div>
+
                                 <div className={'h-100 mr-4'}>
                                     <div className={'v-gap-3 mr-4'}>
+
                                         {
                                             isAddingNewUser &&
                                             <NewUserProfileInfoView permissions={permissions} onUserAdded={(newUser) => this.addUser(newUser)}

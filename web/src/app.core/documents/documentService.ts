@@ -321,7 +321,7 @@ export class DocumentService extends Plugin implements IDocumentService {
                         setTimeout(() => {
                             this.removeAllById(DocumentInfo.class, id);
                             this.removeAllById(DocumentInfo.class, name);
-                        }, 3000);
+                        }, 5000);
                     }
 
                     this.addOrUpdateRepoItem(updatedDocument);

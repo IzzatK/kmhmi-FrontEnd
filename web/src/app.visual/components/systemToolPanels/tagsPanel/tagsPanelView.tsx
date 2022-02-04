@@ -116,8 +116,7 @@ class TagsPanelView extends Component<TagsPanelProps, TagsPanelState> {
                                 </div>
 
                             }>
-                            <div
-                                className={"tag font-weight-light text-accent display-3 d-flex rounded-pill cursor-pointer"}>{title}</div>
+                            <div className={"tag font-weight-light text-accent display-3 d-flex rounded-pill cursor-pointer align-self-center"}>{title}</div>
                         </Portal>
                     </div>
 
@@ -127,8 +126,8 @@ class TagsPanelView extends Component<TagsPanelProps, TagsPanelState> {
             return (
                 <div className={"d-flex flex-column"}>
 
-                    <div className={"py-3 pr-3 pl-5 font-weight-light letter-header"}>{letter}</div>
-                    <div className={"tag-grid"}>
+                    <div className={"py-3 pr-3 pl-5 font-weight-light letter-header mb-3"}>{letter}</div>
+                    <div className={"tag-grid align"}>
                         {tagDivs}
                     </div>
                 </div>

@@ -7,7 +7,6 @@ import ComboBox from "../../../theme/widgets/comboBox/comboBox";
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
 import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
 
-
 export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
     constructor(props: ProfilePanelProps | Readonly<ProfilePanelProps>) {
         super(props);
@@ -55,37 +54,18 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
     }
 
     onTmpUserChanged(name: string, value: string | undefined) {
-
         const {tmpUser} = this.state;
         const {userRequest} = this.props;
-        const {currentUser} = this.props;
 
-        if (name === 'account_status' && value === 'Active') {
-            if (userRequest) {
-                let nextUser: UserInfoVM = {
-                    ...tmpUser,
-                    [name]: value,
-                    ['approved_by']: currentUser?  currentUser.id : "",
-                    ['date_approved']: Date.now().toString(),
-                };
-                if (userRequest[name] === value) {
-                    delete nextUser[name];
-                    delete nextUser['approved_by'];
-                    delete nextUser['date_approved'];
-                }
-                this.setTmpUser(nextUser);
+        if (userRequest) {
+            let nextUser = {
+                ...tmpUser,
+                [name]: value
+            };
+            if (userRequest[name] === value) {
+                delete nextUser[name];
             }
-        } else {
-            if (userRequest) {
-                let nextUser = {
-                    ...tmpUser,
-                    [name]: value
-                };
-                if (userRequest[name] === value) {
-                    delete nextUser[name];
-                }
-                this.setTmpUser(nextUser);
-            }
+            this.setTmpUser(nextUser);
         }
     }
 

@@ -13,13 +13,16 @@ export class GetTagArrayResponseConverter extends Converter<any,TagInfo[]>{
         const result: TagInfo[] = [];
 
         if (Array.isArray(fromData)) {
-            forEachKVP(fromData, (itemKey:string, itemValue: string[]) => {
-                let tagInfo = this._singleConverter.convert(itemValue, reject);
+            if (fromData[0]) {
+                forEachKVP(fromData[0], (itemKey:string, itemValue: string[]) => {
+                    let tagInfo = this._singleConverter.convert(itemValue, reject);
 
-                if (tagInfo != null) {
-                    result.push(tagInfo);
-                }
-            });
+                    if (tagInfo != null) {
+                        result.push(tagInfo);
+                    }
+                });
+            }
+
         }
         else {
             reject('Error while parsing array of references. Expected Array. Receive the following: <' + fromData + '>');

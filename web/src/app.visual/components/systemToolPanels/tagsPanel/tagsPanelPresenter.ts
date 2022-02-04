@@ -45,7 +45,7 @@ class TagsPanel extends Presenter {
 
                 let itemVM: TagInfoVM = {
                     id,
-                    title: title.toLowerCase(),
+                    title: title ? title.toLowerCase() : "",
                 }
 
                 itemVMs.push(itemVM);
