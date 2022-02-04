@@ -13,7 +13,7 @@ export class GetTagArrayResponseConverter extends Converter<any,TagInfo[]>{
         const result: TagInfo[] = [];
 
         if (Array.isArray(fromData)) {
-            if (fromData[0]) {
+            if (Array.isArray(fromData[0])) {
                 forEachKVP(fromData[0], (itemKey:string, itemValue: string[]) => {
                     let tagInfo = this._singleConverter.convert(itemValue, reject);
 
