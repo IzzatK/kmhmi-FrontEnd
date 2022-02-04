@@ -489,7 +489,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                             text={'CANCEL'} onClick={this.cancelEdit}/>
                                     }
                                     {
-                                        permissions.canModify &&
+                                        permissions.canModify && isDirty &&
                                         <Button
                                             disabled={!isDirty}
                                             text={'PUBLISH'} highlight={true} onClick={this.updateDocument}/>
