@@ -25,7 +25,7 @@ export class GetTagArrayResponseConverter extends Converter<any,TagInfo[]>{
 
         }
         else {
-            reject('Error while parsing array of references. Expected Array. Receive the following: <' + fromData + '>');
+            reject('Error while parsing array of tags. Expected Array. Receive the following: <' + fromData + '>');
         }
 
         return result;
