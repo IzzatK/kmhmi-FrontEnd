@@ -38,10 +38,12 @@
     background: var(--login-panel-popup-background);
     min-width: 75.5rem;
     min-height: 41rem;
+    border: 0;
+    border-bottom: 3rem solid var(--login-panel-popup-border-color);
 }
 
 .landing-panel .light-popup {
-    background: var(--logim-panel-light-popup-background);
+    background: var(--login-panel-light-popup-background);
     min-width: 56rem;
     min-height: 41rem;
 }
