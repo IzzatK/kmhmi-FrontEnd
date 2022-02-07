@@ -41,12 +41,13 @@ body > * {
 
     --login-panel-background: var(--app-vulcan);
     --login-panel-popup-background: var(--app-vulcan);
-    --logim-panel-light-popup-background: var(--app-bleach);
+    --login-panel-light-popup-background: var(--app-bleach);
     --login-panel-color: var(--app-bleach);
     --login-panel-accent-color: var(--app-airForceBlue);
     --login-panel-info-color: var(--app-whiteSmoke);
     --login-panel-light-info-color: var(--app-suvaGrey);
     --login-panel-dark-bg-color: var(--app-bunker);
+    --login-panel-popup-border-color: var(--app-dodgerBlue);
 
     /* Logout Panel */
 

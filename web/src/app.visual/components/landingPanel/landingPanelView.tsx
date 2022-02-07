@@ -16,13 +16,13 @@ class LandingPanelView extends Component<LandingPanelProps, LandingPanelState> {
             <div className={cn}>
                 <div className={"d-flex flex-column flex-fill position-relative h-100"}>
                     <div className={'d-flex flex-fill flex-column justify-content-center align-items-center v-gap-5'} style={{zIndex: 999}}>
-                        <div className={'d-flex align-items-center justify-content-center'}>
-                            <div className={'display-1 text-secondary'}>
-                                {`Welcome, ${user.first_name} ${user.last_name}`}
-                            </div>
-                        </div>
+                        {/*<div className={'d-flex align-items-center justify-content-center'}>*/}
+                        {/*    <div className={'display-1 text-secondary'}>*/}
+                        {/*        {`Welcome, ${user.first_name} ${user.last_name}`}*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
                         {
-                            registrationStatus == RegistrationStatusType.CREATED &&
+                            registrationStatus === RegistrationStatusType.CREATED &&
                             <div className={"popup v-gap-5 w-33"}>
                                 <div className={"text-selected font-weight-semi-bold px-5 pt-5"}>
                                     <div className={"d-flex justify-content-center mt-5 pt-5"}>Your Authorization is Pending...</div>
@@ -36,8 +36,6 @@ class LandingPanelView extends Component<LandingPanelProps, LandingPanelState> {
                                     }
                                     <div className={"text-info font-weight-light display-3 pt-5"}>Please check back once your authorization has been approved.</div>
                                 </div>
-
-                                <div className={"d-flex justify-content-end py-4 pr-5 bg-advisory mx-5"}/>
                             </div>
                         }
                         {
