@@ -36,15 +36,18 @@ class CardCollectionView extends Component<SearchResultsProps, SearchResultsStat
                         <Card className={'position-absolute w-100 h-100'} selected={selected} onClick={() => onDocumentSelected(id)}
                               header={
                                   <div className={"h-100 flex-fill align-self-stretch d-flex flex-column v-gap-2 p-4"}>
-                                      <div className={'d-flex w-100 justify-content-between align-items-center'}>
-                                          <div className={'d-flex h-gap-3 align-items-start'}>
-                                              <TooltipPortal portalContent={
-                                                  <div>{title}</div>
-                                              }>
-                                                  <div className={"font-weight-semi-bold overflow-hidden title text-break"}>{title}</div>
-                                              </TooltipPortal>
+                                      <div className={'d-flex align-items-center'}>
+                                          <div className={'d-flex h-gap-3 align-items-center w-100 overflow-hidden'}>
+                                              <div className={"overflow-hidden"}>
+                                                  <TooltipPortal portalContent={
+                                                      <div>{title}</div>
+                                                  }>
+                                                      <div className={"font-weight-semi-bold overflow-hidden title text-break"}>{title}</div>
+                                                  </TooltipPortal>
+                                              </div>
+
                                               {/*<div className={"d-flex header-2 text datetime"}>{status === "" ? timestamp.split(",")[0] : status}</div>*/}
-                                              <div className={"d-flex text pt-2 header-2 datetime"}>{publication_date !== "No Publication Date" ? publication_date: timestamp?.split(',')[0]}</div>
+                                              <div className={"text header-2 datetime"}>{publication_date !== "No Publication Date" ? publication_date?.split(',')[0] : timestamp?.split(',')[0]}</div>
                                           </div>
                                           <CheckBox selected={selected} disabled={true}/>
                                       </div>
