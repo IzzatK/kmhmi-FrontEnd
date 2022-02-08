@@ -28,6 +28,7 @@ export type ProfilePanelProps = {
     onDeclineUserRequest?: (id: string) => void;
     onSearchTextChanged?: (value: string) => void;
     onSearch?: () => void;
+    onClearSearch?: () => void;
     onSelect?: () => void;
     onCancel?: () => void;
     onEdit?: () => void;

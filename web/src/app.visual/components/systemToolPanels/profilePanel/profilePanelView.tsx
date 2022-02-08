@@ -123,6 +123,14 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         }
     }
 
+    _onClearSearch() {
+        const { onClearSearch } = this.props;
+
+        if (onClearSearch) {
+            onClearSearch();
+        }
+    }
+
     setTmpUser(currentUser: UserInfoVM) {
         this.setState({
             ...this.state,
@@ -491,9 +499,6 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                                     <div className={'v-gap-3 mr-4'}>
                                         {userRequestViews}
                                     </div>
-                                    <ScrollBar renderTrackHorizontal={false}>
-
-                                    </ScrollBar>
                                 </div>
 
                                 <div className={"search-box-container d-flex flex-column position-sticky v-gap-3 pb-5 position-sticky mr-4"}>
@@ -505,9 +510,10 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                                         }
                                     </div>
                                     <div className={'mr-4'}>
-                                        <div className={'v-gap-3 mr-4'}>
+                                        <div className={'d-flex mr-4 align-items-center'}>
                                             <SearchBox placeholder={"Search for User"} onSearch={this._onSearch} text={searchText}
-                                                       onTextChange={this._onSearchTextChanged} className={"mr-3 ml-5 position-sticky"}/>
+                                                       onTextChange={this._onSearchTextChanged} className={"w-100 mr-3 ml-5 position-sticky"}/>
+                                            <Button text={"Clear"} className={"clear-button"} onClick={() => this._onClearSearch()}/>
                                         </div>
                                     </div>
                                 </div>
@@ -524,9 +530,6 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                                         }
                                         {profileInfoViews}
                                     </div>
-                                    {/*<ScrollBar renderTrackHorizontal={false}>*/}
-                                    {/*    */}
-                                    {/*</ScrollBar>*/}
                                 </div>
                             </Fragment>
                         }

@@ -46,20 +46,9 @@
     filter: brightness(1);
 }
 
-.profile-panel .profile-image {
-    height: 12.2rem;
-    width: 13.1rem;
-    min-height: 12.2rem;
-    min-width: 13.1rem;
-}
-
-.profile-panel .edit-image {
-    opacity: 0.3;
-}
-
-.profile-panel .text-edit-image {
-    opacity: 0.8;
-    margin-top: -4rem;
+.profile-panel .clear-button {
+    max-height: 2.1rem;
+    min-width: 8.7rem;
 }
 
 .profile-info {
@@ -145,7 +134,9 @@
 
 .user-request .card-body::-webkit-scrollbar,
 .profile-info .card-body::-webkit-scrollbar {
+    cursor: pointer;
     width: 0 !important;
+    height: 0 !important;
 }
 
 .user-request .loading,
