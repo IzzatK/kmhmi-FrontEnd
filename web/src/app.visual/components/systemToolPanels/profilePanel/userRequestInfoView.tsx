@@ -16,7 +16,6 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
         this.state = {
             tmpUser: {},
             editProperties: [],
-            selected: false,
             isUpdating: false,
         }
     }
@@ -42,13 +41,8 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
 
     toggleSelected() {
         const { onSelect } = this.props;
-        const { selected } = this.state;
 
-        this.setState({
-            ...this.state,
-            selected: !selected,
-        })
-        if (selected && onSelect) {
+        if (onSelect) {
             onSelect();
         }
     }
@@ -106,9 +100,9 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
     }
 
     render() {
-        const { userRequest, roles } = this.props;
+        const { userRequest, roles, selected } = this.props;
 
-        const { selected, tmpUser } = this.state;
+        const { tmpUser } = this.state;
 
         let isUpdating = userRequest?.isUpdating;
 

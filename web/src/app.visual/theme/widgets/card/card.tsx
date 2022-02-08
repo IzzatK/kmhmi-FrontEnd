@@ -22,22 +22,25 @@ class Card extends React.Component<CardProps, CardState> {
     }
 
     _toggleExpanded() {
-        const { body, children, onClick } = this.props;
+        const { body, children, onClick, disabled } = this.props;
         const { expanded } = this.state;
-        if (body || children) {
-            this.setState({
-                ...this.state,
-                expanded: !expanded
-            });
-        }
 
-        if (onClick) {
-            onClick();
+        if (!disabled) {
+            if (body || children) {
+                this.setState({
+                    ...this.state,
+                    expanded: !expanded
+                });
+            }
+
+            if (onClick) {
+                onClick();
+            }
         }
     }
 
     render() {
-        const {className, header, body, children, onClick, ...rest} = this.props;
+        const {className, header, body, children, onClick, disabled, ...rest} = this.props;
         const {expanded} = this.state;
 
         let cn = "card d-flex";
@@ -47,6 +50,10 @@ class Card extends React.Component<CardProps, CardState> {
 
         if (expanded) {
             cn += ` selected`;
+        }
+
+        if (disabled) {
+            cn += ` disabled`;
         }
 
         return (

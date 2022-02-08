@@ -184,7 +184,7 @@ export class NewUserProfileInfoView extends Component<ProfilePanelProps, Profile
         });
 
         return (
-            <Card className={'profile-info flex-column justify-content-start header-4 align-items-stretch'}
+            <Card className={'profile-info new-user flex-column justify-content-start header-4 align-items-stretch'}
                   header={
                       <div className={'profile-info-header d-flex align-items-center justify-content-between dirty mt-3 mb-5 p-3'}>
                           <div className={'px-5 py-4 font-weight-semi-bold header-1'}>NEW USER</div>
@@ -210,6 +210,7 @@ export class NewUserProfileInfoView extends Component<ProfilePanelProps, Profile
                       </div>
                   }
                   selected={true}
+                  disabled={true}
             />
         );
     }

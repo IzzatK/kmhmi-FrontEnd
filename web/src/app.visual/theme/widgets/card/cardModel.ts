@@ -6,6 +6,7 @@ export type CardProps = {
     header?: ReactNode | undefined
     body?: ReactNode | undefined
     onClick?: () => void
+    disabled?: boolean;
 }
 
 export interface CardState {

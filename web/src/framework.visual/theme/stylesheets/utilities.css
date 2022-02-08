@@ -1153,7 +1153,15 @@ border-dark
 }
 
 .cursor-pointer {
-    cursor: pointer;
+    cursor: pointer !important;
+}
+
+.cursor-default {
+    cursor: default !important;
+}
+
+.cursor-auto {
+    cursor: auto !important;
 }
 
 .rounded-sm {

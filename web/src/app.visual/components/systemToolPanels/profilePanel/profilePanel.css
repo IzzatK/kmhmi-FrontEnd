@@ -154,3 +154,7 @@
     left: 40%;
     background: transparent;
 }
+
+.new-user .card-header {
+    cursor: default !important;
+}

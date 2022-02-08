@@ -3,33 +3,38 @@ import {RegistrationStatusType} from "../../../model/registrationStatusType";
 
 export type ProfilePanelProps = {
     className?: string;
+
     currentUser?: UserInfoVM;
-    onUserUpdated?: (user: any) => void;
-    onUserAdded?: (user: UserInfoVM) => void;
+    user?: UserInfoVM;
     users?: UserInfoVM[];
-    onUserRemoved?: (id: string) => void;
+    // userRequest?: UserRequestInfoVM;
+    userRequest?: UserInfoVM;
+    // userRequests?: UserRequestInfoVM[];
+    userRequests?: UserInfoVM[];
+    userLookUp?: Record<string, UserInfo>;
     roles?: Record<string, RoleVM>;
     departments?: Record<string, DepartmentVM>;
     accountStatuses?: Record<string, AccountStatusVM>;
-    userLookUp?: Record<string, UserInfo>;
-    user?: UserInfoVM;
-    onSelect?: () => void;
-    onCancel?: () => void;
-    // userRequests?: UserRequestInfoVM[];
-    // userRequest?: UserRequestInfoVM;
-    userRequests?: UserInfoVM[];
-    userRequest?: UserInfoVM;
+    permissions: PermissionsVM;
+
+    searchText?: string;
+    selected?: boolean;
+    dirty?: boolean;
+
+    onUserUpdated?: (user: any) => void;
+    onUserAdded?: (user: UserInfoVM) => void;
+    onUserRemoved?: (id: string) => void;
     onAcceptUserRequest?: (id: string, role: string) => void;
     onDeclineUserRequest?: (id: string) => void;
-    permissions: PermissionsVM;
-    searchText?: string;
-    onSearch?: () => void;
     onSearchTextChanged?: (value: string) => void;
+    onSearch?: () => void;
+    onSelect?: () => void;
+    onCancel?: () => void;
+    onEdit?: () => void;
 }
 
 export type PermissionsVM = {
     canModifySelf: boolean;
-
     canCreate: boolean;
     canDelete: boolean;
     canModify: boolean;
@@ -43,6 +48,8 @@ export type ProfilePanelState = {
     selected?: boolean;
     showPopup?: boolean;
     isUpdating?: boolean;
+    isOpen?: Record<string, string>;
+    isEdit?: Record<string, string>;
 }
 
 export type UserInfoVM = {

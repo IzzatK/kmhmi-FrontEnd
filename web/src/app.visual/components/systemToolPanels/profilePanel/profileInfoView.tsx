@@ -4,7 +4,6 @@ import Button from "../../../theme/widgets/button/button";
 import Card from "../../../theme/widgets/card/card";
 import ComboBox from "../../../theme/widgets/comboBox/comboBox";
 import TextEdit from "../../../theme/widgets/textEdit/textEdit";
-import {arrayEquals, forEach} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
 import {ProfilePanelProps, ProfilePanelState, UserInfoVM} from "./profilePanelModel";
 import Popup from "../../../theme/widgets/popup/popup";
@@ -21,7 +20,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
 
         this.state = {
             tmpUser: {},
-            isDirty: false,
+            showPopup: false,
             editProperties: [
                 {
                     id: 'first_name',
@@ -61,8 +60,6 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                     readonly: true,
                 }
             ],
-            selected: false,
-            showPopup: false,
         }
     }
 
@@ -100,58 +97,10 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
         this.setState({
             ...this.state,
             tmpUser: user
-        }, () => this.refreshDirtyFlag());
-    }
-
-    refreshDirtyFlag() {
-        const {user} = this.props;
-        const {tmpUser } = this.state;
-
-        if (!user) return;
-
-        let nextTmpUser = {
-            ...tmpUser
-        };
-        let dirty = false;
-
-        let keysToDelete = [];
-        let itemKeys = Object.keys(nextTmpUser), itemsLength = itemKeys.length;
-        for (let index = 0; index < itemsLength; index++) {
-            let key = itemKeys[index];
-
-            if (Array.isArray(tmpUser[key])) {
-                if (arrayEquals(tmpUser[key], user[key])) {
-                    keysToDelete.push(key)
-                }
-                else {
-                    dirty = true;
-                }
-            }
-            else {
-                if (tmpUser[key] === user[key]) {
-                    keysToDelete.push(key);
-                }
-                else {
-                    dirty = true;
-                }
-            }
-        }
-
-        forEach(keysToDelete, (key: string) => {
-            if (key !== 'id') {
-                delete nextTmpUser[key];
-            }
-        })
-
-        this.setState({
-            ...this.state,
-            tmpUser: nextTmpUser,
-            isDirty: dirty
-        })
+        });
     }
 
     onTmpUserChanged(name: string, value: string | undefined) {
-
         const {tmpUser} = this.state;
         const {user} = this.props;
 
@@ -169,7 +118,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
 
     updateUser() {
         const { onUserUpdated, user } = this.props;
-        const { isDirty, tmpUser } = this.state;
+        const { tmpUser } = this.state;
 
         if (user) {
             const { id } = user;
@@ -183,13 +132,10 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                 if (onUserUpdated) {
                     onUserUpdated({...updatedUser});
                 }
+
+                this.toggleEdit();
             }
         }
-
-        this.setState({
-            ...this.state,
-            isDirty: !isDirty,
-        });
     }
 
     removeUser() {
@@ -216,43 +162,40 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
     cancelEdit() {
         const { user } = this.props;
 
+        this.toggleEdit();
+
         this.setState({
             ...this.state,
-            isDirty: false,
             tmpUser: user || {},
-        }, () => this.refreshDirtyFlag());
+        });
     }
 
     toggleEdit() {
-        this.setState({
-            ...this.state,
-            isDirty: true,
-        })
+        const { onEdit } = this.props;
+
+        if (onEdit) {
+            onEdit();
+        }
     }
 
     toggleSelected() {
         const { onSelect } = this.props;
-        const { selected } = this.state;
 
-        this.setState({
-            ...this.state,
-            selected: !selected,
-        })
-        if (selected && onSelect) {
+        if (onSelect) {
             onSelect();
         }
     }
 
     render() {
-        const {user, currentUser, onSelect, onUserUpdated, onUserRemoved, roles, departments, accountStatuses, userLookUp, permissions } = this.props;
+        const {user, roles, departments, accountStatuses, userLookUp, permissions, selected, dirty } = this.props;
 
-        const { isDirty, editProperties, tmpUser, selected, showPopup } = this.state;
+        const { editProperties, tmpUser, showPopup } = this.state;
 
         let isUpdating = user?.isUpdating;
 
         let cn = "profile-info-header p-3 d-flex align-items-center justify-content-between position-relative";
 
-        if (isDirty) {
+        if (dirty) {
             cn += ` dirty`;
         }
 
@@ -283,7 +226,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                     renderDiv = (
                         <ComboBox
                             className={cn}
-                            disable={!isDirty || isUpdating}
+                            disable={!dirty || isUpdating}
                             onSelect={(value: string) => this.onTmpUserChanged(id, value)}
                             title={departmentTitle}
                             items={departments}
@@ -303,7 +246,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                     renderDiv = (
                         <ComboBox
                             className={cn}
-                            disable={!isDirty || isUpdating}
+                            disable={!dirty || isUpdating}
                             onSelect={(value: string) => this.onTmpUserChanged(id, value)}
                             title={roleTitle}
                             items={roles}
@@ -322,7 +265,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                     renderDiv = (
                         <ComboBox
                             className={cn}
-                            disable={!isDirty || isUpdating}
+                            disable={!dirty || isUpdating}
                             onSelect={(value: string) => this.onTmpUserChanged(id, value)}
                             title={accountStatusTitle}
                             items={accountStatuses}
@@ -349,12 +292,12 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                     renderDiv =(
                         <TextEdit
                             className={cn}
-                            disable={!readonly ? !isDirty || isUpdating : true}
+                            disable={!readonly ? !dirty || isUpdating : true}
                             placeholder={placeholder}
                             name={id}
                             dirty={!!editValue}
                             value={name}
-                            edit={!readonly ? isDirty : false}
+                            edit={!readonly ? dirty : false}
                             onSubmit={this.onTmpUserChanged}/>
                     )
                     break;
@@ -367,12 +310,12 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                     renderDiv = (
                         <TextEdit
                             className={cn}
-                            disable={!readonly ? !isDirty || isUpdating : true}
+                            disable={!readonly ? !dirty || isUpdating : true}
                             placeholder={placeholder}
                             name={id}
                             dirty={!!editValue}
                             value={editValue ? editValue : originalValue}
-                            edit={!readonly ? isDirty : false}
+                            edit={!readonly ? dirty : false}
                             onSubmit={this.onTmpUserChanged}/>
                     );
                     break;
@@ -408,7 +351,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                               isVisible={showPopup}
                               onCancel={() => this._setPopupVisible(false)}
                               onProceed={() => this.removeUser()}/>
-                          <div className={`personal-info-grid w-100 ${isDirty ? 'dirty' : ''}`}>
+                          <div className={`personal-info-grid w-100 ${dirty ? 'dirty' : ''}`}>
                               <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>First Name:</div>
                               <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Last Name:</div>
                               <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Department:</div>
@@ -421,13 +364,13 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                               {editDivs}
                           </div>
                           {
-                              !isDirty &&
+                              !dirty &&
                               <div className={"d-flex justify-content-end h-gap-2"}>
                                   <Button text={"Edit"} orientation={"horizontal"} onClick={() => this.toggleEdit()} selected={false} disabled={isUpdating} className={"px-5"}/>
                               </div>
                           }
                           {
-                              isDirty &&
+                              dirty &&
                               <div className={"d-flex h-gap-2 justify-content-end"}>
                                   {
                                       permissions.canDelete &&

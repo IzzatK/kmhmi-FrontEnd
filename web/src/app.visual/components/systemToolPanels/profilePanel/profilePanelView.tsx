@@ -64,6 +64,8 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                     readonly: true
                 },
             ],
+            isOpen: {},
+            isEdit: {},
         }
     }
 
@@ -256,11 +258,49 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         if (onDeclineUserRequest) onDeclineUserRequest(id);
     }
 
+    manageIsOpen(id: string) {
+        const { isOpen } = this.state;
+
+        if (isOpen) {
+            let newIsOpen: Record<string, string> = isOpen;
+
+            if (newIsOpen[id] === undefined) {
+                newIsOpen[id] = id;
+            } else {
+                delete newIsOpen[id];
+            }
+
+            this.setState({
+                ...this.state,
+                isOpen: newIsOpen,
+            })
+        }
+    }
+
+    manageIsEdit(id: string) {
+        const { isEdit } = this.state;
+
+        if (isEdit) {
+            let newIsEdit: Record<string, string> = isEdit;
+
+            if (newIsEdit[id] === undefined) {
+                newIsEdit[id] = id;
+            } else {
+                delete newIsEdit[id];
+            }
+
+            this.setState({
+                ...this.state,
+                isEdit: newIsEdit,
+            })
+        }
+    }
+
     render() {
         const { className, users, currentUser, onUserUpdated, onUserRemoved, onUserAdded, roles, departments,
             accountStatuses, userLookUp, userRequests, permissions, searchText, ...rest } = this.props;
 
-        const { editProperties, tmpUser, isDirty, isAddingNewUser } = this.state;
+        const { editProperties, tmpUser, isDirty, isAddingNewUser, isOpen, isEdit } = this.state;
 
         let cn = "d-flex position-absolute w-100 h-100 align-items-center justify-content-center";
 
@@ -268,10 +308,36 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
 
         if (users) {
             profileInfoViews = users.map((user: UserInfoVM) => {
+                const { id } = user;
+
+                let notNullId = id || "";
+
+                let componentOpen = false;
+
+                if (isOpen) {
+                    componentOpen = isOpen[notNullId] !== undefined;
+                }
+
+                let componentEdit = false;
+
+                if (isEdit) {
+                    componentEdit = isEdit[notNullId] !== undefined;
+                }
+
                 return (
-                    <ProfileInfoView permissions={permissions} currentUser={currentUser} roles={roles} departments={departments}
-                                     accountStatuses={accountStatuses} user={user} onUserUpdated={onUserUpdated}
-                                     onUserRemoved={onUserRemoved} userLookUp={userLookUp}/>
+                    <ProfileInfoView permissions={permissions}
+                                     currentUser={currentUser}
+                                     roles={roles}
+                                     departments={departments}
+                                     accountStatuses={accountStatuses}
+                                     user={user}
+                                     onUserUpdated={onUserUpdated}
+                                     onUserRemoved={onUserRemoved}
+                                     userLookUp={userLookUp}
+                                     dirty={componentEdit}
+                                     selected={componentOpen}
+                                     onSelect={() => this.manageIsOpen(notNullId)}
+                                     onEdit={() => this.manageIsEdit(notNullId)}/>
                 )
             });
         }
@@ -280,9 +346,24 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
 
         if (userRequests) {
             userRequestViews = userRequests.map((userRequest: UserInfoVM) => {
+                const { id } = userRequest;
+
+                let notNullId = id || "";
+
+                let componentOpen = false;
+
+                if (isOpen) {
+                    componentOpen = isOpen[notNullId] !== undefined;
+                }
+
                 return (
-                    <UserRequestInfoView permissions={permissions} roles={roles} userRequest={userRequest} onAcceptUserRequest={this.onAcceptUserRequest}
-                                         onDeclineUserRequest={this.onDeclineUserRequest}/>
+                    <UserRequestInfoView permissions={permissions}
+                                         roles={roles}
+                                         userRequest={userRequest}
+                                         onAcceptUserRequest={this.onAcceptUserRequest}
+                                         onDeclineUserRequest={this.onDeclineUserRequest}
+                                         selected={componentOpen}
+                                         onSelect={() => this.manageIsOpen(notNullId)}/>
                 )
             })
         }
