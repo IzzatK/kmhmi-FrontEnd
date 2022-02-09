@@ -40,7 +40,7 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
 
         this.pollAttempts = {};
         this.POLLING_RATE = 5000;
-        this.MAX_POLL_ATTEMPTS = 2;
+        this.MAX_POLL_ATTEMPTS = 3;
     }
 
     start() {

@@ -15,10 +15,10 @@ export type DocumentPanelProps = {
 }
 
 export type DocumentPanelState = {
-    isExpanded: boolean;
     tmpDocument: DocumentInfoVM;
     isDirty: boolean;
     isGlobal: boolean;
+    isPrivate: boolean;
 }
 
 export type UserProfileVM = {

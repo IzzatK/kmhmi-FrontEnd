@@ -22,18 +22,25 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         bindInstanceMethods(this);
 
         this.state = {
-            isExpanded: false,
             tmpDocument: {},
             isDirty: false,
             isGlobal: true,
+            isPrivate: false,
         }
     }
 
     componentDidMount() {
         const { document } = this.props;
-        const { id } = document || {};
+        const { id, status } = document || {};
 
         this.setTmpDocument({id});
+
+        if (status === "Private") {
+            this.setState({
+                ...this.state,
+                isPrivate: true,
+            })
+        }
     }
 
     componentDidUpdate(prevProps: Readonly<DocumentPanelProps>, prevState: Readonly<DocumentPanelState>, snapshot?: any) {
@@ -58,19 +65,9 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         }, () => this.refreshDirtyFlag());
     }
 
-    setExpanded(value: boolean) {
-        this.setState({
-            ...this.state,
-            isExpanded: value
-        });
-    }
-
     onTmpDocumentChanged(name: string, value: any) {
-
         const { tmpDocument } = this.state;
         const { document } = this.props;
-
-        console.log(`${name} - ${value}`)
 
         if (document) {
             let nextDoc = {
@@ -132,10 +129,19 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
     }
 
     updateDocument() {
-        const { onUpdateDocument } = this.props;
-        const { tmpDocument } = this.state;
+        const { onUpdateDocument, document } = this.props;
+        const { tmpDocument, isPrivate } = this.state;
 
-        onUpdateDocument({...tmpDocument});
+        const { id } = document;
+
+        if (onUpdateDocument) {
+            let updatedDocument = tmpDocument;
+
+            updatedDocument['id'] = id;
+
+            onUpdateDocument({...updatedDocument});
+        }
+
     }
 
     removeDocument() {
@@ -220,7 +226,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
 
         result.push("-1");
 
-        this.onTmpDocumentChanged('private_tag', result.toString())
+        this.onTmpDocumentChanged('private_tag', result)
     }
 
     toggleGlobal() {
@@ -229,6 +235,21 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
             ...this.state,
             isGlobal: !isGlobal,
         })
+    }
+
+    _toggleIsPrivate() {
+        const { isPrivate } = this.state;
+
+        this.setState({
+            ...this.state,
+            isPrivate: !isPrivate,
+        });
+
+        if (isPrivate) {
+            this.onTmpDocumentChanged('status', "Public");
+        } else {
+            this.onTmpDocumentChanged('status', "Private");
+        }
     }
 
     getCellRenderer(tmpDocument: DocumentInfoVM, document: DocumentInfoVM, editProperty: EditPropertyVM, isGlobal?: boolean) {
@@ -316,13 +337,20 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                     this.onTmpDocumentChanged(name, result);
                 }
 
-                let tagsDivs = value ? value.map((tag: string) => {
-                    return tag.length > 0 && <Tag name={id} text={tag.trim()} onDelete={onClick} isGlobal={isGlobal}
-                                                  isEdit={tag.trim() === "-1"} readonly={!canModify} onSubmit={onSubmit}/>
-                }) : <div/>
+                let tagsDivs;
+
+                if (Array.isArray(value)) {
+                    tagsDivs = value.map((tag: string) => {
+                        return (
+                            tag.length > 0 &&
+                            <Tag name={id} text={tag.trim()} onDelete={onClick} isGlobal={isGlobal} className={"mr-4"}
+                                 isEdit={tag.trim() === "-1"} readonly={!canModify} onSubmit={onSubmit}/>
+                        );
+                    })
+                }
 
                 cellRenderer = (
-                    <div className={'d-flex flex-nowrap h-gap-2 align-self-center'} key={id}>
+                    <div className={'d-flex flex-nowrap align-self-center overflow-auto w-100'} key={id}>
                         {tagsDivs}
                     </div>
                 )
@@ -365,7 +393,6 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         let result = "";
 
         forEach(Object.values(options), (option: { title: string; id: any; }) => {
-            console.log(JSON.stringify(option))
             if (option.title === title) {
                 result = option.id;
             }
@@ -455,7 +482,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
             primary_sme_name, primary_sme_phone, primary_sme_email, secondary_sme_name, secondary_sme_phone, secondary_sme_email,
         file_name, file_size} = document || {};
 
-        const { tmpDocument, isDirty, isExpanded, isGlobal } = this.state;
+        const { tmpDocument, isDirty, isGlobal, isPrivate } = this.state;
 
         let cn = "document-panel d-flex";
         if (className) {
@@ -474,20 +501,19 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                         permissions.canModify &&
                                         <div className={"d-flex h-gap-2 pr-3"}>
                                             <div className={"text-accent display-4 font-weight-light"}>Publish as Private</div>
-                                            <CheckBox onClick={(selected) => {selected ? this.onTmpDocumentChanged("status", this._getStatus("Private")) : this.onTmpDocumentChanged("status", this._getStatus("Public"))}
-                                            }/>
+                                            <CheckBox selected={isPrivate} onClick={() => this._toggleIsPrivate()}/>
                                         </div>
                                     }
                                     {
                                         permissions.canDelete &&
                                         <Button text={'DELETE'} onClick={this.removeDocument}/>
                                     }
-                                    {
-                                        permissions.canModify && isDirty &&
-                                        <Button
-                                            disabled={!isDirty}
-                                            text={'CANCEL'} onClick={this.cancelEdit}/>
-                                    }
+                                    {/*{*/}
+                                    {/*    permissions.canModify && isDirty &&*/}
+                                    {/*    <Button*/}
+                                    {/*        disabled={!isDirty}*/}
+                                    {/*        text={'CANCEL'} onClick={this.cancelEdit}/>*/}
+                                    {/*}*/}
                                     {
                                         permissions.canModify && isDirty &&
                                         <Button
@@ -511,7 +537,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                 </div>
                                 <div className={'property-grid'}>
                                     <div className={"d-flex h-gap-5"}>
-                                        <div className={'header-1 font-weight-semi-bold align-self-center text-right label'}>Date:</div>
+                                        <div className={'header-1 font-weight-semi-bold align-self-center text-right label'}>Publication Date:</div>
                                         {
                                             this.getCellRenderer(tmpDocument, document, editProperties['publication_date'])
                                         }
@@ -564,19 +590,21 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                           <div className={'sme-grid'}>
                                               <div className={"d-flex h-gap-5"}>
                                                   <div className={'align-self-center text-right header-3 label'}>PRIMARY SME</div>
-
-                                                  <div className={'align-self-center header-2'}>{primary_sme_name}</div>
-
+                                                  {
+                                                      this.getCellRenderer(tmpDocument, document, editProperties['primary_sme_name'])
+                                                  }
                                               </div>
                                               <div className={"d-flex h-gap-5"}>
                                                   <div className={'align-self-center text-right header-3 label'}>PHONE</div>
-                                                  <div className={'align-self-center header-2'}>{primary_sme_phone}</div>
+                                                  {
+                                                      this.getCellRenderer(tmpDocument, document, editProperties['primary_sme_phone'])
+                                                  }
                                               </div>
                                               <div className={"d-flex h-gap-5"}>
                                                   <div className={'align-self-center text-right header-3 label'}>EMAIL</div>
-
-                                                  <div className={'align-self-center header-2'}>{primary_sme_email}</div>
-
+                                                  {
+                                                      this.getCellRenderer(tmpDocument, document, editProperties['primary_sme_email'])
+                                                  }
                                               </div>
 
                                           </div>
@@ -584,19 +612,21 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                           <div className={'sme-grid'}>
                                               <div className={"d-flex h-gap-5"}>
                                                   <div className={'align-self-center text-right header-3 label'}>SECONDARY SME</div>
-
-                                                  <div className={'align-self-center header-2'}>{secondary_sme_name}</div>
-
+                                                  {
+                                                      this.getCellRenderer(tmpDocument, document, editProperties['secondary_sme_name'])
+                                                  }
                                               </div>
                                               <div className={"d-flex h-gap-5"}>
                                                   <div className={'align-self-center text-right header-3 label'}>PHONE</div>
-                                                  <div className={'align-self-center header-2'}>{secondary_sme_phone}</div>
+                                                  {
+                                                      this.getCellRenderer(tmpDocument, document, editProperties['secondary_sme_phone'])
+                                                  }
                                               </div>
                                               <div className={"d-flex h-gap-5"}>
                                                   <div className={'align-self-center text-right header-3 label'}>EMAIL</div>
-                                                  <div className={'align-self-center header-2'}>{secondary_sme_email}</div>
-
-
+                                                  {
+                                                      this.getCellRenderer(tmpDocument, document, editProperties['secondary_sme_email'])
+                                                  }
                                               </div>
                                           </div>
                                       </div>
@@ -604,9 +634,8 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                             />
 
                             <div className={'d-flex flex-column v-gap-4 pl-4'} >
-
                                 <div className={'d-flex align-items-center justify-content-between'}>
-                                    <div className={'d-flex h-gap-2'}>
+                                    <div className={'d-flex h-gap-2 overflow-hidden'}>
                                         <GlobalSwitchButton isGlobal={isGlobal} light={false} onClick={this.toggleGlobal} className={'mr-3'}/>
                                         {
                                             isGlobal &&
@@ -618,7 +647,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                         }
                                         {
                                             permissions.canModify &&
-                                            <div className={'tag-button text-primary header-1 cursor-pointer align-self-center'}
+                                            <div className={'tag-button text-primary display-4 cursor-pointer align-self-center'}
                                                  onClick={isGlobal ? this.addNewPublicTag : this.addNewPrivateTag}>+</div>
                                         }
                                     </div>

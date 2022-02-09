@@ -309,17 +309,19 @@
     height: 1.0rem;
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
+    cursor: pointer;
+    height: 8px !important;
     width:8px !important;
 }
 
-::-webkit-scrollbar-thumb{
+::-webkit-scrollbar-thumb {
     border-radius: 5px !important;
     background-color: var(--scrollbar-thumb-color) !important;
     border: 0 !important;
 }
 
-::-webkit-scrollbar-track{
+::-webkit-scrollbar-track {
     border-radius: 5px !important;
     background-color: var(--scrollbar-track-color) !important;
 }

@@ -164,7 +164,15 @@ export class DocumentService extends Plugin implements IDocumentService {
         this.documentProvider?.getAll(this.getSearchParams())
             .then(responseData => {
 
+                let localDocuments: Record<string, DocumentInfo> = Object.assign({}, this.getPendingDocuments());
+
                 let documents: Record<string, DocumentInfo> = Object.assign({}, this.getPendingDocuments(), responseData);
+
+                let combinedDocuments: Record<string, DocumentInfo> = {};
+
+                forEach(documents, (document: DocumentInfo) => {
+
+                })
 
                 this.setGetDocumentArrayMetadata(false)
 

@@ -88,13 +88,27 @@ class UploadPanel extends Presenter {
                     status = itemVM.status;
                 }
 
+                let newId: string = id;
+                let newStatus: string = status;
+                let newIsDeleted: boolean = isDeleted || false;
+
+                if (id === file_name) {
+                    if (itemVMs[file_name]) {
+                        newId = itemVMs[file_name].id || id;
+
+                        newStatus = itemVMs[file_name].status || status;
+
+                        newIsDeleted = itemVMs[file_name].deleted || isDeleted || false;
+                    }
+                }
+
                 itemVMs[itemVM.file_name] = {
-                    id: id,
+                    id: newId,
                     file_name: file_name,
                     isUpdating: isUpdating,
-                    status,
-                    selected: id === selectedId,
-                    deleted: isDeleted,
+                    status: newStatus,
+                    selected: newId === selectedId,
+                    deleted: newIsDeleted,
                 }
 
             });
