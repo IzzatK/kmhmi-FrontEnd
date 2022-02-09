@@ -14,6 +14,7 @@ import {
 import {SystemToolMenuItem} from "../../model/systemToolMenuItem";
 import {SystemToolVM} from "./systemToolbarModel";
 import {PERMISSION_ENTITY, PERMISSION_LEVEL, PERMISSION_OPERATOR} from "../../../app.core.api";
+import {UploadPanelId} from "../systemToolPanels/uploadPanel/uploadPanelPresenter";
 
 
 export const SYSTEM_TOOLBAR_VIEW_ID = 'system-tool-panel';
@@ -75,7 +76,7 @@ class SystemToolbar extends Presenter {
 
                 let enabled = true;
                 switch(item.id) {
-                    case 'components/uploadPanel':
+                    case UploadPanelId:
                         enabled = authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.POST);
                         break;
                 }

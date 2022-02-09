@@ -265,7 +265,7 @@ export class DocumentService extends Plugin implements IDocumentService {
             });
     }
 
-    enqueueFile(file: any) {
+    private enqueueFile(file: any) {
         const {name} = file;
 
         // since we are posting and don't have an id yet, use a placeholder
