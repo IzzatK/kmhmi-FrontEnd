@@ -12,48 +12,46 @@ export class GetStatsResponseConverter extends Converter<any, any>{
         // fromData = [mockData];
 
         if (Array.isArray(fromData)) {
-            if (Array.isArray(fromData[0])) {
-                forEachKVP(fromData[0], (itemKey:string, itemValue: string[]) => {
-                    let statInfo: StatInfo = new StatInfo(makeGuid());
+            forEachKVP(fromData, (itemKey:string, itemValue: string[]) => {
+                let statInfo: StatInfo = new StatInfo(makeGuid());
 
-                    let statType = -1;
+                let statType = -1;
 
-                    const value = getValueOrDefault(itemValue, 'class', '').toLowerCase();
+                const value = getValueOrDefault(itemValue, 'class', '').toLowerCase();
 
-                    switch (value) {
-                        case 'custom_shared_tag':
-                            statType = StatType.CUSTOM_SHARED_TAG;
-                            break;
-                        case 'datastore_size':
-                            statType = StatType.DATASTORE_SIZE;
-                            break;
-                        case 'department':
-                            statType = StatType.DEPARTMENT;
-                            break;
-                        case 'file_type':
-                            statType = StatType.FILE_TYPE;
-                            break;
-                        case 'project':
-                            statType = StatType.PROJECT;
-                            break;
-                        case 'purpose':
-                            statType = StatType.PURPOSE;
-                            break;
-                        case 'upload_date':
-                            statType = StatType.UPLOAD_DATE;
-                            break;
-                        default:
-                            console.log(`Stat type with title '${value}' not found`);
-                            break;
-                    }
+                switch (value) {
+                    case 'custom_shared_tag':
+                        statType = StatType.CUSTOM_SHARED_TAG;
+                        break;
+                    case 'datastore_size':
+                        statType = StatType.DATASTORE_SIZE;
+                        break;
+                    case 'department':
+                        statType = StatType.DEPARTMENT;
+                        break;
+                    case 'file_type':
+                        statType = StatType.FILE_TYPE;
+                        break;
+                    case 'project':
+                        statType = StatType.PROJECT;
+                        break;
+                    case 'purpose':
+                        statType = StatType.PURPOSE;
+                        break;
+                    case 'upload_date':
+                        statType = StatType.UPLOAD_DATE;
+                        break;
+                    default:
+                        console.log(`Stat type with title '${value}' not found`);
+                        break;
+                }
 
-                    statInfo.type = statType;
-                    statInfo.count = getValueOrDefault(itemValue, 'count', '');
-                    statInfo.item = getValueOrDefault(itemValue, 'item', '');
+                statInfo.type = statType;
+                statInfo.count = getValueOrDefault(itemValue, 'count', '');
+                statInfo.item = getValueOrDefault(itemValue, 'item', '');
 
-                    result.push(statInfo);
-                });
-            }
+                result.push(statInfo);
+            });
         }
         else {
             reject('Error while parsing array of stats. Expected Array. Received the following: <' + fromData + '>');
