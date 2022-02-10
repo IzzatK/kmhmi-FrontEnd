@@ -35,6 +35,7 @@ export class GetUserResponseConverter extends Converter<any, Nullable<UserInfo>>
         userInfo.approved_by = getValueOrDefault(item, 'approved_by', '');
         userInfo.isUpdating = false;
         userInfo.date_approved = getValueOrDefault(item, 'date_approved', '');
+        userInfo.role = Array.isArray(item.role_id) ? item.role_id[0] : '';
 
 
         let accountStatus = getValueOrDefault(item, 'account_status', '');

@@ -1,7 +1,7 @@
 import {ReferenceType} from "../../../app.model";
 
-export type SearchGraphsProps = {
-    className: string;
+export type SearchGraphsStateProps = {
+    className?: string;
     departmentData: StatVM[];
     purposeData: StatVM[];
     totalUploadsData: StatVM[];
@@ -9,6 +9,12 @@ export type SearchGraphsProps = {
     docTypeData: StatVM[];
     isExpanded: boolean;
 }
+
+export type SearchGraphsDispatchProps = {
+    onSearchParamChanged: (id: string, value: string) => void;
+}
+
+export type SearchGraphsProps = SearchGraphsDispatchProps & SearchGraphsStateProps;
 
 export type SearchGraphsState = {
     isAlternate: boolean;

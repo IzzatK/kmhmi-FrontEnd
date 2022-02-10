@@ -4,8 +4,8 @@ import {createComponentWrapper} from "../../../framework/wrappers/componentWrapp
 import {createSelector} from "@reduxjs/toolkit";
 import {ReferenceInfo, ReferenceType, StatType} from "../../../app.model";
 import {forEach, forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
-import {documentService, referenceService, statService} from "../../../app.core/serviceComposition";
-import {ReferenceInfoVM, StatVM} from "./searchGraphsModel";
+import {documentService, referenceService, repoService, statService} from "../../../app.core/serviceComposition";
+import {ReferenceInfoVM, SearchGraphsDispatchProps, SearchGraphsStateProps, StatVM} from "./searchGraphsModel";
 
 class SearchGraphsPanel extends Presenter {
     constructor() {
@@ -15,7 +15,7 @@ class SearchGraphsPanel extends Presenter {
 
         this.view = SearchGraphsPanelView;
 
-        this.mapStateToProps = (state: any, props: any) => {
+        this.mapStateToProps = (state: any, props: any) : SearchGraphsStateProps => {
             return {
                 customTagsData: this.getCustomSharedTagsStatsVMs(state),
                 totalUploadsData: this.getTotalUploadsStatsVMs(state),
@@ -26,9 +26,9 @@ class SearchGraphsPanel extends Presenter {
             }
         }
 
-        this.mapDispatchToProps = () => {
+        this.mapDispatchToProps = (): SearchGraphsDispatchProps => {
             return {
-
+                onSearchParamChanged: this._onSearchParamsChanged
             };
         }
 
@@ -38,6 +38,15 @@ class SearchGraphsPanel extends Presenter {
             appearClass: 'fadeIn',
             enterClass: 'fadeIn',
             exitClass: 'fadeOut',
+        }
+    }
+
+    _onSearchParamsChanged(id:string, value: string) {
+        switch (id) {
+            default: {
+                documentService.setSearchParam(id, [value])
+                break;
+            }
         }
     }
 
@@ -103,6 +112,7 @@ class SearchGraphsPanel extends Presenter {
                 const { id, type, item, count} = stat;
 
                 itemVMs[id] = {
+                    id,
                     item: departments[item] ? departments[item].title : 'Unknown',
                     count,
                 };
@@ -153,6 +163,7 @@ class SearchGraphsPanel extends Presenter {
                 const { id, type, item, count} = stat;
 
                 itemVMs[id] = {
+                    id,
                     item: purposes[item] ? purposes[item].title : 'Unknown',
                     count,
                 };
@@ -267,6 +278,7 @@ class SearchGraphsPanel extends Presenter {
                 }
 
                 itemVMs[id] = {
+                    id,
                     item: value,
                     count,
                 };

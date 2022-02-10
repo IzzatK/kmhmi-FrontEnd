@@ -6,7 +6,7 @@ import {WordCloud} from "../../theme/widgets/amcharts/wordCloud/wordCloud";
 import {CirclePieChart} from "../../theme/widgets/amcharts/circlePieChart/circlePieChart";
 import {DonutPieChart} from "../../theme/widgets/amcharts/donutPieChart/donutPieChart";
 import {VariableRadiusDonutPieChart} from "../../theme/widgets/amcharts/variableRadiusDonutPieChart/variableRadiusDonutPieChart";
-import {SearchGraphsProps, SearchGraphsState} from "./searchGraphsModel";
+import {SearchGraphsState, SearchGraphsProps} from "./searchGraphsModel";
 
 export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGraphsState> {
 
@@ -32,6 +32,14 @@ export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGr
             ...this.state,
             isAlternate: !isAlternate,
         })
+    }
+
+    private onSearchParamChanged(id: string, value: string) {
+        const { onSearchParamChanged } = this.props;
+
+        if (onSearchParamChanged) {
+            onSearchParamChanged(id, value);
+        }
     }
 
     render() {
@@ -61,6 +69,7 @@ export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGr
                                 name={"Documents by Department"}
                                 color={'var(--variable-radius-pie-chart-header-background)'}
                                 minimized={!isExpanded}
+                                onSelect={(id: string) => this.onSearchParamChanged('department', id)}
                             />
                             <VariableRadiusDonutPieChart
                                 className={'span-2'}
@@ -69,6 +78,7 @@ export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGr
                                 name={"Documents by Purpose"}
                                 color={'var(--draggable-pie-chart-header-background)'}
                                 minimized={!isExpanded}
+                                onSelect={(id: string) => this.onSearchParamChanged('purpose', id)}
                             />
                             <XYChart
                                 className={''}
@@ -85,6 +95,7 @@ export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGr
                                 name={'Common Tags on Documents'}
                                 color={'var(--word-cloud-header-background)'}
                                 minimized={!isExpanded}
+                                onSelect={(id: string) => this.onSearchParamChanged('tags', id)}
                             />
                             <DonutPieChart
                                 className={'span-2'}
@@ -106,6 +117,7 @@ export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGr
                                 name={"Documents by Department"}
                                 color={'var(--variable-radius-pie-chart-header-background)'}
                                 minimized={!isExpanded}
+                                onSelect={(id: string) => this.onSearchParamChanged('department', id)}
                             />
                             <CirclePieChart
                                 className={''}
@@ -114,6 +126,7 @@ export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGr
                                 name={"Documents by Purpose"}
                                 color={'var(--draggable-pie-chart-header-background)'}
                                 minimized={!isExpanded}
+                                onSelect={(id: string) => this.onSearchParamChanged('purpose', id)}
                             />
                             <XYChart
                                 className={''}
@@ -130,6 +143,7 @@ export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGr
                                 name={'Common Tags on Documents'}
                                 color={'var(--word-cloud-header-background)'}
                                 minimized={!isExpanded}
+                                onSelect={(id: string) => this.onSearchParamChanged('tags', id)}
                             />
                             <CirclePieChart
                                 className={''}

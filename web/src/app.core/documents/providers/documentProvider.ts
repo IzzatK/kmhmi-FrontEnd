@@ -140,16 +140,11 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
 
                             this.sendPut(id,
                                 () => this.updateDocumentRequestConverter.convert(converterData),
-                                (responseData, errorHandler) => this.documentResponseConverter.convert(responseData, errorHandler))
-                                .then(status => {
+                                (responseData, errorHandler) => this.getDocumentResponseConverter.convert(responseData, errorHandler))
+                                .then(document => {
                                     //have to fetch from the server
-                                    if (status.id === id) {
-                                        setTimeout(() => {
-                                            this.getSingle(id)
-                                                .then(document => {
-                                                    resolve(document);
-                                                });
-                                        }, 3000);
+                                    if (document != null) {
+                                        resolve(document);
                                     }
                                     else {
                                         reject(`Error Updating Document with id ${id}`);

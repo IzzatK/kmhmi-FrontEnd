@@ -27,6 +27,21 @@ export class WordCloud extends Component<WordCloudProps, WordCloudState> {
         series.dataFields.word = "item";
         series.dataFields.value = "count";
 
+        series.labels.template.events.on('hit', function(ev) {
+            // console.log("something happened ", ev);
+            // console.log(ev.target?.dataItem);
+            // console.log(ev.target?.dataItem?.dataContext);
+
+            if (this.props.onSelect != null) {
+                // const { id } = ev.target?.dataItem?.dataContext || {};
+
+                const params = ev.target.dataItem?.dataContext as { item: string}
+                if (params != null) {
+                    this.props.onSelect(params.item);
+                }
+            }
+        }, this);
+
         series.data = data;
 
         this.chart = chart;

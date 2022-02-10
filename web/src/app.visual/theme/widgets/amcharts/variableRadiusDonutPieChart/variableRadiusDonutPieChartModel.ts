@@ -5,6 +5,7 @@ export type VariableRadiusDonutPieChartProps = {
     name: string;
     color: string;
     minimized: boolean;
+    onSelect?: (id: string) => void;
 }
 
 export type VariableRadiusDonutPieChartState = {

@@ -5,6 +5,7 @@ export type DonutPieChartProps = {
     name: string;
     color: string;
     minimized: boolean;
+    onSelect?: (id: string) => void;
 }
 
 export type DonutPieChartState = {

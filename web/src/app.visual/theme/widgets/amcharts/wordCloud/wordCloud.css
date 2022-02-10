@@ -22,3 +22,7 @@
 .word-cloud tspan {
     font-family: var(--primary-font-family) !important;
 }
+
+.word-cloud tspan:hover {
+    fill: var(--selected-color);
+}

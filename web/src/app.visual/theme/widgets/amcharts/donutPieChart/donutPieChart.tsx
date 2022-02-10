@@ -38,6 +38,22 @@ export class DonutPieChart extends Component<DonutPieChartProps, DonutPieChartSt
 
         series.hiddenState.properties.endAngle = -90;//initial animation
 
+        series.slices.template.events.on('hit', function(ev) {
+            // console.log("something happened ", ev);
+            // console.log(ev.target?.dataItem);
+            // console.log(ev.target?.dataItem?.dataContext);
+
+            if (this.props.onSelect != null) {
+                // const { id } = ev.target?.dataItem?.dataContext || {};
+
+                const params = ev.target.dataItem?.dataContext as { id: string}
+                if (params != null) {
+                    this.props.onSelect(params.id);
+                }
+            }
+        }, this);
+
+
         chart.legend = new am4charts.Legend();
         chart.legend.position = "right";
         chart.legend.maxHeight = 230;
