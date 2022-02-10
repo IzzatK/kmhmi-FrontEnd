@@ -60,6 +60,7 @@ class SearchGraphsPanel extends Presenter {
                 const { id, type, item, count} = stat;
 
                 itemVMs[id] = {
+                    id: item,
                     item,
                     count,
                 };
@@ -78,6 +79,7 @@ class SearchGraphsPanel extends Presenter {
                 const { id, type, item, count} = stat;
 
                 itemVMs[id] = {
+                    id: item,
                     item,
                     count,
                 };
@@ -112,7 +114,7 @@ class SearchGraphsPanel extends Presenter {
                 const { id, type, item, count} = stat;
 
                 itemVMs[id] = {
-                    id,
+                    id: item,
                     item: departments[item] ? departments[item].title : 'Unknown',
                     count,
                 };
@@ -163,7 +165,7 @@ class SearchGraphsPanel extends Presenter {
                 const { id, type, item, count} = stat;
 
                 itemVMs[id] = {
-                    id,
+                    id: item,
                     item: purposes[item] ? purposes[item].title : 'Unknown',
                     count,
                 };
