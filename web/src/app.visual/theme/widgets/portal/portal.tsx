@@ -37,9 +37,6 @@ class Portal extends Component<PortalProps, PortalState> {
     }
 
     _onShouldClose = () => {
-
-        console.log("_onShouldClose");
-
         const { onShouldClose } = this.props;
         const { isOpen }  = this.state;
 

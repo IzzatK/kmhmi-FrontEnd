@@ -270,7 +270,7 @@ class SearchBannerView extends Component<SearchBannerProps, SearchBannerState> {
                                         exitClass={'shrinkVertical'}
                                         timeout={200}
                                         autoLayout={false}
-                                        onShouldClose={null}
+                                        onShouldClose={() => this._setShowAdvanced(false)}
                                         portalContent={
                                             ({}) =>
                                             <div className={'portal position-absolute'}
@@ -287,7 +287,7 @@ class SearchBannerView extends Component<SearchBannerProps, SearchBannerState> {
                                                 </div>
                                             </div>
                                         }>
-                                        <Button className={'combo-box-button'} orientation={"horizontal"} onClick={((event) => this._setShowAdvanced(!showAdvanced))}>
+                                        <Button className={'combo-box-button'} orientation={"horizontal"} onClick={() => this._setShowAdvanced(!showAdvanced)}>
                                             <div className={"flex-fill"}>More</div>
                                             <div className={"d-flex align-items-center tiny-image-container combo-box-arrow pe-none"}>{arrowSVG}</div>
                                         </Button>

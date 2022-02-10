@@ -8,7 +8,7 @@ import {Converter} from "../../../common/converters/converter";
 export class GetSingleRoleResponseConverter extends Converter<any, Nullable<RoleInfo>>{
     convert(fromData: Array<any>, reject: any): Nullable<RoleInfo> {
 
-        let body = fromData[0];
+        let body = fromData;
 
         if (body === undefined) return null;
 

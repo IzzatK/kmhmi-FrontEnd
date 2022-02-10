@@ -5,7 +5,7 @@ import {Converter} from "../../common/converters/converter";
 
 export class GetReferenceArrayResponseConverter extends Converter<any, ReferenceInfo[]>{
     convert(fromData: any, reject: any, options?: {referenceType: ReferenceType}): ReferenceInfo[] {
-        if (!fromData || !fromData[0] || !Array.isArray(fromData[0])) {
+        if (!fromData || !Array.isArray(fromData)) {
             reject('Error while parsing array of references. Expected 2 Level Array. Receive the following: <' + fromData + '>');
         }
 
@@ -14,7 +14,7 @@ export class GetReferenceArrayResponseConverter extends Converter<any, Reference
         if (options != null) {
             const referenceOrdinal = ReferenceType[options.referenceType];
 
-            forEachKVP(fromData[0], (key: string, value: any) => {
+            forEachKVP(fromData, (key: string, value: any) => {
 
                 const {id, name} = value;
 

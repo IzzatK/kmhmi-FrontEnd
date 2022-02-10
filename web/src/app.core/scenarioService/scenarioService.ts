@@ -97,7 +97,7 @@ export class ScenarioService extends Plugin implements IScenarioService {
         this.createSearchParamInfo('offset', ParamType.STRING, '', null, null, 'Offset', false, false, false);
         this.createSearchParamInfo('limit', ParamType.STRING, '', null, null, 'Limit', false, false, false);
         this.createSearchParamInfo('title', ParamType.STRING, '', null, null, 'Title', true, true, false);
-        this.createSearchParamInfo('author', ParamType.STRING, '', null, null, 'Title', true, true, false);
+        this.createSearchParamInfo('author', ParamType.STRING, '', null, null, 'Author', true, true, false);
         this.createSearchParamInfo('department', ParamType.OPTIONS, '', {}, ReferenceType.DEPARTMENT, 'Department', true, false, false);
         this.createSearchParamInfo('purpose', ParamType.OPTIONS, '', {}, ReferenceType.PURPOSE, 'Purpose', true, false, false);
         this.createSearchParamInfo('projects', ParamType.STRING, '', null, null, 'Projects', true, true, false);
