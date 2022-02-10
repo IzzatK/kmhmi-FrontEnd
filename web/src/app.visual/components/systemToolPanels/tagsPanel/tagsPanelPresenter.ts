@@ -2,7 +2,7 @@ import TagsPanelView from "./tagsPanelView";
 import {Presenter} from "../../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../../framework/wrappers/componentWrapper";
 import {createSelector} from "@reduxjs/toolkit";
-import {tagService} from "../../../../app.core/serviceComposition";
+import {selectionService, tagService} from "../../../../app.core/serviceComposition";
 import {TagInfoVM} from "./tagsPanelModel";
 import {forEach} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {TagInfo} from "../../../../app.model";
@@ -30,9 +30,13 @@ class TagsPanel extends Presenter {
 
         this.mapDispatchToProps = (dispatch: any) => {
             return {
-
+                onTagSelected: (id: string) => this.onTagSelected(id),
             };
         }
+    }
+
+    onTagSelected(id: string) {
+        selectionService.setContext("selected-tag", id);
     }
 
     getTagVMs = createSelector(

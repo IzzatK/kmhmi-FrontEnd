@@ -13,16 +13,18 @@
 .tags-panel .tag {
     height: 2.55rem;
     background: transparent;
+    color: var(--tags-panel-tag-color);
 }
 
-.tags-panel .tag:hover {
+.tags-panel .tag:hover,
+.tags-panel .tag.selected {
     background: var(--tag-bg-color);
     color: var(--tag-color);
 }
 
 .tags-panel .tag-grid {
     display: grid;
-    grid-template-rows: repeat(auto-fill, 3.5rem);
+    grid-template-rows: repeat(auto-fill, 2.55rem);
     grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 0 3rem;
+    grid-gap: 0 1rem;
 }

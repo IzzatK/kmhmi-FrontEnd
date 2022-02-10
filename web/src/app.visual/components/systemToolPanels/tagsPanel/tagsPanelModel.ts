@@ -2,9 +2,11 @@ export type TagsPanelProps = {
     className: string;
     nominatedTags?: Record<string, NominatedTagVM>;
     tags: Record<string, TagInfoVM[]>;
+    onTagSelected: (id: string) => void;
 }
 
 export type TagsPanelState = {
+    selectedTag: string,
 }
 
 export type NominatedTagVM = {

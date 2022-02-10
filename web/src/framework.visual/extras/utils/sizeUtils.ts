@@ -1,4 +1,6 @@
 export const getFormattedSize = (bytes: number) => {
+    if (!bytes) return "";
+
     let result = bytes + " bytes";
     let tmpSize = bytes;
 
