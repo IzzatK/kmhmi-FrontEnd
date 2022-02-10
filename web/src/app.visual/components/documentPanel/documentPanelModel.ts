@@ -19,6 +19,7 @@ export type DocumentPanelState = {
     isDirty: boolean;
     isGlobal: boolean;
     isPrivate: boolean;
+    showTagEditor: boolean;
 }
 
 export type UserProfileVM = {

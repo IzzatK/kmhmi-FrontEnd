@@ -13,6 +13,12 @@ import {DocumentPanelProps, DocumentPanelState, DocumentInfoVM, EditPropertyVM} 
 import {InfoSVG} from "../../theme/svgs/infoSVG";
 import Card from "../../theme/widgets/card/card";
 import CheckBox from "../../theme/widgets/checkBox/checkBox";
+import {EllipsisSVG} from "../../theme/svgs/ellipsisSVG";
+import Portal from "../../theme/widgets/portal/portal";
+import {indexOf} from "@amcharts/amcharts4/.internal/core/utils/Array";
+import {AddNewSVG} from "../../theme/svgs/addNewSVG";
+import {DeleteSVG} from "../../theme/svgs/deleteSVG";
+import {MinimizeSVG} from "../../theme/svgs/minimizeSVG";
 
 class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState> {
 
@@ -26,6 +32,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
             isDirty: false,
             isGlobal: true,
             isPrivate: false,
+            showTagEditor: false,
         }
     }
 
@@ -252,10 +259,23 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         }
     }
 
+    _onSubmitTags() {
+        this._setShowTagEditor(false);
+    }
+
+    _setShowTagEditor(showTagEditor: boolean) {
+        this.setState({
+            ...this.state,
+            showTagEditor: showTagEditor,
+        })
+    }
+
     getCellRenderer(tmpDocument: DocumentInfoVM, document: DocumentInfoVM, editProperty: EditPropertyVM, isGlobal?: boolean) {
-        const { canModify } = this.props.permissions;
+        const { permissions } = this.props;
+        const { canModify } = permissions;
         const {id, type, title='test', options={}, long=false} = editProperty;
         const { id:document_id } = document;
+        const { showTagEditor } = this.state;
 
         let cellRenderer = null;
 
@@ -337,7 +357,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                     this.onTmpDocumentChanged(name, result);
                 }
 
-                let tagsDivs;
+                let tagsDivs: {} | null | undefined;
 
                 if (Array.isArray(value)) {
                     tagsDivs = value.map((tag: string) => {
@@ -349,10 +369,89 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                     })
                 }
 
+                let truncatedTagsDivs: {} | null | undefined;
+
+                if (Array.isArray(value)) {
+                    truncatedTagsDivs = value.map((tag: string) => {
+                        if (indexOf(value, tag) < 3) {
+                            return (
+                                tag.length > 0 &&
+                                <Tag name={id} text={tag.trim()} onDelete={onClick} isGlobal={isGlobal} className={"mr-4"}
+                                     isEdit={tag.trim() === "-1"} readonly={!canModify} onSubmit={onSubmit}/>
+                            );
+                        }
+
+                    })
+                }
+
                 cellRenderer = (
-                    <div className={'d-flex flex-nowrap align-self-center overflow-auto w-100'} key={id}>
-                        {tagsDivs}
+                    <div className={'d-flex flex-nowrap align-self-center align-items-center overflow-hidden w-100'}>
+
+                        {
+                            !showTagEditor &&
+                            <div className={'d-flex flex-nowrap align-self-center overflow-hidden'} key={id}>
+                                {truncatedTagsDivs}
+                            </div>
+                        }
+                        {
+                            permissions.canModify && (Array.isArray(value) && value.length < 3) &&
+                            <Button className={'tag-button fill-primary'}
+                                 onClick={isGlobal ? this.addNewPublicTag : this.addNewPrivateTag}>
+                                <AddNewSVG className={"nano-image-container"}/>
+                            </Button>
+                        }
+
+                        {
+                            value.length > 2 &&
+                            <Portal
+                                isOpen={showTagEditor}
+                                zIndex={9999}
+                                enterClass={'growVertical'}
+                                exitClass={'shrinkVertical'}
+                                timeout={200}
+                                autoLayout={false}
+                                onShouldClose={() => this._setShowTagEditor(false)}
+                                portalContent={
+                                    ({}) =>
+                                        <div className={'portal position-absolute tags-portal'}>
+                                            <div className={'advanced d-flex flex-column v-gap-5 shadow position-relative'}>
+                                                <div className={'d-inline-flex flex-wrap align-self-center align-items-center overflow-auto w-100 p-3'} key={id}>
+                                                    {tagsDivs}
+                                                    {
+                                                        permissions.canModify &&
+                                                        <Button className={'tag-button fill-primary'}
+                                                             onClick={isGlobal ? this.addNewPublicTag : this.addNewPrivateTag}>
+                                                            <AddNewSVG className={"nano-image-container"}/>
+                                                        </Button>
+                                                    }
+                                                </div>
+                                                <div className={'d-flex flex-fill justify-content-end align-items-end'}>
+                                                    <div className={'d-flex flex-fill justify-content-end align-items-end footer p-4'}>
+                                                        <Button light={true} onClick={this._onSubmitTags}>Submit Tags</Button>
+                                                    </div>
+                                                </div>
+                                                <div className={"position-absolute close"}>
+                                                    <Button className={"bg-transparent fill-primary"} onClick={() => this._setShowTagEditor(false)}>
+                                                        <MinimizeSVG className={"nano-image-container"}/>
+                                                    </Button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                }>
+
+                                {
+                                    Array.isArray(value) && value.length > 2 &&
+                                    <Button className={`ellipsis-button ${showTagEditor ? "invisible" : ""}`} onClick={(() => this._setShowTagEditor(!showTagEditor))}>
+                                        <EllipsisSVG className={'small-image-container'}/>
+                                    </Button>
+                                }
+
+                            </Portal>
+                        }
+
                     </div>
+
                 )
                 break;
             }
@@ -644,11 +743,6 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                         {
                                             !isGlobal &&
                                             this.getCellRenderer(tmpDocument, document, editProperties['private_tag'], false)
-                                        }
-                                        {
-                                            permissions.canModify &&
-                                            <div className={'tag-button text-primary display-4 cursor-pointer align-self-center'}
-                                                 onClick={isGlobal ? this.addNewPublicTag : this.addNewPrivateTag}>+</div>
                                         }
                                     </div>
                                     {

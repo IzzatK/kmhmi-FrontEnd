@@ -309,6 +309,10 @@
     height: 1.0rem;
 }
 
+.search-results-panel .d-inline-flex {
+    gap: 1rem 1rem;
+}
+
 ::-webkit-scrollbar {
     cursor: pointer;
     height: 8px !important;

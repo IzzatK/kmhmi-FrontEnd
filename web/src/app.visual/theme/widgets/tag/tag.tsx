@@ -81,7 +81,9 @@ class Tag extends React.Component<TagProps, TagState> {
                             name={name}
                             dirty={dirty}
                             value={value}
-                            onSubmit={this.submit}/>
+                            onSubmit={this.submit}
+                            edit={true}
+                            autoFocus={true}/>
                     }
                 </div>
                 {

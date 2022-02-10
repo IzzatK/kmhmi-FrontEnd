@@ -126,11 +126,12 @@
     font-size: 1.4rem;
 }
 
-.document-panel .tag-button {
-    border-radius: 50%;
+.document-panel .tag-button,
+.tags-portal .tag-button {
     background: var(--document-panel-button-bg-color);
-    padding: 0.6rem 0.8rem 0.7rem 0.8rem;
-    height: 2.55rem;
+    height: 1.7rem;
+    min-width: 1.7rem !important;
+    padding: 0 !important;
 }
 
 .document-panel .button {
@@ -139,4 +140,31 @@
 
 .document-panel .custom-v-gap > *:not(:first-child):not(.exclude-item) {
     margin-top: 1.7rem;
+}
+
+.tags-portal {
+    margin-top: -2.55rem;
+    width: 50rem;
+}
+
+.tags-portal .d-inline-flex {
+    gap: 1rem 0;
+}
+
+.tags-portal .close {
+    top: -1.75rem;
+    right: 1rem;
+}
+
+.document-panel .ellipsis-button {
+    min-width: 3.2rem;
+    height: 2rem;
+}
+
+.document-panel .ellipsis-button.invisible {
+    background: transparent;
+}
+
+.document-panel .ellipsis-button.invisible svg {
+    fill: transparent;
 }

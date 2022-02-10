@@ -9,6 +9,8 @@ import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingI
 import {TooltipPortal} from "../../../theme/widgets/tooltipPortal/tooltipPortal";
 import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
 import Tag from "../../../theme/widgets/tag/tag";
+import {indexOf} from "@amcharts/amcharts4/.internal/core/utils/Array";
+import {EllipsisSVG} from "../../../theme/svgs/ellipsisSVG";
 
 class TableCollectionView extends Component {
     constructor(props) {
@@ -313,7 +315,7 @@ const TitleCellRender = ({ tableManager, value, field, data, column, colIndex, r
 
     const { selected } = data;
 
-    let cn = 'rgt-cell-inner cursor-pointer d-flex align-items-center';
+    let cn = 'rgt-cell-inner cursor-pointer d-flex align-items-center overflow-hidden';
 
     if (selected) {
         cn += ` selected`;
@@ -360,7 +362,7 @@ const PublicTagCellRender = ({ tableManager, value, field, data, column, colInde
 
     const { selected } = data;
 
-    let cn = 'rgt-cell-inner cursor-pointer d-flex align-items-center h-gap-2 overflow-hidden';
+    let cn = 'rgt-cell-inner';
 
     if (selected) {
         cn += ` selected`;
@@ -368,11 +370,31 @@ const PublicTagCellRender = ({ tableManager, value, field, data, column, colInde
 
     return (
         <div className={cn}>
-            {
-                value && value.split(",").map(tag => {
-                    return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} isGlobal={true}/>
-                })
-            }
+            <TooltipPortal portalContent={
+                <div className={"cursor-pointer d-inline-flex flex-wrap align-items-center overflow-auto"}>
+                    {
+                        value && value.split(",").map(tag => {
+                            return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} isGlobal={true}/>
+                        })
+                    }
+                </div>
+
+            }>
+                <div className={"cursor-pointer d-flex align-items-center h-gap-2 overflow-hidden"}>
+                    {
+                        value && value.split(",").map(tag => {
+                            if (indexOf(value.split(","), tag) < 3) {
+                                return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} isGlobal={true}/>
+                            }
+
+                        })
+                    }
+                    {
+                        value && value.split(",").length > 2 &&
+                        <EllipsisSVG className={"ml-5 small-image-container"}/>
+                    }
+                </div>
+            </TooltipPortal>
         </div>
     )
 }
@@ -381,7 +403,7 @@ const PrivateTagCellRender = ({ tableManager, value, field, data, column, colInd
 
     const { selected } = data;
 
-    let cn = 'rgt-cell-inner cursor-pointer d-flex align-items-center h-gap-2 overflow-hidden';
+    let cn = 'rgt-cell-inner';
 
     if (selected) {
         cn += ` selected`;
@@ -389,11 +411,31 @@ const PrivateTagCellRender = ({ tableManager, value, field, data, column, colInd
 
     return (
         <div className={cn}>
-            {
-                value && value.split(",").map(tag => {
-                    return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false}/>
-                })
-            }
+            <TooltipPortal portalContent={
+                <div className={"cursor-pointer d-inline-flex flex-wrap align-items-center overflow-auto"}>
+                    {
+                        value && value.split(",").map(tag => {
+                            return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} isGlobal={true}/>
+                        })
+                    }
+                </div>
+
+            }>
+                <div className={"cursor-pointer d-flex align-items-center h-gap-2 overflow-hidden"}>
+                    {
+                        value && value.split(",").map(tag => {
+                            if (indexOf(value.split(","), tag) < 3) {
+                                return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} isGlobal={true}/>
+                            }
+
+                        })
+                    }
+                    {
+                        value && value.split(",").length > 2 &&
+                        <EllipsisSVG className={"ml-5 small-image-container"}/>
+                    }
+                </div>
+            </TooltipPortal>
         </div>
     )
 }
