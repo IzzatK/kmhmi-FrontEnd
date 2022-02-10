@@ -21,7 +21,7 @@ export type SearchGraphsState = {
 }
 
 export type StatVM = {
-    id?: any;
+    id: any;
     type?: any;
     item: any;
     count: any;
