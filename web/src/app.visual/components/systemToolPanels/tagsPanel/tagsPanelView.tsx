@@ -15,35 +15,48 @@ import Portal from "../../../theme/widgets/portal/portal";
 class TagsPanelView extends Component<TagsPanelProps, TagsPanelState> {
     constructor(props: any, context: any) {
         super(props, context);
+
+        this.state = {
+            selectedTag: "",
+        }
     }
 
-    _onClickHandler = () => {
-        // const { selected } = this.state;
 
-        // if (selected) {
-        //     this._close();
-        // }
-        // else {
-        //     this._open();
-        // }
-    };
+    _setSelected(id: string) {
+        const { selectedTag } = this.state;
+        const { onTagSelected } = this.props;
 
-    _open() {
-        this.setState({
-            ...this.state,
-            selected: true,
-        });
+        if (id !== selectedTag) {
+            this.setState({
+                ...this.state,
+                selectedTag: id,
+            });
+        } else {
+            this.setState({
+                ...this.state,
+                selectedTag: "",
+            });
+        }
+
+        if (onTagSelected) {
+            onTagSelected(id);
+        }
     }
 
-    _close() {
-        this.setState({
-            ...this.state,
-            selected: false,
-        });
+    _onShouldClose(id: string) {
+        const { selectedTag } = this.state;
+
+        if (id === selectedTag) {
+            this.setState({
+                ...this.state,
+                selectedTag: "",
+            })
+        }
     }
 
     render() {
         const { className, nominatedTags, tags } = this.props;
+        const { selectedTag } = this.state;
 
         let cn = "d-flex position-absolute w-100 h-100 align-items-center justify-content-center";
 
@@ -98,15 +111,15 @@ class TagsPanelView extends Component<TagsPanelProps, TagsPanelState> {
                 return (
                     <div>
                         <Portal
-                            isOpen={selected}
+                            isOpen={selectedTag === id}
                             zIndex={9999}
                             enterClass={'growVertical'}
                             exitClass={'shrinkVertical'}
                             timeout={200}
-                            onShouldClose={this._onClickHandler}
+                            onShouldClose={() => this._onShouldClose(id)}
                             portalContent={
                                 <div className={`position-absolute w-100`}>
-                                    <ul className={"w-100 list-items"}>
+                                    <ul className={"w-100 list-items header-3 v-gap-2 p-3"}>
                                         <div>Search by Tag...</div>
                                         <div>Add Tag to Document</div>
                                         <div>Edit Tag</div>
@@ -116,7 +129,10 @@ class TagsPanelView extends Component<TagsPanelProps, TagsPanelState> {
                                 </div>
 
                             }>
-                            <div className={"tag font-weight-light text-accent display-3 d-flex rounded-pill cursor-pointer align-self-center"}>{title}</div>
+                            <div className={`tag font-weight-light display-3 d-flex rounded-pill cursor-pointer align-items-center ${selectedTag === id ? "selected justify-content-center" : "pl-3"}`}
+                                 onClick={() => this._setSelected(id)}>
+                                {title}
+                            </div>
                         </Portal>
                     </div>
 
@@ -126,8 +142,8 @@ class TagsPanelView extends Component<TagsPanelProps, TagsPanelState> {
             return (
                 <div className={"d-flex flex-column"}>
 
-                    <div className={"py-3 pr-3 pl-5 font-weight-light letter-header mb-3"}>{letter}</div>
-                    <div className={"tag-grid align"}>
+                    <div className={"py-3 pr-3 pl-5 font-weight-light letter-header mb-4"}>{letter}</div>
+                    <div className={"tag-grid align mb-5"}>
                         {tagDivs}
                     </div>
                 </div>

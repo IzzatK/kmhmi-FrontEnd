@@ -129,6 +129,7 @@ body > * {
     /* Tags Panel */
     --tags-panel-header-background: var(--app-shuttleGrey);
     --tags-panel-header-color: var(--app-whiteSmoke);
+    --tags-panel-tag-color: var(--app-silver);
 
     /* User Management */
     --profile-panel-color: var(--app-whiteSmoke);

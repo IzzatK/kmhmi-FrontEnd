@@ -5,6 +5,7 @@
 
 .text-edit input[type=date],
 .text-edit input[type=text] {
+    cursor: text;
     border: none;
     border-bottom: 1px solid var(--text-field-border-color);
     background: var(--text-field-bg-color);
