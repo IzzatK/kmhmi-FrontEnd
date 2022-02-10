@@ -45,4 +45,7 @@ export interface IAuthorizationService extends IPlugin {
     authorizeUser(userId: string): void;
     isAuthorizing(): boolean;
     isAuthorized(): boolean;
+
+    setDodWarningAccepted(value: boolean): void;
+    isDodWarningAccepted(): boolean;
 }

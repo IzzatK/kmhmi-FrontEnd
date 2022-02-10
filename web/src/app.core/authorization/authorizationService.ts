@@ -20,7 +20,8 @@ type AuthorizationState = {
     // permissions: Nullable<PERMISSION_TYPE[]>
     hasError: boolean,
     isAuthorized: boolean,
-    isAuthorizing: boolean
+    isAuthorizing: boolean,
+    dodWarningAccepted: boolean
 }
 
 type AuthorizationSliceType = Slice<AuthorizationState,
@@ -28,6 +29,7 @@ type AuthorizationSliceType = Slice<AuthorizationState,
         setHasError: (state: AuthorizationState, action: PayloadAction<boolean>) => void;
         setIsAuthorized: (state:AuthorizationState, action:PayloadAction<boolean>) => void;
         setIsAuthorizing: (state:AuthorizationState, action:PayloadAction<boolean>) => void;
+        setDodWarningAccepted: (state:AuthorizationState, action:PayloadAction<boolean>) => void;
     }>;
 
 export class AuthorizationService extends Plugin implements IAuthorizationService {
@@ -53,7 +55,8 @@ export class AuthorizationService extends Plugin implements IAuthorizationServic
             initialState: {
                 hasError: false,
                 isAuthorizing: true,
-                isAuthorized: false
+                isAuthorized: false,
+                dodWarningAccepted: false
             } as AuthorizationState,
             reducers: {
                 setHasError: (state, action) => {
@@ -64,6 +67,9 @@ export class AuthorizationService extends Plugin implements IAuthorizationServic
                 },
                 setIsAuthorizing: (state, action) => {
                     state.isAuthorizing = action.payload;
+                },
+                setDodWarningAccepted: (state, action) => {
+                    state.dodWarningAccepted = action.payload;
                 }
             },
         });
@@ -224,4 +230,14 @@ export class AuthorizationService extends Plugin implements IAuthorizationServic
     isAuthorized(): boolean {
         return this.getState().isAuthorized;
     }
+
+    isDodWarningAccepted(): boolean {
+        return isDev() ? true : this.getState().dodWarningAccepted;
+    }
+
+    setDodWarningAccepted(value: boolean): void {
+        this.appDataStore?.sendEvent(this.model.actions.setDodWarningAccepted(value));
+    }
+
+
 }

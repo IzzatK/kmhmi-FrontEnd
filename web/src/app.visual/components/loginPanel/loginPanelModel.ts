@@ -1,10 +1,12 @@
 export type LoginPanelStateProps = {
     className?: string;
+    dodWarningAccepted: boolean;
 }
 
 export type LoginPanelDispatchProps = {
     onLogin: () => void;
     onRegister: (user: UserInfoVM) => void;
+    onAgreement: () => void;
 }
 
 export type LoginPanelProps = LoginPanelStateProps & LoginPanelDispatchProps;

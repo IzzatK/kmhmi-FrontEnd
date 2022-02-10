@@ -2,7 +2,7 @@ import {Presenter} from "../../../framework.visual/extras/presenter";
 import LoginPanelView from "./loginPanelView";
 import {LoginPanelDispatchProps, LoginPanelStateProps, UserInfoVM} from "./loginPanelModel";
 import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
-import {authenticationService} from "../../../app.core/serviceComposition";
+import {authenticationService, authorizationService} from "../../../app.core/serviceComposition";
 import {UserInfo} from "../../../app.model";
 import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
 
@@ -16,7 +16,7 @@ class LoginPanel extends Presenter {
 
         this.mapStateToProps = (state: any, props: any): LoginPanelStateProps => {
             return {
-
+                dodWarningAccepted: authorizationService.isDodWarningAccepted()
             };
         }
 
@@ -27,6 +27,9 @@ class LoginPanel extends Presenter {
                 },
                 onRegister: (user: UserInfoVM) => {
                     this.register(user);
+                },
+                onAgreement: () => {
+                    authorizationService.setDodWarningAccepted(true);
                 }
             };
         }

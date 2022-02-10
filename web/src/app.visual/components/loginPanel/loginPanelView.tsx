@@ -68,8 +68,14 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
         });
     }
 
+    private onAgreement() {
+        if (this.props.onAgreement != null) {
+            this.props.onAgreement();
+        }
+    }
+
     render() {
-        const { className } = this.props;
+        const { className, dodWarningAccepted } = this.props;
 
         const { tmpUser } = this.state;
 
@@ -81,55 +87,68 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
         return (
             <div className={cn}>
                 <div className={"d-flex flex-fill position-relative h-100"}>
-                    <div className={"position-absolute"}/>
-                    <div className={'d-flex flex-fill justify-content-between'} style={{zIndex: 999}}>
-                        <div className={"d-flex flex-fill align-items-center justify-content-center"}>
-                            <div className={"d-flex flex-column"}>
-                                <div className={"d-flex flex-column light-popup v-gap-5"}>
-                                    <div className={"d-flex text-selected font-weight-semi-bold px-5 pt-5"}>
-                                        <div>Returning User</div>
-                                    </div>
-                                    <div className={"light-info px-5 text-wrap display-3"}>
-                                        If you have already created a profile, click "submit" to access the CIC Knowledge Management Dashboard
-                                    </div>
-                                </div>
-
-                                <div className={"d-flex justify-content-end py-4 pr-5 bg-advisory"}>
-                                    <Button text={"I Already Have Access"} light={true} onClick={() => this._onLogin()}/>
+                    {
+                        !dodWarningAccepted &&
+                        <div className={'position-relative flex-fill d-flex align-items-center justify-content-center'}>
+                            <div className={'dod-warning-banner position-relative d-flex align-items-end justify-content-center shadow-lg'}>
+                                <div className={'position-absolute pb-3'}>
+                                    <Button onClick={this.onAgreement}>OK</Button>
                                 </div>
                             </div>
                         </div>
-
-                        <div className={"d-flex flex-column dark align-items-center justify-content-center"} style={{width: "60%"}}>
-                            <div className={"d-flex flex-column"}>
-                                <div className={"d-flex flex-column popup v-gap-5"}>
-                                    <div className={"text-selected font-weight-semi-bold px-5 pt-5"}>
-                                        <div>New user</div>
-                                    </div>
-                                    <div className={"info px-5 display-3"}>New to the Dashboard? Submit your information below to request authorization</div>
-                                    <div className={"v-gap-5"}>
-                                        <div className={'register-grid px-5'}>
-                                            <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>DoD ID:</div>
-                                            <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>First Name:</div>
-                                            <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>Last Name:</div>
-                                            <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>Email:</div>
-                                            <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>Phone:</div>
-                                            <TextEdit value={tmpUser.dod_id} name={nameOf<UserInfoVM>("dod_id")} autoFocus={true} placeholder={"DoD ID"} onSubmit={this.onTmpUserChanged}/>
-                                            {/*<div className={"align-self-center text-info font-weight-light display-4"}>{user?.name}</div>*/}
-                                            <TextEdit value={tmpUser.first_name} name={nameOf<UserInfoVM>("first_name")} autoFocus={true} placeholder={"First Name"} onSubmit={this.onTmpUserChanged}/>
-                                            <TextEdit value={tmpUser.last_name} name={nameOf<UserInfoVM>("last_name")} autoFocus={true} placeholder={"Last Name"} onSubmit={this.onTmpUserChanged}/>
-                                            <TextEdit value={tmpUser.email} name={nameOf<UserInfoVM>("email")} autoFocus={true} placeholder={"Email Address"} onSubmit={this.onTmpUserChanged}/>
-                                            <TextEdit value={tmpUser.phone} name={nameOf<UserInfoVM>("phone")} placeholder={"Phone Number"} onSubmit={this.onTmpUserChanged}/>
+                    }
+                    {
+                        dodWarningAccepted &&
+                        <div className={'d-flex flex-fill justify-content-between'} style={{zIndex: 999}}>
+                            <div className={"d-flex flex-fill align-items-center justify-content-center"}>
+                                <div className={"d-flex flex-column shadow-lg"}>
+                                    <div className={"d-flex flex-column light-popup v-gap-5"}>
+                                        <div className={"d-flex text-selected font-weight-semi-bold px-5 pt-5"}>
+                                            <div>Returning User</div>
+                                        </div>
+                                        <div className={"light-info px-5 text-wrap display-3"}>
+                                            If you have already created a profile, click "submit" to access the CIC Knowledge Management Dashboard
                                         </div>
                                     </div>
-                                </div>
 
-                                <div className={"d-flex justify-content-end py-4 pr-5 bg-advisory"}>
-                                    <Button text={"Submit"} light={true} onClick={() => this._onRegister()}/>
+                                    <div className={"d-flex justify-content-end py-4 pr-5 bg-advisory"}>
+                                        <Button text={"I Already Have Access"} light={true} onClick={this._onLogin}/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className={"d-flex flex-column dark align-items-center justify-content-center"} style={{width: "60%"}}>
+                                <div className={"d-flex flex-column shadow-lg"}>
+                                    <div className={"d-flex flex-column popup v-gap-5"}>
+                                        <div className={"text-selected font-weight-semi-bold px-5 pt-5"}>
+                                            <div>New user</div>
+                                        </div>
+                                        <div className={"info px-5 display-3"}>New to the Dashboard? Submit your information below to request authorization</div>
+                                        <div className={"v-gap-5"}>
+                                            <div className={'register-grid px-5'}>
+                                                <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>DoD ID:</div>
+                                                <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>First Name:</div>
+                                                <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>Last Name:</div>
+                                                <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>Email:</div>
+                                                <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>Phone:</div>
+                                                <TextEdit value={tmpUser.dod_id} name={nameOf<UserInfoVM>("dod_id")} autoFocus={true} placeholder={"DoD ID"} onSubmit={this.onTmpUserChanged}/>
+                                                {/*<div className={"align-self-center text-info font-weight-light display-4"}>{user?.name}</div>*/}
+                                                <TextEdit value={tmpUser.first_name} name={nameOf<UserInfoVM>("first_name")} autoFocus={true} placeholder={"First Name"} onSubmit={this.onTmpUserChanged}/>
+                                                <TextEdit value={tmpUser.last_name} name={nameOf<UserInfoVM>("last_name")} autoFocus={true} placeholder={"Last Name"} onSubmit={this.onTmpUserChanged}/>
+                                                <TextEdit value={tmpUser.email} name={nameOf<UserInfoVM>("email")} autoFocus={true} placeholder={"Email Address"} onSubmit={this.onTmpUserChanged}/>
+                                                <TextEdit value={tmpUser.phone} name={nameOf<UserInfoVM>("phone")} placeholder={"Phone Number"} onSubmit={this.onTmpUserChanged}/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className={"d-flex justify-content-end py-4 pr-5 bg-advisory"}>
+                                        <Button text={"Submit"} light={true} onClick={() => this._onRegister()}/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    }
+
                 </div>
             </div>
         )

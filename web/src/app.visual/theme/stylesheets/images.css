@@ -57,3 +57,12 @@
     width: 100%;
     height: 100%;
 }
+
+.dod-warning-banner {
+    background-image: url("../images/dod_warning_banner.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-position: center;
+    width: 1036px;
+    height: 430px;
+}

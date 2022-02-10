@@ -17,6 +17,7 @@ export default class KnowledgeManagementView extends Component<KnowledgeManageme
         return (
             <div id={"knowledge-management"} className={"h-100 d-flex flex-column header-3"} style={{background: 'var(--app-background)'}}>
                 <SystemBannerPresenter/>
+
                 <div className={"view-container flex-fill position-relative"}>
                     {
                         isAuthenticating ?
