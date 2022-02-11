@@ -41,7 +41,7 @@ class LandingPanelView extends Component<LandingPanelProps, LandingPanelState> {
                         {
                             registrationStatus === RegistrationStatusType.REJECTED &&
                             <div className={'d-flex align-items-center justify-content-center'}>
-                                <div className={'display-1 text-secondary'}>You have been rejected from the Jedi Order</div>
+                                <div className={'display-1 text-secondary'}>You are not a recognized user. Your access request may have been rejected</div>
                             </div>
                         }
                         {
