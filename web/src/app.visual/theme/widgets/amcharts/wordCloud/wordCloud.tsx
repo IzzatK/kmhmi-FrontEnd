@@ -35,9 +35,9 @@ export class WordCloud extends Component<WordCloudProps, WordCloudState> {
             if (this.props.onSelect != null) {
                 // const { id } = ev.target?.dataItem?.dataContext || {};
 
-                const params = ev.target.dataItem?.dataContext as { item: string}
+                const params = ev.target.dataItem?.dataContext as { id: string}
                 if (params != null) {
-                    this.props.onSelect(params.item);
+                    this.props.onSelect(params.id);
                 }
             }
         }, this);

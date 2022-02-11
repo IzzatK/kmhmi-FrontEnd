@@ -70,7 +70,7 @@ class SearchGraphsPanel extends Presenter {
                 const { id, type, item, count} = stat;
 
                 itemVMs[id] = {
-                    id: item,
+                    id,
                     item,
                     count,
                 };
