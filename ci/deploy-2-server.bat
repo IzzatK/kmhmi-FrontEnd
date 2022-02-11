@@ -20,7 +20,7 @@ ssh -i %SSH_PEM% %SSH_USER% "sudo setfacl -R -m u:ec2-user:rwx /km_deployment/ui
 @REM copy deployment files
 scp -i %SSH_PEM% -r ../ci/* %SSH_USER%:/km_deployment/
 @REM copy ui files
-scp -i %SSH_PEM% -r ../web/build/* %SSH_USER%:/km_deployment/ui/
+@REM scp -i %SSH_PEM% -r ../web/build/* %SSH_USER%:/km_deployment/ui/
 
 ssh -i %SSH_PEM% %SSH_USER% "chmod 777 /km_deployment/deploy-docker.%ENV_CONFIG%.sh"
 ssh -i %SSH_PEM% %SSH_USER% "cd /km_deployment && ./deploy-docker.%ENV_CONFIG%.sh"
