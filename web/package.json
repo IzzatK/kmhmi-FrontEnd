@@ -62,7 +62,7 @@
     "generate-barrels": "barrelsby --delete --config generate-types.json",
     "build": "npm run generate-barrels && react-scripts build",
     "build:development": "env-cmd -f .env.development npm run-script build",
-    "build:testing": "env-cmd -f .env.testing test npm run-script build",
+    "build:testing": "env-cmd -f .env.testing npm run-script build",
     "build:production": "env-cmd -f .env.production npm run-script build",
     "start": "npm run generate-barrels && react-scripts start",
     "test": "react-scripts test",
