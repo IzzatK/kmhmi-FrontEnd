@@ -28,6 +28,13 @@ export class AppView extends Component<Props, State> {
         this.fetchData();
     }
 
+
+    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) {
+        if (!prevProps.permissions.canSearch && this.props.permissions.canSearch) {
+            this.fetchData();
+        }
+    }
+
     componentWillUnmount() {
         clearInterval(this.interval);
     }
