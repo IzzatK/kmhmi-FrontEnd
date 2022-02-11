@@ -16,8 +16,8 @@ phases:
       - cd web
       - npm install
       #    build app
-      - echo "ENV_CONFIG"
-      - npm run build:ENV_CONFIG
+      - echo "$ENV_CONFIG"
+      - npm run build:$ENV_CONFIG
       #    set up dependencies
       - apt-get update
       - apt-get install zip openssh-client git -qq
