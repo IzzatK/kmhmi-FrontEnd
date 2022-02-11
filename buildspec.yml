@@ -3,7 +3,7 @@ version: 0.2
 
 env:
   variables:
-#    DEPLOY_CONFIG: <Defined in AWS Code Build>
+#    ENV_CONFIG: <Defined in AWS Code Build>
     DEPLOY_DIR: "/km_deployment/ui/"
     BUILD_ZIP: "build.zip"
 #    CI_USER: <Defined in AWS Code Build>
@@ -16,8 +16,8 @@ phases:
       - cd web
       - npm install
       #    build app
-      - echo "$DEPLOY_CONFIG"
-      - npm run build:$DEPLOY_CONFIG
+      - echo "ENV_CONFIG"
+      - npm run build:ENV_CONFIG
       #    set up dependencies
       - apt-get update
       - apt-get install zip openssh-client git -qq
@@ -43,6 +43,7 @@ phases:
       #    make sure we have permission to write
       - ssh -i $PEM_FILE -o StrictHostKeyChecking=no $CI_USER "sudo setfacl -R -m u:ec2-user:rwx $DEPLOY_DIR"
       #    clear deploy dir
+      - echo "ssh -i $PEM_FILE -o StrictHostKeyChecking=no $CI_USER sudo rm -r $DEPLOY_DIR/*"
       - ssh -i $PEM_FILE -o StrictHostKeyChecking=no $CI_USER "sudo rm -r $DEPLOY_DIR/*"
       #    deploy zip
       - scp -i $PEM_FILE -o StrictHostKeyChecking=no $BUILD_ZIP $CI_USER:$DEPLOY_DIR

@@ -1,1 +1,1 @@
-./copy-2-server ./ci/ssh/bumed-web-srv.pem ec2-user@18.253.190.212
+./copy-2-server production ./ssh/bumed-web-srv.pem ec2-user@navyanalytics.com
