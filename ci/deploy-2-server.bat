@@ -12,6 +12,7 @@ SET SSH_USER=%3
 
 
 @REM set permissions
+ssh -i %SSH_PEM% %SSH_USER% "sudo mkdir /km_deployment/"
 ssh -i %SSH_PEM% %SSH_USER% "sudo setfacl -R -m u:ec2-user:rwx /km_deployment/"
 @REM clear deployment directory
 ssh -i %SSH_PEM% %SSH_USER% "sudo rm -r /km_deployment/*"
