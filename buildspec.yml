@@ -31,7 +31,7 @@ phases:
       - cd web
       - npm install
       #    build app
-      - npm run build
+      - npm run build:testing
       #    set up dependencies
       - apt-get update
       - apt-get install zip openssh-client git -qq
