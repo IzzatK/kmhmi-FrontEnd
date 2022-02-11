@@ -13,6 +13,8 @@ export type LoginPanelProps = LoginPanelStateProps & LoginPanelDispatchProps;
 
 export type LoginPanelState = {
     tmpUser: UserInfoVM;
+    warning: string;
+    errorMessages: Record<string, string>;
 }
 
 export type UserInfoVM = {
@@ -20,5 +22,5 @@ export type UserInfoVM = {
     first_name: string;
     last_name: string;
     email: string;
-    phone?: string;
+    phone: string;
 }

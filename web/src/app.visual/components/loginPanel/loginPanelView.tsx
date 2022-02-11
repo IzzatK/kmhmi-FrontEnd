@@ -4,7 +4,6 @@ import {LoginPanelProps, LoginPanelState, UserInfoVM} from "./loginPanelModel";
 import {bindInstanceMethods, nameOf} from "../../../framework/extras/typeUtils";
 import Button from "../../theme/widgets/button/button";
 import TextEdit from "../../theme/widgets/textEdit/textEdit";
-import {RegistrationStatusType} from "../../model/registrationStatusType";
 
 class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
     constructor(props: any, context: any) {
@@ -20,6 +19,14 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
                 email: '',
                 phone: ''
             },
+            warning: "",
+            errorMessages: {
+                "dod_id": "",
+                "first_name": "",
+                "last_name": "",
+                "email": "",
+                "phone": "",
+            }
         }
     }
 
@@ -43,11 +50,82 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
         const { onRegister } = this.props;
         const { tmpUser } = this.state;
 
-        // need to validate the entries here TODO Josiah
+        const { dod_id, first_name, last_name, email, phone } = tmpUser;
 
-        if (onRegister != null) {
-            onRegister(tmpUser);
+        let warning = "";
+
+        let failedFields = "";
+
+        let pass = true;
+
+        let focus = false;
+
+        let errorMessages: Record<string, string> = {
+            "dod_id": "",
+            "first_name": "",
+            "last_name": "",
+            "email": "",
+            "phone": "",
         }
+
+        if (!/^[0-9]{10}/im.test(dod_id)) {
+            pass = false;
+            failedFields += ` DoD ID`;
+            this._setFocus("dod_id");
+            focus = true;
+            errorMessages["dod_id"] = "Dod ID must be a 10-digit number";
+        }
+
+        if (!/\w/.test(first_name)) {
+            pass = false;
+            failedFields += `${failedFields !== "" ? "," : ""} First Name`;
+            if (!focus) {
+                this._setFocus("first_name");
+                focus = true;
+            }
+            errorMessages["first_name"] = "First Name cannot be empty";
+        }
+
+        if (!/\w/.test(last_name)) {
+            pass = false;
+            failedFields += `${failedFields !== "" ? "," : ""} Last Name`;
+            if (!focus) {
+                this._setFocus("last_name");
+                focus = true;
+            }
+            errorMessages["last_name"] = "Last Name cannot be empty";
+        }
+
+        if (!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) {
+            pass = false;
+            failedFields += `${failedFields !== "" ? "," : ""} Email`;
+            if (!focus) {
+                this._setFocus("email");
+                focus = true;
+            }
+            errorMessages["email"] = "Email must be a valid email address";
+        }
+
+        if (!/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im.test(phone)) {
+            pass = false;
+            failedFields += `${failedFields !== "" ? "," : ""} Phone`;
+            if (!focus) {
+                this._setFocus("phone");
+            }
+            errorMessages["phone"] = "Phone must be a valid phone number";
+        }
+
+        if (pass) {
+            if (onRegister != null) {
+                onRegister(tmpUser);
+            }
+        } else {
+            warning = "Please fill out the required fields:";
+        }
+
+        this._setWarning(warning + failedFields);
+        this._setErrorMessage(errorMessages);
+
     }
 
     onTmpUserChanged(name: string, value: string) {
@@ -74,10 +152,28 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
         }
     }
 
+    _setWarning(warning: string) {
+        this.setState({
+            ...this.state,
+            warning: warning,
+        })
+    }
+
+    _setErrorMessage(errorMessages: Record<string, string>) {
+        this.setState({
+            ...this.state,
+            errorMessages: errorMessages,
+        })
+    }
+
+    _setFocus(id: string) {
+        document.getElementById(id)?.focus();
+    }
+
     render() {
         const { className, dodWarningAccepted } = this.props;
 
-        const { tmpUser } = this.state;
+        const { tmpUser, warning, errorMessages } = this.state;
 
         let cn = 'login-panel d-flex flex-fill justify-content-center align-items-center';
         if (className) {
@@ -126,22 +222,43 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
                                         <div className={"info px-5 display-3"}>New to the Dashboard? Submit your information below to request authorization</div>
                                         <div className={"v-gap-5"}>
                                             <div className={'register-grid px-5'}>
-                                                <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>DoD ID:</div>
-                                                <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>First Name:</div>
-                                                <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>Last Name:</div>
-                                                <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>Email:</div>
-                                                <div className={"align-self-center display-3 font-weight-semi-bold justify-self-end"}>Phone:</div>
-                                                <TextEdit value={tmpUser.dod_id} name={nameOf<UserInfoVM>("dod_id")} autoFocus={true} placeholder={"DoD ID"} onSubmit={this.onTmpUserChanged}/>
+                                                <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
+                                                    <div className={"text-notification"}>*</div>
+                                                    <div>DoD ID:</div>
+                                                </div>
+                                                <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
+                                                    <div className={"text-notification"}>*</div>
+                                                    <div>First Name:</div>
+                                                </div>
+                                                <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
+                                                    <div className={"text-notification"}>*</div>
+                                                    <div>Last Name:</div>
+                                                </div>
+                                                <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
+                                                    <div className={"text-notification"}>*</div>
+                                                    <div>Email:</div>
+                                                </div>
+                                                <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
+                                                    <div className={"text-notification"}>*</div>
+                                                    <div>Phone:</div>
+                                                </div>
+                                                <TextEdit id={"dod_id"} value={tmpUser.dod_id} name={nameOf<UserInfoVM>("dod_id")} autoFocus={true} placeholder={"DoD ID"} onSubmit={this.onTmpUserChanged}/>
                                                 {/*<div className={"align-self-center text-info font-weight-light display-4"}>{user?.name}</div>*/}
-                                                <TextEdit value={tmpUser.first_name} name={nameOf<UserInfoVM>("first_name")} autoFocus={true} placeholder={"First Name"} onSubmit={this.onTmpUserChanged}/>
-                                                <TextEdit value={tmpUser.last_name} name={nameOf<UserInfoVM>("last_name")} autoFocus={true} placeholder={"Last Name"} onSubmit={this.onTmpUserChanged}/>
-                                                <TextEdit value={tmpUser.email} name={nameOf<UserInfoVM>("email")} autoFocus={true} placeholder={"Email Address"} onSubmit={this.onTmpUserChanged}/>
-                                                <TextEdit value={tmpUser.phone} name={nameOf<UserInfoVM>("phone")} placeholder={"Phone Number"} onSubmit={this.onTmpUserChanged}/>
+                                                <TextEdit id={"first_name"} value={tmpUser.first_name} name={nameOf<UserInfoVM>("first_name")} placeholder={"First Name"} onSubmit={this.onTmpUserChanged}/>
+                                                <TextEdit id={"last_name"} value={tmpUser.last_name} name={nameOf<UserInfoVM>("last_name")} placeholder={"Last Name"} onSubmit={this.onTmpUserChanged}/>
+                                                <TextEdit id={"email"} value={tmpUser.email} name={nameOf<UserInfoVM>("email")} placeholder={"Email Address"} onSubmit={this.onTmpUserChanged}/>
+                                                <TextEdit id={"phone"} value={tmpUser.phone} name={nameOf<UserInfoVM>("phone")} placeholder={"Phone Number"} onSubmit={this.onTmpUserChanged}/>
+                                                <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["dod_id"]}</div>
+                                                <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["first_name"]}</div>
+                                                <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["last_name"]}</div>
+                                                <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["email"]}</div>
+                                                <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["phone"]}</div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className={"d-flex justify-content-end py-4 pr-5 bg-advisory"}>
+                                    <div className={"d-flex justify-content-end py-4 pr-5 bg-advisory align-items-center h-gap-3"}>
+                                        <div className={"display-4 font-weight-semi-bold"}>{warning}</div>
                                         <Button text={"Submit"} light={true} onClick={() => this._onRegister()}/>
                                     </div>
                                 </div>

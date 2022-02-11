@@ -14,6 +14,7 @@ export type TextEditProps = {
     autoFocus?: boolean;
     rows?: number;
     cols?: number;
+    id?: string;
 }
 
 export type TextEditState = {

@@ -92,7 +92,7 @@ class TextEdit extends Component<TextEditProps, TextEditState> {
 	}
 
 	render() {
-		const { placeholder, dirty, className, disable, value, type='text', autoFocus=false, edit=true } = this.props;
+		const { placeholder, dirty, className, disable, value, type='text', autoFocus=false, edit=true, id } = this.props;
 
 		const { tmpValue } = this.state;
 
@@ -125,6 +125,7 @@ class TextEdit extends Component<TextEditProps, TextEditState> {
 						readOnly={!edit}
 						disabled={disable || !edit}
 						autoFocus={edit && autoFocus}
+						id={id}
 				>
 				</input>
 			</div>
