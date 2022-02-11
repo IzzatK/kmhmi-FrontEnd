@@ -1,51 +1,35 @@
 # Do not change version. This is the version of aws buildspec, not the version of your buldspec file.
 version: 0.2
 
-#  CI_BUILDS_DIR: "bumed/build/"
-#  DEPLOY_DIR: "/opt/apps/kmweb"
-#  SSH_PKEY: $SSH_PRIVATE_KEY
-#  BUILD_ZIP: build.zip
-
 env:
   variables:
-    TMP_DEPLOY_CONFIG: $DEPLOY_CONFIG
+#    DEPLOY_CONFIG: <Defined in AWS Code Build>
     DEPLOY_DIR: "/km_deployment/ui/"
     BUILD_ZIP: "build.zip"
-    TMP_CI_USER: $CI_USER
+#    CI_USER: <Defined in AWS Code Build>
     PEM_FILE: "../../ci/ssh/bumed-web-srv.pem"
-#  parameter-store:
-#    SSH_PKEY: /CodeBuild/SSH_PRIVATE_KEY
-#  exported-variables:
-#    - variable
-#  secrets-manager:
-#    key: secret-id:json-key:version-stage:version-id
-#  git-credential-helper: no | yes
 
 phases:
-  pre_build:
-    commands:
-      #installs dependencies into the node_modules/ directory
-#      - cd web
-#      - npm install
   build:
     commands:
       #    install npm
       - cd web
-#      - npm install
+      - npm install
       #    build app
       - echo "$DEPLOY_CONFIG"
-      - npm run build:$TMP_DEPLOY_CONFIG
+      - npm run build:$DEPLOY_CONFIG
       #    set up dependencies
       - apt-get update
       - apt-get install zip openssh-client git -qq
       #    start ssh client and set up key
       - eval $(ssh-agent -s)
-#      - echo "$SSH_PKEY"
-#      - echo "$SSH_PKEY" | tr -d '\r' | ssh-add
-#      - ssh-add .\ci\ssh\bumed-web-srv.pem
       - mkdir -p ~/.ssh
       - chmod 700 ~/.ssh
       - chmod 700 ../ci/ssh/bumed-web-srv.pem
+#      - echo "$SSH_PKEY"
+#      - echo "$SSH_PKEY" | tr -d '\r' | ssh-add
+#      - echo $SSH_PKEY>../ci/ssh/bumed-web-srv.pem
+#      - ssh-add .\ci\ssh\bumed-web-srv.pem
       #    create zip
       - cd build
       - zip -r $BUILD_ZIP .
@@ -55,25 +39,17 @@ phases:
       - echo "$CI_BUILDS_DIR"
       - echo "$DEPLOY_DIR"
       - echo "$BUILD_ZIP"
-      - echo "$TMP_CI_USER"
+      - echo "$CI_USER"
       #    make sure we have permission to write
-      - ssh -i $PEM_FILE -o StrictHostKeyChecking=no $TMP_CI_USER "sudo setfacl -R -m u:ec2-user:rwx $DEPLOY_DIR"
+      - ssh -i $PEM_FILE -o StrictHostKeyChecking=no $CI_USER "sudo setfacl -R -m u:ec2-user:rwx $DEPLOY_DIR"
       #    clear deploy dir
-      - ssh -i $PEM_FILE -o StrictHostKeyChecking=no $TMP_CI_USER "sudo rm -r $DEPLOY_DIR/*"
+      - ssh -i $PEM_FILE -o StrictHostKeyChecking=no $CI_USER "sudo rm -r $DEPLOY_DIR/*"
       #    deploy zip
-      - scp -i $PEM_FILE -o StrictHostKeyChecking=no $BUILD_ZIP $TMP_CI_USER:$DEPLOY_DIR
+      - scp -i $PEM_FILE -o StrictHostKeyChecking=no $BUILD_ZIP $CI_USER:$DEPLOY_DIR
       #    unzip files
-      - ssh -i $PEM_FILE -o StrictHostKeyChecking=no $TMP_CI_USER "cd $DEPLOY_DIR; sudo unzip -o $BUILD_ZIP"
+      - ssh -i $PEM_FILE -o StrictHostKeyChecking=no $CI_USER "cd $DEPLOY_DIR; sudo unzip -o $BUILD_ZIP"
       #    remove zip file
-      - ssh -i $PEM_FILE -o StrictHostKeyChecking=no $TMP_CI_USER "cd $DEPLOY_DIR; sudo rm build.zip"
-# Include only the files required for your application to run.
-#artifacts:
-#  files:
-#    - public/**/*
-#    - src/**/*
-#    - package.json
-#    - appspec.yml
-#    - scripts/**/*
+      - ssh -i $PEM_FILE -o StrictHostKeyChecking=no $CI_USER "cd $DEPLOY_DIR; sudo rm build.zip"
 
 
 #image: node:12.16.2
@@ -113,15 +89,15 @@ phases:
 #    - zip -r $BUILD_ZIP .
 #  script:
 ##    make sure we have permission to write
-#    - ssh -o StrictHostKeyChecking=no $TMP_CI_USER "sudo setfacl -R -m u:ec2-user:rwx $DEPLOY_DIR"
+#    - ssh -o StrictHostKeyChecking=no $CI_USER "sudo setfacl -R -m u:ec2-user:rwx $DEPLOY_DIR"
 ##    clear deploy dir
-#    - ssh -o StrictHostKeyChecking=no $TMP_CI_USER "sudo rm -r $DEPLOY_DIR/*"
+#    - ssh -o StrictHostKeyChecking=no $CI_USER "sudo rm -r $DEPLOY_DIR/*"
 ##    deploy zip
-#    - scp -o StrictHostKeyChecking=no $BUILD_ZIP $TMP_CI_USER:$DEPLOY_DIR
+#    - scp -o StrictHostKeyChecking=no $BUILD_ZIP $CI_USER:$DEPLOY_DIR
 ##    unzip files
-#    - ssh -o StrictHostKeyChecking=no $TMP_CI_USER "cd $DEPLOY_DIR; sudo unzip -o $BUILD_ZIP"
+#    - ssh -o StrictHostKeyChecking=no $CI_USER "cd $DEPLOY_DIR; sudo unzip -o $BUILD_ZIP"
 ##    remove zip file
-#    - ssh -o StrictHostKeyChecking=no $TMP_CI_USER "cd $DEPLOY_DIR; sudo rm build.zip"
+#    - ssh -o StrictHostKeyChecking=no $CI_USER "cd $DEPLOY_DIR; sudo rm build.zip"
 #
 ##deploy:
 ##  stage: deploy
