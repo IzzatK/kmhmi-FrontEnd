@@ -123,9 +123,7 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
             warning = "Please fill out the required fields:";
         }
 
-        this._setWarning(warning + failedFields);
-        this._setErrorMessage(errorMessages);
-
+        this._setWarnings(warning + failedFields, errorMessages);
     }
 
     onTmpUserChanged(name: string, value: string) {
@@ -152,16 +150,10 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
         }
     }
 
-    _setWarning(warning: string) {
+    _setWarnings(warning: string, errorMessages: Record<string, string>) {
         this.setState({
             ...this.state,
             warning: warning,
-        })
-    }
-
-    _setErrorMessage(errorMessages: Record<string, string>) {
-        this.setState({
-            ...this.state,
             errorMessages: errorMessages,
         })
     }
@@ -178,6 +170,12 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
         let cn = 'login-panel d-flex flex-fill justify-content-center align-items-center';
         if (className) {
             cn += ` ${className}`;
+        }
+
+        let disableButton = false;
+
+        if (tmpUser["dod_id"] === "" || tmpUser["first_name"] === "" || tmpUser["last_name"] === "" || tmpUser["email"] === "" || tmpUser["phone"] === "") {
+            disableButton = true;
         }
 
         return (
@@ -259,7 +257,7 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
 
                                     <div className={"d-flex justify-content-end py-4 pr-5 bg-advisory align-items-center h-gap-3"}>
                                         <div className={"display-4 font-weight-semi-bold"}>{warning}</div>
-                                        <Button text={"Submit"} light={true} onClick={() => this._onRegister()}/>
+                                        <Button text={"Submit"} light={true} onClick={() => this._onRegister()} disabled={disableButton}/>
                                     </div>
                                 </div>
                             </div>
