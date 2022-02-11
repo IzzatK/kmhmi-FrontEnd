@@ -8,10 +8,10 @@ version: 0.2
 
 env:
   variables:
-    TMP_DEPLOY_CONFIG: $DEPLOY_CONFIG
+    TMP_DEPLOY_CONFIG: ${DEPLOY_CONFIG}
     DEPLOY_DIR: "/km_deployment/ui/"
     BUILD_ZIP: "build.zip"
-    TMP_CI_USER: $CI_USER
+    TMP_CI_USER: ${CI_USER}
     PEM_FILE: "../../ci/ssh/bumed-web-srv.pem"
 #  parameter-store:
 #    SSH_PKEY: /CodeBuild/SSH_PRIVATE_KEY
@@ -31,7 +31,7 @@ phases:
     commands:
       #    install npm
       - cd web
-      - npm install
+#      - npm install
       #    build app
       - echo "$DEPLOY_CONFIG"
       - npm run build:$TMP_DEPLOY_CONFIG
