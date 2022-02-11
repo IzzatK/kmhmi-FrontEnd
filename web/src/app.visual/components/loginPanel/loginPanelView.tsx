@@ -240,12 +240,12 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
                                                     <div className={"text-notification"}>*</div>
                                                     <div>Phone:</div>
                                                 </div>
-                                                <TextEdit id={"dod_id"} value={tmpUser.dod_id} name={nameOf<UserInfoVM>("dod_id")} autoFocus={true} placeholder={"DoD ID"} onSubmit={this.onTmpUserChanged}/>
+                                                <TextEdit id={"dod_id"} value={tmpUser.dod_id} name={nameOf<UserInfoVM>("dod_id")} autoFocus={true} placeholder={"DoD ID"} onChange={(value) => this.onTmpUserChanged("dod_id", value)}/>
                                                 {/*<div className={"align-self-center text-info font-weight-light display-4"}>{user?.name}</div>*/}
-                                                <TextEdit id={"first_name"} value={tmpUser.first_name} name={nameOf<UserInfoVM>("first_name")} placeholder={"First Name"} onSubmit={this.onTmpUserChanged}/>
-                                                <TextEdit id={"last_name"} value={tmpUser.last_name} name={nameOf<UserInfoVM>("last_name")} placeholder={"Last Name"} onSubmit={this.onTmpUserChanged}/>
-                                                <TextEdit id={"email"} value={tmpUser.email} name={nameOf<UserInfoVM>("email")} placeholder={"Email Address"} onSubmit={this.onTmpUserChanged}/>
-                                                <TextEdit id={"phone"} value={tmpUser.phone} name={nameOf<UserInfoVM>("phone")} placeholder={"Phone Number"} onSubmit={this.onTmpUserChanged}/>
+                                                <TextEdit id={"first_name"} value={tmpUser.first_name} name={nameOf<UserInfoVM>("first_name")} placeholder={"First Name"} onChange={(value) => this.onTmpUserChanged("first_name", value)}/>
+                                                <TextEdit id={"last_name"} value={tmpUser.last_name} name={nameOf<UserInfoVM>("last_name")} placeholder={"Last Name"} onChange={(value) => this.onTmpUserChanged("last_name", value)}/>
+                                                <TextEdit id={"email"} value={tmpUser.email} name={nameOf<UserInfoVM>("email")} placeholder={"Email Address"} onChange={(value) => this.onTmpUserChanged("email", value)}/>
+                                                <TextEdit id={"phone"} value={tmpUser.phone} name={nameOf<UserInfoVM>("phone")} placeholder={"Phone Number"} onChange={(value) => this.onTmpUserChanged("phone", value)}/>
                                                 <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["dod_id"]}</div>
                                                 <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["first_name"]}</div>
                                                 <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["last_name"]}</div>
