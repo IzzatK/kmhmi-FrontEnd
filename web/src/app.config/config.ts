@@ -17,8 +17,10 @@ export const keycloakEnabled = process.env.REACT_APP_USE_KEYCLOAK === 'true';
 //     debug:true,
 // }
 
+export const KC_REALM = `${process.env.REACT_APP_KEYCLOAK_REALM}`;
+
 export const keycloakConfig = {
-    "realm": "km-test",
+    "realm": KC_REALM,
     "auth-server-url": "https://auth.navyanalytics.com/auth/",
     "always-refresh-token": true,
     "ssl-required": "external",
