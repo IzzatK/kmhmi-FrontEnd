@@ -1,0 +1,1 @@
+./deploy-2-server production ./ssh/bumed-web-srv.production.pem ec2-user@navyanalytics.com

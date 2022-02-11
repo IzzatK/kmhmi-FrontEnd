@@ -1,0 +1,1 @@
+./deploy-2-server testing ./ssh/bumed-web-srv.testing.pem ec2-user@dev.navyanalytics.com

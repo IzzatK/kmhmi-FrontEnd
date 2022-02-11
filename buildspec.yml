@@ -7,7 +7,7 @@ env:
     DEPLOY_DIR: "/km_deployment/ui/"
     BUILD_ZIP: "build.zip"
 #    CI_USER: <Defined in AWS Code Build>
-    PEM_FILE: "../../ci/ssh/bumed-web-srv.pem"
+    PEM_FILE: "../../ci/ssh/bumed-web-srv"
 
 phases:
   build:
@@ -25,7 +25,7 @@ phases:
       - eval $(ssh-agent -s)
       - mkdir -p ~/.ssh
       - chmod 700 ~/.ssh
-      - chmod 700 ../ci/ssh/bumed-web-srv.pem
+      - chmod 700 ../ci/ssh/bumed-web-srv.$ENV_CONFIG.pem
 #      - echo "$SSH_PKEY"
 #      - echo "$SSH_PKEY" | tr -d '\r' | ssh-add
 #      - echo $SSH_PKEY>../ci/ssh/bumed-web-srv.pem
@@ -41,16 +41,16 @@ phases:
       - echo "$BUILD_ZIP"
       - echo "$CI_USER"
       #    make sure we have permission to write
-      - ssh -i $PEM_FILE -o StrictHostKeyChecking=no $CI_USER "sudo setfacl -R -m u:ec2-user:rwx $DEPLOY_DIR"
+      - ssh -i $PEM_FILE.$ENV_CONFIG.pem -o StrictHostKeyChecking=no $CI_USER "sudo setfacl -R -m u:ec2-user:rwx $DEPLOY_DIR"
       #    clear deploy dir
       - echo "ssh -i $PEM_FILE -o StrictHostKeyChecking=no $CI_USER sudo rm -r $DEPLOY_DIR/*"
-      - ssh -i $PEM_FILE -o StrictHostKeyChecking=no $CI_USER "sudo rm -r $DEPLOY_DIR/*"
+      - ssh -i $PEM_FILE.$ENV_CONFIG.pem -o StrictHostKeyChecking=no $CI_USER "sudo rm -r $DEPLOY_DIR/*"
       #    deploy zip
-      - scp -i $PEM_FILE -o StrictHostKeyChecking=no $BUILD_ZIP $CI_USER:$DEPLOY_DIR
+      - scp -i $PEM_FILE.$ENV_CONFIG.pem -o StrictHostKeyChecking=no $BUILD_ZIP $CI_USER:$DEPLOY_DIR
       #    unzip files
-      - ssh -i $PEM_FILE -o StrictHostKeyChecking=no $CI_USER "cd $DEPLOY_DIR; sudo unzip -o $BUILD_ZIP"
+      - ssh -i $PEM_FILE.$ENV_CONFIG.pem -o StrictHostKeyChecking=no $CI_USER "cd $DEPLOY_DIR; sudo unzip -o $BUILD_ZIP"
       #    remove zip file
-      - ssh -i $PEM_FILE -o StrictHostKeyChecking=no $CI_USER "cd $DEPLOY_DIR; sudo rm build.zip"
+      - ssh -i $PEM_FILE.$ENV_CONFIG.pem -o StrictHostKeyChecking=no $CI_USER "cd $DEPLOY_DIR; sudo rm build.zip"
 
 
 #image: node:12.16.2

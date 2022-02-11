@@ -1,1 +1,0 @@
-./copy-2-server development ./ssh/bumed-web-srv.pem ec2-user@dev.navyanalytics.com
