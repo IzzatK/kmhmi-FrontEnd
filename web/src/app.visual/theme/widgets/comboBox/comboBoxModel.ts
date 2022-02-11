@@ -13,11 +13,12 @@ export type ComboBoxProps = {
     dirty?: boolean;
     multiSelect?: boolean;
     readonly?: boolean;
+    selectedItemIds?: string[];
 }
 
 export type ComboBoxState = {
     selected: boolean;
-    selectedItemIds: Record<string, string>;
+    selectedItemIds: string[];
 }
 
 export type ComboBoxItemProps = {

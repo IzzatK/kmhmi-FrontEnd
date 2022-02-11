@@ -17,7 +17,7 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
 
         this.state = {
             selected: false,
-            selectedItemIds: {},
+            selectedItemIds: [],
         }
 
         bindInstanceMethods(this);
@@ -45,38 +45,31 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
 
         if (multiSelect) {
 
-            let selectedItems = {};
+            let selectedItems = new Set<string>(selectedItemIds);
 
-            if (selectedItemIds[id]) {
-                delete selectedItemIds[id];
-                selectedItems = {
-                    ...selectedItemIds,
-                }
+            if (selectedItems.has(id)) {
+                selectedItems.delete(id);
             } else {
-                selectedItems = {
-                    ...selectedItemIds,
-                    [id]: id,
-                }
+                selectedItems.add(id);
             }
 
             this.setState(prevState => {
                 return {
                     ...prevState,
-                    selectedItemIds: selectedItems,
+                    selectedItemIds: Array.from(selectedItems),
                 }
 
             }, () => {
                 if (onSelect) {
                     const { selectedItemIds } = this.state;
-                    let tmpArray = Object.keys(selectedItemIds);
-                    onSelect(Array.from(tmpArray));
+                    onSelect(selectedItemIds);
                 }
             })
         } else {
             this.setState(prevState => {
                 return {
                     ...prevState,
-                    selectedItemIds: {[id]: id},
+                    selectedItemIds: [id],
                 }
 
             }, () => {
@@ -93,7 +86,7 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
 
         this.setState({
             ...this.state,
-            selectedItemIds: {},
+            selectedItemIds: [],
         }, () => {
             if (onSelect) {
                 const { selectedItemIds } = this.state;
@@ -115,6 +108,17 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
             ...this.state,
             selected: false,
         });
+    }
+
+
+    componentDidUpdate(prevProps: Readonly<ComboBoxProps>, prevState: Readonly<ComboBoxState>, snapshot?: any) {
+
+        if (this.props.selectedItemIds != null && this.props.selectedItemIds != this.state.selectedItemIds) {
+            this.setState({
+                ...this.state,
+                selectedItemIds: this.props.selectedItemIds
+            })
+        }
     }
 
     render() {
@@ -147,6 +151,8 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
             cn += ` disabled`;
         }
 
+        let cbTitle = title;
+
         let comboBoxItems: any[] = [];
 
         if (items) {
@@ -156,7 +162,7 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
                 const { id:itemId, title:itemTitle, selected:itemSelected } = itemValue;
 
                 let value = false;
-                if ((selectedItemIds && selectedItemIds[itemId]) || (title === itemTitle)) {
+                if (selectedItemIds && selectedItemIds.includes(itemId) || title === itemTitle) {
                     value = true;
                 }
 
@@ -165,6 +171,10 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
                                   onClick={() => this._onSelectHandler(itemId || "")} selected={value} readonly={readonly}/>
                 )
             });
+
+            if (Array.isArray(selectedItemIds) && selectedItemIds.length > 1) {
+                cbTitle = `${cbTitle} (${selectedItemIds.length})`
+            }
         }
 
         let arrowSVG = <ArrowDownSVG/>;
@@ -202,7 +212,7 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
                                 Graphic &&
                                 <Graphic className={'small-image-container mr-3'}/>
                             }
-                            <div className={"header-3 flex-fill"}>{title}</div>
+                            <div className={"header-3 flex-fill"}>{cbTitle}</div>
                             {
                                 Graphic === undefined &&
                                 <div className={"d-flex align-items-center tiny-image-container combo-box-arrow pe-none"}>{arrowSVG}</div>

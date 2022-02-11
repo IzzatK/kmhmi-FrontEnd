@@ -153,7 +153,7 @@ class SearchBannerView extends Component<SearchBannerProps, SearchBannerState> {
 
             result = (
                 <ComboBox key={id} className={dirty ? 'dirty rounded-lg' : 'rounded-lg'} light={true}
-                          title={cbTitle || ''} items={cbOptions} multiSelect={true}
+                          title={cbTitle || ''} items={cbOptions} multiSelect={true} selectedItemIds={value}
                           onSelect={(value: any) => this._onTypeChanged(id, value)}/>
             )
             return result;

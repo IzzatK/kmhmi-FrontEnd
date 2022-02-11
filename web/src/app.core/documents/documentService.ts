@@ -547,6 +547,10 @@ export class DocumentService extends Plugin implements IDocumentService {
         return super.getAll<SearchParamInfo>(SearchParamInfo.class);
     }
 
+    getSearchParam(id: string): Nullable<SearchParamInfo> {
+        return super.getRepoItem(SearchParamInfo.class, id);
+    }
+
     clearDirtyFlags() {
         let items = this.getSearchParams();
 
@@ -573,6 +577,7 @@ export class DocumentService extends Plugin implements IDocumentService {
     }
 
     setSearchParam(id: string, value: string | string[]) {
+        debugger
         let repoItem = super.getRepoItem(SearchParamInfo.class, id);
 
         if (repoItem != null) {

@@ -38,6 +38,8 @@ export interface IDocumentService extends IPlugin {
 
     getSearchParams(): Record<string, SearchParamInfo>;
 
+    getSearchParam(id: string): Nullable<SearchParamInfo>;
+
     clearDirtyFlags(): void;
 
     setSearchText(value: string): void;

@@ -19,7 +19,7 @@ export class GetReferenceArrayResponseConverter extends Converter<any, Reference
                 const {id, name} = value;
 
                 const info: ReferenceInfo = new ReferenceInfo(
-                    id,
+                    `${id}`,
                     name,
                     referenceOrdinal
                 )
