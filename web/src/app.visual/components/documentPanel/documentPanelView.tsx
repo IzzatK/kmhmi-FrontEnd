@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './documentPanel.css';
 import Button from "../../theme/widgets/button/button";
 import TextEdit from "../../theme/widgets/textEdit/textEdit";
-import {arrayEquals, forEach} from "../../../framework.visual/extras/utils/collectionUtils";
+import {arrayEquals, forEach, forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
 import {LoadingIndicator} from "../../theme/widgets/loadingIndicator/loadingIndicator";
 import {ParamType} from "../../../app.model";
 import ComboBox from "../../theme/widgets/comboBox/comboBox";
@@ -15,9 +15,7 @@ import Card from "../../theme/widgets/card/card";
 import CheckBox from "../../theme/widgets/checkBox/checkBox";
 import {EllipsisSVG} from "../../theme/svgs/ellipsisSVG";
 import Portal from "../../theme/widgets/portal/portal";
-import {indexOf} from "@amcharts/amcharts4/.internal/core/utils/Array";
 import {AddNewSVG} from "../../theme/svgs/addNewSVG";
-import {DeleteSVG} from "../../theme/svgs/deleteSVG";
 import {MinimizeSVG} from "../../theme/svgs/minimizeSVG";
 
 class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState> {
@@ -81,7 +79,12 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                 ...tmpDocument,
                 [name]: value
             };
-            if (document[name] === value) {
+
+            if (typeof value === 'object') {
+                if (JSON.stringify(document[name]) === JSON.stringify(value)) {
+                    delete nextDoc[name];
+                }
+            } else if (document[name] === value) {
                 delete nextDoc[name];
             }
             this.setTmpDocument(nextDoc);
@@ -106,6 +109,14 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
 
             if (Array.isArray(tmpDocument[key])) {
                 if (arrayEquals(tmpDocument[key], document[key])) {
+                    keysToDelete.push(key);
+                }
+                else {
+                    dirty = true;
+                }
+            }
+            else if (typeof tmpDocument[key] === 'object') {
+                if (JSON.stringify(tmpDocument[key]) === JSON.stringify(document[key])) {
                     keysToDelete.push(key);
                 }
                 else {
@@ -172,32 +183,22 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
     addNewPublicTag() {
         const { editProperties, document } = this.props;
         const { tmpDocument } = this.state;
-        const {id, title} = editProperties['public_tag'];
+        const {id} = editProperties['public_tag'];
 
-        let originalValue = document ? document[id] : '';
-        originalValue = originalValue || '';
+        let originalValue = document ? document[id] : [];
+        originalValue = originalValue || [];
 
-        let editValue = tmpDocument ? tmpDocument[id] : '';
+        let editValue = tmpDocument ? tmpDocument[id] : [];
 
         let value = editValue ? editValue : originalValue;
 
-        let text = '';
-        forEach(value, (tag: string) => {
-            text += `${tag}, `;
-        });
+        let result: Record<string, string> = {};
 
-        if (text.length > 0) {
-            text = text.trim();
-            text = text.slice(0, -1);
-        }
-        let values = text.split(',');
-        let result = [];
-        forEach(values, (tag: string) => {
-            let text = tag.trim();
-            result.push(text);
-        });
+        forEachKVP(value, ((item: string) => {
+            result[item] = item;
+        }));
 
-        result.push("-1");
+        result["-1"] = "";
 
         this.onTmpDocumentChanged('public_tag', result)
     }
@@ -206,32 +207,22 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         const { editProperties, document } = this.props;
         const { tmpDocument } = this.state;
 
-        const {id, title} = editProperties['private_tag'];
+        const {id} = editProperties['private_tag'];
 
-        let originalValue = document ? document[id] : '';
-        originalValue = originalValue || '';
+        let originalValue = document ? document[id] : [];
+        originalValue = originalValue || [];
 
-        let editValue = tmpDocument ? tmpDocument[id] : '';
+        let editValue = tmpDocument ? tmpDocument[id] : [];
 
         let value = editValue ? editValue : originalValue;
 
-        let text = '';
-        forEach(value, (tag: string) => {
-            text += `${tag}, `;
-        });
+        let result: Record<string, string> = {};
 
-        if (text.length > 0) {
-            text = text.trim();
-            text = text.slice(0, -1);
-        }
-        let values = text.split(',');
-        let result = [];
-        forEach(values, (tag: string) => {
-            let text = tag.trim();
-            result.push(text);
-        });
+        forEachKVP(value, ((item: string) => {
+            result[item] = item;
+        }));
 
-        result.push("-1");
+        result["-1"] = "";
 
         this.onTmpDocumentChanged('private_tag', result)
     }
@@ -321,67 +312,65 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                 break;
             }
             case ParamType.ARRAY: {
-                let text = '';
-                forEach(value, (tag: string) => {
-                    text += `${tag}, `;
-                });
+                let onClick = (name: string, entry: string) => {
 
-                if (text.length > 0) {
-                    text = text.trim();
-                    text = text.slice(0, -1);
-                }
+                    let result: Record<string, string> = {};
 
-                let onClick = (name: string, value: string) => {
-
-                    let values = text.split(',');
-                    let result: string[] = [];
-                    forEach(values, (tag: string) => {
-                        let text = tag.trim();
-                        if (value !== text) {
-                            result.push(text);
+                    forEachKVP(value, (item: string) => {
+                        if (item !== entry) {
+                            result[item] = item;
                         }
-                    });
+                    })
+
                     this.onTmpDocumentChanged(name, result);
                 }
 
                 let onSubmit = (name: string, oldValue: string, newValue: string) => {
-                    let values = text.split(',');
-                    let result = [];
-                    forEach(values, (tag: string) => {
-                        let text = tag.trim();
-                        if (text !== '-1') {
-                            result.push(text);
+                    let result: Record<string, string> = {};
+
+                    forEachKVP(value, (item: string) => {
+                        if (newValue !== "") {
+                            if (item !== "-1") {
+                                result[item] = item;
+                            }
+                        } else {
+                            result[item] = item;
                         }
-                    });
-                    result.push(newValue);
+                    })
+
+                    if (newValue !== "") {
+                        result[newValue] = newValue;
+                    }
+
                     this.onTmpDocumentChanged(name, result);
                 }
 
-                let tagsDivs: {} | null | undefined;
+                let publicTagDivs: any[] = [];
+                let length = 0;
+                let truncatedPublicTagDivs: any[] = [];
 
-                if (Array.isArray(value)) {
-                    tagsDivs = value.map((tag: string) => {
-                        return (
-                            tag.length > 0 &&
-                            <Tag name={id} text={tag.trim()} onDelete={onClick} isGlobal={isGlobal} className={"mr-4"}
-                                 isEdit={tag.trim() === "-1"} readonly={!canModify} onSubmit={onSubmit}/>
-                        );
-                    })
-                }
+                if (id === "public_tag") {
+                    if (value) {
+                        forEachKVP(value, (tag: string) => {
 
-                let truncatedTagsDivs: {} | null | undefined;
+                            if (tag.length > 0) {
+                                publicTagDivs?.push(<Tag name={id} text={tag.trim()} onDelete={onClick} isGlobal={isGlobal} className={"mr-4"}
+                                                         isEdit={tag.trim() === "-1"} readonly={!canModify} onSubmit={onSubmit}/>)
+                            }
+                        })
+                    }
 
-                if (Array.isArray(value)) {
-                    truncatedTagsDivs = value.map((tag: string) => {
-                        if (indexOf(value, tag) < 3) {
-                            return (
-                                tag.length > 0 &&
-                                <Tag name={id} text={tag.trim()} onDelete={onClick} isGlobal={isGlobal} className={"mr-4"}
-                                     isEdit={tag.trim() === "-1"} readonly={!canModify} onSubmit={onSubmit}/>
-                            );
-                        }
-
-                    })
+                    if (value) {
+                        forEachKVP(value, (tag: string) => {
+                            if (tag.length > 0) {
+                                if (length < 3) {
+                                    truncatedPublicTagDivs?.push(<Tag name={id} text={tag.trim()} onDelete={onClick} isGlobal={isGlobal} className={"mr-4"}
+                                                                      isEdit={tag.trim() === "-1"} readonly={!canModify} onSubmit={onSubmit}/>)
+                                }
+                                length++;
+                            }
+                        })
+                    }
                 }
 
                 cellRenderer = (
@@ -390,11 +379,11 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                         {
                             !showTagEditor &&
                             <div className={'d-flex flex-nowrap align-self-center overflow-hidden'} key={id}>
-                                {truncatedTagsDivs}
+                                {truncatedPublicTagDivs}
                             </div>
                         }
                         {
-                            permissions.canModify && (Array.isArray(value) && value.length < 3) &&
+                            permissions.canModify && (length < 3) &&
                             <Button className={'tag-button fill-primary'}
                                  onClick={isGlobal ? this.addNewPublicTag : this.addNewPrivateTag}>
                                 <AddNewSVG className={"nano-image-container"}/>
@@ -402,7 +391,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                         }
 
                         {
-                            value.length > 2 &&
+                            length > 2 &&
                             <Portal
                                 isOpen={showTagEditor}
                                 zIndex={9999}
@@ -416,7 +405,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                         <div className={'portal position-absolute tags-portal'}>
                                             <div className={'advanced d-flex flex-column v-gap-5 shadow position-relative'}>
                                                 <div className={'d-inline-flex flex-wrap align-self-center align-items-center overflow-auto w-100 p-3'} key={id}>
-                                                    {tagsDivs}
+                                                    {publicTagDivs}
                                                     {
                                                         permissions.canModify &&
                                                         <Button className={'tag-button fill-primary'}
@@ -441,7 +430,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                 }>
 
                                 {
-                                    Array.isArray(value) && value.length > 2 &&
+                                    length > 2 &&
                                     <Button className={`ellipsis-button ${showTagEditor ? "invisible" : ""}`} onClick={(() => this._setShowTagEditor(!showTagEditor))}>
                                         <EllipsisSVG className={'small-image-container'}/>
                                     </Button>

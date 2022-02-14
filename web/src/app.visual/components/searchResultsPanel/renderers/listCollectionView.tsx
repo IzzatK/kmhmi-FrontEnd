@@ -8,6 +8,7 @@ import {InfoSVG} from "../../../theme/svgs/infoSVG";
 import {DocumentInfoVM, SearchResultsProps, SearchResultsState} from "../searchResultsModel";
 import Tag from "../../../theme/widgets/tag/tag";
 import Card from "../../../theme/widgets/card/card";
+import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
 
 class ListCollectionView extends Component<SearchResultsProps, SearchResultsState> {
 
@@ -49,6 +50,15 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
                     cn += ' selected shadow-lg'
                 }
 
+                let publicTagDivs: any[] = [];
+                if (public_tag) {
+                    forEachKVP(public_tag, (tag: string) => {
+                        if (tag.length > 0) {
+                            publicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true}/>)
+                        }
+                    })
+                }
+
                 return (
                     <div key={id}>
                         <ListItem key={id} selected={selected} className={cn} onClick={() => onDocumentSelected(id)}>
@@ -63,11 +73,7 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
                                     {
                                         pageWidth === 'FULL' &&
                                         <div className={"d-flex flex-nowrap h-gap-2 justify-content-end"}>
-                                            {
-                                                public_tag && public_tag.map((tag: string) => {
-                                                    return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} isGlobal={true}/>
-                                                })
-                                            }
+                                            {publicTagDivs}
                                             {
                                                 private_tag && private_tag.map((tag: string) => {
                                                     return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false}/>
@@ -85,11 +91,7 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
                                 {
                                     pageWidth !== 'FULL' &&
                                     <div className={"d-flex flex-nowrap h-gap-2"}>
-                                        {
-                                            public_tag && public_tag.map((tag: string) => {
-                                                return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} isGlobal={true}/>
-                                            })
-                                        }
+                                        {publicTagDivs}
                                         {
                                             private_tag && private_tag.map((tag: string) => {
                                                 return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false}/>

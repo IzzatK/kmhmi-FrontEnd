@@ -221,31 +221,31 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
                                         <div className={"v-gap-5"}>
                                             <div className={'register-grid px-5'}>
                                                 <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
-                                                    <div className={"text-notification"}>*</div>
+                                                    {/*<div className={"text-notification"}>*</div>*/}
                                                     <div>DoD ID:</div>
                                                 </div>
                                                 <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
-                                                    <div className={"text-notification"}>*</div>
+                                                    {/*<div className={"text-notification"}>*</div>*/}
                                                     <div>First Name:</div>
                                                 </div>
                                                 <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
-                                                    <div className={"text-notification"}>*</div>
+                                                    {/*<div className={"text-notification"}>*</div>*/}
                                                     <div>Last Name:</div>
                                                 </div>
                                                 <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
-                                                    <div className={"text-notification"}>*</div>
+                                                    {/*<div className={"text-notification"}>*</div>*/}
                                                     <div>Email:</div>
                                                 </div>
                                                 <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
-                                                    <div className={"text-notification"}>*</div>
+                                                    {/*<div className={"text-notification"}>*</div>*/}
                                                     <div>Phone:</div>
                                                 </div>
-                                                <TextEdit id={"dod_id"} value={tmpUser.dod_id} name={nameOf<UserInfoVM>("dod_id")} autoFocus={true} placeholder={"DoD ID"} onChange={(value) => this.onTmpUserChanged("dod_id", value)}/>
+                                                <TextEdit id={"dod_id"} value={tmpUser.dod_id} name={nameOf<UserInfoVM>("dod_id")} autoFocus={true} placeholder={""} onChange={(value) => this.onTmpUserChanged("dod_id", value)}/>
                                                 {/*<div className={"align-self-center text-info font-weight-light display-4"}>{user?.name}</div>*/}
-                                                <TextEdit id={"first_name"} value={tmpUser.first_name} name={nameOf<UserInfoVM>("first_name")} placeholder={"First Name"} onChange={(value) => this.onTmpUserChanged("first_name", value)}/>
-                                                <TextEdit id={"last_name"} value={tmpUser.last_name} name={nameOf<UserInfoVM>("last_name")} placeholder={"Last Name"} onChange={(value) => this.onTmpUserChanged("last_name", value)}/>
-                                                <TextEdit id={"email"} value={tmpUser.email} name={nameOf<UserInfoVM>("email")} placeholder={"Email Address"} onChange={(value) => this.onTmpUserChanged("email", value)}/>
-                                                <TextEdit id={"phone"} value={tmpUser.phone} name={nameOf<UserInfoVM>("phone")} placeholder={"Phone Number"} onChange={(value) => this.onTmpUserChanged("phone", value)}/>
+                                                <TextEdit id={"first_name"} value={tmpUser.first_name} name={nameOf<UserInfoVM>("first_name")} placeholder={""} onChange={(value) => this.onTmpUserChanged("first_name", value)}/>
+                                                <TextEdit id={"last_name"} value={tmpUser.last_name} name={nameOf<UserInfoVM>("last_name")} placeholder={""} onChange={(value) => this.onTmpUserChanged("last_name", value)}/>
+                                                <TextEdit id={"email"} value={tmpUser.email} name={nameOf<UserInfoVM>("email")} placeholder={""} onChange={(value) => this.onTmpUserChanged("email", value)}/>
+                                                <TextEdit id={"phone"} value={tmpUser.phone} name={nameOf<UserInfoVM>("phone")} placeholder={""} onChange={(value) => this.onTmpUserChanged("phone", value)}/>
                                                 <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["dod_id"]}</div>
                                                 <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["first_name"]}</div>
                                                 <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["last_name"]}</div>
@@ -253,6 +253,8 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
                                                 <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["phone"]}</div>
                                             </div>
                                         </div>
+
+                                        <div className={"display-3 ml-5 pl-5"}>*All fields are required</div>
                                     </div>
 
                                     <div className={"d-flex justify-content-end py-4 pr-5 bg-advisory align-items-center h-gap-3"}>

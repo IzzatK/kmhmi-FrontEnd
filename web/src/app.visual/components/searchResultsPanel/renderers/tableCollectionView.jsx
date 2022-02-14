@@ -11,6 +11,7 @@ import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
 import Tag from "../../../theme/widgets/tag/tag";
 import {indexOf} from "@amcharts/amcharts4/.internal/core/utils/Array";
 import {EllipsisSVG} from "../../../theme/svgs/ellipsisSVG";
+import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
 
 class TableCollectionView extends Component {
     constructor(props) {
@@ -359,8 +360,7 @@ const AuthorCellRender = ({ tableManager, value, field, data, column, colIndex, 
 }
 
 const PublicTagCellRender = ({ tableManager, value, field, data, column, colIndex, rowIndex }) => {
-
-    const { selected } = data;
+    const { selected, public_tag } = data;
 
     let cn = 'rgt-cell-inner';
 
@@ -368,29 +368,41 @@ const PublicTagCellRender = ({ tableManager, value, field, data, column, colInde
         cn += ` selected`;
     }
 
+    let publicTagDivs = [];
+    if (public_tag) {
+        forEachKVP(public_tag, (tag) => {
+
+            if (tag.length > 0) {
+                publicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true}/>)
+            }
+        })
+    }
+
+    let truncatedPublicTagDivs = [];
+    let length = 0;
+    if (public_tag) {
+        forEachKVP(public_tag, (tag) => {
+            if (tag.length > 0) {
+                if (length < 3) {
+                    truncatedPublicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true}/>)
+                }
+                length++;
+            }
+        })
+    }
+
     return (
         <div className={cn}>
             <TooltipPortal portalContent={
                 <div className={"cursor-pointer d-inline-flex flex-wrap align-items-center overflow-auto"}>
-                    {
-                        value && value.split(",").map(tag => {
-                            return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} isGlobal={true}/>
-                        })
-                    }
+                    {publicTagDivs}
                 </div>
 
             }>
                 <div className={"cursor-pointer d-flex align-items-center h-gap-2 overflow-hidden"}>
+                    {truncatedPublicTagDivs}
                     {
-                        value && value.split(",").map(tag => {
-                            if (indexOf(value.split(","), tag) < 3) {
-                                return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} isGlobal={true}/>
-                            }
-
-                        })
-                    }
-                    {
-                        value && value.split(",").length > 2 &&
+                        length > 2 &&
                         <EllipsisSVG className={"ml-5 small-image-container"}/>
                     }
                 </div>

@@ -4,6 +4,7 @@ import {DocumentInfo} from "../../../app.model";
 import {ErrorHandler} from "../../common/providers/entityProvider";
 import {Converter} from "../../common/converters/converter";
 import {getFormattedSize} from "../../../framework.visual/extras/utils/sizeUtils";
+import {forEach} from "../../../framework.visual/extras/utils/collectionUtils";
 
 export class GetDocumentResponseConverter extends Converter<any, DocumentInfo>{
     convert(fromData: any, reject: ErrorHandler): DocumentInfo {
@@ -20,6 +21,11 @@ export class GetDocumentResponseConverter extends Converter<any, DocumentInfo>{
             documentInfo.department = getValueOrDefault(item, 'department', '');
         }
 
+        let public_tags: Record<string, string> = {};
+        forEach(getValueOrDefault(item, 'custom_shared_tag', []), (tag: string) => {
+            public_tags[tag] = tag;
+        })
+
         documentInfo.file_name = getValueOrDefault(item, 'file_name', '');
         documentInfo.file_page_count = getValueOrDefault(item, 'file_page_count', '');
         documentInfo.file_size = getFormattedSize(getValueOrDefault(item, 'file_size', ''));
@@ -29,7 +35,7 @@ export class GetDocumentResponseConverter extends Converter<any, DocumentInfo>{
         documentInfo.primary_sme_phone = getValueOrDefault(item, 'primary_sme_phone', '');
         documentInfo.private_tag = getValueOrDefault(item, 'custom_personal_tag', []);
         documentInfo.project = getValueOrDefault(item, 'project', '');
-        documentInfo.public_tag = getValueOrDefault(item, 'custom_shared_tag', []);
+        documentInfo.public_tag = public_tags;
         documentInfo.publication_date = getValueOrDefault(item, 'publication_date', '');
         documentInfo.purpose = getValueOrDefault(item, 'purpose', '');
         documentInfo.secondary_sme_email = getValueOrDefault(item, 'secondary_sme_email', '');
