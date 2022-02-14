@@ -54,7 +54,7 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
                 if (public_tag) {
                     forEachKVP(public_tag, (tag: string) => {
                         if (tag.length > 0) {
-                            publicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true}/>)
+                            publicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag}/>)
                         }
                     })
                 }
@@ -76,7 +76,7 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
                                             {publicTagDivs}
                                             {
                                                 private_tag && private_tag.map((tag: string) => {
-                                                    return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false}/>
+                                                    return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} key={tag}/>
                                                 })
                                             }
                                         </div>
@@ -94,7 +94,7 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
                                         {publicTagDivs}
                                         {
                                             private_tag && private_tag.map((tag: string) => {
-                                                return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false}/>
+                                                return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} key={tag}/>
                                             })
                                         }
                                     </div>

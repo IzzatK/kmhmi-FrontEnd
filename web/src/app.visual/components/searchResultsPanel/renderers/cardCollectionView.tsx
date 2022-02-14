@@ -39,7 +39,7 @@ class CardCollectionView extends Component<SearchResultsProps, SearchResultsStat
                     forEachKVP(public_tag, (tag: string) => {
 
                         if (tag.length > 0) {
-                            publicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true}/>)
+                            publicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag}/>)
                         }
                     })
                 }
@@ -50,7 +50,7 @@ class CardCollectionView extends Component<SearchResultsProps, SearchResultsStat
                     forEachKVP(public_tag, (tag: string) => {
                         if (tag.length > 0) {
                             if (length < 3) {
-                                truncatedPublicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true}/>)
+                                truncatedPublicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag + "_short"}/>)
                             }
                             length++;
                         }
@@ -94,7 +94,7 @@ class CardCollectionView extends Component<SearchResultsProps, SearchResultsStat
                                               <div className={'d-inline-flex align-items-center flex-wrap'}>
                                                   {
                                                       private_tag && private_tag.map((tag: string) => {
-                                                          return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false}/>
+                                                          return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} key={tag}/>
                                                       })
                                                   }
                                               </div>
@@ -112,7 +112,7 @@ class CardCollectionView extends Component<SearchResultsProps, SearchResultsStat
                                                   {
                                                       private_tag && private_tag.map((tag: string) => {
                                                           if (indexOf(private_tag, tag) < 4 && public_tag && public_tag.length === 0) {
-                                                              return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} isGlobal={true}/>
+                                                              return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag + "_short"}/>
                                                           }
                                                       })
                                                   }

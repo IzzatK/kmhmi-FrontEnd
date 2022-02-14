@@ -71,7 +71,6 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
     }
 
     onTmpDocumentChanged(name: string, value: any) {
-        debugger;
         const { tmpDocument } = this.state;
         const { document } = this.props;
 
@@ -384,8 +383,9 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                         forEachKVP(value, (tag: string) => {
 
                             if (tag.length > 0) {
-                                publicTagDivs?.push(<Tag name={id} text={tag.trim()} onDelete={onClick} isGlobal={isGlobal} className={"mr-4"}
-                                                         isEdit={tag.trim() === "-1"} readonly={!canModify} onSubmit={onSubmit}/>)
+                                publicTagDivs?.push(<Tag name={id} text={tag} onDelete={onClick} isGlobal={isGlobal}
+                                                         className={"mr-4"} isEdit={tag.trim() === "-1"} key={tag}
+                                                         readonly={!canModify} onSubmit={onSubmit}/>)
                             }
                         })
                     }
@@ -394,8 +394,10 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                         forEachKVP(value, (tag: string) => {
                             if (tag.length > 0) {
                                 if (length < 3) {
-                                    truncatedPublicTagDivs?.push(<Tag name={id} text={tag.trim()} onDelete={onClick} isGlobal={isGlobal} className={"mr-4"}
-                                                                      isEdit={tag.trim() === "-1"} readonly={!canModify} onSubmit={onSubmit}/>)
+                                    truncatedPublicTagDivs?.push(<Tag name={id} text={tag} onDelete={onClick}
+                                                                      isGlobal={isGlobal} className={"mr-4"} key={tag + "_short"}
+                                                                      isEdit={tag.trim() === "-1"} readonly={!canModify}
+                                                                      onSubmit={onSubmit}/>)
                                 }
                                 length++;
                             }

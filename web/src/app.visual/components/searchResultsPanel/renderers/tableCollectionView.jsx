@@ -373,7 +373,7 @@ const PublicTagCellRender = ({ tableManager, value, field, data, column, colInde
         forEachKVP(public_tag, (tag) => {
 
             if (tag.length > 0) {
-                publicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true}/>)
+                publicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag}/>)
             }
         })
     }
@@ -384,7 +384,7 @@ const PublicTagCellRender = ({ tableManager, value, field, data, column, colInde
         forEachKVP(public_tag, (tag) => {
             if (tag.length > 0) {
                 if (length < 3) {
-                    truncatedPublicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true}/>)
+                    truncatedPublicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag + "_short"}/>)
                 }
                 length++;
             }
@@ -427,7 +427,7 @@ const PrivateTagCellRender = ({ tableManager, value, field, data, column, colInd
                 <div className={"cursor-pointer d-inline-flex flex-wrap align-items-center overflow-auto"}>
                     {
                         value && value.split(",").map(tag => {
-                            return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} isGlobal={true}/>
+                            return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag}/>
                         })
                     }
                 </div>
@@ -437,7 +437,7 @@ const PrivateTagCellRender = ({ tableManager, value, field, data, column, colInd
                     {
                         value && value.split(",").map(tag => {
                             if (indexOf(value.split(","), tag) < 3) {
-                                return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} isGlobal={true}/>
+                                return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag + "_short"}/>
                             }
 
                         })
