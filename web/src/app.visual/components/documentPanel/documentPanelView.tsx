@@ -71,6 +71,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
     }
 
     onTmpDocumentChanged(name: string, value: any) {
+        debugger;
         const { tmpDocument } = this.state;
         const { document } = this.props;
 
@@ -261,6 +262,22 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         })
     }
 
+    _convertDateFormat(date: string) {
+        let result = "";
+
+        let dateArray = date.split("-");
+
+        if (dateArray[0] && dateArray[1] && dateArray[2]) {
+            let yyyy = dateArray[0];
+            let mm = dateArray[1];
+            let dd = dateArray[2];
+
+            result = mm + "/" + dd + "/" + yyyy;
+        }
+
+        return result;
+    }
+
     getCellRenderer(tmpDocument: DocumentInfoVM, document: DocumentInfoVM, editProperty: EditPropertyVM, isGlobal?: boolean) {
         const { permissions } = this.props;
         const { canModify } = permissions;
@@ -282,6 +299,19 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
             case ParamType.NUMBER:
             case ParamType.STRING: {
                 if (id === 'publication_date') {
+                    if (value !== "No Publication Date") {
+                        let dateArray = value.split('/');
+
+                        if (dateArray[0] && dateArray[1] && dateArray[2]) {
+                            let yyyy = dateArray[2];
+                            let mm = dateArray[0].length == 1 ? "0" + dateArray[0] : dateArray[0];
+                            let dd = dateArray[1].length == 1 ? "0" + dateArray[1] : dateArray[1];
+
+                            value = yyyy + "-" + mm + "-" + dd;
+                        }
+
+                    }
+
                     cellRenderer = (
                         <div key={id}>
                             <TextEdit className={`text-field align-self-center ${long ? "w-100" : ""}`}
@@ -292,7 +322,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                       value={value}
                                       disable={document_id === undefined}
                                       edit={document_id !== undefined && canModify}
-                                      onSubmit={this.onTmpDocumentChanged}/>
+                                      onSubmit={(name, value) => this.onTmpDocumentChanged(name, value)}/>
                         </div>
                     )
                 } else {
