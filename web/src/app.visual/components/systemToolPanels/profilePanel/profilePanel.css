@@ -23,7 +23,7 @@
 .profile-info .personal-info-grid {
     display: inline-grid;
     grid-template-rows:    repeat(8, 3.5rem);
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr 1fr 2fr;
     grid-gap: 0 3rem;
     grid-auto-flow: column;
     color: var(--profile-panel-secondary-color);

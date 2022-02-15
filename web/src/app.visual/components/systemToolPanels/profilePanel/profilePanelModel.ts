@@ -51,6 +51,7 @@ export type ProfilePanelState = {
     isUpdating?: boolean;
     isOpen?: Record<string, string>;
     isEdit?: Record<string, string>;
+    errorMessages?: Record<string, string>;
 }
 
 export type UserInfoVM = {

@@ -14,7 +14,13 @@ export class NewUserProfileInfoView extends Component<ProfilePanelProps, Profile
         bindInstanceMethods(this);
 
         this.state = {
-            tmpUser: {},
+            tmpUser: {
+                dod_id: '',
+                first_name: '',
+                last_name: '',
+                email_address: '',
+                phone_number: ''
+            },
             editProperties: [
                 {
                     id: 'first_name',
@@ -44,11 +50,18 @@ export class NewUserProfileInfoView extends Component<ProfilePanelProps, Profile
                     id: 'dod_id',
                     placeholder: 'DoD ID',
                 },
-                {
-                    id: 'account_status',
-                    placeholder: 'Account Status',
-                },
+                // {
+                //     id: 'account_status',
+                //     placeholder: 'Account Status',
+                // },
             ],
+            errorMessages: {
+                "dod_id": "",
+                "first_name": "",
+                "last_name": "",
+                "email_address": "",
+                "phone_number": "",
+            }
         }
     }
 
@@ -72,14 +85,84 @@ export class NewUserProfileInfoView extends Component<ProfilePanelProps, Profile
         const { onUserAdded } = this.props;
         const { tmpUser } = this.state;
 
-        if (onUserAdded) {
-            onUserAdded(tmpUser);
+        const { dod_id, first_name, last_name, email_address, phone_number } = tmpUser;
+
+        let pass = true;
+
+        let focus = false;
+
+        let errorMessages: Record<string, string> = {
+            "dod_id": "",
+            "first_name": "",
+            "last_name": "",
+            "email_address": "",
+            "phone_number": "",
         }
 
+        if (dod_id && !/^[0-9]{10}/im.test(dod_id)) {
+            pass = false;
+            this._setFocus("dod_id");
+            focus = true;
+            errorMessages["dod_id"] = "Dod ID must be a 10-digit number";
+        }
+
+        if (first_name && !/\w/.test(first_name)) {
+            pass = false;
+            if (!focus) {
+                this._setFocus("first_name");
+                focus = true;
+            }
+            errorMessages["first_name"] = "First Name cannot be empty";
+        }
+
+        if (last_name && !/\w/.test(last_name)) {
+            pass = false;
+            if (!focus) {
+                this._setFocus("last_name");
+                focus = true;
+            }
+            errorMessages["last_name"] = "Last Name cannot be empty";
+        }
+
+        if (email_address && !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email_address)) {
+            pass = false;
+            if (!focus) {
+                this._setFocus("email_address");
+                focus = true;
+            }
+            errorMessages["email_address"] = "Email must be a valid email address";
+        }
+
+        if (phone_number && !/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im.test(phone_number)) {
+            pass = false;
+            if (!focus) {
+                this._setFocus("phone_number");
+            }
+            errorMessages["phone_number"] = "Phone must be a valid phone number";
+        }
+
+        if (pass) {
+            if (onUserAdded != null) {
+                onUserAdded(tmpUser);
+            }
+            this.setState({
+                ...this.state,
+                tmpUser: {},
+            });
+        } else {
+            this._setErrorMessages(errorMessages);
+        }
+    }
+
+    _setErrorMessages(errorMessages: Record<string, string>) {
         this.setState({
             ...this.state,
-            tmpUser: {},
-        });
+            errorMessages: errorMessages,
+        })
+    }
+
+    _setFocus(id: string) {
+        document.getElementById(id)?.focus();
     }
 
     cancel() {
@@ -92,7 +175,13 @@ export class NewUserProfileInfoView extends Component<ProfilePanelProps, Profile
 
     render() {
         const { roles, departments, accountStatuses, } = this.props;
-        const { tmpUser, editProperties, } = this.state;
+        const { tmpUser, editProperties, errorMessages } = this.state;
+
+        let disableButton = false;
+
+        if (tmpUser["dod_id"] === "" || tmpUser["first_name"] === "" || tmpUser["last_name"] === "" || tmpUser["email_address"] === "" || tmpUser["phone_number"] === "") {
+            disableButton = true;
+        }
 
         const editDivs = editProperties.map((editProperty) => {
             const { id, placeholder } = editProperty;
@@ -169,13 +258,15 @@ export class NewUserProfileInfoView extends Component<ProfilePanelProps, Profile
                 default:
                     renderDiv = (
                         <TextEdit
+                            id={id}
                             className={cn}
                             placeholder={placeholder}
                             name={id}
                             dirty={!!editValue}
                             value={editValue ? editValue : originalValue}
                             edit={true}
-                            onSubmit={this.onTmpUserChanged}/>
+                            onChange={(value) => this.onTmpUserChanged(id, value)}
+                            autoFocus={id === "first_name"}/>
                     );
                     break;
             }
@@ -193,19 +284,44 @@ export class NewUserProfileInfoView extends Component<ProfilePanelProps, Profile
                   body={
                       <div className={'px-3 pb-3'}>
                           <div className={"w-100 personal-info-grid dirty"}>
-                              <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>First Name:</div>
-                              <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Last Name:</div>
+                              <div className={'d-flex align-self-center header-1 font-weight-semi-bold align-self-center justify-self-end h-gap-1'}>
+                                  <div className={"text-notification"}>*</div>
+                                  <div>First Name:</div>
+                              </div>
+                              <div className={'d-flex align-self-center header-1 font-weight-semi-bold align-self-center justify-self-end h-gap-1'}>
+                                  <div className={"text-notification"}>*</div>
+                                  <div>Last Name:</div>
+                              </div>
                               <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Department:</div>
                               <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Role:</div>
-                              <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Email:</div>
-                              <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Phone:</div>
-                              <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>DoD ID:</div>
-                              <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Account Status:</div>
+                              <div className={'d-flex align-self-center header-1 font-weight-semi-bold align-self-center justify-self-end h-gap-1'}>
+                                  <div className={"text-notification"}>*</div>
+                                  <div>Email:</div>
+                              </div>
+                              <div className={'d-flex align-self-center header-1 font-weight-semi-bold align-self-center justify-self-end h-gap-1'}>
+                                  <div className={"text-notification"}>*</div>
+                                  <div>Phone:</div>
+                              </div>
+                              <div className={'d-flex align-self-center header-1 font-weight-semi-bold align-self-center justify-self-end h-gap-1'}>
+                                  <div className={"text-notification"}>*</div>
+                                  <div>DoD ID:</div>
+                              </div>
+                              {/*<div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Account Status:</div>*/}
+                              <div/>
                               {editDivs}
+                              <div/>
+                              <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages ? errorMessages["first_name"] : ""}</div>
+                              <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages ? errorMessages["last_name"] : ""}</div>
+                              <div/>
+                              <div/>
+                              <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages ? errorMessages["email_address"] : ""}</div>
+                              <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages ? errorMessages["phone_number"] : ""}</div>
+                              <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages ? errorMessages["dod_id"] : ""}</div>
+                              <div/>
                           </div>
-                          <div className={"d-flex h-gap-2 justify-content-end"}>
+                          <div className={"d-flex h-gap-2 align-items-center justify-content-end"}>
                               <Button text={"Cancel"} orientation={"horizontal"} onClick={() => this.cancel()} selected={false} disabled={false} className={"px-5"}/>
-                              <Button text={"Save"} orientation={"horizontal"} onClick={() => this.addUser()} selected={false} disabled={false} className={"px-5"}/>
+                              <Button text={"Save"} orientation={"horizontal"} onClick={() => this.addUser()} selected={false} disabled={disableButton} className={"px-5"}/>
                           </div>
                       </div>
                   }
