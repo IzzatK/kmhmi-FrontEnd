@@ -237,7 +237,13 @@ export class DocumentService extends Plugin implements IDocumentService {
         this.documentProvider?.update(id, {id, modifiedDocument: mergedDocumentInfo})
             .then(document => {
                 if (document != null) {
-                    this.addOrUpdateRepoItem(document)
+                    this.addOrUpdateRepoItem(document);
+
+                    const { file_name } = document;
+
+                    if (this.getDocument(file_name) != null) {
+                        this.removeAllById(DocumentInfo.class, file_name);
+                    }
                 }
             })
             .catch(error => {
