@@ -1,6 +1,7 @@
 import {nameOf} from "../../../framework/extras/typeUtils";
 import {DocumentInfo} from "../../../app.model";
 import {Converter} from "../../common/converters/converter";
+import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
 
 export class UpdateDocumentRequestConverter extends Converter<any, any>{
 
@@ -13,11 +14,26 @@ export class UpdateDocumentRequestConverter extends Converter<any, any>{
         const getTextValueOrDefault = (propertyName: string, defaultValue: any) => {
             let result = defaultValue;
             if (modifiedDocument[propertyName]) {
-                result =  modifiedDocument[propertyName];
+                if (propertyName === "public_tag") {
+                    let tagsArray: string[] = [];
+                    forEachKVP(modifiedDocument[propertyName], (item: string) => {
+                        tagsArray.push(item);
+                    })
+                    result = tagsArray;
+                } else {
+                    result =  modifiedDocument[propertyName];
+                }
             }
-            else if (dictionary[propertyName])
-            {
-                result = dictionary[propertyName];
+            else if (dictionary[propertyName]) {
+                if (propertyName === "public_tag") {
+                    let tagsArray: string[] = [];
+                    forEachKVP(dictionary[propertyName], (item: string) => {
+                        tagsArray.push(item);
+                    })
+                    result = tagsArray;
+                } else {
+                    result = dictionary[propertyName];
+                }
             }
             return result;
         }
@@ -25,8 +41,8 @@ export class UpdateDocumentRequestConverter extends Converter<any, any>{
         let serverDoc = {
             id: id,
             author: getTextValueOrDefault(nameOf<DocumentInfo>('author'), ''),
-            custom_personal_tag: getTextValueOrDefault(nameOf<DocumentInfo>('private_tag'), ''),
-            custom_shared_tag: getTextValueOrDefault(nameOf<DocumentInfo>('public_tag'), ''),
+            custom_personal_tag: getTextValueOrDefault(nameOf<DocumentInfo>('private_tag'), []),
+            custom_shared_tag: getTextValueOrDefault(nameOf<DocumentInfo>('public_tag'), []),
             department: getTextValueOrDefault(nameOf<DocumentInfo>('department'), ''),
             dept_id: getTextValueOrDefault(nameOf<DocumentInfo>('department'), ''),
             file_name: getTextValueOrDefault(nameOf<DocumentInfo>('file_name'), ''),

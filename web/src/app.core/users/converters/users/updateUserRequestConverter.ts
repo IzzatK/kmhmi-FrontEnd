@@ -33,16 +33,19 @@ export class UpdateUserRequestConverter extends Converter<any, any> {
         let tmpRoles = [];
         if (modifiedUser['role']) {
             //check if role has been changed
-            tmpRoles.push(modifiedUser['role']);
+            let role = parseInt(modifiedUser['role']);
+            tmpRoles.push(role);
         } else if (latestUser['role']) {
             //fetch role
-            tmpRoles.push(latestUser['role']);
+            let role = parseInt(latestUser['role']);
+            tmpRoles.push(role);
         } else {
             //if no role set it to VIEWER
             let references = repoService.getAll(ReferenceInfo.class);
             forEach(references, (referenceInfo: ReferenceInfo) => {
                 if (referenceInfo.type === ReferenceType.ROLE && referenceInfo.title.toUpperCase() == 'VIEWER') {
-                    tmpRoles.push(referenceInfo.id)
+                    let role = parseInt(referenceInfo.id);
+                    tmpRoles.push(role)
                     return true;
                 }
             });
