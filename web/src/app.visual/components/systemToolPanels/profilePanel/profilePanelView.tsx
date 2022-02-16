@@ -92,7 +92,10 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
     }
 
     componentDidUpdate(prevProps: Readonly<ProfilePanelProps>, prevState: Readonly<ProfilePanelState>, snapshot?: any) {
-        const { currentUser } = this.props;
+        const { currentUser, users } = this.props;
+        const { isOpen, isEdit } = this.state;
+
+        console.log(JSON.stringify(users));
 
         if (currentUser !== prevProps.currentUser) {
             this.refreshDirtyFlag();
@@ -102,6 +105,34 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
 
             if (id !== prevId) {
                 this.setTmpUser(currentUser || {});
+            }
+        }
+
+        let isOpenCopy: Record<string, string> = {};
+
+        let isEditCopy: Record<string, string> = {};
+
+        if (users) {
+            if (isOpen && isEdit && users.length > 0) {
+                forEach(users, (user: UserInfoVM) => {
+                    if (user.id) {
+                        if (isOpen[user.id]) {
+                            isOpenCopy[user.id] = user.id;
+                        }
+
+                        if (isEdit[user.id]) {
+                            isEditCopy[user.id] = user.id;
+                        }
+                    }
+                })
+
+                if (JSON.stringify(isOpen) !== JSON.stringify(isOpenCopy) || JSON.stringify(isEdit) !== JSON.stringify(isEditCopy)) {
+                    this.setState({
+                        ...this.state,
+                        isOpen: isOpenCopy,
+                        isEdit: isEditCopy,
+                    })
+                }
             }
         }
     }

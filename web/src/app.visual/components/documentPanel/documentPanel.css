@@ -54,7 +54,7 @@
 .document-panel .title-grid {
     display: grid;
     grid-template-rows: repeat(2, 3.5rem);
-    grid-template-columns: 9.4rem 1fr;
+    grid-template-columns: 11rem 1fr;
     grid-auto-flow: column;
     grid-gap: 0 3rem;
 }
@@ -62,13 +62,13 @@
 .document-panel .property-grid {
     display: grid;
     grid-template-rows: repeat(auto-fit, 3.5rem);
-    grid-template-columns: repeat(auto-fit, minmax(26.2rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(32rem, 1fr));
     grid-auto-rows: 1fr;
     grid-gap: 0 3rem;
 }
 
 .document-panel .property-grid .label {
-    min-width: 9.4rem;
+    min-width: 11rem;
 }
 
 .document-panel .info-grid {
@@ -167,4 +167,8 @@
 
 .document-panel .ellipsis-button.invisible svg {
     fill: transparent;
+}
+
+.document-panel .text-right {
+    max-width: 11rem;
 }

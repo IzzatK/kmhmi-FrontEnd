@@ -11,13 +11,17 @@ export class UpdateDocumentRequestConverter extends Converter<any, any>{
 
         const dictionary: Record<string, any> = latestDocument;
 
+        let numValues = ["department", "purpose", "status"];
+
         const getTextValueOrDefault = (propertyName: string, defaultValue: any) => {
             let result = defaultValue;
             if (modifiedDocument[propertyName]) {
                 if (propertyName === "public_tag") {
                     let tagsArray: string[] = [];
                     forEachKVP(modifiedDocument[propertyName], (item: string) => {
-                        tagsArray.push(item);
+                        if (item !== "") {
+                            tagsArray.push(item);
+                        }
                     })
                     result = tagsArray;
                 } else {
@@ -28,14 +32,30 @@ export class UpdateDocumentRequestConverter extends Converter<any, any>{
                 if (propertyName === "public_tag") {
                     let tagsArray: string[] = [];
                     forEachKVP(dictionary[propertyName], (item: string) => {
-                        tagsArray.push(item);
+                        if (item !== "") {
+                            tagsArray.push(item);
+                        }
                     })
                     result = tagsArray;
                 } else {
                     result = dictionary[propertyName];
                 }
             }
-            return result;
+
+            //convert id to number
+            let convertToInt = false;
+
+            numValues.map((item: string) => {
+                if (item === propertyName) {
+                    convertToInt = true;
+                }
+            });
+
+            if (convertToInt) {
+                return parseInt(result);
+            } else {
+                return result;
+            }
         }
 
         let serverDoc = {
@@ -43,8 +63,8 @@ export class UpdateDocumentRequestConverter extends Converter<any, any>{
             author: getTextValueOrDefault(nameOf<DocumentInfo>('author'), ''),
             custom_personal_tag: getTextValueOrDefault(nameOf<DocumentInfo>('private_tag'), []),
             custom_shared_tag: getTextValueOrDefault(nameOf<DocumentInfo>('public_tag'), []),
-            department: getTextValueOrDefault(nameOf<DocumentInfo>('department'), ''),
-            dept_id: getTextValueOrDefault(nameOf<DocumentInfo>('department'), ''),
+            department: getTextValueOrDefault(nameOf<DocumentInfo>('department'), null),
+            // dept_id: getTextValueOrDefault(nameOf<DocumentInfo>('department'), null),
             file_name: getTextValueOrDefault(nameOf<DocumentInfo>('file_name'), ''),
             file_page_count: getTextValueOrDefault(nameOf<DocumentInfo>('file_page_count'), ''),
             file_size: getTextValueOrDefault(nameOf<DocumentInfo>('file_size'), ''),
@@ -55,12 +75,22 @@ export class UpdateDocumentRequestConverter extends Converter<any, any>{
             primary_sme_phone: getTextValueOrDefault(nameOf<DocumentInfo>('primary_sme_phone'), ''),
             project: getTextValueOrDefault(nameOf<DocumentInfo>('project'), ''),
             publication_date: getTextValueOrDefault(nameOf<DocumentInfo>('publication_date'), ''),
-            purpose: getTextValueOrDefault(nameOf<DocumentInfo>('purpose'), ''),
+            purpose: getTextValueOrDefault(nameOf<DocumentInfo>('purpose'), null),
+
+            tm_title: getTextValueOrDefault(nameOf<DocumentInfo>('suggested_title'), ''),
+            tm_authors: getTextValueOrDefault(nameOf<DocumentInfo>('suggested_author'), ''),
+            tm_publication_date: getTextValueOrDefault(nameOf<DocumentInfo>('suggested_publication_date'), ''),
+
+            tm_locations: getTextValueOrDefault(nameOf<DocumentInfo>('suggested_locations'), ''),
+            tm_organizations: getTextValueOrDefault(nameOf<DocumentInfo>('suggested_organizations'), ''),
+            tm_references: getTextValueOrDefault(nameOf<DocumentInfo>('suggested_references'), ''),
+            tm_topics: getTextValueOrDefault(nameOf<DocumentInfo>('suggested_topics'), ''),
+
 
             secondary_sme_email: getTextValueOrDefault(nameOf<DocumentInfo>('secondary_sme_email'), ''),
             secondary_sme_name: getTextValueOrDefault(nameOf<DocumentInfo>('secondary_sme_name'), ''),
             secondary_sme_phone: getTextValueOrDefault(nameOf<DocumentInfo>('secondary_sme_phone'), ''),
-            status: getTextValueOrDefault(nameOf<DocumentInfo>('status'), ''),
+            status: getTextValueOrDefault(nameOf<DocumentInfo>('status'), null),
             title: getTextValueOrDefault(nameOf<DocumentInfo>('title'), ''),
             upload_date: getTextValueOrDefault(nameOf<DocumentInfo>('upload_date'), ''),
             uploaded_by: getTextValueOrDefault(nameOf<DocumentInfo>('uploadedBy_id'), ''),

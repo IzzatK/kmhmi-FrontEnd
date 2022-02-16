@@ -646,8 +646,8 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                             {/*</Card>*/}
                             <div className={"d-flex flex-column v-gap-1 header-1"}>
                                 <div className={'title-grid'}>
-                                    <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Title:</div>
-                                    <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Author:</div>
+                                    <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end text-right label'}>Title:</div>
+                                    <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end text-right label'}>Author:</div>
                                     {
                                         this.getCellRenderer(tmpDocument, document, editProperties['title'])
                                     }
