@@ -39,14 +39,14 @@ class SystemBannerView extends Component<SystemBannerProps, SystemBannerState> {
 
         return (
             <div className={cn} {...rest}>
-                <div className={"d-flex flex-fill flex-basis-0 align-items-center h-gap-3"}>
+                <div className={"d-flex flex-fill flex-basis-0 align-items-center h-gap-3 mr-5"}>
                     <Button className={"btn-transparent"} onClick={this._onReturnHome}>
                         <div className={"bumed-logo"}/>
                     </Button>
                     <div className={"display-1 title font-weight-bold"}>CIC</div>
-                    <div className={"header-1 pt-1 font-weight-semi-bold text-nowrap text"}>Consolidated Information Center</div>
-                    <div className={"header-1 pt-1 text-nowrap text"}>|</div>
-                    <div className={"header-1 system-banner-text-accent pt-1 text-nowrap"}>Knowledge Management</div>
+                    <div className={"header-1 pt-1 font-weight-semi-bold text-nowrap text hidden-second"}>Consolidated Information Center</div>
+                    <div className={"header-1 pt-1 text-nowrap text hidden-first"}>|</div>
+                    <div className={"header-1 system-banner-text-accent pt-1 text-nowrap hidden-first"}>Knowledge Management</div>
                 </div>
                 <div className={"flex-fill flex-basis-0"}/>
                 <div className={"d-flex flex-fill flex-shrink-0 align-self-stretch justify-content-end"}>

@@ -1,5 +1,6 @@
 .system-banner {
     background: var(--system-banner-background);
+    width: 100vw;
 }
 
 .system-banner .title {
@@ -16,4 +17,16 @@
 
 .system-banner .button {
     min-width: 8.7rem;
+}
+
+@media screen and (max-width: 800px) {
+    .system-banner .hidden-first {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .system-banner .hidden-second {
+        display: none;
+    }
 }
