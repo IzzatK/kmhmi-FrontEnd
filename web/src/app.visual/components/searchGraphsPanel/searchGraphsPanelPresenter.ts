@@ -55,8 +55,7 @@ class SearchGraphsPanel extends Presenter {
                     currentValues.add(value);
                 }
 
-                // TODO JOSIAH REMOVE
-                // documentService.setSearchParam(id, Array.from(currentValues))
+                documentService.setSearchParam(id, Array.from(currentValues))
             }
         }
     }

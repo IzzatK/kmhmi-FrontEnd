@@ -16,7 +16,7 @@ class LoginPanel extends Presenter {
 
         this.mapStateToProps = (state: any, props: any): LoginPanelStateProps => {
             return {
-                dodWarningAccepted: true//authorizationService.isDodWarningAccepted() TODO JOSIAH REMOVE
+                dodWarningAccepted: authorizationService.isDodWarningAccepted()
             };
         }
 
