@@ -583,7 +583,6 @@ export class DocumentService extends Plugin implements IDocumentService {
     }
 
     setSearchParam(id: string, value: string | string[]) {
-        debugger
         let repoItem = super.getRepoItem(SearchParamInfo.class, id);
 
         if (repoItem != null) {

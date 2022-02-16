@@ -25,6 +25,15 @@ export class DocumentInfo extends RepoItem{
   title: string = '';
   upload_date: string = '';
   uploadedBy_id: string = '';
+  nlp_status: string = '';
+
+  suggested_author: string = '';
+  suggested_publication_date: string = '';
+  suggested_title: string = '';
+  suggested_locations: string = '';
+  suggested_organizations: string = '';
+  suggested_references: string = '';
+  suggested_topics: string = '';
 
   preview_url: string = '';
   original_url: string = '';

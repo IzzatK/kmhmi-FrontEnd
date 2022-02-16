@@ -45,6 +45,15 @@ export class GetDocumentResponseConverter extends Converter<any, DocumentInfo>{
         documentInfo.title = getValueOrDefault(item, 'title', '');
         documentInfo.upload_date = getValueOrDefault(item, 'upload_date', '');
         documentInfo.uploadedBy_id = getValueOrDefault(item, 'uploaded_by', '');
+        documentInfo.suggested_title = getValueOrDefault(item, 'tm_title', '');
+        documentInfo.suggested_author = getValueOrDefault(item, 'tm_authors', '');
+        documentInfo.suggested_publication_date = getValueOrDefault(item, 'tm_publication_date', '');
+
+        documentInfo.suggested_locations = getValueOrDefault(item, 'tm_locations', '');
+        documentInfo.suggested_organizations = getValueOrDefault(item, 'tm_organizations', '');
+        documentInfo.suggested_references = getValueOrDefault(item, 'tm_references', '');
+        documentInfo.suggested_topics = getValueOrDefault(item, 'tm_topics', '');
+
 
 
         documentInfo.original_url = `${KM_API_SERVER_URL}/documents/${documentInfo.id}?format=ORIGINAL`;
