@@ -38,14 +38,11 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         const { document } = this.props;
         const { id, status } = document || {};
 
-        this.setTmpDocument({id});
-
-        if (status === "Private") {
-            this.setState({
-                ...this.state,
-                isPrivate: true,
-            })
+        let tmpDocument = {
+            id, status
         }
+
+        this.setTmpDocument(tmpDocument);
     }
 
     componentDidUpdate(prevProps: Readonly<DocumentPanelProps>, prevState: Readonly<DocumentPanelState>, snapshot?: any) {
@@ -54,19 +51,34 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         if (document !== prevProps.document) {
             this.refreshDirtyFlag();
 
-            const {id} = document || {};
+            const {id, status} = document || {};
             const {id: prevId } = prevProps.document || {};
 
+            let tmpDocument = {
+                id,
+                status
+            }
+
             if (id !== prevId) {
-                this.setTmpDocument({id});
+                this.setTmpDocument(tmpDocument);
             }
         }
     }
 
     setTmpDocument(doc: DocumentInfoVM) {
+
+        const { status } = doc;
+
+        let isPrivate = false;
+
+        if (status) {
+            isPrivate = status === "Private";
+        }
+
         this.setState({
             ...this.state,
-            tmpDocument: doc
+            tmpDocument: doc,
+            isPrivate: isPrivate,
         }, () => this.refreshDirtyFlag());
     }
 

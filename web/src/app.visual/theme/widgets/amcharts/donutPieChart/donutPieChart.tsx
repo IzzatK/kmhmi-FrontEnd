@@ -39,9 +39,6 @@ export class DonutPieChart extends Component<DonutPieChartProps, DonutPieChartSt
         series.hiddenState.properties.endAngle = -90;//initial animation
 
         series.slices.template.events.on('hit', function(ev) {
-            // console.log("something happened ", ev);
-            // console.log(ev.target?.dataItem);
-            // console.log(ev.target?.dataItem?.dataContext);
 
             if (this.props.onSelect != null) {
                 // const { id } = ev.target?.dataItem?.dataContext || {};

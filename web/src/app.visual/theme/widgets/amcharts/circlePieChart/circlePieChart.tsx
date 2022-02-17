@@ -54,10 +54,6 @@ export class CirclePieChart extends Component<CirclePieChartProps, CirclePieChar
         chart.data = data;
 
         series.slices.template.events.on('hit', function(ev) {
-            console.log("something happened ", ev);
-            console.log(ev.target?.dataItem);
-            console.log(ev.target?.dataItem?.dataContext);
-
             if (this.props.onSelect != null) {
                 // const { id } = ev.target?.dataItem?.dataContext || {};
 

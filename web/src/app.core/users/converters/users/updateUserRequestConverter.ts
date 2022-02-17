@@ -16,6 +16,8 @@ export class UpdateUserRequestConverter extends Converter<any, any> {
 
         const dictionary:Record<string, any> = latestUser;
 
+        let numValues = ["dept_id", "department", "dod_id"];
+
         const getTextValueOrDefault = (propertyName: string, defaultValue: any) => {
             let result = defaultValue;
             if (modifiedUser[propertyName]) {
@@ -25,7 +27,21 @@ export class UpdateUserRequestConverter extends Converter<any, any> {
             {
                 result = dictionary[propertyName];
             }
-            return result;
+
+            //convert id to number
+            let convertToInt = false;
+
+            numValues.map((item: string) => {
+                if (item === propertyName) {
+                    convertToInt = true;
+                }
+            });
+
+            if (convertToInt) {
+                return parseInt(result);
+            } else {
+                return result;
+            }
         }
 
         let dodid = `${Math.floor(Math.random() * 1000000000)}`;

@@ -11,7 +11,7 @@ export class UpdateDocumentRequestConverter extends Converter<any, any>{
 
         const dictionary: Record<string, any> = latestDocument;
 
-        let numValues = ["department", "purpose", "status"];
+        let numValues = ["dept_id", "department", "purpose"];
 
         const getTextValueOrDefault = (propertyName: string, defaultValue: any) => {
             let result = defaultValue;
@@ -24,6 +24,8 @@ export class UpdateDocumentRequestConverter extends Converter<any, any>{
                         }
                     })
                     result = tagsArray;
+                } else if (propertyName === "status") {
+                    result = modifiedDocument[propertyName] !== "Private" ? "Public" : modifiedDocument[propertyName];
                 } else {
                     result =  modifiedDocument[propertyName];
                 }
@@ -37,6 +39,8 @@ export class UpdateDocumentRequestConverter extends Converter<any, any>{
                         }
                     })
                     result = tagsArray;
+                } else if (propertyName === "status") {
+                    result = dictionary[propertyName] !== "Private" ? "Public" : dictionary[propertyName];
                 } else {
                     result = dictionary[propertyName];
                 }
@@ -90,7 +94,7 @@ export class UpdateDocumentRequestConverter extends Converter<any, any>{
             secondary_sme_email: getTextValueOrDefault(nameOf<DocumentInfo>('secondary_sme_email'), ''),
             secondary_sme_name: getTextValueOrDefault(nameOf<DocumentInfo>('secondary_sme_name'), ''),
             secondary_sme_phone: getTextValueOrDefault(nameOf<DocumentInfo>('secondary_sme_phone'), ''),
-            status: getTextValueOrDefault(nameOf<DocumentInfo>('status'), null),
+            status: getTextValueOrDefault(nameOf<DocumentInfo>('status'), 'Public'),
             title: getTextValueOrDefault(nameOf<DocumentInfo>('title'), ''),
             upload_date: getTextValueOrDefault(nameOf<DocumentInfo>('upload_date'), ''),
             uploaded_by: getTextValueOrDefault(nameOf<DocumentInfo>('uploadedBy_id'), ''),

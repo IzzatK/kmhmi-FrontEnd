@@ -127,7 +127,6 @@ class SearchBanner extends Presenter {
     getSearchParamsBasicVMs = createSelector(
         [documentService.getSearchParams, () => referenceService.getAllReferencesGroupedByType(), tagService.getAllPublicTags],
         (items, referenceTypes, publicTags) => {
-            console.log('calculating search param vms')
             let itemVMs: Record<string, SearchParamItemVM> = {};
 
             forEach(items, (item: SearchParamInfo) => {

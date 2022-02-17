@@ -10,7 +10,7 @@ import {SystemToolbarPresenter} from "../../../components/systemToolbar/systemTo
 import {referenceService, statService, tagService} from "../../../../app.core/serviceComposition";
 import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {ReferenceType} from "../../../../app.model";
-import { LandingPanelPresenter } from "../../../components/landingPanel/landingPanelPresenter";
+import {LandingPanelPresenter} from "../../../components/landingPanel/landingPanelPresenter";
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
 import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
 
@@ -43,9 +43,17 @@ export class AppView extends Component<Props, State> {
         if (this.props.permissions.canSearch) {
             statService.fetchStats();
             tagService.fetchTags();
-            forEachKVP(ReferenceType, (key: any, value: ReferenceType) => {
-                referenceService.fetchReferences(value);
-            });
+            // forEachKVP(ReferenceType, (key: any, value: ReferenceType) => {
+            //     referenceService.fetchReferences(value);
+            // });
+
+            referenceService.fetchReferences(ReferenceType.DEPARTMENT);
+            referenceService.fetchReferences(ReferenceType.PURPOSE);
+            referenceService.fetchReferences(ReferenceType.STATUS);
+
+            setTimeout(() => {
+                referenceService.fetchReferences(ReferenceType.ROLE);
+            }, 1000)
         }
     }
 

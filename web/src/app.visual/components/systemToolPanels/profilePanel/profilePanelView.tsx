@@ -95,8 +95,6 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         const { currentUser, users } = this.props;
         const { isOpen, isEdit } = this.state;
 
-        console.log(JSON.stringify(users));
-
         if (currentUser !== prevProps.currentUser) {
             this.refreshDirtyFlag();
 
@@ -146,7 +144,6 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
     }
 
     _onSearchTextChanged(value: string) {
-        console.log(value);
         const { onSearchTextChanged } = this.props;
 
         if (onSearchTextChanged) {

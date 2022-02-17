@@ -94,7 +94,6 @@ class SystemToolbar extends Presenter {
     );
 
     onDocumentPreviewSelected() {
-        console.log('doc toggle selected');
         displayService.toggleNode(DocumentPanelId);
 
         if (selectionService.getContext("selected-document") !== '') {
