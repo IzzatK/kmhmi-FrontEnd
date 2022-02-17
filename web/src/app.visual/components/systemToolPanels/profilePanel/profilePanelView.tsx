@@ -72,8 +72,11 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
     componentDidMount() {
         const { currentUser } = this.props;
 
-        this.setTmpUser(currentUser ? currentUser : {});
+        if (currentUser) {
+            const { id } = currentUser;
 
+            this.setTmpUser({id});
+        }
 
         // this should probably be in presenter...or somewhere other than...here
         if (this.props.permissions.canModify) {
@@ -95,14 +98,18 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         const { currentUser, users } = this.props;
         const { isOpen, isEdit } = this.state;
 
-        if (currentUser !== prevProps.currentUser) {
-            this.refreshDirtyFlag();
+        if (currentUser && prevProps.currentUser) {
+            if (currentUser.id !== "" && prevProps.currentUser.id !== "") {
+                if (currentUser !== prevProps.currentUser) {
+                    this.refreshDirtyFlag();
 
-            const {id} = currentUser || {};
-            const {id: prevId } = prevProps.currentUser || {};
+                    const {id} = currentUser;
+                    const {id: prevId } = prevProps.currentUser;
 
-            if (id !== prevId) {
-                this.setTmpUser(currentUser || {});
+                    if (id !== prevId) {
+                        this.setTmpUser({ id });
+                    }
+                }
             }
         }
 
@@ -246,11 +253,16 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         const { currentUser } = this.props;
         const { isDirty } = this.state;
 
-        this.setState({
-            ...this.state,
-            isDirty: !isDirty,
-            tmpUser: currentUser || {},
-        }, () => this.refreshDirtyFlag());
+        if (currentUser) {
+            const { id } = currentUser;
+
+            this.setState({
+                ...this.state,
+                isDirty: !isDirty,
+                tmpUser: {id},
+            }, () => this.refreshDirtyFlag());
+        }
+
     }
 
     addUser(newUser: UserInfoVM) {

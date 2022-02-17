@@ -64,33 +64,32 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
     }
 
     componentDidMount() {
-        // const { user } = this.props;
-        //
-        // if (user) {
-        //     this.setTmpUser(user);
-        // }
+        const { user } = this.props;
 
-        this._setPopupVisible(false);
+        if (user) {
+            const { id } = user;
+
+            this.setState({
+                ...this.state,
+                tmpUser: {id},
+                showPopup: false,
+            });
+        }
     }
 
     componentDidUpdate(prevProps: Readonly<ProfilePanelProps>, prevState: Readonly<ProfilePanelState>, snapshot?: any) {
-        // const { user } = this.props;
-        //
-        // if (user && prevProps.user) {
-        //     if (user !== prevProps.user) {
-        //         this.refreshDirtyFlag();
-        //
-        //         const {id} = user;
-        //         const {id: prevId } = prevProps.user;
-        //
-        //         if (id && prevId) {
-        //             if (id !== prevId) {
-        //                 this.setTmpUser(user);
-        //             }
-        //         }
-        //
-        //     }
-        // }
+        const { user } = this.props;
+
+        if (user && prevProps.user) {
+            if (user.id !== "" && prevProps.user.id !== "") {
+                if (user !== prevProps.user) {
+
+                    if (user.id !== prevProps.user.id) {
+                        this.setTmpUser({ id: user.id });
+                    }
+                }
+            }
+        }
     }
 
     setTmpUser(user: UserInfoVM) {
@@ -100,7 +99,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
         });
     }
 
-    onTmpUserChanged(name: string, value: string | undefined) {
+    onTmpUserChanged(name: string, value: string) {
         const {tmpUser} = this.state;
         const {user} = this.props;
 
@@ -117,25 +116,14 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
     }
 
     updateUser() {
-        const { onUserUpdated, user } = this.props;
+        const { onUserUpdated } = this.props;
         const { tmpUser } = this.state;
 
-        if (user) {
-            const { id } = user;
-
-            if (id) {
-                let updatedUser = {
-                    ...tmpUser,
-                    ['id']: id,
-                }
-
-                if (onUserUpdated) {
-                    onUserUpdated({...updatedUser});
-                }
-
-                this.toggleEdit();
-            }
+        if (onUserUpdated) {
+            onUserUpdated({...tmpUser});
         }
+
+        this.toggleEdit();
     }
 
     removeUser() {
@@ -164,10 +152,15 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
 
         this.toggleEdit();
 
-        this.setState({
-            ...this.state,
-            tmpUser: user || {},
-        });
+        if (user) {
+            const { id } = user;
+
+            this.setState({
+                ...this.state,
+                tmpUser: {id},
+            });
+        }
+
     }
 
     toggleEdit() {
@@ -190,6 +183,8 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
         const {user, roles, departments, accountStatuses, userLookUp, permissions, selected, dirty } = this.props;
 
         const { editProperties, tmpUser, showPopup } = this.state;
+
+        console.log("tmpUser " + JSON.stringify(tmpUser));
 
         let isUpdating = user?.isUpdating;
 

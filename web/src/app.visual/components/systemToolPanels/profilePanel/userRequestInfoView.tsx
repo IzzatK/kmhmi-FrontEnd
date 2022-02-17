@@ -21,20 +21,27 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
     }
 
     componentDidMount() {
-        const { user } = this.props;
+        const { userRequest } = this.props;
 
-        this.setTmpUser(user || {});
+        if (userRequest) {
+            const { id } = userRequest;
+            this.setTmpUser({id});
+        }
     }
 
     componentDidUpdate(prevProps: Readonly<ProfilePanelProps>, prevState: Readonly<ProfilePanelState>, snapshot?: any) {
-        const { user } = this.props;
+        const { userRequest } = this.props;
 
-        if (user !== prevProps.user) {
-            const {id} = user || {};
-            const {id: prevId } = prevProps.user || {};
+        if (userRequest && prevProps.userRequest) {
+            if (userRequest.id !== "" && prevProps.userRequest.id !== "") {
+                if (userRequest !== prevProps.userRequest) {
+                    const {id} = userRequest;
+                    const {id: prevId } = prevProps.userRequest;
 
-            if (id !== prevId) {
-                this.setTmpUser(user || {});
+                    if (id !== prevId) {
+                        this.setTmpUser({ id });
+                    }
+                }
             }
         }
     }
@@ -47,7 +54,7 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
         }
     }
 
-    onTmpUserChanged(name: string, value: string | undefined) {
+    onTmpUserChanged(name: string, value: string) {
         const {tmpUser} = this.state;
         const {userRequest} = this.props;
 
