@@ -15,6 +15,7 @@ import {
 import {DocumentInfoVM, PermissionsVM} from "./documentPanelModel";
 import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../app.core.api";
 import {PermissionInfo} from "../../../app.model/permissionInfo";
+import {StatusType} from "../../../app.model/statusType";
 
 class DocumentPanel extends Presenter {
     constructor() {
@@ -163,7 +164,8 @@ class DocumentPanel extends Presenter {
                 secondary_sme_email="",
                 secondary_sme_name="",
                 secondary_sme_phone="",
-                status="",
+                status=StatusType.DRAFT,
+                scope="",
                 title="",
                 upload_date="",
                 uploadedBy_id="",
@@ -171,11 +173,37 @@ class DocumentPanel extends Presenter {
                 original_url="",
                 isUpdating,
                 isPending,
+                suggested_author,
+                suggested_title,
+                suggested_publication_date,
             } = document || {};
+
+            let displayAuthor = author;
+            if (!author || author === "") {
+                displayAuthor = suggested_author;
+            }
+
+            let displayTitle = title;
+            if (!title || title === "") {
+                if (!suggested_title || suggested_title === "") {
+                    displayTitle = file_name;
+                } else {
+                    displayTitle = suggested_title;
+                }
+            }
+
+            let displayPublicationDate = new Date(publication_date).toLocaleString().split(",")[0];
+            if (!publication_date || publication_date === "") {
+                if (!suggested_publication_date || suggested_publication_date === "") {
+                    displayPublicationDate = "No Publication Date";
+                } else {
+                    displayPublicationDate = new Date(suggested_publication_date).toLocaleString().split(",")[0];
+                }
+            }
 
             let itemVM: DocumentInfoVM = {
                 id: id,
-                author: author,
+                author: displayAuthor,
                 department: department,
                 file_name: file_name,
                 file_size: file_size,
@@ -187,13 +215,14 @@ class DocumentPanel extends Presenter {
                 private_tag: private_tag,
                 project: project,
                 public_tag: public_tag,
-                publication_date: publication_date ? new Date(publication_date).toLocaleString().split(",")[0] : 'No Publication Date',
+                publication_date: displayPublicationDate,
                 purpose: purpose,
                 secondary_sme_email: secondary_sme_email,
                 secondary_sme_name: secondary_sme_name,
                 secondary_sme_phone: secondary_sme_phone,
-                status: status,
-                title: title ? title : file_name,
+                status: status.toString(),
+                scope: scope,
+                title: displayTitle,
                 upload_date: upload_date ? new Date(upload_date).toLocaleString() : 'No Upload Date',
                 uploadedBy_id: uploadedBy_id,
                 preview_url: preview_url,

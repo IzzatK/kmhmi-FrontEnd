@@ -36,10 +36,10 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
 
     componentDidMount() {
         const { document } = this.props;
-        const { id, status } = document || {};
+        const { id, scope } = document || {};
 
         let tmpDocument = {
-            id, status
+            id, scope
         }
 
         this.setTmpDocument(tmpDocument);
@@ -51,12 +51,12 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         if (document !== prevProps.document) {
             this.refreshDirtyFlag();
 
-            const {id, status} = document || {};
+            const {id, scope} = document || {};
             const {id: prevId } = prevProps.document || {};
 
             let tmpDocument = {
                 id,
-                status
+                scope
             }
 
             if (id !== prevId) {
@@ -67,12 +67,12 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
 
     setTmpDocument(doc: DocumentInfoVM) {
 
-        const { status } = doc;
+        const { scope } = doc;
 
         let isPrivate = false;
 
-        if (status) {
-            isPrivate = status === "Private";
+        if (scope) {
+            isPrivate = scope === "Private";
         }
 
         this.setState({
@@ -256,9 +256,9 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         });
 
         if (isPrivate) {
-            this.onTmpDocumentChanged('status', "Public");
+            this.onTmpDocumentChanged('scope', "Public");
         } else {
-            this.onTmpDocumentChanged('status', "Private");
+            this.onTmpDocumentChanged('scope', "Private");
         }
     }
 
@@ -293,7 +293,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         const { permissions } = this.props;
         const { canModify } = permissions;
         const {id, type, title='test', options={}, long=false} = editProperty;
-        const { id:document_id } = document;
+        const { id:document_id, status } = document;
         const { showTagEditor } = this.state;
 
         let cellRenderer = null;
@@ -320,7 +320,6 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
 
                             value = yyyy + "-" + mm + "-" + dd;
                         }
-
                     }
 
                     cellRenderer = (
@@ -518,9 +517,9 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         return cellRenderer;
     }
 
-    _getStatus(title: string) {
+    _getScope(title: string) {
         const { editProperties } = this.props;
-        const { options={} } =  editProperties['status'];
+        const { options={} } =  editProperties['scope'];
 
         let result = "";
 
@@ -612,7 +611,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         } = this.props;
         const {id, preview_url = "", original_url, isUpdating=false, upload_date, publication_date, file_type, uploaded_by,
             primary_sme_name, primary_sme_phone, primary_sme_email, secondary_sme_name, secondary_sme_phone, secondary_sme_email,
-        file_name, file_size} = document || {};
+        file_name, file_size, status} = document || {};
 
         const { tmpDocument, isDirty, isGlobal, isPrivate } = this.state;
 
@@ -788,7 +787,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                         </div>
 
                         {
-                            isUpdating &&
+                            isUpdating || status === "PROCESSING" || status === "CREATED" &&
                             <div className={"position-absolute"} style={{top: '0', right: '0', bottom: '0', left:'0'}}>
                                 <LoadingIndicator/>
                             </div>

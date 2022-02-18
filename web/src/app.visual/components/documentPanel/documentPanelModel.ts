@@ -51,6 +51,7 @@ export type DocumentInfoVM = {
     secondary_sme_name?: string;
     secondary_sme_phone?: string;
     status?: string;
+    scope?: string;
     title?: string;
     upload_date?: string;
     uploadedBy_id?: string;

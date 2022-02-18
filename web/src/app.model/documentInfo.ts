@@ -1,4 +1,5 @@
 import {RepoItem} from "../framework/services/repoService/repoItem";
+import {StatusType} from "./statusType";
 
 export class DocumentInfo extends RepoItem{
 
@@ -21,11 +22,11 @@ export class DocumentInfo extends RepoItem{
   secondary_sme_email: string = '';
   secondary_sme_name: string = '';
   secondary_sme_phone: string = '';
-  status: string = '';
+  status: StatusType = StatusType.DRAFT;
+  scope: string = '';
   title: string = '';
   upload_date: string = '';
   uploadedBy_id: string = '';
-  nlp_status: string = '';
 
   suggested_author: string = '';
   suggested_publication_date: string = '';

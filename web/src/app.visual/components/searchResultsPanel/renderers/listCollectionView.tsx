@@ -27,7 +27,7 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
         let itemDivs: {} | null | undefined = [];
         if (searchResults) {
             itemDivs = searchResults.map((item: DocumentInfoVM) => {
-                const {id, author, title, timestamp, selected, status, publication_date, public_tag, private_tag, type,
+                const {id, author, title, timestamp, selected, scope, publication_date, public_tag, private_tag, type,
                     department, purpose, project, page_count, isUpdating, file_name, uploadedBy_id, primary_sme_email,
                     primary_sme_name, primary_sme_phone, secondary_sme_email, secondary_sme_name, secondary_sme_phone} = item;
 
@@ -201,7 +201,7 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
                                                 <div className={'align-self-center header-2'}>{department}</div>
                                                 <div className={'align-self-center header-2'}>{purpose}</div>
                                                 <div className={'align-self-center header-2'}>{project}</div>
-                                                <div className={'align-self-center header-2'}>{status}</div>
+                                                <div className={'align-self-center header-2'}>{scope}</div>
                                             </div>
                                             {
                                                 pageWidth !== "ONE_THIRD" &&

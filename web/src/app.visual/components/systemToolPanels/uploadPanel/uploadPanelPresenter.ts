@@ -75,9 +75,10 @@ class UploadPanel extends Presenter {
                     file_name,
                     isUpdating,
                     isDeleted,
+                    status: doc_status,
                 } = itemVM;
 
-                let statusReferenceInfo = statusReferenceInfos[itemVM.status];
+                let statusReferenceInfo = statusReferenceInfos[doc_status];
 
 
                 let status = '';
@@ -85,7 +86,7 @@ class UploadPanel extends Presenter {
                     status = statusReferenceInfo.title;
                 }
                 else {
-                    status = itemVM.status;
+                    status = doc_status.toString();
                 }
 
                 let newId: string = id;

@@ -5,10 +5,11 @@ export class UploadDocumentResponseConverter extends Converter<any, ResponseStat
     convert(fromData: any): ResponseStatusType {
 
         const { document_id:id, status } = fromData;
+        const { stage, status:upload_status, version } = status;
 
         return {
             id,
-            status
+            status: upload_status,
         };
     }
 }

@@ -5,6 +5,7 @@ import {ErrorHandler} from "../../common/providers/entityProvider";
 import {Converter} from "../../common/converters/converter";
 import {getFormattedSize} from "../../../framework.visual/extras/utils/sizeUtils";
 import {forEach} from "../../../framework.visual/extras/utils/collectionUtils";
+import {StatusType} from "../../../app.model/statusType";
 
 export class GetDocumentResponseConverter extends Converter<any, DocumentInfo>{
     convert(fromData: any, reject: ErrorHandler): DocumentInfo {
@@ -41,7 +42,7 @@ export class GetDocumentResponseConverter extends Converter<any, DocumentInfo>{
         documentInfo.secondary_sme_email = getValueOrDefault(item, 'secondary_sme_email', '');
         documentInfo.secondary_sme_name = getValueOrDefault(item, 'secondary_sme_name', '');
         documentInfo.secondary_sme_phone = getValueOrDefault(item, 'secondary_sme_phone', '');
-        documentInfo.status = getValueOrDefault(item, 'status', '');
+        documentInfo.scope = getValueOrDefault(item, 'scope', '');
         documentInfo.title = getValueOrDefault(item, 'title', '');
         documentInfo.upload_date = getValueOrDefault(item, 'upload_date', '');
         documentInfo.uploadedBy_id = getValueOrDefault(item, 'uploaded_by', '');
@@ -54,7 +55,49 @@ export class GetDocumentResponseConverter extends Converter<any, DocumentInfo>{
         documentInfo.suggested_references = getValueOrDefault(item, 'tm_references', '');
         documentInfo.suggested_topics = getValueOrDefault(item, 'tm_topics', '');
 
+        let status = StatusType.DRAFT;
 
+        let statusObject: any = {};
+
+        if (item && item.hasOwnProperty("status")) {
+            if (item["status"]) {
+
+                if (typeof  item["status"] === "object") {
+                    statusObject = item["status"];
+                } else {
+                    switch (item["status"]) {
+                        case "failed":
+                            status = StatusType.FAILED;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+
+        if (Object.keys(statusObject).length !== 0) {
+            const { stage, status:upload_status, version } = statusObject;
+
+            switch (stage) {
+                case 0:
+                    status = StatusType.CREATED;
+                    break;
+                case 10:
+                    status = StatusType.PDF_AVAILABLE;
+                    break;
+                case 20:
+                    status = StatusType.SEARCHABLE;
+                    break;
+                case 30:
+                    status = StatusType.NLP_COMPLETE;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        documentInfo.status = status;
 
         documentInfo.original_url = `${KM_API_SERVER_URL}/documents/${documentInfo.id}?format=ORIGINAL`;
         documentInfo.preview_url = `${KM_API_SERVER_URL}/documents/${documentInfo.id}?format=PREVIEW`;

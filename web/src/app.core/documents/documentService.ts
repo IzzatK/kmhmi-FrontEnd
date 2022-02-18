@@ -6,6 +6,7 @@ import {Nullable} from "../../framework/extras/typeUtils";
 import {IDocumentService, IEntityProvider, IUserService} from "../../app.core.api";
 import {Plugin} from "../../framework/extras/plugin";
 import {getDateWithoutTime} from "../../framework.visual/extras/utils/timeUtils";
+import {StatusType} from "../../app.model/statusType";
 
 export class DocumentService extends Plugin implements IDocumentService {
     public static readonly class:string = 'DocumentService';
@@ -278,7 +279,7 @@ export class DocumentService extends Plugin implements IDocumentService {
         // id will be auto generated client side
         let tmpFileInfo = new DocumentInfo(tmpId);
         tmpFileInfo.file_name = name;
-        tmpFileInfo.status = 'Uploading';
+        tmpFileInfo.status = StatusType.UPLOADING;
         tmpFileInfo.isPending = true;
 
         this.addOrUpdateRepoItem(tmpFileInfo)
@@ -288,7 +289,7 @@ export class DocumentService extends Plugin implements IDocumentService {
         const file = this.pendingFilesQueue.shift();
 
         if (file) {
-                const {name} = file;
+            const {name} = file;
 
             // since we are posting and don't have an id yet, use a placeholder
             let tmpId = name;
@@ -313,21 +314,29 @@ export class DocumentService extends Plugin implements IDocumentService {
                         this.pendingFilesRaw[id] = file;
 
                         updatedDocument.file_name = name;
-                        updatedDocument.status = 'Processing';
+                        updatedDocument.status = StatusType.PROCESSING;
                         updatedDocument.isPending = true;
-                    } else if (status === "failed") {
-                        updatedDocument.file_name = name;
-                        updatedDocument.status = 'Processing';
-                        updatedDocument.isPending = true;
-                    } else if (status === "error") {
-                        updatedDocument.file_name = name;
-                        updatedDocument.status = 'failed';
-                        updatedDocument.isPending = true;
+                    } else {
+                        debugger;
+                        switch (status) {
+                            case "FAILED":
+                                updatedDocument.file_name = name;
+                                updatedDocument.status = StatusType.PROCESSING;
+                                updatedDocument.isPending = true;
+                                break;
+                            case "ERROR":
+                                updatedDocument.file_name = name;
+                                updatedDocument.status = StatusType.FAILED;
+                                updatedDocument.isPending = true;
 
-                        setTimeout(() => {
-                            this.removeAllById(DocumentInfo.class, id);
-                            this.removeAllById(DocumentInfo.class, name);
-                        }, 5000);
+                                setTimeout(() => {
+                                    this.removeAllById(DocumentInfo.class, id);
+                                    this.removeAllById(DocumentInfo.class, name);
+                                }, 5000);
+                                break;
+                            default:
+                                break;
+                        }
                     }
 
                     this.addOrUpdateRepoItem(updatedDocument);
@@ -335,6 +344,8 @@ export class DocumentService extends Plugin implements IDocumentService {
                 .then(document => {
                     if (document != null) {
                         const { id, file_name } = document;
+
+                        debugger;
 
                         let localFile = this.getDocument(file_name);
 
@@ -408,7 +419,7 @@ export class DocumentService extends Plugin implements IDocumentService {
                     ...pendingFile,
                     isPending: true,
                     isDeleted: true,
-                    status: "Cancelled",
+                    status: StatusType.CANCELLED,
                 }
 
                 this.addOrUpdateRepoItem(cancelledFile);
@@ -426,7 +437,7 @@ export class DocumentService extends Plugin implements IDocumentService {
                                 ...document,
                                 isPending: true,
                                 isDeleted: true,
-                                status: "Cancelled",
+                                status: StatusType.CANCELLED,
                             }
                             this.addOrUpdateRepoItem(approvedFile);
 

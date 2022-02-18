@@ -94,7 +94,7 @@ export class UpdateDocumentRequestConverter extends Converter<any, any>{
             secondary_sme_email: getTextValueOrDefault(nameOf<DocumentInfo>('secondary_sme_email'), ''),
             secondary_sme_name: getTextValueOrDefault(nameOf<DocumentInfo>('secondary_sme_name'), ''),
             secondary_sme_phone: getTextValueOrDefault(nameOf<DocumentInfo>('secondary_sme_phone'), ''),
-            status: getTextValueOrDefault(nameOf<DocumentInfo>('status'), 'Public'),
+            scope: getTextValueOrDefault(nameOf<DocumentInfo>('scope'), 'Public'),
             title: getTextValueOrDefault(nameOf<DocumentInfo>('title'), ''),
             upload_date: getTextValueOrDefault(nameOf<DocumentInfo>('upload_date'), ''),
             uploaded_by: getTextValueOrDefault(nameOf<DocumentInfo>('uploadedBy_id'), ''),
