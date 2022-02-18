@@ -5,7 +5,7 @@ import Card from "../../../theme/widgets/card/card";
 import ComboBox from "../../../theme/widgets/comboBox/comboBox";
 import TextEdit from "../../../theme/widgets/textEdit/textEdit";
 import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
-import {ProfilePanelProps, ProfilePanelState, UserInfoVM} from "./profilePanelModel";
+import {ProfilePanelProps, ProfilePanelState} from "./profilePanelModel";
 import Popup from "../../../theme/widgets/popup/popup";
 import {FileSVG} from "../../../theme/svgs/fileSVG";
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
@@ -19,7 +19,6 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
         bindInstanceMethods(this);
 
         this.state = {
-            tmpUser: {},
             showPopup: false,
             editProperties: [
                 {
@@ -63,78 +62,38 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
         }
     }
 
-    componentDidMount() {
-        const { user } = this.props;
+    _onTmpUserChanged(name: string, value: string) {
+        const { onTmpUserChanged, user } = this.props;
 
-        if (user) {
+        if (user && onTmpUserChanged) {
             const { id } = user;
+            if (!id) return;
 
-            this.setState({
-                ...this.state,
-                tmpUser: {id},
-                showPopup: false,
-            });
+            onTmpUserChanged(id, name, value);
         }
     }
 
-    componentDidUpdate(prevProps: Readonly<ProfilePanelProps>, prevState: Readonly<ProfilePanelState>, snapshot?: any) {
-        const { user } = this.props;
+    _onUpdateUser() {
+        const { onUserUpdated, user } = this.props;
 
-        if (user && prevProps.user) {
-            if (user.id !== "" && prevProps.user.id !== "") {
-                if (user !== prevProps.user) {
+        if (user && onUserUpdated) {
+            const { id } = user;
+            if (!id) return;
 
-                    if (user.id !== prevProps.user.id) {
-                        this.setTmpUser({ id: user.id });
-                    }
-                }
-            }
-        }
-    }
-
-    setTmpUser(user: UserInfoVM) {
-        this.setState({
-            ...this.state,
-            tmpUser: user
-        });
-    }
-
-    onTmpUserChanged(name: string, value: string) {
-        const {tmpUser} = this.state;
-        const {user} = this.props;
-
-        if (user) {
-            let nextUser = {
-                ...tmpUser,
-                [name]: value
-            };
-            if (user[name] === value) {
-                delete nextUser[name];
-            }
-            this.setTmpUser(nextUser);
-        }
-    }
-
-    updateUser() {
-        const { onUserUpdated } = this.props;
-        const { tmpUser } = this.state;
-
-        if (onUserUpdated) {
-            onUserUpdated({...tmpUser});
+            onUserUpdated(id);
         }
 
-        this.toggleEdit();
+        this._toggleEdit();
     }
 
-    removeUser() {
+    _onRemoveUser() {
         const { onUserRemoved, user } = this.props;
 
         if (user && onUserRemoved) {
             const { id } = user;
+            if (!id) return;
 
-            if (id) {
-                onUserRemoved(id);
-            }
+            onUserRemoved(id);
         }
 
         this._setPopupVisible(false);
@@ -147,23 +106,17 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
         })
     }
 
-    cancelEdit() {
-        const { user } = this.props;
+    _onCancelEdit() {
+        const { onCancel } = this.props;
 
-        this.toggleEdit();
-
-        if (user) {
-            const { id } = user;
-
-            this.setState({
-                ...this.state,
-                tmpUser: {id},
-            });
+        if (onCancel) {
+            onCancel();
         }
 
+        this._toggleEdit();
     }
 
-    toggleEdit() {
+    _toggleEdit() {
         const { onEdit } = this.props;
 
         if (onEdit) {
@@ -171,7 +124,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
         }
     }
 
-    toggleSelected() {
+    _toggleSelected() {
         const { onSelect } = this.props;
 
         if (onSelect) {
@@ -180,11 +133,9 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
     }
 
     render() {
-        const {user, roles, departments, accountStatuses, userLookUp, permissions, selected, dirty } = this.props;
+        const {user, tmpUser, roles, departments, accountStatuses, userLookUp, permissions, selected, dirty } = this.props;
 
-        const { editProperties, tmpUser, showPopup } = this.state;
-
-        console.log("tmpUser " + JSON.stringify(tmpUser));
+        const { editProperties, showPopup } = this.state;
 
         let isUpdating = user?.isUpdating;
 
@@ -222,7 +173,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                         <ComboBox
                             className={cn}
                             disable={!dirty || isUpdating}
-                            onSelect={(value: string) => this.onTmpUserChanged(id, value)}
+                            onSelect={(value: string) => this._onTmpUserChanged(id, value)}
                             title={departmentTitle}
                             items={departments}
                         />
@@ -242,7 +193,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                         <ComboBox
                             className={cn}
                             disable={!dirty || isUpdating}
-                            onSelect={(value: string) => this.onTmpUserChanged(id, value)}
+                            onSelect={(value: string) => this._onTmpUserChanged(id, value)}
                             title={roleTitle}
                             items={roles}
                         />
@@ -261,7 +212,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                         <ComboBox
                             className={cn}
                             disable={!dirty || isUpdating}
-                            onSelect={(value: string) => this.onTmpUserChanged(id, value)}
+                            onSelect={(value: string) => this._onTmpUserChanged(id, value)}
                             title={accountStatusTitle}
                             items={accountStatuses}
                         />
@@ -293,7 +244,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                             dirty={!!editValue}
                             value={name}
                             edit={!readonly ? dirty : false}
-                            onSubmit={this.onTmpUserChanged}/>
+                            onSubmit={this._onTmpUserChanged}/>
                     )
                     break;
                 case 'first_name':
@@ -311,7 +262,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                             dirty={!!editValue}
                             value={editValue ? editValue : originalValue}
                             edit={!readonly ? dirty : false}
-                            onSubmit={this.onTmpUserChanged}/>
+                            onSubmit={this._onTmpUserChanged}/>
                     );
                     break;
             }
@@ -323,7 +274,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
             <Card className={'profile-info flex-column justify-content-start header-4 align-items-stretch'}
                   header={
                       <div
-                          onClick={() => this.toggleSelected()}
+                          onClick={() => this._toggleSelected()}
                           className={cn}>
                           <div className={'d-flex h-gap-4 px-5 py-4'}>
                               <div className={'header-1 font-weight-semi-bold'}>{user?.first_name + ' ' + user?.last_name}</div>
@@ -345,7 +296,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                               padding={"40%"}
                               isVisible={showPopup}
                               onCancel={() => this._setPopupVisible(false)}
-                              onProceed={() => this.removeUser()}/>
+                              onProceed={() => this._onRemoveUser()}/>
                           <div className={`personal-info-grid w-100 ${dirty ? 'dirty' : ''}`}>
                               <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>First Name:</div>
                               <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Last Name:</div>
@@ -361,7 +312,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                           {
                               !dirty &&
                               <div className={"d-flex justify-content-end h-gap-2"}>
-                                  <Button text={"Edit"} orientation={"horizontal"} onClick={() => this.toggleEdit()} selected={false} disabled={isUpdating} className={"px-5"}/>
+                                  <Button text={"Edit"} orientation={"horizontal"} onClick={() => this._toggleEdit()} selected={false} disabled={isUpdating} className={"px-5"}/>
                               </div>
                           }
                           {
@@ -371,8 +322,8 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                                       permissions.canDelete &&
                                       <Button text={"Remove User"} orientation={"horizontal"} highlight={true} onClick={() => this._setPopupVisible(true)} selected={false} disabled={isUpdating} className={"px-5"}/>
                                   }
-                                  <Button text={"Cancel"} orientation={"horizontal"} highlight={true} onClick={() => this.cancelEdit()} selected={false} disabled={isUpdating} className={"px-5"}/>
-                                  <Button text={"Save"} orientation={"horizontal"} onClick={() => this.updateUser()} selected={false} disabled={isUpdating} className={"px-5"}/>
+                                  <Button text={"Cancel"} orientation={"horizontal"} highlight={true} onClick={() => this._onCancelEdit()} selected={false} disabled={isUpdating} className={"px-5"}/>
+                                  <Button text={"Save"} orientation={"horizontal"} onClick={() => this._onUpdateUser()} selected={false} disabled={isUpdating} className={"px-5"}/>
                               </div>
                           }
                       </div>

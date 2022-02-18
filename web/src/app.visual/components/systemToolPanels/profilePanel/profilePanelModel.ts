@@ -7,6 +7,7 @@ export type ProfilePanelProps = {
     currentUser?: UserInfoVM;
     user?: UserInfoVM;
     users?: UserInfoVM[];
+    tmpUser?: UserInfoVM;
     // userRequest?: UserRequestInfoVM;
     userRequest?: UserInfoVM;
     // userRequests?: UserRequestInfoVM[];
@@ -24,7 +25,7 @@ export type ProfilePanelProps = {
     onUserUpdated?: (user: any) => void;
     onUserAdded?: (user: UserInfoVM) => void;
     onUserRemoved?: (id: string) => void;
-    onAcceptUserRequest?: (id: string, role: string) => void;
+    onAcceptUserRequest?: (id: string, role?: string) => void;
     onDeclineUserRequest?: (id: string) => void;
     onSearchTextChanged?: (value: string) => void;
     onSearch?: () => void;
@@ -32,6 +33,7 @@ export type ProfilePanelProps = {
     onSelect?: () => void;
     onCancel?: () => void;
     onEdit?: () => void;
+    onTmpUserChanged?: (id: string, name: string, value: string) => void;
 }
 
 export type PermissionsVM = {
@@ -42,7 +44,8 @@ export type PermissionsVM = {
 }
 
 export type ProfilePanelState = {
-    tmpUser: UserInfoVM;
+    tmpUser?: UserInfoVM;
+    tmpUsers?: Record<string, UserInfoVM>;
     isDirty?: boolean;
     isAddingNewUser?: boolean;
     editProperties: EditPropertyVM[];

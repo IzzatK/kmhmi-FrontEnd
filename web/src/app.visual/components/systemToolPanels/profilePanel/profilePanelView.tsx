@@ -6,7 +6,7 @@ import '../../../theme/stylesheets/panel.css';
 import Button from "../../../theme/widgets/button/button";
 import ComboBox from "../../../theme/widgets/comboBox/comboBox";
 import TextEdit from "../../../theme/widgets/textEdit/textEdit";
-import {arrayEquals, forEach} from "../../../../framework.visual/extras/utils/collectionUtils";
+import {arrayEquals, forEach, forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {NewUserProfileInfoView} from "./newUserProfileInfoView";
 import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
 import {ProfilePanelProps, ProfilePanelState, UserInfoVM} from "./profilePanelModel";
@@ -66,6 +66,7 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
             ],
             isOpen: {},
             isEdit: {},
+            tmpUsers: {},
         }
     }
 
@@ -75,18 +76,17 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         if (currentUser) {
             const { id } = currentUser;
 
-            this.setTmpUser({id});
+            this._setTmpUser({id});
         }
 
         // this should probably be in presenter...or somewhere other than...here
         if (this.props.permissions.canModify) {
             this.interval = setInterval(() => {
                 userService.fetchUsers();
-            }, 30000); // refresh every 60 seconds
+            }, 60000); // refresh every 60 seconds
             userService.fetchUsers();
         }
     }
-
 
     componentWillUnmount() {
         if (this.interval != null) {
@@ -95,48 +95,19 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
     }
 
     componentDidUpdate(prevProps: Readonly<ProfilePanelProps>, prevState: Readonly<ProfilePanelState>, snapshot?: any) {
-        const { currentUser, users } = this.props;
-        const { isOpen, isEdit } = this.state;
+        const { currentUser } = this.props;
 
         if (currentUser && prevProps.currentUser) {
             if (currentUser.id !== "" && prevProps.currentUser.id !== "") {
                 if (currentUser !== prevProps.currentUser) {
-                    this.refreshDirtyFlag();
+                    this._refreshDirtyFlag();
 
                     const {id} = currentUser;
                     const {id: prevId } = prevProps.currentUser;
 
                     if (id !== prevId) {
-                        this.setTmpUser({ id });
+                        this._setTmpUser({ id });
                     }
-                }
-            }
-        }
-
-        let isOpenCopy: Record<string, string> = {};
-
-        let isEditCopy: Record<string, string> = {};
-
-        if (users) {
-            if (isOpen && isEdit && users.length > 0) {
-                forEach(users, (user: UserInfoVM) => {
-                    if (user.id) {
-                        if (isOpen[user.id]) {
-                            isOpenCopy[user.id] = user.id;
-                        }
-
-                        if (isEdit[user.id]) {
-                            isEditCopy[user.id] = user.id;
-                        }
-                    }
-                })
-
-                if (JSON.stringify(isOpen) !== JSON.stringify(isOpenCopy) || JSON.stringify(isEdit) !== JSON.stringify(isEditCopy)) {
-                    this.setState({
-                        ...this.state,
-                        isOpen: isOpenCopy,
-                        isEdit: isEditCopy,
-                    })
                 }
             }
         }
@@ -166,14 +137,14 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         }
     }
 
-    setTmpUser(currentUser: UserInfoVM) {
+    _setTmpUser(currentUser: UserInfoVM) {
         this.setState({
             ...this.state,
             tmpUser: currentUser
-        }, () => this.refreshDirtyFlag());
+        }, () => this._refreshDirtyFlag());
     }
 
-    refreshDirtyFlag() {
+    _refreshDirtyFlag() {
         const {currentUser} = this.props;
         const {tmpUser} = this.state;
 
@@ -189,20 +160,22 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         for (let index = 0; index < itemsLength; index++) {
             let key = itemKeys[index];
 
-            if (Array.isArray(tmpUser[key])) {
-                if (arrayEquals(tmpUser[key], currentUser[key])) {
-                    keysToDelete.push(key)
+            if (tmpUser) {
+                if (Array.isArray(tmpUser[key])) {
+                    if (arrayEquals(tmpUser[key], currentUser[key])) {
+                        keysToDelete.push(key)
+                    }
+                    else {
+                        dirty = true;
+                    }
                 }
                 else {
-                    dirty = true;
-                }
-            }
-            else {
-                if (tmpUser[key] === currentUser[key]) {
-                    keysToDelete.push(key);
-                }
-                else {
-                    dirty = true;
+                    if (tmpUser[key] === currentUser[key]) {
+                        keysToDelete.push(key);
+                    }
+                    else {
+                        dirty = true;
+                    }
                 }
             }
         }
@@ -220,7 +193,7 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         })
     }
 
-    onTmpUserChanged(name: string, value: string) {
+    _onTmpUserChanged(name: string, value: string) {
         const {tmpUser} = this.state;
         const {currentUser} = this.props;
 
@@ -232,11 +205,51 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
             if (currentUser[name] === value) {
                 delete nextUser[name];
             }
-            this.setTmpUser(nextUser);
+            this._setTmpUser(nextUser);
         }
     }
 
-    updateUser() {
+    _onTmpUsersChanged(id: string, name: string, value: string) {
+        const { tmpUsers } = this.state;
+        if (!tmpUsers) return;
+
+        let tmpUsersCopy: Record<string, UserInfoVM> = {};
+
+        if (Object.keys(tmpUsers).length === 0) {
+            tmpUsersCopy[id] = {
+                id,
+                [name]: value,
+            }
+        } else {
+            forEachKVP(tmpUsers, (itemKey: string, itemValue: UserInfoVM) => {
+                const { id:tmpUserId } = itemValue;
+                if (!tmpUserId) return;
+
+                if (tmpUserId === id) {
+                    if (tmpUsers[id]) {
+                        tmpUsersCopy[id] = {
+                            ...tmpUsers[id],
+                            [name]: value,
+                        }
+                    } else {
+                        tmpUsersCopy[id] = {
+                            id,
+                            [name]: value,
+                        }
+                    }
+                } else {
+                    tmpUsersCopy[tmpUserId] = tmpUsers[tmpUserId];
+                }
+            })
+        }
+
+        this.setState({
+            ...this.state,
+            tmpUsers: tmpUsersCopy,
+        })
+    }
+
+    _onUpdateCurrentUser() {
         const { onUserUpdated } = this.props;
         const { isDirty, tmpUser } = this.state;
 
@@ -249,7 +262,23 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         }
     }
 
-    cancelEdit() {
+    _onUpdateUser(id: string) {
+        const { onUserUpdated } = this.props;
+        const { tmpUsers } = this.state;
+
+        if (!tmpUsers) return;
+
+        let updatedUser: UserInfoVM = {}
+        if (tmpUsers[id]) {
+            updatedUser = tmpUsers[id];
+        }
+
+        if (onUserUpdated) {
+            onUserUpdated({...updatedUser});
+        }
+    }
+
+    _onCancelCurrentUserEdit() {
         const { currentUser } = this.props;
         const { isDirty } = this.state;
 
@@ -260,22 +289,54 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                 ...this.state,
                 isDirty: !isDirty,
                 tmpUser: {id},
-            }, () => this.refreshDirtyFlag());
+            }, () => this._refreshDirtyFlag());
         }
-
     }
 
-    addUser(newUser: UserInfoVM) {
+    _onCancelEdit(id: string) {
+        const { tmpUsers } = this.state;
+
+        if (!tmpUsers) return;
+
+        let tmpUsersCopy: Record<string, UserInfoVM> = {};
+
+        forEachKVP(tmpUsers, (itemKey: string, itemValue: UserInfoVM) => {
+            const { id:tmpUserId } = itemValue;
+
+            if (!tmpUserId) return;
+
+            if (tmpUserId !== id) {
+                tmpUsersCopy[tmpUserId] = tmpUsers[tmpUserId];
+            }
+        })
+
+        this.setState({
+            ...this.state,
+            tmpUsers: tmpUsersCopy,
+        })
+    }
+
+    _onRemoveUser(id: string) {
+        const { onUserRemoved } = this.props;
+
+        if (onUserRemoved) {
+            onUserRemoved(id);
+        }
+
+        this._refreshState(id);
+    }
+
+    _onAddUser(newUser: UserInfoVM) {
         const { onUserAdded } = this.props;
 
         if (onUserAdded) {
             onUserAdded(newUser);
         }
 
-        this.toggleIsAddingNewUser();
+        this._toggleIsAddingNewUser();
     }
 
-    toggleEdit() {
+    _toggleEdit() {
         const { isDirty } = this.state;
 
         this.setState({
@@ -284,7 +345,7 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         })
     }
 
-    toggleIsAddingNewUser() {
+    _toggleIsAddingNewUser() {
         const { isAddingNewUser } = this.state;
 
         this.setState({
@@ -293,62 +354,123 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         })
     }
 
-    onAcceptUserRequest(id: string, role: string) {
+    _onAcceptUserRequest(id: string) {
         const { onAcceptUserRequest } = this.props;
+        const { tmpUsers } = this.state;
 
 
-        if (onAcceptUserRequest) onAcceptUserRequest(id, role);
+        if (!tmpUsers) return;
+        if (tmpUsers[id]) {
+            const { role } = tmpUsers[id];
+            if (!role) return;
+
+            if (onAcceptUserRequest) {
+                onAcceptUserRequest(id, role);
+            }
+        }
     }
 
-    onDeclineUserRequest(id: string) {
+    _onDeclineUserRequest(id: string) {
         const { onDeclineUserRequest } = this.props;
 
-        if (onDeclineUserRequest) onDeclineUserRequest(id);
+        if (onDeclineUserRequest) {
+            onDeclineUserRequest(id);
+        }
+
+        this._refreshState(id);
     }
 
-    manageIsOpen(id: string) {
+    _refreshState(id: string) {
+        const { tmpUsers, isOpen, isEdit } = this.state;
+        if (!tmpUsers) return;
+
+        let tmpUsersCopy: Record<string, UserInfoVM> = {};
+
+        forEachKVP(tmpUsers, (itemKey: string, itemValue: UserInfoVM) => {
+            const { id:tmpUserId } = itemValue;
+
+            if (!tmpUserId) return;
+
+            if (tmpUserId !== id) {
+                tmpUsersCopy[tmpUserId] = tmpUsers[tmpUserId];
+            }
+        });
+
+        let isOpenCopy: Record<string, string> = {};
+
+        if (isOpen) {
+            forEachKVP(isOpen, (itemKey: string, itemValue: string) => {
+                if (itemValue !== id) {
+                    isOpenCopy[itemValue] = isOpen[itemValue];
+                }
+            });
+        }
+
+        let isEditCopy: Record<string, string> = {};
+
+        if (isEdit) {
+            forEachKVP(isEdit, (itemKey: string, itemValue: string) => {
+                if (itemValue !== id) {
+                    isEditCopy[itemValue] = isEdit[itemValue];
+                }
+            });
+        }
+
+        this.setState({
+            ...this.state,
+            tmpUsers: tmpUsersCopy,
+            isOpen: isOpenCopy,
+            isEdit: isEditCopy,
+        })
+    }
+
+    _manageIsOpen(id: string) {
         const { isOpen } = this.state;
 
         if (isOpen) {
-            let newIsOpen: Record<string, string> = isOpen;
+            let isOpenCopy: Record<string, string> = isOpen;
 
-            if (newIsOpen[id] === undefined) {
-                newIsOpen[id] = id;
-            } else {
-                delete newIsOpen[id];
-            }
+            forEachKVP(isOpen, (itemKey: string, itemValue: string) => {
+                if (itemValue !== id) {
+                    isOpenCopy[itemValue] = itemValue;
+                } else if (!isOpen[itemValue]) {
+                    isOpenCopy[itemValue] = itemValue;
+                }
+            });
 
             this.setState({
                 ...this.state,
-                isOpen: newIsOpen,
+                isOpen: isOpenCopy,
             })
         }
     }
 
-    manageIsEdit(id: string) {
+    _manageIsEdit(id: string) {
         const { isEdit } = this.state;
 
         if (isEdit) {
-            let newIsEdit: Record<string, string> = isEdit;
+            let isEditCopy: Record<string, string> = {};
 
-            if (newIsEdit[id] === undefined) {
-                newIsEdit[id] = id;
-            } else {
-                delete newIsEdit[id];
-            }
+            forEachKVP(isEdit, (itemKey: string, itemValue: string) => {
+                if (itemValue !== id) {
+                    isEditCopy[itemValue] = itemValue;
+                } else if (!isEdit[itemValue]) {
+                    isEditCopy[itemValue] = itemValue;
+                }
+            });
 
             this.setState({
                 ...this.state,
-                isEdit: newIsEdit,
+                isEdit: isEditCopy,
             })
         }
     }
 
     render() {
         const { className, users, currentUser, onUserUpdated, onUserRemoved, onUserAdded, roles, departments,
-            accountStatuses, userLookUp, userRequests, permissions, searchText, ...rest } = this.props;
+            accountStatuses, userLookUp, userRequests, permissions, searchText } = this.props;
 
-        const { editProperties, tmpUser, isDirty, isAddingNewUser, isOpen, isEdit } = this.state;
+        const { editProperties, tmpUser, tmpUsers, isDirty, isAddingNewUser, isOpen, isEdit } = this.state;
 
         let cn = "d-flex position-absolute w-100 h-100 align-items-center justify-content-center";
 
@@ -358,18 +480,25 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
             profileInfoViews = users.map((user: UserInfoVM) => {
                 const { id } = user;
 
-                let notNullId = id || "";
+                if (!id) return;
 
                 let componentOpen = false;
 
                 if (isOpen) {
-                    componentOpen = isOpen[notNullId] !== undefined;
+                    componentOpen = isOpen[id] !== undefined;
                 }
 
                 let componentEdit = false;
 
                 if (isEdit) {
-                    componentEdit = isEdit[notNullId] !== undefined;
+                    componentEdit = isEdit[id] !== undefined;
+                }
+
+                let tmpUserProp: UserInfoVM = {}
+                if (tmpUsers) {
+                    if (tmpUsers[id]) {
+                        tmpUserProp = tmpUsers[id];
+                    }
                 }
 
                 return (
@@ -379,13 +508,16 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                                      departments={departments}
                                      accountStatuses={accountStatuses}
                                      user={user}
-                                     onUserUpdated={onUserUpdated}
-                                     onUserRemoved={onUserRemoved}
+                                     tmpUser={tmpUserProp}
+                                     onUserUpdated={() => this._onUpdateUser(id)}
+                                     onUserRemoved={() => this._onRemoveUser(id)}
+                                     onTmpUserChanged={(id, name, value) => this._onTmpUsersChanged(id, name, value)}
                                      userLookUp={userLookUp}
                                      dirty={componentEdit}
                                      selected={componentOpen}
-                                     onSelect={() => this.manageIsOpen(notNullId)}
-                                     onEdit={() => this.manageIsEdit(notNullId)}/>
+                                     onSelect={() => this._manageIsOpen(id)}
+                                     onEdit={() => this._manageIsEdit(id)}
+                                     onCancel={() => this._onCancelEdit(id)}/>
                 )
             });
         }
@@ -395,23 +527,32 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         if (userRequests) {
             userRequestViews = userRequests.map((userRequest: UserInfoVM) => {
                 const { id } = userRequest;
-
-                let notNullId = id || "";
+                if (!id) return;
 
                 let componentOpen = false;
 
                 if (isOpen) {
-                    componentOpen = isOpen[notNullId] !== undefined;
+                    componentOpen = isOpen[id] !== undefined;
+                }
+
+                let tmpUserProp: UserInfoVM = {};
+
+                if (tmpUsers) {
+                    if (tmpUsers[id]) {
+                        tmpUserProp = tmpUsers[id];
+                    }
                 }
 
                 return (
                     <UserRequestInfoView permissions={permissions}
                                          roles={roles}
                                          userRequest={userRequest}
-                                         onAcceptUserRequest={this.onAcceptUserRequest}
-                                         onDeclineUserRequest={this.onDeclineUserRequest}
+                                         tmpUser={tmpUserProp}
+                                         onAcceptUserRequest={this._onAcceptUserRequest}
+                                         onDeclineUserRequest={this._onDeclineUserRequest}
+                                         onTmpUserChanged={(id, name, value) => this._onTmpUsersChanged(id, name, value)}
                                          selected={componentOpen}
-                                         onSelect={() => this.manageIsOpen(notNullId)}/>
+                                         onSelect={() => this._manageIsOpen(id)}/>
                 )
             })
         }
@@ -441,7 +582,7 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                         <ComboBox
                             className={cn}
                             disable={!isDirty}
-                            onSelect={(value: string) => this.onTmpUserChanged(id, value)}
+                            onSelect={(value: string) => this._onTmpUserChanged(id, value)}
                             title={departmentTitle}
                             items={departments}
                         />
@@ -464,7 +605,7 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                             dirty={!!editValue}
                             value={roleTitle || "N/A"}
                             edit={!readonly ? isDirty : false}
-                            onSubmit={this.onTmpUserChanged}/>
+                            onSubmit={this._onTmpUserChanged}/>
                     )
                     break;
                 case 'first_name':
@@ -482,7 +623,7 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                             dirty={!!editValue}
                             value={editValue ? editValue : originalValue}
                             edit={!readonly ? isDirty : false}
-                            onSubmit={this.onTmpUserChanged}/>
+                            onSubmit={this._onTmpUserChanged}/>
                     );
             }
             return renderDiv;
@@ -517,15 +658,15 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                                 <div className={"d-flex justify-content-end h-gap-2"}>
                                     {
                                         permissions.canModifySelf &&
-                                        <Button text={"Edit"} orientation={"horizontal"} onClick={() => this.toggleEdit()} selected={false} disabled={false} className={"px-5"}/>
+                                        <Button text={"Edit"} orientation={"horizontal"} onClick={() => this._toggleEdit()} selected={false} disabled={false} className={"px-5"}/>
                                     }
                                 </div>
                             }
                             {
                                 isDirty &&
                                 <div className={"d-flex justify-content-end h-gap-2"}>
-                                    <Button text={"Cancel"} orientation={"horizontal"} onClick={() => this.cancelEdit()} selected={false} disabled={false} className={"px-5"}/>
-                                    <Button text={"Save"} orientation={"horizontal"} onClick={() => this.updateUser()} selected={false} disabled={false} className={"px-5"}/>
+                                    <Button text={"Cancel"} orientation={"horizontal"} onClick={() => this._onCancelCurrentUserEdit()} selected={false} disabled={false} className={"px-5"}/>
+                                    <Button text={"Save"} orientation={"horizontal"} onClick={() => this._onUpdateCurrentUser()} selected={false} disabled={false} className={"px-5"}/>
                                 </div>
                             }
                         </div>
@@ -546,7 +687,7 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                                         <div className={'py-3'}>User Manager</div>
                                         {
                                             permissions.canCreate &&
-                                            <Button text={"Add User"} orientation={"horizontal"} onClick={() => this.toggleIsAddingNewUser()} selected={false} disabled={false} className={"px-5 mr-5"}/>
+                                            <Button text={"Add User"} orientation={"horizontal"} onClick={() => this._toggleIsAddingNewUser()} selected={false} disabled={false} className={"px-5 mr-5"}/>
                                         }
                                     </div>
                                     <div className={'mr-4'}>
@@ -563,9 +704,11 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
 
                                         {
                                             isAddingNewUser &&
-                                            <NewUserProfileInfoView permissions={permissions} onUserAdded={(newUser) => this.addUser(newUser)}
-                                                                    onCancel={() => this.toggleIsAddingNewUser()}
-                                                                    accountStatuses={accountStatuses} departments={departments}
+                                            <NewUserProfileInfoView permissions={permissions}
+                                                                    onUserAdded={(newUser) => this._onAddUser(newUser)}
+                                                                    onCancel={() => this._toggleIsAddingNewUser()}
+                                                                    accountStatuses={accountStatuses}
+                                                                    departments={departments}
                                                                     roles={roles}/>
                                         }
                                         {profileInfoViews}

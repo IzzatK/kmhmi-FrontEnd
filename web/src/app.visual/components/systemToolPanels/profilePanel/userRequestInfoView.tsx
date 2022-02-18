@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {ProfilePanelProps, ProfilePanelState, UserInfoVM} from "./profilePanelModel";
+import {ProfilePanelProps, ProfilePanelState} from "./profilePanelModel";
 import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
 import Button from "../../../theme/widgets/button/button";
 import Card from "../../../theme/widgets/card/card";
@@ -14,39 +14,12 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
         bindInstanceMethods(this);
 
         this.state = {
-            tmpUser: {},
             editProperties: [],
             isUpdating: false,
         }
     }
 
-    componentDidMount() {
-        const { userRequest } = this.props;
-
-        if (userRequest) {
-            const { id } = userRequest;
-            this.setTmpUser({id});
-        }
-    }
-
-    componentDidUpdate(prevProps: Readonly<ProfilePanelProps>, prevState: Readonly<ProfilePanelState>, snapshot?: any) {
-        const { userRequest } = this.props;
-
-        if (userRequest && prevProps.userRequest) {
-            if (userRequest.id !== "" && prevProps.userRequest.id !== "") {
-                if (userRequest !== prevProps.userRequest) {
-                    const {id} = userRequest;
-                    const {id: prevId } = prevProps.userRequest;
-
-                    if (id !== prevId) {
-                        this.setTmpUser({ id });
-                    }
-                }
-            }
-        }
-    }
-
-    toggleSelected() {
+    _onToggleSelected() {
         const { onSelect } = this.props;
 
         if (onSelect) {
@@ -54,32 +27,19 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
         }
     }
 
-    onTmpUserChanged(name: string, value: string) {
-        const {tmpUser} = this.state;
-        const {userRequest} = this.props;
+    _onTmpUserChanged(name: string, value: string) {
+        const { onTmpUserChanged, userRequest } = this.props;
 
-        if (userRequest) {
-            let nextUser = {
-                ...tmpUser,
-                [name]: value
-            };
-            if (userRequest[name] === value) {
-                delete nextUser[name];
-            }
-            this.setTmpUser(nextUser);
+        if (userRequest && onTmpUserChanged) {
+            const { id } = userRequest;
+            if (!id) return;
+
+            onTmpUserChanged(id, name, value);
         }
     }
 
-    setTmpUser(userRequest: UserInfoVM) {
-        this.setState({
-            ...this.state,
-            tmpUser: userRequest
-        });
-    }
-
-    onAccept() {
+    _onAccept() {
         const { onAcceptUserRequest, userRequest } = this.props;
-        const { tmpUser } = this.state;
 
         this.setState({
             ...this.state,
@@ -88,11 +48,15 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
 
         if (userRequest) {
             const { id } = userRequest;
-            if (onAcceptUserRequest) onAcceptUserRequest(id || "", tmpUser.role || "");
+            if (!id) return;
+
+            if (onAcceptUserRequest) {
+                onAcceptUserRequest(id);
+            }
         }
     }
 
-    onDecline() {
+    _onDecline() {
         const { onDeclineUserRequest, userRequest } = this.props;
 
         this.setState({
@@ -102,14 +66,16 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
 
         if (userRequest) {
             const { id } = userRequest;
-            if (onDeclineUserRequest) onDeclineUserRequest(id || "");
+            if (!id) return;
+
+            if (onDeclineUserRequest) {
+                onDeclineUserRequest(id);
+            }
         }
     }
 
     render() {
-        const { userRequest, roles, selected } = this.props;
-
-        const { tmpUser } = this.state;
+        const { userRequest, roles, selected, tmpUser } = this.props;
 
         let isUpdating = userRequest?.isUpdating;
 
@@ -135,7 +101,7 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
         return (
             <Card className={'user-request flex-column justify-content-start header-4 align-items-stretch'}
                   header={
-                      <div onClick={() => this.toggleSelected()} className={cn}>
+                      <div onClick={() => this._onToggleSelected()} className={cn}>
                           <div className={'d-flex h-gap-4 px-5 py-4'}>
                               <div className={'header-1 font-weight-semi-bold'}>Request: {userRequest?.first_name + (userRequest?.last_name ? " " + userRequest?.last_name : "")}</div>
                           </div>
@@ -166,7 +132,7 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
                               <div className={'header-1 font-weight-semi-bold align-self-center'}>{userRequest?.phone_number}</div>
                               <ComboBox
                                   className={"align-self-center"}
-                                  onSelect={(value: string) => this.onTmpUserChanged("role", value)}
+                                  onSelect={(value: string) => this._onTmpUserChanged("role", value)}
                                   title={roleTitle}
                                   items={roles}
                                   disable={isUpdating}
@@ -185,14 +151,14 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
                                       text={"Decline"}
                                       highlight={true}
                                       orientation={"horizontal"}
-                                      onClick={() => this.onDecline()}
+                                      onClick={() => this._onDecline()}
                                       selected={false}
                                       disabled={isUpdating}
                                       className={"px-5"}/>
                                   <Button
                                       text={"Accept"}
                                       orientation={"horizontal"}
-                                      onClick={() => this.onAccept()}
+                                      onClick={() => this._onAccept()}
                                       selected={false}
                                       disabled={isUpdating}
                                       className={"px-5"}/>

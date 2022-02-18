@@ -84,6 +84,7 @@ export class NewUserProfileInfoView extends Component<ProfilePanelProps, Profile
     addUser() {
         const { onUserAdded } = this.props;
         const { tmpUser } = this.state;
+        if (!tmpUser) return;
 
         const { dod_id, first_name, last_name, email_address, phone_number } = tmpUser;
 
@@ -176,6 +177,8 @@ export class NewUserProfileInfoView extends Component<ProfilePanelProps, Profile
     render() {
         const { roles, departments, accountStatuses, } = this.props;
         const { tmpUser, editProperties, errorMessages } = this.state;
+
+        if (!tmpUser) return;
 
         let disableButton = false;
 
