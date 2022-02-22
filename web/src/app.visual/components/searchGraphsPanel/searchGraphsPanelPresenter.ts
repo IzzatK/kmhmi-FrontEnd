@@ -44,6 +44,7 @@ class SearchGraphsPanel extends Presenter {
     _onSearchParamsChanged(id:string, value: string) {
         switch (id) {
             default: {
+                documentService.clearSearch();
                 let searchParam = documentService.getSearchParam(id);
 
                 let currentValues = new Set<string>(searchParam?.value || []);
