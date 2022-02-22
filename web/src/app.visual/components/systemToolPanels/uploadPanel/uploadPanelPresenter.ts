@@ -80,13 +80,34 @@ class UploadPanel extends Presenter {
 
                 let statusReferenceInfo = statusReferenceInfos[doc_status];
 
-
                 let status = '';
                 if (statusReferenceInfo) {
                     status = statusReferenceInfo.title;
                 }
                 else {
-                    status = doc_status.toString();
+                    switch (doc_status) {
+                        case "DRAFT":
+                            status = "UPLOADING";
+                            break;
+                        case "PROCESSING":
+                        case "ERROR":
+                        case "CREATED":
+                            status = "PROCESSING";
+                            break;
+                        case "PDF_AVAILABLE":
+                        case "SEARCHABLE":
+                        case "NLP_COMPLETE":
+                            status = "COMPLETE";
+                                break;
+                        case "FAILED":
+                            status = "FAILED";
+                            break;
+                        case "CANCELLED":
+                            status = "CANCELLED";
+                            break;
+                        default:
+                            break;
+                    }
                 }
 
                 let newId: string = id;

@@ -20,7 +20,6 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
     private readonly pollAttempts: Record<string, number>;
     private POLLING_RATE: number;
     private MAX_POLL_ATTEMPTS: number;
-    private MAX_NLP_POLL_ATTEMPTS: number;
 
     private deleteDocumentResponseConverter!: DeleteDocumentResponseConverter;
 
@@ -43,7 +42,6 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
         this.pollAttempts = {};
         this.POLLING_RATE = 5000;
         this.MAX_POLL_ATTEMPTS = 3;
-        this.MAX_NLP_POLL_ATTEMPTS = 5;
     }
 
     start() {
@@ -76,6 +74,7 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
 
                     if (status != null) {
                         let documentInfo = new DocumentInfo(id);
+                        documentInfo.status = StatusType.PROCESSING;
                         onUpdated(documentInfo);
                     }
 
@@ -98,31 +97,15 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
                                                 delete this.pollAttempts[id];
                                                 // we are completely done.
                                                 latestDocument.isPending = true;
-                                                if (status === StatusType.SEARCHABLE || status === StatusType.CREATED || status === StatusType.PDF_AVAILABLE) {
-                                                    latestDocument.status = StatusType.NLP_COMPLETE;
-                                                } else {
-                                                    latestDocument.status = StatusType.ERROR;
-                                                }
+                                                latestDocument.status = StatusType.FAILED;
                                                 onUpdated(latestDocument);
 
                                                 resolve(latestDocument);
-                                            } else if (isUploading || status === StatusType.FAILED) {
+                                            } else if (isUploading || status === StatusType.ERROR) {
                                                 this.pollAttempts[id] = pollAttempt + 1;
                                                 setTimeout(fetchNow, this.POLLING_RATE);
                                             } else {
-                                                if (status === StatusType.NLP_COMPLETE) {
-                                                    resolve(latestDocument);
-                                                } else if (pollAttempt >= this.MAX_POLL_ATTEMPTS + this.MAX_NLP_POLL_ATTEMPTS) {
-                                                    delete this.pollAttempts[id];
-                                                    latestDocument.isPending = true;
-                                                    onUpdated(latestDocument);
-                                                    resolve(latestDocument);
-                                                } else {
-                                                    latestDocument.isPending = true;
-                                                    onUpdated(latestDocument);
-                                                    this.pollAttempts[id] = pollAttempt + 1;
-                                                    setTimeout(fetchNow, this.POLLING_RATE);
-                                                }
+                                                resolve(latestDocument);
                                             }
                                         }
                                     }

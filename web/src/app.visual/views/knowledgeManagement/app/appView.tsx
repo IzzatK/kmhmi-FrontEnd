@@ -49,11 +49,12 @@ export class AppView extends Component<Props, State> {
 
             referenceService.fetchReferences(ReferenceType.DEPARTMENT);
             referenceService.fetchReferences(ReferenceType.PURPOSE);
-            referenceService.fetchReferences(ReferenceType.STATUS);
-
-            setTimeout(() => {
-                referenceService.fetchReferences(ReferenceType.ROLE);
-            }, 1000)
+            referenceService.fetchReferences(ReferenceType.ROLE);
+            // referenceService.fetchReferences(ReferenceType.STATUS);
+            //
+            // setTimeout(() => {
+            //     referenceService.fetchReferences(ReferenceType.ROLE);
+            // }, 1000)
         }
     }
 

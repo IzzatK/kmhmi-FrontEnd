@@ -55,7 +55,7 @@ export class GetDocumentResponseConverter extends Converter<any, DocumentInfo>{
         documentInfo.suggested_references = getValueOrDefault(item, 'tm_references', '');
         documentInfo.suggested_topics = getValueOrDefault(item, 'tm_topics', '');
 
-        let status = StatusType.DRAFT;
+        let status = StatusType.PROCESSING;
 
         let statusObject: any = {};
 
@@ -67,7 +67,7 @@ export class GetDocumentResponseConverter extends Converter<any, DocumentInfo>{
                 } else {
                     switch (item["status"]) {
                         case "failed":
-                            status = StatusType.FAILED;
+                            status = StatusType.ERROR;
                             break;
                         default:
                             break;

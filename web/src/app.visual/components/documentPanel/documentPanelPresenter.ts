@@ -201,6 +201,15 @@ class DocumentPanel extends Presenter {
                 }
             }
 
+            let displayStatus = "";
+            displayStatus = status.toString();
+
+            if (status !== StatusType.NLP_COMPLETE) {
+                setTimeout(() => {
+                    documentService.fetchDocument(id);
+                }, 10000);
+            }
+
             let itemVM: DocumentInfoVM = {
                 id: id,
                 author: displayAuthor,
@@ -220,7 +229,7 @@ class DocumentPanel extends Presenter {
                 secondary_sme_email: secondary_sme_email,
                 secondary_sme_name: secondary_sme_name,
                 secondary_sme_phone: secondary_sme_phone,
-                status: status.toString(),
+                status: displayStatus,
                 scope: scope,
                 title: displayTitle,
                 upload_date: upload_date ? new Date(upload_date).toLocaleString() : 'No Upload Date',

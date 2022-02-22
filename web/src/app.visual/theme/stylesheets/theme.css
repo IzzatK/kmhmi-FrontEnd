@@ -289,6 +289,10 @@ body > * {
     --file-input-hover-link-color: var(--app-white);
     --file-input-hover-icon-color: var(--app-white);
 
+    /* Loading Indicator */
+    --loading-indicator-background-color: var(--app-white);
+    --loading-indicator-border-color: var(--app-airForceBlue);
+
     /* Progress Bar*/
     --progress-bar-track-background: var(--app-airForceBlue);
     --progress-bar-charged-background: var(--app-dodgerBlue);
