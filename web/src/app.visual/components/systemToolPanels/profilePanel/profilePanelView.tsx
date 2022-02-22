@@ -428,12 +428,14 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         const { isOpen } = this.state;
 
         if (isOpen) {
-            let isOpenCopy: Record<string, string> = isOpen;
+            let isOpenCopy: Record<string, string> = {};
+
+            if (!isOpen[id]) {
+                isOpenCopy[id] = id;
+            }
 
             forEachKVP(isOpen, (itemKey: string, itemValue: string) => {
                 if (itemValue !== id) {
-                    isOpenCopy[itemValue] = itemValue;
-                } else if (!isOpen[itemValue]) {
                     isOpenCopy[itemValue] = itemValue;
                 }
             });
@@ -451,10 +453,12 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
         if (isEdit) {
             let isEditCopy: Record<string, string> = {};
 
+            if (!isEdit[id]) {
+                isEditCopy[id] = id;
+            }
+
             forEachKVP(isEdit, (itemKey: string, itemValue: string) => {
                 if (itemValue !== id) {
-                    isEditCopy[itemValue] = itemValue;
-                } else if (!isEdit[itemValue]) {
                     isEditCopy[itemValue] = itemValue;
                 }
             });
