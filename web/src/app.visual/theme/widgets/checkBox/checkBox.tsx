@@ -43,12 +43,15 @@ class CheckBox extends Component<CheckProp, CheckState> {
     }
 
     render() {
-        const {className, onClick, disabled, text, ...rest} = this.props;
+        const {className, onClick, disabled, text, light, ...rest} = this.props;
         const { selected } = this.state;
 
         let cn = "check-box";
         if (className) {
             cn += ` ${className}`;
+        }
+        if (light) {
+            cn += ` light`;
         }
         if (selected) {
             cn += ` selected`;

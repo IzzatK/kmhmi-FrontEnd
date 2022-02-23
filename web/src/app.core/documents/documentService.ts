@@ -127,17 +127,19 @@ export class DocumentService extends Plugin implements IDocumentService {
         this.documentProvider?.getSingle(id)
             .then(document => {
                 if (document != null) {
-                    const {id} = document;
+                    const { id, status } = document;
 
-                    let localDocument = this.getDocument(id);
+                    if (status !== StatusType.ERROR) {
+                        let localDocument = this.getDocument(id);
 
-                    let nextDocument = {
-                        ...localDocument,
-                        ...document,
-                        isPending: localDocument?.isPending ? localDocument.isPending : document.isPending
+                        let nextDocument = {
+                            ...localDocument,
+                            ...document,
+                            isPending: localDocument?.isPending ? localDocument.isPending : document.isPending
+                        }
+
+                        this.addOrUpdateRepoItem(nextDocument);
                     }
-
-                    this.addOrUpdateRepoItem(nextDocument);
                 }
 
             })
@@ -252,6 +254,12 @@ export class DocumentService extends Plugin implements IDocumentService {
     }
 
     removeDocument(id: string) {
+        let document = this.getDocument(id);
+        if (document) {
+            const { file_name } = document;
+            this.removeAllById(DocumentInfo.class, file_name);
+        }
+
         this.documentProvider?.remove(id)
             .then(document => {
                 if (document != null) {
@@ -480,8 +488,8 @@ export class DocumentService extends Plugin implements IDocumentService {
 
                     let { file_name } = document;
 
+                    this.removeAllById(DocumentInfo.class, id);
                     setTimeout(() => {
-                        this.removeRepoItem(approvedFile);
                         this.removeAllById(DocumentInfo.class, file_name);
                     }, 3000)
                 }

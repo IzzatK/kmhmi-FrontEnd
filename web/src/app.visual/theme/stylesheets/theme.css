@@ -265,6 +265,8 @@ body > * {
     --check-box-selected-border-color: var(--app-airForceBlue);
     --check-box-checkmark-color: var(--app-summerSky);
     --check-box-disabled-border-color: var(--app-suvaGrey);
+    --check-box-light-border-color: var(--primary-color);
+    --check-box-light-checkmark-color: var(--primary-color);
 
     /* Global Switch Button */
     --global-switch-button-bg-color: var(--app-vulcan);

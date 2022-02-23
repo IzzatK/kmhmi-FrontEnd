@@ -172,3 +172,9 @@
 .document-panel .text-right {
     max-width: 11rem;
 }
+
+.document-panel .nlp-loader {
+    background: transparent;
+    width: auto !important;
+    justify-content: start !important;
+}

@@ -12,6 +12,7 @@ export type DocumentPanelProps = {
     userProfile: UserProfileVM;
     token: string;
     permissions: PermissionsVM;
+    nlpCompleteAnimation?: boolean;
 }
 
 export type DocumentPanelState = {
@@ -20,6 +21,7 @@ export type DocumentPanelState = {
     isGlobal: boolean;
     isPrivate: boolean;
     showTagEditor: boolean;
+    showStatusBanner: boolean;
 }
 
 export type UserProfileVM = {
@@ -59,6 +61,7 @@ export type DocumentInfoVM = {
     original_url?: string
     isUpdating?: boolean;
     isPending?: boolean;
+    nlpComplete?: boolean;
 }
 
 export type EditPropertyVM = {

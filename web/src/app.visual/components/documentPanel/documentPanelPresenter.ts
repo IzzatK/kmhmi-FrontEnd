@@ -18,6 +18,11 @@ import {PermissionInfo} from "../../../app.model/permissionInfo";
 import {StatusType} from "../../../app.model/statusType";
 
 class DocumentPanel extends Presenter {
+
+    private pollingForNLPStatus: boolean;
+    private documentLookup: Record<string, boolean>;
+    private showAnimation: boolean;
+
     constructor() {
         super();
 
@@ -40,7 +45,8 @@ class DocumentPanel extends Presenter {
                 editProperties: this._getEditProperties(),
                 userProfile: authenticationService.getUserProfile(),
                 token: authenticationService.getToken(),
-                permissions: this.getPermissions(state)
+                permissions: this.getPermissions(state),
+                nlpCompleteAnimation: this.showAnimation,
             }
         }
 
@@ -50,6 +56,10 @@ class DocumentPanel extends Presenter {
                 onRemoveDocument: (id: string) => documentService.removeDocument(id)
             };
         }
+
+        this.pollingForNLPStatus = false;
+        this.documentLookup = {};
+        this.showAnimation = false;
     }
 
     _getEditProperties = () => {
@@ -145,100 +155,132 @@ class DocumentPanel extends Presenter {
 
             let document = documents[documentId];
 
-            const {
-                id,
-                author="",
-                department="",
-                file_name="",
-                file_size="",
-                file_type="",
-                file_page_count="",
-                primary_sme_email="",
-                primary_sme_name="",
-                primary_sme_phone="",
-                private_tag=[],
-                project="",
-                public_tag=[],
-                publication_date="",
-                purpose="",
-                secondary_sme_email="",
-                secondary_sme_name="",
-                secondary_sme_phone="",
-                status=StatusType.DRAFT,
-                scope="",
-                title="",
-                upload_date="",
-                uploadedBy_id="",
-                preview_url="",
-                original_url="",
-                isUpdating,
-                isPending,
-                suggested_author,
-                suggested_title,
-                suggested_publication_date,
-            } = document || {};
+            let itemVM: DocumentInfoVM = {};
 
-            let displayAuthor = author;
-            if (!author || author === "") {
-                displayAuthor = suggested_author;
-            }
+            if (document) {
+                const {
+                    id,
+                    author="",
+                    department="",
+                    file_name="",
+                    file_size="",
+                    file_type="",
+                    file_page_count="",
+                    primary_sme_email="",
+                    primary_sme_name="",
+                    primary_sme_phone="",
+                    private_tag=[],
+                    project="",
+                    public_tag=[],
+                    publication_date="",
+                    purpose="",
+                    secondary_sme_email="",
+                    secondary_sme_name="",
+                    secondary_sme_phone="",
+                    status=StatusType.DRAFT,
+                    scope="",
+                    title="",
+                    upload_date="",
+                    uploadedBy_id="",
+                    preview_url="",
+                    original_url="",
+                    isUpdating,
+                    isPending,
+                    suggested_author,
+                    suggested_title,
+                    suggested_publication_date,
+                } = document || {};
 
-            let displayTitle = title;
-            if (!title || title === "") {
-                if (!suggested_title || suggested_title === "") {
-                    displayTitle = file_name;
-                } else {
-                    displayTitle = suggested_title;
+                let nlpComplete = status === StatusType.NLP_COMPLETE;
+
+                if (this.documentLookup[id] !== undefined) {
+                    if (nlpComplete && this.documentLookup[id] === false) {
+                        this.showAnimation = true;
+                        setTimeout(() => {
+                            this.showAnimation = false;
+                            //TODO this is a temporary solution - if this stays around, may want to look into an animation service or something
+                            //TODO right now this call only serves to update mapStateToProps - otherwise it is completely unnecessary
+                            documentService.fetchDocument(id);
+                        }, 3000)
+                    }
+                }
+                this.documentLookup[id] = nlpComplete;
+
+                let displayAuthor = author;
+                if (!author || author === "") {
+                    displayAuthor = suggested_author;
+                }
+
+                let displayTitle = title;
+                if (!title || title === "") {
+                    if (!suggested_title || suggested_title === "") {
+                        displayTitle = file_name;
+                    } else {
+                        displayTitle = suggested_title;
+                    }
+                }
+
+                let displayPublicationDate = new Date(publication_date).toLocaleString().split(",")[0];
+                if (!publication_date || publication_date === "") {
+                    if (!suggested_publication_date || suggested_publication_date === "") {
+                        displayPublicationDate = "No Publication Date";
+                    } else {
+                        displayPublicationDate = new Date(suggested_publication_date).toLocaleString().split(",")[0];
+                    }
+                }
+
+                let displayStatus = "";
+                displayStatus = status.toString();
+
+                if (status !== StatusType.NLP_COMPLETE) {
+
+                    if (!this.pollingForNLPStatus) {
+                        setTimeout(() => {
+                            this.pollingForNLPStatus = false;
+                            documentService.fetchDocument(id);
+                        }, 10000);
+                    }
+
+                    this.pollingForNLPStatus = true;
+                }
+
+                let previewAvailable = false;
+                if (status === StatusType.PDF_AVAILABLE || status === StatusType.SEARCHABLE || status === StatusType.NLP_COMPLETE) {
+                    previewAvailable = true;
+                }
+
+                itemVM  = {
+                    id: id,
+                    author: displayAuthor,
+                    department: department,
+                    file_name: file_name,
+                    file_size: file_size,
+                    file_type: file_type,
+                    file_page_count: file_page_count,
+                    primary_sme_email: primary_sme_email,
+                    primary_sme_name: primary_sme_name,
+                    primary_sme_phone: primary_sme_phone,
+                    private_tag: private_tag,
+                    project: project,
+                    public_tag: public_tag,
+                    publication_date: displayPublicationDate,
+                    purpose: purpose,
+                    secondary_sme_email: secondary_sme_email,
+                    secondary_sme_name: secondary_sme_name,
+                    secondary_sme_phone: secondary_sme_phone,
+                    status: displayStatus,
+                    scope: scope,
+                    title: displayTitle,
+                    upload_date: upload_date ? new Date(upload_date).toLocaleString() : 'No Upload Date',
+                    uploadedBy_id: uploadedBy_id,
+                    preview_url: previewAvailable ? preview_url : '',
+                    original_url: previewAvailable ? original_url : '',
+                    isUpdating: isUpdating,
+                    isPending: isPending,
+                    nlpComplete: nlpComplete,
                 }
             }
 
-            let displayPublicationDate = new Date(publication_date).toLocaleString().split(",")[0];
-            if (!publication_date || publication_date === "") {
-                if (!suggested_publication_date || suggested_publication_date === "") {
-                    displayPublicationDate = "No Publication Date";
-                } else {
-                    displayPublicationDate = new Date(suggested_publication_date).toLocaleString().split(",")[0];
-                }
-            }
-
-            let displayStatus = "";
-            displayStatus = status.toString();
-
-            if (status !== StatusType.NLP_COMPLETE) {
-                setTimeout(() => {
-                    documentService.fetchDocument(id);
-                }, 10000);
-            }
-
-            let itemVM: DocumentInfoVM = {
-                id: id,
-                author: displayAuthor,
-                department: department,
-                file_name: file_name,
-                file_size: file_size,
-                file_type: file_type,
-                file_page_count: file_page_count,
-                primary_sme_email: primary_sme_email,
-                primary_sme_name: primary_sme_name,
-                primary_sme_phone: primary_sme_phone,
-                private_tag: private_tag,
-                project: project,
-                public_tag: public_tag,
-                publication_date: displayPublicationDate,
-                purpose: purpose,
-                secondary_sme_email: secondary_sme_email,
-                secondary_sme_name: secondary_sme_name,
-                secondary_sme_phone: secondary_sme_phone,
-                status: displayStatus,
-                scope: scope,
-                title: displayTitle,
-                upload_date: upload_date ? new Date(upload_date).toLocaleString() : 'No Upload Date',
-                uploadedBy_id: uploadedBy_id,
-                preview_url: preview_url,
-                original_url: original_url,
-                isUpdating: isUpdating,
-                isPending: isPending,
-            }
             return itemVM;
         }
     );

@@ -4,6 +4,7 @@ export type CheckProp = {
     selected?: boolean;
     text?: string;
     onClick?: (selected?: boolean) => void;
+    light?: boolean;
 }
 
 export interface CheckState {

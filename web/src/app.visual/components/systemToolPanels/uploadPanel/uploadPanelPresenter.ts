@@ -81,32 +81,35 @@ class UploadPanel extends Presenter {
                 let statusReferenceInfo = statusReferenceInfos[doc_status];
 
                 let status = '';
-                if (statusReferenceInfo) {
-                    status = statusReferenceInfo.title;
-                }
-                else {
-                    switch (doc_status) {
-                        case "DRAFT":
-                            status = "UPLOADING";
-                            break;
-                        case "PROCESSING":
-                        case "ERROR":
-                        case "CREATED":
-                            status = "PROCESSING";
-                            break;
-                        case "PDF_AVAILABLE":
-                        case "SEARCHABLE":
-                        case "NLP_COMPLETE":
-                            status = "COMPLETE";
+
+                if (!isDeleted) {
+                    if (statusReferenceInfo) {
+                        status = statusReferenceInfo.title;
+                    }
+                    else {
+                        switch (doc_status) {
+                            case "DRAFT":
+                                status = "UPLOADING";
                                 break;
-                        case "FAILED":
-                            status = "FAILED";
-                            break;
-                        case "CANCELLED":
-                            status = "CANCELLED";
-                            break;
-                        default:
-                            break;
+                            case "PROCESSING":
+                            case "ERROR":
+                            case "CREATED":
+                                status = "PROCESSING";
+                                break;
+                            case "PDF_AVAILABLE":
+                            case "SEARCHABLE":
+                            case "NLP_COMPLETE":
+                                status = "COMPLETE";
+                                break;
+                            case "FAILED":
+                                status = "FAILED";
+                                break;
+                            case "CANCELLED":
+                                status = "CANCELLED";
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 }
 

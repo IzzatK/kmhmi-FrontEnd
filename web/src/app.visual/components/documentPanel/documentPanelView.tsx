@@ -17,6 +17,10 @@ import {EllipsisSVG} from "../../theme/svgs/ellipsisSVG";
 import Portal from "../../theme/widgets/portal/portal";
 import {AddNewSVG} from "../../theme/svgs/addNewSVG";
 import {MinimizeSVG} from "../../theme/svgs/minimizeSVG";
+import {CSSTransition, TransitionGroup} from "react-transition-group";
+import {getClassNames} from "../../../framework.visual/extras/utils/animationUtils";
+import {CheckMarkSVG} from "../../theme/svgs/checkMarkSVG";
+import {Size} from "../../theme/widgets/loadingIndicator/loadingIndicatorModel";
 
 class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState> {
 
@@ -31,6 +35,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
             isGlobal: true,
             isPrivate: false,
             showTagEditor: false,
+            showStatusBanner: true,
         }
     }
 
@@ -46,7 +51,9 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
     }
 
     componentDidUpdate(prevProps: Readonly<DocumentPanelProps>, prevState: Readonly<DocumentPanelState>, snapshot?: any) {
-        const { document } = this.props;
+        const { document, nlpCompleteAnimation } = this.props;
+        const { nlpComplete } = document;
+        const { showStatusBanner } = this.state;
 
         if (document !== prevProps.document) {
             this.refreshDirtyFlag();
@@ -61,6 +68,15 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
 
             if (id !== prevId) {
                 this.setTmpDocument(tmpDocument);
+            }
+        }
+
+        if (!showStatusBanner) {
+            if (nlpComplete === false || nlpCompleteAnimation === true) {
+                this.setState({
+                    ...this.state,
+                    showStatusBanner: true,
+                })
             }
         }
     }
@@ -517,6 +533,13 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         return cellRenderer;
     }
 
+    _setShowStatusBanner(value: boolean) {
+        this.setState({
+            ...this.state,
+            showStatusBanner: value,
+        })
+    }
+
     _getScope(title: string) {
         const { editProperties } = this.props;
         const { options={} } =  editProperties['scope'];
@@ -607,13 +630,13 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
     render() {
         const {
             document, onUpdateDocument, onRemoveDocument, pdfRenderer: PdfRenderer, editProperties, userProfile, token,
-            className, permissions, ...rest
+            className, permissions, nlpCompleteAnimation, ...rest
         } = this.props;
         const {id, preview_url = "", original_url, isUpdating=false, upload_date, publication_date, file_type, uploaded_by,
             primary_sme_name, primary_sme_phone, primary_sme_email, secondary_sme_name, secondary_sme_phone, secondary_sme_email,
-        file_name, file_size, status} = document || {};
+            file_name, file_size, status, nlpComplete} = document || {};
 
-        const { tmpDocument, isDirty, isGlobal, isPrivate } = this.state;
+        const { tmpDocument, isDirty, isGlobal, isPrivate, showStatusBanner } = this.state;
 
         let cn = "document-panel d-flex";
         if (className) {
@@ -623,37 +646,9 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         return (
             <div className={cn} {...rest}>
                 <div className={'d-flex flex-fill flex-column align-items-stretch'}>
-                    <div className={'header-1 title py-4 pl-5'}>DOCUMENT INFORMATION</div>
+                    {/*<div className={'header-1 title py-4 pl-5'}>DOCUMENT INFORMATION</div>*/}
                     <div className={`header position-relative`}>
                         <div className={`d-flex flex-column p-4 v-gap-5 position-relative ${!id && 'disabled'} `}>
-                            <div className={'d-flex align-items-end justify-content-end h-gap-2'}>
-                                <div className={'d-flex h-gap-2 align-items-center'}>
-                                    {
-                                        permissions.canModify &&
-                                        <div className={"d-flex h-gap-2 pr-3"}>
-                                            <div className={"text-accent display-4 font-weight-light"}>Publish as Private</div>
-                                            <CheckBox selected={isPrivate} onClick={() => this._toggleIsPrivate()}/>
-                                        </div>
-                                    }
-                                    {
-                                        permissions.canDelete &&
-                                        <Button text={'DELETE'} onClick={this.removeDocument}/>
-                                    }
-                                    {/*{*/}
-                                    {/*    permissions.canModify && isDirty &&*/}
-                                    {/*    <Button*/}
-                                    {/*        disabled={!isDirty}*/}
-                                    {/*        text={'CANCEL'} onClick={this.cancelEdit}/>*/}
-                                    {/*}*/}
-                                    {
-                                        permissions.canModify && isDirty &&
-                                        <Button
-                                            disabled={!isDirty}
-                                            text={'PUBLISH'} highlight={true} onClick={this.updateDocument}/>
-                                    }
-                                </div>
-                            </div>
-
                             {/*</Card>*/}
                             <div className={"d-flex flex-column v-gap-1 header-1"}>
                                 <div className={'title-grid'}>
@@ -810,6 +805,63 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                 </div>
                         }
                     </div>
+
+                    <CSSTransition
+                        onExited={() => this._setShowStatusBanner(false)}
+                        in={nlpComplete === false || nlpCompleteAnimation === true}
+                        timeout={300}
+                        classNames={getClassNames('fadeIn', 'fadeIn', 'slideRightOut') }>
+                        <div>
+                            {
+                                showStatusBanner &&
+                                <div className={"d-flex align-items-center py-3 px-5 bg-advisory display-4 h-gap-3"}>
+                                    <div>{nlpComplete ? "Processing Complete" : "Auto-Populating Fields"}</div>
+                                    {
+                                        nlpComplete === true &&
+                                        <CheckMarkSVG className={"nano-image-container fill-primary"}/>
+                                    }
+                                    {
+                                        nlpComplete !== true &&
+                                        <LoadingIndicator size={Size.nano} className={"nlp-loader"}/>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </CSSTransition>
+                    {
+                        ((permissions.canModify || permissions.canDelete) && JSON.stringify(document) !== '{}') &&
+                        <div className={'d-flex align-items-end justify-content-between h-gap-2 bg-selected py-3 px-5'}>
+                            <div className={'d-flex h-gap-2 align-items-center'}>
+                                {
+                                    permissions.canModify &&
+                                    <div className={"d-flex h-gap-2 pr-3"}>
+                                        <div className={"text-primary display-4 font-weight-light"}>Publish as Private</div>
+                                        <CheckBox light={true} selected={isPrivate} onClick={() => this._toggleIsPrivate()}/>
+                                    </div>
+                                }
+                            </div>
+                            <div className={'d-flex h-gap-2 align-items-center'}>
+                                {
+                                    permissions.canDelete &&
+                                    <Button light={true} text={'DELETE'} onClick={this.removeDocument}/>
+                                }
+                                {/*{*/}
+                                {/*    permissions.canModify && isDirty &&*/}
+                                {/*    <Button*/}
+                                {/*        disabled={!isDirty}*/}
+                                {/*        text={'CANCEL'} onClick={this.cancelEdit}/>*/}
+                                {/*}*/}
+                                {
+                                    permissions.canModify && isDirty &&
+                                    <Button
+                                        light={true}
+                                        disabled={!isDirty}
+                                        text={'PUBLISH'}
+                                        onClick={this.updateDocument}/>
+                                }
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         );
