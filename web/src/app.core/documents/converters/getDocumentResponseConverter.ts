@@ -25,6 +25,19 @@ export class GetDocumentResponseConverter extends Converter<any, DocumentInfo>{
         let public_tags: Record<string, string> = {};
         forEach(getValueOrDefault(item, 'custom_shared_tag', []), (tag: string) => {
             public_tags[tag] = tag;
+        });
+
+        let private_tags: Record<string, any> = {};
+        forEach(getValueOrDefault(item, 'custom_personal_tag', []), (tags: Record<string, any>) => {
+            let tagsArray: Record<string, string> = {};
+
+            if (tags['tag_id'] && Array.isArray(tags['tag_id'])) {
+                forEach(tags['tag_id'], (tag: string) => {
+                    tagsArray[tag] = tag;
+                })
+            }
+
+            private_tags[tags['user_id']] = tagsArray;
         })
 
         documentInfo.file_name = getValueOrDefault(item, 'file_name', '');
@@ -34,7 +47,7 @@ export class GetDocumentResponseConverter extends Converter<any, DocumentInfo>{
         documentInfo.primary_sme_email = getValueOrDefault(item, 'primary_sme_email', '');
         documentInfo.primary_sme_name = getValueOrDefault(item, 'primary_sme_name', '');
         documentInfo.primary_sme_phone = getValueOrDefault(item, 'primary_sme_phone', '');
-        documentInfo.private_tag = getValueOrDefault(item, 'custom_personal_tag', []);
+        documentInfo.private_tag = private_tags;
         documentInfo.project = getValueOrDefault(item, 'project', '');
         documentInfo.public_tag = public_tags;
         documentInfo.publication_date = getValueOrDefault(item, 'publication_date', '');

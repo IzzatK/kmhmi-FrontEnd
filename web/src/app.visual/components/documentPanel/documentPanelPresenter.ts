@@ -150,8 +150,8 @@ class DocumentPanel extends Presenter {
     getSelectedDocumentId = selectionService.makeGetContext("selected-document");
 
     getDocument = createSelector(
-        [this.getSelectedDocumentId, documentService.getAllDocuments], // if this changes, will re-evaluate the combiner and trigger a re-render
-        (documentId, documents: DocumentInfo[]) => {
+        [this.getSelectedDocumentId, documentService.getAllDocuments, userService.getCurrentUserId], // if this changes, will re-evaluate the combiner and trigger a re-render
+        (documentId, documents: DocumentInfo[], currentUserId: string) => {
 
             let document = documents[documentId];
 
@@ -169,9 +169,9 @@ class DocumentPanel extends Presenter {
                     primary_sme_email="",
                     primary_sme_name="",
                     primary_sme_phone="",
-                    private_tag=[],
+                    private_tag={},
                     project="",
-                    public_tag=[],
+                    public_tag={},
                     publication_date="",
                     purpose="",
                     secondary_sme_email="",
@@ -191,20 +191,25 @@ class DocumentPanel extends Presenter {
                     suggested_publication_date,
                 } = document || {};
 
-                let nlpComplete = status === StatusType.NLP_COMPLETE;
+                let nlpComplete;
 
-                if (this.documentLookup[id] !== undefined) {
-                    if (nlpComplete && this.documentLookup[id] === false) {
-                        this.showAnimation = true;
-                        setTimeout(() => {
-                            this.showAnimation = false;
-                            //TODO this is a temporary solution - if this stays around, may want to look into an animation service or something
-                            //TODO right now this call only serves to update mapStateToProps - otherwise it is completely unnecessary
-                            documentService.fetchDocument(id);
-                        }, 3000)
+                if (uploadedBy_id === currentUserId) {
+                    nlpComplete = (status === StatusType.NLP_COMPLETE);
+                    if (this.documentLookup[id] !== undefined) {
+                        if (nlpComplete && this.documentLookup[id] === false) {
+                            this.showAnimation = true;
+                            setTimeout(() => {
+                                this.showAnimation = false;
+                                //TODO this is a temporary solution - if this stays around, may want to look into an animation service or something
+                                //TODO right now this call only serves to update mapStateToProps - otherwise it is completely unnecessary
+                                documentService.fetchDocument(id);
+                            }, 3000)
+                        }
                     }
+                    this.documentLookup[id] = nlpComplete;
+                } else {
+                    nlpComplete = true;
                 }
-                this.documentLookup[id] = nlpComplete;
 
                 let displayAuthor = author;
                 if (!author || author === "") {
@@ -232,7 +237,7 @@ class DocumentPanel extends Presenter {
                 let displayStatus = "";
                 displayStatus = status.toString();
 
-                if (status !== StatusType.NLP_COMPLETE) {
+                if (status !== StatusType.NLP_COMPLETE && !nlpComplete) {
 
                     if (!this.pollingForNLPStatus) {
                         setTimeout(() => {
@@ -249,6 +254,14 @@ class DocumentPanel extends Presenter {
                     previewAvailable = true;
                 }
 
+                let displayPrivateTags: Record<string, string> = {};
+                if (private_tag) {
+                    const current_user_id = userService.getCurrentUserId()
+                    if (private_tag[current_user_id]) {
+                        displayPrivateTags = private_tag[current_user_id];
+                    }
+                }
+
                 itemVM  = {
                     id: id,
                     author: displayAuthor,
@@ -260,7 +273,8 @@ class DocumentPanel extends Presenter {
                     primary_sme_email: primary_sme_email,
                     primary_sme_name: primary_sme_name,
                     primary_sme_phone: primary_sme_phone,
-                    private_tag: private_tag,
+                    private_tag: displayPrivateTags,
+                    original_private_tag: private_tag,
                     project: project,
                     public_tag: public_tag,
                     publication_date: displayPublicationDate,

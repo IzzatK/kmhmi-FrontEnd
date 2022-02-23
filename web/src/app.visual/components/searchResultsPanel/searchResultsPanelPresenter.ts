@@ -137,9 +137,9 @@ class SearchResultsPanel extends Presenter {
                     primary_sme_email="",
                     primary_sme_name="",
                     primary_sme_phone="",
-                    private_tag=[],
+                    private_tag={},
                     project="",
-                    public_tag=[],
+                    public_tag={},
                     publication_date="",
                     purpose="",
                     secondary_sme_email="",
@@ -155,6 +155,14 @@ class SearchResultsPanel extends Presenter {
                     isUpdating,
                 } = item;
 
+                let displayPrivateTags: Record<string, string> = {};
+                if (private_tag) {
+                    const current_user_id = userService.getCurrentUserId()
+                    if (private_tag[current_user_id]) {
+                        displayPrivateTags = private_tag[current_user_id];
+                    }
+                }
+
                 itemVMs[item.id] = {
                     id: id,
                     author: author,
@@ -166,7 +174,7 @@ class SearchResultsPanel extends Presenter {
                     primary_sme_email: primary_sme_email ? primary_sme_email : "N/A",
                     primary_sme_name: primary_sme_name ? primary_sme_name : "N/A",
                     primary_sme_phone: primary_sme_phone ? primary_sme_email : "N/A",
-                    private_tag: private_tag,
+                    private_tag: displayPrivateTags,
                     project: project,
                     public_tag: public_tag,
                     publication_date: publication_date ? new Date(publication_date).toLocaleString() : 'No Publication Date',

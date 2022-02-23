@@ -24,6 +24,24 @@ export class UpdateDocumentRequestConverter extends Converter<any, any>{
                         }
                     })
                     result = tagsArray;
+                } else if (propertyName === "private_tag") {
+                    let tagsArray: any[] = [];
+                    forEachKVP(modifiedDocument[propertyName], (itemKey: string, itemValue: Record<string, string>) => {
+                        let tagObject: Record<string, any> = {};
+
+                        let itemValueArray: string[] = [];
+                        if (itemValue) {
+                            forEachKVP(itemValue, (item: string) => {
+                                itemValueArray.push(item);
+                            })
+                        }
+
+                        tagObject['tag_id'] = itemValueArray;
+                        tagObject['user_id'] = itemKey;
+
+                        tagsArray.push(tagObject);
+                    })
+                    result = tagsArray;
                 } else if (propertyName === "status") {
                     result = modifiedDocument[propertyName] !== "Private" ? "Public" : modifiedDocument[propertyName];
                 } else {
@@ -37,6 +55,24 @@ export class UpdateDocumentRequestConverter extends Converter<any, any>{
                         if (item !== "") {
                             tagsArray.push(item);
                         }
+                    })
+                    result = tagsArray;
+                } else if (propertyName === "private_tag") {
+                    let tagsArray: any[] = [];
+                    forEachKVP(dictionary[propertyName], (itemKey: string, itemValue: Record<string, string>) => {
+                        let tagObject: Record<string, any> = {};
+
+                        let itemValueArray: string[] = [];
+                        if (itemValue) {
+                            forEachKVP(itemValue, (item: string) => {
+                                itemValueArray.push(item);
+                            })
+                        }
+
+                        tagObject['tag_id'] = itemValueArray;
+                        tagObject['user_id'] = itemKey;
+
+                        tagsArray.push(tagObject);
                     })
                     result = tagsArray;
                 } else if (propertyName === "status") {

@@ -368,23 +368,23 @@ const PublicTagCellRender = ({ tableManager, value, field, data, column, colInde
         cn += ` selected`;
     }
 
-    let publicTagDivs = [];
+    let tagDivs = [];
     if (public_tag) {
         forEachKVP(public_tag, (tag) => {
 
             if (tag.length > 0) {
-                publicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag}/>)
+                tagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag}/>)
             }
         })
     }
 
-    let truncatedPublicTagDivs = [];
+    let truncatedTagDivs = [];
     let length = 0;
     if (public_tag) {
         forEachKVP(public_tag, (tag) => {
             if (tag.length > 0) {
                 if (length < 3) {
-                    truncatedPublicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag + "_short"}/>)
+                    truncatedTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag + "_short"}/>)
                 }
                 length++;
             }
@@ -395,12 +395,12 @@ const PublicTagCellRender = ({ tableManager, value, field, data, column, colInde
         <div className={cn}>
             <TooltipPortal portalContent={
                 <div className={"cursor-pointer d-inline-flex flex-wrap align-items-center overflow-auto"}>
-                    {publicTagDivs}
+                    {tagDivs}
                 </div>
 
             }>
                 <div className={"cursor-pointer d-flex align-items-center h-gap-2 overflow-hidden"}>
-                    {truncatedPublicTagDivs}
+                    {truncatedTagDivs}
                     {
                         length > 2 &&
                         <EllipsisSVG className={"ml-5 small-image-container"}/>
@@ -413,7 +413,7 @@ const PublicTagCellRender = ({ tableManager, value, field, data, column, colInde
 
 const PrivateTagCellRender = ({ tableManager, value, field, data, column, colIndex, rowIndex }) => {
 
-    const { selected } = data;
+    const { selected, private_tag } = data;
 
     let cn = 'rgt-cell-inner';
 
@@ -421,29 +421,41 @@ const PrivateTagCellRender = ({ tableManager, value, field, data, column, colInd
         cn += ` selected`;
     }
 
+    let tagDivs = [];
+    if (private_tag) {
+        forEachKVP(private_tag, (tag) => {
+
+            if (tag.length > 0) {
+                tagDivs?.push(<Tag name={tag} text={tag} isEdit={false} key={tag}/>)
+            }
+        })
+    }
+
+    let truncatedTagDivs = [];
+    let length = 0;
+    if (private_tag) {
+        forEachKVP(private_tag, (tag) => {
+            if (tag.length > 0) {
+                if (length < 3) {
+                    truncatedTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} key={tag + "_short"}/>)
+                }
+                length++;
+            }
+        })
+    }
+
     return (
         <div className={cn}>
             <TooltipPortal portalContent={
                 <div className={"cursor-pointer d-inline-flex flex-wrap align-items-center overflow-auto"}>
-                    {
-                        value && value.split(",").map(tag => {
-                            return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag}/>
-                        })
-                    }
+                    {tagDivs}
                 </div>
 
             }>
                 <div className={"cursor-pointer d-flex align-items-center h-gap-2 overflow-hidden"}>
+                    {truncatedTagDivs}
                     {
-                        value && value.split(",").map(tag => {
-                            if (indexOf(value.split(","), tag) < 3) {
-                                return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag + "_short"}/>
-                            }
-
-                        })
-                    }
-                    {
-                        value && value.split(",").length > 2 &&
+                        length > 2 &&
                         <EllipsisSVG className={"ml-5 small-image-container"}/>
                     }
                 </div>

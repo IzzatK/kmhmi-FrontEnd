@@ -44,9 +44,9 @@ export type DocumentInfoVM = {
     primary_sme_email?: string;
     primary_sme_name?: string;
     primary_sme_phone?: string;
-    private_tag?: string[],
+    private_tag?: Record<string, string>,
     project?: string,
-    public_tag?: string[],
+    public_tag?: Record<string, string>,
     publication_date?: string,
     purpose?: string;
     secondary_sme_email?: string;
@@ -62,6 +62,7 @@ export type DocumentInfoVM = {
     isUpdating?: boolean;
     isPending?: boolean;
     nlpComplete?: boolean;
+    original_private_tag?: Record<string, Record<string, string>>;
 }
 
 export type EditPropertyVM = {

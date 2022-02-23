@@ -59,6 +59,16 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
                     })
                 }
 
+                let privateTagDivs: any[] = [];
+                if (private_tag) {
+                    forEachKVP(private_tag, (tag: string) => {
+
+                        if (tag.length > 0) {
+                            privateTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} key={tag}/>)
+                        }
+                    })
+                }
+
                 return (
                     <div key={id}>
                         <ListItem key={id} selected={selected} className={cn} onClick={() => onDocumentSelected(id)}>
@@ -74,11 +84,7 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
                                         pageWidth === 'FULL' &&
                                         <div className={"d-flex flex-nowrap h-gap-2 justify-content-end"}>
                                             {publicTagDivs}
-                                            {
-                                                private_tag && private_tag.map((tag: string) => {
-                                                    return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} key={tag}/>
-                                                })
-                                            }
+                                            {privateTagDivs}
                                         </div>
                                     }
                                 </div>
@@ -92,11 +98,7 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
                                     pageWidth !== 'FULL' &&
                                     <div className={"d-flex flex-nowrap h-gap-2"}>
                                         {publicTagDivs}
-                                        {
-                                            private_tag && private_tag.map((tag: string) => {
-                                                return tag.length > 0 && <Tag name={tag} text={tag} isEdit={false} key={tag}/>
-                                            })
-                                        }
+                                        {privateTagDivs}
                                     </div>
                                 }
 

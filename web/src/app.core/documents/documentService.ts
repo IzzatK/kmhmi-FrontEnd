@@ -1,5 +1,5 @@
 import {createSelector, OutputSelector} from "@reduxjs/toolkit";
-import {forEach} from "../../framework.visual/extras/utils/collectionUtils";
+import {forEach, forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
 import {DocumentInfo, MetadataInfo, MetadataType, ParamType, SearchParamInfo, SortPropertyInfo} from "../../app.model";
 import {Nullable} from "../../framework/extras/typeUtils";
 
@@ -194,35 +194,28 @@ export class DocumentService extends Plugin implements IDocumentService {
         let document = this.getDocument(id);
 
         if (modifiedDocument.hasOwnProperty('private_tag')) {
-            let total_private_tag: any = [];
+            let total_private_tag: Record<string, Record<string, string>> = {};
 
             let currentUserId = this.userService?.getCurrentUserId();
 
-            if (document != null && document.private_tag && document.private_tag.length > 0) {
-                forEach(document.private_tag, (item: { user_id: string, tag_id: any }) => {
-                    let tagUserId = item['user_id'];
-                    let tagArray = item['tag_id'];
+            if (document) {
+                const { private_tag:original_private_tag } = document;
 
-                    total_private_tag.push({
-                        tag_id: currentUserId === tagUserId ?
-                            modifiedDocument['private_tag'] :
-                            tagArray,
-                        user_id: tagUserId
+                if (original_private_tag) {
+                    forEachKVP(original_private_tag, (itemKey: string, itemValue: Record<string, string>) => {
+                        if (itemKey !== currentUserId) {
+                            total_private_tag[itemKey] = itemValue;
+                        }
                     })
-                })
+                }
+
+                if (currentUserId) {
+                    total_private_tag[currentUserId] = modifiedDocument['private_tag'];
+                }
+
                 modifiedDocument = {
                     ...modifiedDocument,
                     private_tag: total_private_tag
-                }
-            } else {
-                modifiedDocument = {
-                    ...modifiedDocument,
-                    private_tag: [
-                        {
-                            tag_id: modifiedDocument['private_tag'],
-                            user_id: currentUserId
-                        }
-                    ]
                 }
             }
         }

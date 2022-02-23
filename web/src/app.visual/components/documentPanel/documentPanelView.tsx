@@ -71,13 +71,16 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
             }
         }
 
-        if (!showStatusBanner) {
-            if (nlpComplete === false || nlpCompleteAnimation === true) {
-                this.setState({
-                    ...this.state,
-                    showStatusBanner: true,
-                })
-            }
+        if (nlpCompleteAnimation === false && showStatusBanner && nlpComplete === true) {
+            this.setState({
+                ...this.state,
+                showStatusBanner: false,
+            })
+        } else if (nlpComplete === false || nlpCompleteAnimation === true && !showStatusBanner) {
+            this.setState({
+                ...this.state,
+                showStatusBanner: true,
+            })
         }
     }
 
@@ -117,6 +120,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
             }
             this.setTmpDocument(nextDoc);
         }
+        console.log(JSON.stringify(value));
     }
 
     refreshDirtyFlag() {
@@ -232,8 +236,10 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
     }
 
     addNewPrivateTag() {
-        const { editProperties, document } = this.props;
+        const { editProperties, document, userProfile } = this.props;
         const { tmpDocument } = this.state;
+        const { original_private_tag } = document;
+        const { id:user_id } = userProfile;
 
         const {id} = editProperties['private_tag'];
 
@@ -251,6 +257,17 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         }));
 
         result["-1"] = "";
+
+        // let privateTags: Record<string, Record<string, string>> = {};
+        // if (original_private_tag) {
+        //     forEachKVP(original_private_tag, (itemKey: string, itemValue: Record<string, string>) => {
+        //         if (itemKey !== user_id) {
+        //             privateTags[itemKey] = itemValue;
+        //         }
+        //     })
+        // }
+        //
+        // privateTags[user_id] = result;
 
         this.onTmpDocumentChanged('private_tag', result)
     }
@@ -405,7 +422,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                 let length = 0;
                 let truncatedPublicTagDivs: any[] = [];
 
-                if (id === "public_tag") {
+                if (id === "public_tag" || id === "private_tag") {
                     if (value) {
                         forEachKVP(value, (tag: string) => {
 
