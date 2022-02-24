@@ -17,7 +17,7 @@ import {EllipsisSVG} from "../../theme/svgs/ellipsisSVG";
 import Portal from "../../theme/widgets/portal/portal";
 import {AddNewSVG} from "../../theme/svgs/addNewSVG";
 import {MinimizeSVG} from "../../theme/svgs/minimizeSVG";
-import {CSSTransition, TransitionGroup} from "react-transition-group";
+import {CSSTransition} from "react-transition-group";
 import {getClassNames} from "../../../framework.visual/extras/utils/animationUtils";
 import {CheckMarkSVG} from "../../theme/svgs/checkMarkSVG";
 import {Size} from "../../theme/widgets/loadingIndicator/loadingIndicatorModel";
@@ -35,7 +35,6 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
             isGlobal: true,
             isPrivate: false,
             showTagEditor: false,
-            showStatusBanner: true,
         }
     }
 
@@ -51,9 +50,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
     }
 
     componentDidUpdate(prevProps: Readonly<DocumentPanelProps>, prevState: Readonly<DocumentPanelState>, snapshot?: any) {
-        const { document, nlpCompleteAnimation } = this.props;
-        const { nlpComplete } = document;
-        const { showStatusBanner } = this.state;
+        const { document } = this.props;
 
         if (document !== prevProps.document) {
             this.refreshDirtyFlag();
@@ -69,18 +66,6 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
             if (id !== prevId) {
                 this.setTmpDocument(tmpDocument);
             }
-        }
-
-        if (nlpCompleteAnimation === false && showStatusBanner && nlpComplete === true) {
-            this.setState({
-                ...this.state,
-                showStatusBanner: false,
-            })
-        } else if (nlpComplete === false || nlpCompleteAnimation === true && !showStatusBanner) {
-            this.setState({
-                ...this.state,
-                showStatusBanner: true,
-            })
         }
     }
 
@@ -550,13 +535,6 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         return cellRenderer;
     }
 
-    _setShowStatusBanner(value: boolean) {
-        this.setState({
-            ...this.state,
-            showStatusBanner: value,
-        })
-    }
-
     _getScope(title: string) {
         const { editProperties } = this.props;
         const { options={} } =  editProperties['scope'];
@@ -647,13 +625,13 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
     render() {
         const {
             document, onUpdateDocument, onRemoveDocument, pdfRenderer: PdfRenderer, editProperties, userProfile, token,
-            className, permissions, nlpCompleteAnimation, ...rest
+            className, permissions
         } = this.props;
         const {id, preview_url = "", original_url, isUpdating=false, upload_date, publication_date, file_type, uploaded_by,
             primary_sme_name, primary_sme_phone, primary_sme_email, secondary_sme_name, secondary_sme_phone, secondary_sme_email,
-            file_name, file_size, status, nlpComplete} = document || {};
+            file_name, file_size, status, nlpComplete, nlpCompleteAnimation, showStatusBanner} = document || {};
 
-        const { tmpDocument, isDirty, isGlobal, isPrivate, showStatusBanner } = this.state;
+        const { tmpDocument, isDirty, isGlobal, isPrivate } = this.state;
 
         let cn = "document-panel d-flex";
         if (className) {
@@ -661,7 +639,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         }
 
         return (
-            <div className={cn} {...rest}>
+            <div className={cn}>
                 <div className={'d-flex flex-fill flex-column align-items-stretch'}>
                     {/*<div className={'header-1 title py-4 pl-5'}>DOCUMENT INFORMATION</div>*/}
                     <div className={`header position-relative`}>
@@ -824,7 +802,11 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                     </div>
 
                     <CSSTransition
-                        onExited={() => this._setShowStatusBanner(false)}
+                        // onEnter={() => {
+                        //     console.log("onEnter")
+                        //     this._setShowStatusBanner(true)
+                        // }}
+                        // onExited={() => this._setShowStatusBanner(false)}
                         in={nlpComplete === false || nlpCompleteAnimation === true}
                         timeout={300}
                         classNames={getClassNames('fadeIn', 'fadeIn', 'slideRightOut') }>

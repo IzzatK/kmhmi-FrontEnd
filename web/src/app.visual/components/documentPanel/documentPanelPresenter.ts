@@ -21,7 +21,6 @@ class DocumentPanel extends Presenter {
 
     private pollingForNLPStatus: boolean;
     private documentLookup: Record<string, boolean>;
-    private showAnimation: boolean;
 
     constructor() {
         super();
@@ -46,7 +45,6 @@ class DocumentPanel extends Presenter {
                 userProfile: authenticationService.getUserProfile(),
                 token: authenticationService.getToken(),
                 permissions: this.getPermissions(state),
-                nlpCompleteAnimation: this.showAnimation,
             }
         }
 
@@ -59,7 +57,6 @@ class DocumentPanel extends Presenter {
 
         this.pollingForNLPStatus = false;
         this.documentLookup = {};
-        this.showAnimation = false;
     }
 
     _getEditProperties = () => {
@@ -191,25 +188,30 @@ class DocumentPanel extends Presenter {
                     suggested_publication_date,
                 } = document || {};
 
-                let nlpComplete;
+                let nlpComplete: boolean;
+                let showAnimation: boolean = false;
+                let showStatusBanner: boolean;
 
                 if (uploadedBy_id === currentUserId) {
                     nlpComplete = (status === StatusType.NLP_COMPLETE);
                     if (this.documentLookup[id] !== undefined) {
                         if (nlpComplete && this.documentLookup[id] === false) {
-                            this.showAnimation = true;
+                            showAnimation = true;
                             setTimeout(() => {
-                                this.showAnimation = false;
                                 //TODO this is a temporary solution - if this stays around, may want to look into an animation service or something
                                 //TODO right now this call only serves to update mapStateToProps - otherwise it is completely unnecessary
                                 documentService.fetchDocument(id);
                             }, 3000)
+                        } else {
+                            showAnimation = false;
                         }
                     }
                     this.documentLookup[id] = nlpComplete;
                 } else {
                     nlpComplete = true;
                 }
+
+                showStatusBanner = !nlpComplete || showAnimation;
 
                 let displayAuthor = author;
                 if (!author || author === "") {
@@ -292,6 +294,8 @@ class DocumentPanel extends Presenter {
                     isUpdating: isUpdating,
                     isPending: isPending,
                     nlpComplete: nlpComplete,
+                    showStatusBanner: showStatusBanner,
+                    nlpCompleteAnimation: showAnimation,
                 }
             }
 
