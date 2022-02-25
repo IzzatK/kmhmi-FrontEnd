@@ -20,7 +20,7 @@ import {StatusType} from "../../../app.model/statusType";
 class DocumentPanel extends Presenter {
 
     private pollingForNLPStatus: boolean;
-    private documentLookup: Record<string, boolean>;
+    private readonly documentLookup: Record<string, boolean>;
 
     constructor() {
         super();

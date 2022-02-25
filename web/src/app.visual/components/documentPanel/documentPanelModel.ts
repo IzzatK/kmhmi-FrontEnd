@@ -20,6 +20,7 @@ export type DocumentPanelState = {
     isGlobal: boolean;
     isPrivate: boolean;
     showTagEditor: boolean;
+    renderTrigger: number;
 }
 
 export type UserProfileVM = {

@@ -23,6 +23,11 @@ import {CheckMarkSVG} from "../../theme/svgs/checkMarkSVG";
 import {Size} from "../../theme/widgets/loadingIndicator/loadingIndicatorModel";
 
 class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState> {
+    private resizeObserver: ResizeObserver;
+    private readonly characterWidth: number;
+    private tagCharactersAllowed: number;
+    private tagCharactersDisplayed: number;
+    private nextTagWidth: number;
 
     constructor(props: any) {
         super(props);
@@ -35,18 +40,45 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
             isGlobal: true,
             isPrivate: false,
             showTagEditor: false,
+            renderTrigger: 0,
         }
+
+        this.characterWidth = 8.15;//pixels
+        this.tagCharactersAllowed = 0;
+        this.tagCharactersDisplayed = 0;
+        this.nextTagWidth = 0;
+
+        this.resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                if (entry.contentRect) {
+                    const { renderTrigger } = this.state;
+
+                    const width = entry.contentRect.width - 170;
+                    this.tagCharactersAllowed = width / this.characterWidth;
+
+                    if ((this.tagCharactersDisplayed > this.tagCharactersAllowed) || (this.tagCharactersDisplayed + this.nextTagWidth < this.tagCharactersAllowed)) {
+                        this.setState({
+                            ...this.state,
+                            renderTrigger: renderTrigger + 1,
+                        })
+                    }
+                }
+            }
+        })
     }
 
     componentDidMount() {
-        const { document } = this.props;
-        const { id, scope } = document || {};
+        const { document:doc } = this.props;
+        const { id, scope } = doc || {};
 
         let tmpDocument = {
             id, scope
         }
 
         this.setTmpDocument(tmpDocument);
+
+        let element = document.getElementById('tag-row');
+        this.resizeObserver.observe(element != null ? element : new Element());
     }
 
     componentDidUpdate(prevProps: Readonly<DocumentPanelProps>, prevState: Readonly<DocumentPanelState>, snapshot?: any) {
@@ -105,7 +137,6 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
             }
             this.setTmpDocument(nextDoc);
         }
-        console.log(JSON.stringify(value));
     }
 
     refreshDirtyFlag() {
@@ -165,7 +196,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
 
     updateDocument() {
         const { onUpdateDocument, document } = this.props;
-        const { tmpDocument, isPrivate } = this.state;
+        const { tmpDocument } = this.state;
 
         const { id } = document;
 
@@ -221,11 +252,8 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
     }
 
     addNewPrivateTag() {
-        const { editProperties, document, userProfile } = this.props;
+        const { editProperties, document } = this.props;
         const { tmpDocument } = this.state;
-        const { original_private_tag } = document;
-        const { id:user_id } = userProfile;
-
         const {id} = editProperties['private_tag'];
 
         let originalValue = document ? document[id] : [];
@@ -242,17 +270,6 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         }));
 
         result["-1"] = "";
-
-        // let privateTags: Record<string, Record<string, string>> = {};
-        // if (original_private_tag) {
-        //     forEachKVP(original_private_tag, (itemKey: string, itemValue: Record<string, string>) => {
-        //         if (itemKey !== user_id) {
-        //             privateTags[itemKey] = itemValue;
-        //         }
-        //     })
-        // }
-        //
-        // privateTags[user_id] = result;
 
         this.onTmpDocumentChanged('private_tag', result)
     }
@@ -291,30 +308,14 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         })
     }
 
-    _convertDateFormat(date: string) {
-        let result = "";
-
-        let dateArray = date.split("-");
-
-        if (dateArray[0] && dateArray[1] && dateArray[2]) {
-            let yyyy = dateArray[0];
-            let mm = dateArray[1];
-            let dd = dateArray[2];
-
-            result = mm + "/" + dd + "/" + yyyy;
-        }
-
-        return result;
-    }
-
     getCellRenderer(tmpDocument: DocumentInfoVM, document: DocumentInfoVM, editProperty: EditPropertyVM, isGlobal?: boolean) {
         const { permissions } = this.props;
         const { canModify } = permissions;
         const {id, type, title='test', options={}, long=false} = editProperty;
-        const { id:document_id, status } = document;
+        const { id:document_id } = document;
         const { showTagEditor } = this.state;
 
-        let cellRenderer = null;
+        let cellRenderer;
 
         let originalValue = document ? document[id] : '';
         originalValue = originalValue || '';
@@ -403,16 +404,22 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                     this.onTmpDocumentChanged(name, result);
                 }
 
-                let publicTagDivs: any[] = [];
+                let tagDivs: any[] = [];
+                let displayTagDivs: any[] = [];
+
                 let length = 0;
-                let truncatedPublicTagDivs: any[] = [];
+                let totalLength = 0;
+
+                let nextTagRecorded = false;
+
+                this.tagCharactersDisplayed = 0;
+                this.nextTagWidth = 0;
 
                 if (id === "public_tag" || id === "private_tag") {
                     if (value) {
                         forEachKVP(value, (tag: string) => {
-
                             if (tag.length > 0) {
-                                publicTagDivs?.push(<Tag name={id} text={tag} onDelete={onClick} isGlobal={isGlobal}
+                                tagDivs?.push(<Tag name={id} text={tag} onDelete={onClick} isGlobal={isGlobal}
                                                          className={"mr-4"} isEdit={tag.trim() === "-1"} key={tag}
                                                          readonly={!canModify} onSubmit={onSubmit}/>)
                             }
@@ -422,13 +429,21 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                     if (value) {
                         forEachKVP(value, (tag: string) => {
                             if (tag.length > 0) {
-                                if (length < 3) {
-                                    truncatedPublicTagDivs?.push(<Tag name={id} text={tag} onDelete={onClick}
+
+                                this.tagCharactersDisplayed += (tag.length + (46 / this.characterWidth));
+
+                                if (this.tagCharactersDisplayed < this.tagCharactersAllowed) {
+                                    displayTagDivs?.push(<Tag name={id} text={tag} onDelete={onClick}
                                                                       isGlobal={isGlobal} className={"mr-4"} key={tag + "_short"}
                                                                       isEdit={tag.trim() === "-1"} readonly={!canModify}
                                                                       onSubmit={onSubmit}/>)
+
+                                    length++;
+                                } else if (!nextTagRecorded) {
+                                    this.nextTagWidth = tag.length;
+                                    nextTagRecorded = true;
                                 }
-                                length++;
+                                totalLength++;
                             }
                         })
                     }
@@ -440,11 +455,11 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                         {
                             !showTagEditor &&
                             <div className={'d-flex flex-nowrap align-self-center overflow-hidden'} key={id}>
-                                {truncatedPublicTagDivs}
+                                {displayTagDivs}
                             </div>
                         }
                         {
-                            permissions.canModify && (length < 3) &&
+                            (permissions.canModify && (length === totalLength)) &&
                             <Button className={'tag-button fill-primary'}
                                  onClick={isGlobal ? this.addNewPublicTag : this.addNewPrivateTag}>
                                 <AddNewSVG className={"nano-image-container"}/>
@@ -452,7 +467,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                         }
 
                         {
-                            length > 2 &&
+                            (length < totalLength) &&
                             <Portal
                                 isOpen={showTagEditor}
                                 zIndex={9999}
@@ -466,7 +481,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                         <div className={'portal position-absolute tags-portal'}>
                                             <div className={'advanced d-flex flex-column v-gap-5 shadow position-relative'}>
                                                 <div className={'d-inline-flex flex-wrap align-self-center align-items-center overflow-auto w-100 p-3'} key={id}>
-                                                    {publicTagDivs}
+                                                    {tagDivs}
                                                     {
                                                         permissions.canModify &&
                                                         <Button className={'tag-button fill-primary'}
@@ -491,7 +506,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                 }>
 
                                 {
-                                    length > 2 &&
+                                    (length < totalLength) &&
                                     <Button className={`ellipsis-button ${showTagEditor ? "invisible" : ""}`} onClick={(() => this._setShowTagEditor(!showTagEditor))}>
                                         <EllipsisSVG className={'small-image-container'}/>
                                     </Button>
@@ -533,20 +548,6 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
             }
         }
         return cellRenderer;
-    }
-
-    _getScope(title: string) {
-        const { editProperties } = this.props;
-        const { options={} } =  editProperties['scope'];
-
-        let result = "";
-
-        forEach(Object.values(options), (option: { title: string; id: any; }) => {
-            if (option.title === title) {
-                result = option.id;
-            }
-        })
-        return result;
     }
 
     _formatType(type: string) {
@@ -755,7 +756,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                             />
 
                             <div className={'d-flex flex-column v-gap-4 pl-4'} >
-                                <div className={'d-flex align-items-center justify-content-between'}>
+                                <div id={'tag-row'} className={'d-flex align-items-center justify-content-between'}>
                                     <div className={'d-flex h-gap-2 overflow-hidden'}>
                                         <GlobalSwitchButton isGlobal={isGlobal} light={false} onClick={this.toggleGlobal} className={'mr-3'}/>
                                         {
@@ -800,14 +801,8 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                 </div>
                         }
                     </div>
-
                     <CSSTransition
-                        // onEnter={() => {
-                        //     console.log("onEnter")
-                        //     this._setShowStatusBanner(true)
-                        // }}
-                        // onExited={() => this._setShowStatusBanner(false)}
-                        in={nlpComplete === false || nlpCompleteAnimation === true}
+                        in={showStatusBanner}
                         timeout={300}
                         classNames={getClassNames('fadeIn', 'fadeIn', 'slideRightOut') }>
                         <div>
