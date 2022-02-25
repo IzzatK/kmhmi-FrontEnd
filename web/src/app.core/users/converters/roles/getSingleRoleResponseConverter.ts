@@ -24,7 +24,7 @@ export class GetSingleRoleResponseConverter extends Converter<any, Nullable<Role
                 let roleNameUpper: string = roleName.toUpperCase();
 
                 forEachKVP(rolesInfos, (itemKey: string, itemValue: RoleInfo) => {
-                    if (itemValue.title.toUpperCase() == roleNameUpper) {
+                    if (itemValue.title.toUpperCase() === roleNameUpper) {
                         result = itemValue;
                         return true;
                     }

@@ -1,7 +1,6 @@
 import {MenuItemVM} from "../../../framework.visual/model/menuItemVM";
 import {MetaDataVM} from "../../../framework.visual/model/metaDataVM";
 import {Nullable} from "../../../framework/extras/typeUtils";
-import React from "react";
 import {ReferenceType, UserInfo} from "../../../app.model";
 
 export type SearchResultsStateProps = {

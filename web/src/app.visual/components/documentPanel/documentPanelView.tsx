@@ -336,8 +336,8 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
 
                         if (dateArray[0] && dateArray[1] && dateArray[2]) {
                             let yyyy = dateArray[2];
-                            let mm = dateArray[0].length == 1 ? "0" + dateArray[0] : dateArray[0];
-                            let dd = dateArray[1].length == 1 ? "0" + dateArray[1] : dateArray[1];
+                            let mm = dateArray[0].length === 1 ? "0" + dateArray[0] : dateArray[0];
+                            let dd = dateArray[1].length === 1 ? "0" + dateArray[1] : dateArray[1];
 
                             value = yyyy + "-" + mm + "-" + dd;
                         }

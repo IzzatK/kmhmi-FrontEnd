@@ -53,9 +53,14 @@ class SearchResultsPanelView extends Component<SearchResultsProps, SearchResults
         }
     }
 
+    componentWillUnmount() {
+        this.resizeObserver.disconnect();
+    }
+
     render() {
         const { className, searchResults, onDocumentSelected, resultViews, onResultViewSelected, userLookup,
             sortTypes, selectedSort, onSortSelected, isLoading, hasError, errorMessage, selectedResultView } = this.props;
+        const { pageWidth } = this.state;
 
         // select how to render the results
         let ResultRenderer = null;
@@ -121,7 +126,7 @@ class SearchResultsPanelView extends Component<SearchResultsProps, SearchResults
                             {
                                 ResultRenderer &&
                                 <ResultRenderer searchResults={searchResults} onDocumentSelected={onDocumentSelected}
-                                                userLookup={userLookup} pageWidth={this.state.pageWidth} selectedResultView={this.props.selectedResultView}/>
+                                                userLookup={userLookup} pageWidth={pageWidth}/>
                             }
                         </div>
                     </CSSTransition>

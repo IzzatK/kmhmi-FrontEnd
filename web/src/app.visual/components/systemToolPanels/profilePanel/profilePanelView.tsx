@@ -521,7 +521,9 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                                      selected={componentOpen}
                                      onSelect={() => this._manageIsOpen(id)}
                                      onEdit={() => this._manageIsEdit(id)}
-                                     onCancel={() => this._onCancelEdit(id)}/>
+                                     onCancel={() => this._onCancelEdit(id)}
+                                     key={id}
+                    />
                 )
             });
         }
@@ -584,6 +586,7 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
 
                     renderDiv = (
                         <ComboBox
+                            key={id}
                             className={cn}
                             disable={!isDirty}
                             onSelect={(value: string) => this._onTmpUserChanged(id, value)}
@@ -602,6 +605,7 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                     }
                     renderDiv =(
                         <TextEdit
+                            key={id}
                             className={cn}
                             disable={!readonly ? !isDirty : true}
                             placeholder={placeholder}
@@ -620,6 +624,7 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                 default:
                     renderDiv = (
                         <TextEdit
+                            key={id}
                             className={cn}
                             disable={!readonly ? !isDirty : true}
                             placeholder={placeholder}

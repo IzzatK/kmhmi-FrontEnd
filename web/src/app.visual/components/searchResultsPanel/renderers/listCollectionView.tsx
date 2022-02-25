@@ -68,8 +68,12 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
         }
     }
 
+    componentWillUnmount() {
+        this.resizeObserver.disconnect();
+    }
+
     render() {
-        const { className, searchResults, onDocumentSelected, pageWidth, userLookup, selectedResultView, ...rest } = this.props;
+        const { className, searchResults, onDocumentSelected, pageWidth, userLookup, ...rest } = this.props;
 
         let cn = "list v-gap-2";
         if (className) {

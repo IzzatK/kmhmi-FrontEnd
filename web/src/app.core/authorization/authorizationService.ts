@@ -142,7 +142,7 @@ export class AuthorizationService extends Plugin implements IAuthorizationServic
                         me.addOrUpdateRepoItem(userInfo);
                         me.authenticationService?.setRegistrationStatus(userInfo.account_status);
 
-                        if (userInfo.account_status != AuthenticationStatus.ACTIVE) {
+                        if (userInfo.account_status !== AuthenticationStatus.ACTIVE) {
                             setTimeout(() => {
                                 fetchUser();
                             }, 5000);
@@ -203,12 +203,12 @@ export class AuthorizationService extends Plugin implements IAuthorizationServic
 
         let permissionLevel = this.getPermissionLevel(entity, operator);
 
-        if (permissionLevel == PERMISSION_LEVEL.ANY) {
+        if (permissionLevel === PERMISSION_LEVEL.ANY) {
             result = true;
         }
-        else if (permissionLevel == PERMISSION_LEVEL.SELF) {
+        else if (permissionLevel === PERMISSION_LEVEL.SELF) {
             if (currentUserId && entityOwnerId) {
-                result = entityOwnerId == currentUserId;
+                result = entityOwnerId === currentUserId;
             }
         }
 

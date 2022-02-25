@@ -66,8 +66,12 @@ class CardCollectionView extends Component<SearchResultsProps, SearchResultsStat
         }
     }
 
+    componentWillUnmount() {
+        this.resizeObserver.disconnect();
+    }
+
     render() {
-        const { className, searchResults, onDocumentSelected, selectedResultView, ...rest } = this.props;
+        const { className, searchResults, onDocumentSelected, ...rest } = this.props;
 
         let cn = "cards pr-4";
         if (className) {

@@ -33,7 +33,7 @@ export class GetDocumentArrayRequestConverter extends Converter<any, any>{
                     else if (value) {
                         result[key] = value;
                     }
-                    else if (key == 'search_request' && value === '') {
+                    else if (key === 'search_request' && value === '') {
                         result[key] = 'NULL';
                     }
                 }

@@ -125,9 +125,7 @@ class TagsPanelView extends Component<TagsPanelProps, TagsPanelState> {
                                         <div>Edit Tag</div>
                                         <div>Delete Tag</div>
                                     </ul>
-
                                 </div>
-
                             }>
                             <div className={`tag font-weight-light display-3 d-flex rounded-pill cursor-pointer align-items-center ${selectedTag === id ? "selected justify-content-center" : "pl-3"}`}
                                  onClick={() => this._setSelected(id)}>
@@ -179,7 +177,6 @@ class TagsPanelView extends Component<TagsPanelProps, TagsPanelState> {
                         {tagDivs}
                     </ScrollBar>
                 </div>
-
             </div>
         );
     }

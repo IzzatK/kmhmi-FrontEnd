@@ -171,6 +171,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
 
                     renderDiv = (
                         <ComboBox
+                            key={id}
                             className={cn}
                             disable={!dirty || isUpdating}
                             onSelect={(value: string) => this._onTmpUserChanged(id, value)}
@@ -191,6 +192,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
 
                     renderDiv = (
                         <ComboBox
+                            key={id}
                             className={cn}
                             disable={!dirty || isUpdating}
                             onSelect={(value: string) => this._onTmpUserChanged(id, value)}
@@ -210,6 +212,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
 
                     renderDiv = (
                         <ComboBox
+                            key={id}
                             className={cn}
                             disable={!dirty || isUpdating}
                             onSelect={(value: string) => this._onTmpUserChanged(id, value)}
@@ -237,6 +240,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                     }
                     renderDiv =(
                         <TextEdit
+                            key={id}
                             className={cn}
                             disable={!readonly ? !dirty || isUpdating : true}
                             placeholder={placeholder}
@@ -255,6 +259,7 @@ class ProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {
                 default:
                     renderDiv = (
                         <TextEdit
+                            key={id}
                             className={cn}
                             disable={!readonly ? !dirty || isUpdating : true}
                             placeholder={placeholder}

@@ -59,7 +59,7 @@ export class UpdateUserRequestConverter extends Converter<any, any> {
             //if no role set it to VIEWER
             let references = repoService.getAll(ReferenceInfo.class);
             forEach(references, (referenceInfo: ReferenceInfo) => {
-                if (referenceInfo.type === ReferenceType.ROLE && referenceInfo.title.toUpperCase() == 'VIEWER') {
+                if (referenceInfo.type === ReferenceType.ROLE && referenceInfo.title.toUpperCase() === 'VIEWER') {
                     let role = parseInt(referenceInfo.id);
                     tmpRoles.push(role)
                     return true;

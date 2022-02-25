@@ -3,8 +3,6 @@ import {DocumentInfo, SearchParamInfo, SortPropertyInfo} from "../../app.model";
 import {IPlugin} from "../../framework.api";
 import {IUserService} from "../users/iUserService";
 import {IEntityProvider} from "../common/iEntityProvider";
-import {IRepoItem} from "../../framework/services/repoService/repoItem";
-import {OutputSelector} from "@reduxjs/toolkit";
 
 export interface IDocumentService extends IPlugin {
 

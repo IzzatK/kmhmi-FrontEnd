@@ -93,6 +93,10 @@ class TableCollectionView extends Component {
         }
     }
 
+    componentWillUnmount() {
+        this.resizeObserver.disconnect();
+    }
+
     _updateColumns(pageWidth) {
         if (pageWidth === 'FULL') {
             this.setState({
