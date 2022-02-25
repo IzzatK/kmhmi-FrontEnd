@@ -30,8 +30,9 @@ export enum PageWidth {
 }
 
 export type SearchResultsState = {
-    pageWidth: PageWidth;
+    pageWidth?: PageWidth;
     columns?: any[];
+    renderTrigger: number;
 }
 
 export type ReferenceInfoVM = {

@@ -78,7 +78,9 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         this.setTmpDocument(tmpDocument);
 
         let element = document.getElementById('tag-row');
-        this.resizeObserver.observe(element != null ? element : new Element());
+        if (element) {
+            this.resizeObserver.observe(element);
+        }
     }
 
     componentDidUpdate(prevProps: Readonly<DocumentPanelProps>, prevState: Readonly<DocumentPanelState>, snapshot?: any) {
@@ -419,31 +421,37 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                     if (value) {
                         forEachKVP(value, (tag: string) => {
                             if (tag.length > 0) {
-                                tagDivs?.push(<Tag name={id} text={tag} onDelete={onClick} isGlobal={isGlobal}
-                                                         className={"mr-4"} isEdit={tag.trim() === "-1"} key={tag}
-                                                         readonly={!canModify} onSubmit={onSubmit}/>)
-                            }
-                        })
-                    }
-
-                    if (value) {
-                        forEachKVP(value, (tag: string) => {
-                            if (tag.length > 0) {
-
                                 this.tagCharactersDisplayed += (tag.length + (46 / this.characterWidth));
 
                                 if (this.tagCharactersDisplayed < this.tagCharactersAllowed) {
-                                    displayTagDivs?.push(<Tag name={id} text={tag} onDelete={onClick}
-                                                                      isGlobal={isGlobal} className={"mr-4"} key={tag + "_short"}
-                                                                      isEdit={tag.trim() === "-1"} readonly={!canModify}
-                                                                      onSubmit={onSubmit}/>)
-
+                                    displayTagDivs?.push(<Tag name={id}
+                                                              text={tag}
+                                                              onDelete={onClick}
+                                                              isGlobal={isGlobal}
+                                                              className={"mr-4"}
+                                                              key={tag + "_short"}
+                                                              isEdit={tag.trim() === "-1"}
+                                                              readonly={!canModify}
+                                                              onSubmit={onSubmit}
+                                    />)
                                     length++;
                                 } else if (!nextTagRecorded) {
                                     this.nextTagWidth = tag.length;
                                     nextTagRecorded = true;
                                 }
+
                                 totalLength++;
+
+                                tagDivs?.push(<Tag name={id}
+                                                   text={tag}
+                                                   onDelete={onClick}
+                                                   isGlobal={isGlobal}
+                                                   className={"mr-4"}
+                                                   isEdit={tag.trim() === "-1"}
+                                                   key={tag}
+                                                   readonly={!canModify}
+                                                   onSubmit={onSubmit}
+                                />)
                             }
                         })
                     }

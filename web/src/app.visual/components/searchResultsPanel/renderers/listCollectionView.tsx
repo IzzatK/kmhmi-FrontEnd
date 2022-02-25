@@ -9,15 +9,67 @@ import {DocumentInfoVM, SearchResultsProps, SearchResultsState} from "../searchR
 import Tag from "../../../theme/widgets/tag/tag";
 import Card from "../../../theme/widgets/card/card";
 import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
+import {EllipsisSVG} from "../../../theme/svgs/ellipsisSVG";
 
 class ListCollectionView extends Component<SearchResultsProps, SearchResultsState> {
+    private resizeObserver: ResizeObserver;
+    private readonly characterWidth: number;
+    private tagCharactersAllowed: number;
+    private tagCharactersDisplayed: number;
+    private nextTagWidth: number;
+
+    private sampleId: string;
 
     constructor(props: any, context: any) {
         super(props, context);
+
+        this.state = {
+            renderTrigger: 0,
+        }
+
+        this.characterWidth = 8.15;//pixels
+        this.tagCharactersAllowed = 0;
+        this.tagCharactersDisplayed = 0;
+        this.nextTagWidth = 0;
+
+        this.sampleId = "";
+
+        this.resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                if (entry.contentRect) {
+                    const { renderTrigger } = this.state;
+
+                    const width = entry.contentRect.width - 29;
+
+                    this.tagCharactersAllowed = width / this.characterWidth;
+
+                    if ((this.tagCharactersDisplayed > this.tagCharactersAllowed) || (this.tagCharactersDisplayed + this.nextTagWidth < this.tagCharactersAllowed)) {
+                        this.setState({
+                            ...this.state,
+                            renderTrigger: renderTrigger + 1,
+                        })
+                    }
+                }
+            }
+        })
+    }
+
+    componentDidMount() {
+        let element = document.getElementById(this.sampleId);
+        if (element) {
+            this.resizeObserver.observe(element);
+        }
+    }
+
+    componentDidUpdate() {
+        let element = document.getElementById(this.sampleId);
+        if (element) {
+            this.resizeObserver.observe(element);
+        }
     }
 
     render() {
-        const { className, searchResults, onDocumentSelected, pageWidth, userLookup, ...rest } = this.props;
+        const { className, searchResults, onDocumentSelected, pageWidth, userLookup, selectedResultView, ...rest } = this.props;
 
         let cn = "list v-gap-2";
         if (className) {
@@ -30,6 +82,8 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
                 const {id, author, title, timestamp, selected, scope, publication_date, public_tag, private_tag, type,
                     department, purpose, project, page_count, isUpdating, file_name, uploadedBy_id, primary_sme_email,
                     primary_sme_name, primary_sme_phone, secondary_sme_email, secondary_sme_name, secondary_sme_phone} = item;
+
+                this.sampleId = id;
 
                 let user = null;
                 if (userLookup) {
@@ -50,21 +104,56 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
                     cn += ' selected shadow-lg'
                 }
 
-                let publicTagDivs: any[] = [];
+                let hoverTagDivs: any[] = [];
+                let displayPublicTagDivs: any[] = [];
+                let displayPrivateTagDivs: any[] = [];
+
+                let length = 0;
+                let totalLength = 0;
+
+                let nextTagRecorded = false;
+
+                this.tagCharactersDisplayed = 0;
+                this.nextTagWidth = 0;
+
                 if (public_tag) {
                     forEachKVP(public_tag, (tag: string) => {
                         if (tag.length > 0) {
-                            publicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag}/>)
+                            this.tagCharactersDisplayed += (tag.length + (46 / this.characterWidth));
+
+                            if (this.tagCharactersDisplayed < this.tagCharactersAllowed) {
+                                displayPublicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag + "_short"}
+                                />);
+                                length++;
+                            } else if (!nextTagRecorded) {
+                                this.nextTagWidth = tag.length;
+                                nextTagRecorded = true;
+                            }
+
+                            totalLength++;
+
+                            hoverTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag}/>)
                         }
                     })
                 }
 
-                let privateTagDivs: any[] = [];
                 if (private_tag) {
                     forEachKVP(private_tag, (tag: string) => {
-
                         if (tag.length > 0) {
-                            privateTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} key={tag}/>)
+                            this.tagCharactersDisplayed += (tag.length + (46 / this.characterWidth));
+
+                            if (this.tagCharactersDisplayed < this.tagCharactersAllowed) {
+                                displayPrivateTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} key={tag + "_short"}
+                                />);
+                                length++;
+                            } else if (!nextTagRecorded) {
+                                this.nextTagWidth = tag.length;
+                                nextTagRecorded = true;
+                            }
+
+                            totalLength++;
+
+                            hoverTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} key={tag}/>)
                         }
                     })
                 }
@@ -74,7 +163,7 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
                         <ListItem key={id} selected={selected} className={cn} onClick={() => onDocumentSelected(id)}>
                             <CheckBox className={'mt-1'} selected={selected} disabled={true}/>
                             <div className={"flex-fill align-self-stretch d-flex flex-column v-gap-3"}>
-                                <div className={"d-flex w-100 flex-nowrap h-gap-2 justify-content-between"}>
+                                <div id={id} className={"d-flex w-100 flex-nowrap h-gap-2 justify-content-between"}>
                                     <TooltipPortal portalContent={
                                         <div>{title}</div>
                                     }>
@@ -82,10 +171,33 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
                                     </TooltipPortal>
                                     {
                                         pageWidth === 'FULL' &&
-                                        <div className={"d-flex flex-nowrap h-gap-2 justify-content-end"}>
-                                            {publicTagDivs}
-                                            {privateTagDivs}
-                                        </div>
+                                        <TooltipPortal portalContent={
+                                            <div className={'d-flex h-gap-2 justify-content-end align-items-center overflow-hidden'}>
+                                                <div className={'d-inline-flex flex-wrap align-items-center'}>
+                                                    {hoverTagDivs}
+                                                </div>
+                                            </div>
+
+                                        }>
+                                            <div className={'d-flex justify-content-end align-items-center h-gap-2'}>
+                                                {
+                                                    JSON.stringify(public_tag) !== "{}" &&
+                                                    <div className={'d-flex align-items-center h-gap-2'}>
+                                                        {displayPublicTagDivs}
+                                                    </div>
+                                                }
+                                                {
+                                                    JSON.stringify(private_tag) !== "{}" &&
+                                                    <div className={'d-flex align-items-center h-gap-2'}>
+                                                        {displayPrivateTagDivs}
+                                                    </div>
+                                                }
+                                                {
+                                                    (length < totalLength) &&
+                                                    <EllipsisSVG className={"ml-2 small-image-container"}/>
+                                                }
+                                            </div>
+                                        </TooltipPortal>
                                     }
                                 </div>
 
@@ -96,10 +208,33 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
 
                                 {
                                     pageWidth !== 'FULL' &&
-                                    <div className={"d-flex flex-nowrap h-gap-2"}>
-                                        {publicTagDivs}
-                                        {privateTagDivs}
-                                    </div>
+                                    <TooltipPortal portalContent={
+                                        <div className={'d-flex justify-content-start align-items-center overflow-hidden'}>
+                                            <div className={'d-inline-flex flex-wrap align-items-center'}>
+                                                {hoverTagDivs}
+                                            </div>
+                                        </div>
+
+                                    }>
+                                        <div id={id} className={'d-flex justify-content-start align-items-center h-gap-2'}>
+                                            {
+                                                JSON.stringify(public_tag) !== "{}" &&
+                                                <div className={'d-flex align-items-center h-gap-2'}>
+                                                    {displayPublicTagDivs}
+                                                </div>
+                                            }
+                                            {
+                                                JSON.stringify(private_tag) !== "{}" &&
+                                                <div className={'d-flex align-items-center h-gap-2'}>
+                                                    {displayPrivateTagDivs}
+                                                </div>
+                                            }
+                                            {
+                                                (length < totalLength) &&
+                                                <EllipsisSVG className={"ml-2 small-image-container"}/>
+                                            }
+                                        </div>
+                                    </TooltipPortal>
                                 }
 
                                 <div className={`d-flex flex-nowrap h-gap-2 header-2 text-center text-nowrap justify-content-start text ${pageWidth !== 'FULL' ? 'collapsed' : ''}`}>

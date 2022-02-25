@@ -18,6 +18,7 @@ class SearchResultsPanelView extends Component<SearchResultsProps, SearchResults
 
         this.state = {
             pageWidth: PageWidth.FULL,
+            renderTrigger: 0,
         }
 
         this.resizeObserver = new ResizeObserver(entries => {
@@ -47,7 +48,9 @@ class SearchResultsPanelView extends Component<SearchResultsProps, SearchResults
 
     componentDidMount() {
         let element = document.getElementById('search-results-panel');
-        this.resizeObserver.observe(element != null ? element : new Element());
+        if (element) {
+            this.resizeObserver.observe(element);
+        }
     }
 
     render() {
@@ -118,7 +121,7 @@ class SearchResultsPanelView extends Component<SearchResultsProps, SearchResults
                             {
                                 ResultRenderer &&
                                 <ResultRenderer searchResults={searchResults} onDocumentSelected={onDocumentSelected}
-                                                userLookup={userLookup} pageWidth={this.state.pageWidth}/>
+                                                userLookup={userLookup} pageWidth={this.state.pageWidth} selectedResultView={this.props.selectedResultView}/>
                             }
                         </div>
                     </CSSTransition>

@@ -9,11 +9,16 @@ import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingI
 import {TooltipPortal} from "../../../theme/widgets/tooltipPortal/tooltipPortal";
 import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
 import Tag from "../../../theme/widgets/tag/tag";
-import {indexOf} from "@amcharts/amcharts4/.internal/core/utils/Array";
 import {EllipsisSVG} from "../../../theme/svgs/ellipsisSVG";
 import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
 
 class TableCollectionView extends Component {
+    resizeObserver;
+    characterWidth;
+    tagCharactersAllowed;
+    tagCharactersDisplayed;
+    nextTagWidth;
+
     constructor(props) {
         super(props);
 
@@ -21,7 +26,37 @@ class TableCollectionView extends Component {
 
         this.state = {
             columns: [],
+            renderTrigger: 0,
         }
+
+        this.characterWidth = 8.15;//pixels
+        this.tagCharactersAllowed = 0;
+        this.tagCharactersDisplayed = 0;
+        this.nextTagWidth = 0;
+
+        this.resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                if (entry.contentRect) {
+                    const { renderTrigger } = this.state;
+                    const { pageWidth } = this.props;
+
+                    const width = entry.contentRect.width - 29;
+
+                    if (pageWidth === "FULL") {
+                        this.tagCharactersAllowed = (width * 0.14) / this.characterWidth;
+                    } else if (pageWidth === "ONE_HALF") {
+                        this.tagCharactersAllowed = (width * 0.17) / this.characterWidth;
+                    }
+
+                    if ((this.tagCharactersDisplayed > this.tagCharactersAllowed) || (this.tagCharactersDisplayed + this.nextTagWidth < this.tagCharactersAllowed)) {
+                        this.setState({
+                            ...this.state,
+                            renderTrigger: renderTrigger + 1,
+                        })
+                    }
+                }
+            }
+        })
     }
 
     _onRowClick({ rowIndex, data, column, isEdit, event }, tableManager) {
@@ -38,6 +73,11 @@ class TableCollectionView extends Component {
         const { pageWidth } = this.props;
 
         this._updateColumns(pageWidth);
+
+        let element = document.getElementById("grid-table");
+        if (element) {
+            this.resizeObserver.observe(element);
+        }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -45,6 +85,11 @@ class TableCollectionView extends Component {
 
         if (pageWidth !== prevProps.pageWidth) {
             this._updateColumns(pageWidth);
+        }
+
+        let element = document.getElementById("grid-table");
+        if (element) {
+            this.resizeObserver.observe(element);
         }
     }
 
@@ -60,8 +105,8 @@ class TableCollectionView extends Component {
                         width: '3.13%',
                         sortable: false,
                         resizable: false,
-                        cellRenderer: CheckBoxCellRenderer,
-                        headerCellRenderer: CheckBoxHeaderCellRenderer,
+                        cellRenderer: this.CheckBoxCellRenderer,
+                        headerCellRenderer: this.CheckBoxHeaderCellRenderer,
                     },
                     {
                         id: 2,
@@ -70,7 +115,7 @@ class TableCollectionView extends Component {
                         width: '12.93%',
                         sortable: false,
                         resizable: false,
-                        cellRenderer: TitleCellRender
+                        cellRenderer: this.TitleCellRender
                     },
                     {
                         id: 3,
@@ -79,7 +124,7 @@ class TableCollectionView extends Component {
                         width: '6.13%',
                         sortable: false,
                         resizable: false,
-                        cellRenderer: DateCellRender
+                        cellRenderer: this.DateCellRender
                     },
                     {
                         id: 4,
@@ -88,7 +133,7 @@ class TableCollectionView extends Component {
                         width: '5.43%',
                         sortable: false,
                         resizable: false,
-                        cellRenderer: PageCountCellRender
+                        cellRenderer: this.PageCountCellRender
                     },
                     {
                         id: 5,
@@ -97,7 +142,7 @@ class TableCollectionView extends Component {
                         width: '26.07%',
                         sortable: false,
                         resizable: false,
-                        cellRenderer: AuthorCellRender
+                        cellRenderer: this.AuthorCellRender
                     },
                     {
                         id: 6,
@@ -106,7 +151,7 @@ class TableCollectionView extends Component {
                         width: '6.74%',
                         sortable: false,
                         resizable: false,
-                        cellRenderer: CellRenderer
+                        cellRenderer: this.CellRenderer
                     },
                     {
                         id: 7,
@@ -115,7 +160,7 @@ class TableCollectionView extends Component {
                         width: '7.08%',
                         sortable: false,
                         resizable: false,
-                        cellRenderer: CellRenderer
+                        cellRenderer: this.CellRenderer
                     },
                     {
                         id: 8,
@@ -124,7 +169,7 @@ class TableCollectionView extends Component {
                         width: '16.23%',
                         sortable: false,
                         resizable: false,
-                        cellRenderer: PublicTagCellRender
+                        cellRenderer: this.PublicTagCellRender
                     },
                     {
                         id: 9,
@@ -133,7 +178,7 @@ class TableCollectionView extends Component {
                         width: '16.23%',
                         sortable: false,
                         resizable: false,
-                        cellRenderer: PrivateTagCellRender
+                        cellRenderer: this.PrivateTagCellRender
                     },
                 ],
             });
@@ -148,8 +193,8 @@ class TableCollectionView extends Component {
                         width: '4.91%',
                         sortable: false,
                         resizable: false,
-                        cellRenderer: CheckBoxCellRenderer,
-                        headerCellRenderer: CheckBoxHeaderCellRenderer,
+                        cellRenderer: this.CheckBoxCellRenderer,
+                        headerCellRenderer: this.CheckBoxHeaderCellRenderer,
                     },
                     {
                         id: 1,
@@ -158,7 +203,7 @@ class TableCollectionView extends Component {
                         width: '20.32%',
                         sortable: false,
                         resizable: false,
-                        cellRenderer: TitleCellRender
+                        cellRenderer: this.TitleCellRender
                     },
                     {
                         id: 2,
@@ -167,7 +212,7 @@ class TableCollectionView extends Component {
                         width: '9.79%',
                         sortable: false,
                         resizable: false,
-                        cellRenderer: DateCellRender
+                        cellRenderer: this.DateCellRender
                     },
                     {
                         id: 3,
@@ -176,7 +221,7 @@ class TableCollectionView extends Component {
                         width: '7.73%',
                         sortable: false,
                         resizable: false,
-                        cellRenderer: PageCountCellRender
+                        cellRenderer: this.PageCountCellRender
                     },
                     {
                         id: 4,
@@ -185,7 +230,7 @@ class TableCollectionView extends Component {
                         width: '35.23%',
                         sortable: false,
                         resizable: false,
-                        cellRenderer: AuthorCellRender
+                        cellRenderer: this.AuthorCellRender
                     },
                     {
                         id: 5,
@@ -194,7 +239,7 @@ class TableCollectionView extends Component {
                         width: '22.01%',
                         sortable: false,
                         resizable: false,
-                        cellRenderer: PublicTagCellRender
+                        cellRenderer: this.PublicTagCellRender
                     },
                 ],
             });
@@ -209,8 +254,8 @@ class TableCollectionView extends Component {
                         width: '11.58%',
                         sortable: false,
                         resizable: false,
-                        cellRenderer: CheckBoxCellRenderer,
-                        headerCellRenderer: CheckBoxHeaderCellRenderer,
+                        cellRenderer: this.CheckBoxCellRenderer,
+                        headerCellRenderer: this.CheckBoxHeaderCellRenderer,
                     },
                     {
                         id: 1,
@@ -219,7 +264,7 @@ class TableCollectionView extends Component {
                         width: '36.35%',
                         sortable: false,
                         resizable: false,
-                        cellRenderer: TitleCellRender
+                        cellRenderer: this.TitleCellRender
                     },
                     {
                         id: 2,
@@ -228,7 +273,7 @@ class TableCollectionView extends Component {
                         width: '18.24%',
                         sortable: false,
                         resizable: false,
-                        cellRenderer: PageCountCellRender
+                        cellRenderer: this.PageCountCellRender
                     },
                     {
                         id: 3,
@@ -237,7 +282,7 @@ class TableCollectionView extends Component {
                         width: '33.82%',
                         sortable: false,
                         resizable: false,
-                        cellRenderer: AuthorCellRender
+                        cellRenderer: this.AuthorCellRender
                     },
 
                 ],
@@ -245,258 +290,283 @@ class TableCollectionView extends Component {
         }
     }
 
+    CellRenderer = ({ tableManager, value, field, data, column, colIndex, rowIndex }) => {
+
+        const { selected } = data;
+
+        let cn = 'rgt-cell-inner cursor-pointer d-flex align-items-center';
+
+        if (selected) {
+            cn += ` selected`;
+        }
+
+        return (
+            <div className={cn}>
+                <div className={"cell-text text-nowrap overflow-hidden header-2"}>{value}</div>
+            </div>
+        )
+    }
+
+    PageCountCellRender = ({ tableManager, value, field, data, column, colIndex, rowIndex }) => {
+
+        const { selected } = data;
+
+        let cn = 'rgt-cell-inner cursor-pointer d-flex align-items-center';
+
+        if (selected) {
+            cn += ` selected`;
+        }
+
+        return (
+            <div className={cn}>
+                <div className={"cell-text text-nowrap overflow-hidden header-2"}>{value ? "Pgs. " + value : ""}</div>
+            </div>
+        )
+    }
+
+    DateCellRender = ({ tableManager, value, field, data, column, colIndex, rowIndex }) => {
+
+        const { selected } = data;
+
+        let cn = 'rgt-cell-inner cursor-pointer d-flex align-items-center';
+
+        if (selected) {
+            cn += ` selected`;
+        }
+
+        return (
+            <div className={cn}>
+                <div className={"cell-text text-nowrap overflow-hidden header-2"}>{value.split(",")[0]}</div>
+            </div>
+        )
+    }
+
+    TitleCellRender = ({ tableManager, value, field, data, column, colIndex, rowIndex }) => {
+
+        const { selected } = data;
+
+        let cn = 'rgt-cell-inner cursor-pointer d-flex align-items-center overflow-hidden';
+
+        if (selected) {
+            cn += ` selected`;
+        }
+
+        return (
+            <div className={cn}>
+                <TooltipPortal portalContent={
+                    <div>{value}</div>
+                }>
+                    <div className={"cell-text text-break overflow-hidden display-3 title"}>{value}</div>
+                </TooltipPortal>
+            </div>
+        )
+    }
+
+    AuthorCellRender = ({ tableManager, value, field, data, column, colIndex, rowIndex }) => {
+
+        const { selected } = data;
+
+        let cn = 'rgt-cell-inner cursor-pointer d-flex align-items-center';
+
+        if (selected) {
+            cn += ` selected`;
+        }
+
+        return (
+            <div className={cn}>
+                <TooltipPortal portalContent={
+                    <div>
+                        {
+                            value &&
+                            <div>{value}</div>
+                        }
+                    </div>
+                }>
+                    <div className={"cell-text text-break overflow-hidden header-2 author"}>{value}</div>
+                </TooltipPortal>
+            </div>
+        )
+    }
+
+    PublicTagCellRender = ({ tableManager, value, field, data, column, colIndex, rowIndex }) => {
+        const { selected, public_tag } = data;
+
+        let cn = 'rgt-cell-inner';
+
+        if (selected) {
+            cn += ` selected`;
+        }
+
+        let publicTagDivs = [];
+        let displayPublicTagDivs = [];
+
+        let length = 0;
+        let totalLength = 0;
+
+        let nextTagRecorded = false;
+
+        this.tagCharactersDisplayed = 0;
+        this.nextTagWidth = 0;
+
+        if (public_tag) {
+            forEachKVP(public_tag, (tag) => {
+                if (tag.length > 0) {
+                    this.tagCharactersDisplayed += (tag.length + (46 / this.characterWidth));
+
+                    if (this.tagCharactersDisplayed < this.tagCharactersAllowed) {
+                        displayPublicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag + "_short"}
+                        />);
+                        length++;
+                    } else if (!nextTagRecorded) {
+                        this.nextTagWidth = tag.length;
+                        nextTagRecorded = true;
+                    }
+
+                    totalLength++;
+
+                    publicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag}/>)
+                }
+            })
+        }
+
+        return (
+            <div className={cn}>
+                <TooltipPortal portalContent={
+                    <div className={"cursor-pointer d-inline-flex flex-wrap align-items-center overflow-auto"}>
+                        {publicTagDivs}
+                    </div>
+
+                }>
+                    <div className={"cursor-pointer d-flex align-items-center h-gap-2"}>
+                        {displayPublicTagDivs}
+                        {
+                            (length < totalLength) &&
+                            <EllipsisSVG className={"ml-5 small-image-container"}/>
+                        }
+                    </div>
+                </TooltipPortal>
+            </div>
+        )
+    }
+
+    PrivateTagCellRender = ({ tableManager, value, field, data, column, colIndex, rowIndex }) => {
+
+        const { selected, private_tag } = data;
+
+        let cn = 'rgt-cell-inner';
+
+        if (selected) {
+            cn += ` selected`;
+        }
+
+        let privateTagDivs = [];
+        let displayPrivateTagDivs = [];
+
+        let length = 0;
+        let totalLength = 0;
+
+        let nextTagRecorded = false;
+
+        this.tagCharactersDisplayed = 0;
+        this.nextTagWidth = 0;
+
+        if (private_tag) {
+            forEachKVP(private_tag, (tag) => {
+                if (tag.length > 0) {
+                    this.tagCharactersDisplayed += (tag.length + (46 / this.characterWidth));
+
+                    if (this.tagCharactersDisplayed < this.tagCharactersAllowed) {
+                        displayPrivateTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} key={tag + "_short"}
+                        />);
+                        length++;
+                    } else if (!nextTagRecorded) {
+                        this.nextTagWidth = tag.length;
+                        nextTagRecorded = true;
+                    }
+
+                    totalLength++;
+
+                    privateTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} key={tag}/>)
+                }
+            })
+        }
+
+        return (
+            <div className={cn}>
+                <TooltipPortal portalContent={
+                    <div className={"cursor-pointer d-inline-flex flex-wrap align-items-center overflow-auto"}>
+                        {privateTagDivs}
+                    </div>
+
+                }>
+                    <div className={"cursor-pointer d-flex align-items-center h-gap-2 overflow-hidden"}>
+                        {displayPrivateTagDivs}
+                        {
+                            length > 2 &&
+                            <EllipsisSVG className={"ml-5 small-image-container"}/>
+                        }
+                    </div>
+                </TooltipPortal>
+            </div>
+        )
+    }
+
+    CheckBoxCellRenderer = ({ tableManager, value, field, data, column, colIndex, rowIndex }) => {
+
+        const { selected, isUpdating=false } = data;
+
+        let cn = 'rgt-cell-inner cursor-pointer d-flex align-items-center';
+
+        if (selected) {
+            cn += ` selected`;
+        }
+
+        return (
+            isUpdating ?
+                <div className={'rgt-cell-inner d-flex align-items-center position-relative'}>
+                    <div className={"position-absolute"} style={{top: '0', right: '0', bottom: '0', left:'0'}}>
+                        <LoadingIndicator/>
+                    </div>
+                </div>
+                :
+                <div className={cn}>
+                    <CheckBox selected={selected} disabled={true}/>
+                </div>
+        )
+    }
+
+    CheckBoxHeaderCellRenderer = ({ tableManager, column }) => {
+
+        let cn = 'd-flex align-items-center';
+
+        return (
+            <div className={cn}>
+                <CheckBox/>
+            </div>
+        )
+    }
+
     render() {
         const { searchResults, onDocumentSelected, pageWidth, ...rest } = this.props;
 
         return (
             <div className={'table h-100 w-100 position-relative'}>
-                <GridTable showSearch={false} className={'position-absolute h-100'}
-                           onRowClick={this._onRowClick} isPaginated={false} enableColumnsReorder={false}
+                <GridTable showSearch={false}
+                           className={'position-absolute h-100'}
+                           onRowClick={this._onRowClick}
+                           isPaginated={false}
+                           enableColumnsReorder={false}
                            columns={this.state.columns}
                            onColumnsChange={columns => undefined}//this is a very important function that makes everything work
-                           rows={searchResults} showColumnVisibilityManager={false} showRowsInformation={false}
-                components={{PageSize, Pagination}}/>
+                           rows={searchResults}
+                           showColumnVisibilityManager={false}
+                           showRowsInformation={false}
+                           id={"grid-table"}
+                           components={{PageSize, Pagination}}
+                />
             </div>
         );
     }
-}
-
-const CellRenderer = ({ tableManager, value, field, data, column, colIndex, rowIndex }) => {
-
-    const { selected } = data;
-
-    let cn = 'rgt-cell-inner cursor-pointer d-flex align-items-center';
-
-    if (selected) {
-        cn += ` selected`;
-    }
-
-    return (
-        <div className={cn}>
-            <div className={"cell-text text-nowrap overflow-hidden header-2"}>{value}</div>
-        </div>
-    )
-}
-
-const PageCountCellRender = ({ tableManager, value, field, data, column, colIndex, rowIndex }) => {
-
-    const { selected } = data;
-
-    let cn = 'rgt-cell-inner cursor-pointer d-flex align-items-center';
-
-    if (selected) {
-        cn += ` selected`;
-    }
-
-    return (
-        <div className={cn}>
-            <div className={"cell-text text-nowrap overflow-hidden header-2"}>{value ? "Pgs. " + value : ""}</div>
-        </div>
-    )
-}
-
-const DateCellRender = ({ tableManager, value, field, data, column, colIndex, rowIndex }) => {
-
-    const { selected } = data;
-
-    let cn = 'rgt-cell-inner cursor-pointer d-flex align-items-center';
-
-    if (selected) {
-        cn += ` selected`;
-    }
-
-    return (
-        <div className={cn}>
-            <div className={"cell-text text-nowrap overflow-hidden header-2"}>{value.split(",")[0]}</div>
-        </div>
-    )
-}
-
-const TitleCellRender = ({ tableManager, value, field, data, column, colIndex, rowIndex }) => {
-
-    const { selected } = data;
-
-    let cn = 'rgt-cell-inner cursor-pointer d-flex align-items-center overflow-hidden';
-
-    if (selected) {
-        cn += ` selected`;
-    }
-
-    return (
-        <div className={cn}>
-            <TooltipPortal portalContent={
-                <div>{value}</div>
-            }>
-                <div className={"cell-text text-break overflow-hidden display-3 title"}>{value}</div>
-            </TooltipPortal>
-        </div>
-    )
-}
-
-const AuthorCellRender = ({ tableManager, value, field, data, column, colIndex, rowIndex }) => {
-
-    const { selected } = data;
-
-    let cn = 'rgt-cell-inner cursor-pointer d-flex align-items-center';
-
-    if (selected) {
-        cn += ` selected`;
-    }
-
-    return (
-        <div className={cn}>
-            <TooltipPortal portalContent={
-                <div>
-                    {
-                        value &&
-                        <div>{value}</div>
-                    }
-                </div>
-            }>
-                <div className={"cell-text text-break overflow-hidden header-2 author"}>{value}</div>
-            </TooltipPortal>
-        </div>
-    )
-}
-
-const PublicTagCellRender = ({ tableManager, value, field, data, column, colIndex, rowIndex }) => {
-    const { selected, public_tag } = data;
-
-    let cn = 'rgt-cell-inner';
-
-    if (selected) {
-        cn += ` selected`;
-    }
-
-    let tagDivs = [];
-    if (public_tag) {
-        forEachKVP(public_tag, (tag) => {
-
-            if (tag.length > 0) {
-                tagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag}/>)
-            }
-        })
-    }
-
-    let truncatedTagDivs = [];
-    let length = 0;
-    if (public_tag) {
-        forEachKVP(public_tag, (tag) => {
-            if (tag.length > 0) {
-                if (length < 3) {
-                    truncatedTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag + "_short"}/>)
-                }
-                length++;
-            }
-        })
-    }
-
-    return (
-        <div className={cn}>
-            <TooltipPortal portalContent={
-                <div className={"cursor-pointer d-inline-flex flex-wrap align-items-center overflow-auto"}>
-                    {tagDivs}
-                </div>
-
-            }>
-                <div className={"cursor-pointer d-flex align-items-center h-gap-2 overflow-hidden"}>
-                    {truncatedTagDivs}
-                    {
-                        length > 2 &&
-                        <EllipsisSVG className={"ml-5 small-image-container"}/>
-                    }
-                </div>
-            </TooltipPortal>
-        </div>
-    )
-}
-
-const PrivateTagCellRender = ({ tableManager, value, field, data, column, colIndex, rowIndex }) => {
-
-    const { selected, private_tag } = data;
-
-    let cn = 'rgt-cell-inner';
-
-    if (selected) {
-        cn += ` selected`;
-    }
-
-    let tagDivs = [];
-    if (private_tag) {
-        forEachKVP(private_tag, (tag) => {
-
-            if (tag.length > 0) {
-                tagDivs?.push(<Tag name={tag} text={tag} isEdit={false} key={tag}/>)
-            }
-        })
-    }
-
-    let truncatedTagDivs = [];
-    let length = 0;
-    if (private_tag) {
-        forEachKVP(private_tag, (tag) => {
-            if (tag.length > 0) {
-                if (length < 3) {
-                    truncatedTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} key={tag + "_short"}/>)
-                }
-                length++;
-            }
-        })
-    }
-
-    return (
-        <div className={cn}>
-            <TooltipPortal portalContent={
-                <div className={"cursor-pointer d-inline-flex flex-wrap align-items-center overflow-auto"}>
-                    {tagDivs}
-                </div>
-
-            }>
-                <div className={"cursor-pointer d-flex align-items-center h-gap-2 overflow-hidden"}>
-                    {truncatedTagDivs}
-                    {
-                        length > 2 &&
-                        <EllipsisSVG className={"ml-5 small-image-container"}/>
-                    }
-                </div>
-            </TooltipPortal>
-        </div>
-    )
-}
-
-const CheckBoxCellRenderer = ({ tableManager, value, field, data, column, colIndex, rowIndex }) => {
-
-    const { selected, isUpdating=false } = data;
-
-    let cn = 'rgt-cell-inner cursor-pointer d-flex align-items-center';
-
-    if (selected) {
-        cn += ` selected`;
-    }
-
-    return (
-        isUpdating ?
-            <div className={'rgt-cell-inner d-flex align-items-center position-relative'}>
-                <div className={"position-absolute"} style={{top: '0', right: '0', bottom: '0', left:'0'}}>
-                    <LoadingIndicator/>
-                </div>
-            </div>
-            :
-            <div className={cn}>
-                <CheckBox selected={selected} disabled={true}/>
-            </div>
-    )
-}
-
-const CheckBoxHeaderCellRenderer = ({ tableManager, column }) => {
-
-    let cn = 'd-flex align-items-center';
-
-    return (
-        <div className={cn}>
-            <CheckBox/>
-        </div>
-    )
 }
 
 const PageSize = ({ tableManager }) => {

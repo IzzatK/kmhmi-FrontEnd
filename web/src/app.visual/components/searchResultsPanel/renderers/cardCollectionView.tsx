@@ -10,13 +10,64 @@ import {EllipsisSVG} from "../../../theme/svgs/ellipsisSVG";
 import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
 
 class CardCollectionView extends Component<SearchResultsProps, SearchResultsState> {
+    private resizeObserver: ResizeObserver;
+    private readonly characterWidth: number;
+    private tagCharactersAllowed: number;
+    private tagCharactersDisplayed: number;
+    private nextTagWidth: number;
+
+    private sampleId: string;
 
     constructor(props: any, context: any) {
         super(props, context);
+
+        this.state = {
+            renderTrigger: 0,
+        }
+
+        this.characterWidth = 8.15;//pixels
+        this.tagCharactersAllowed = 0;
+        this.tagCharactersDisplayed = 0;
+        this.nextTagWidth = 0;
+
+        this.sampleId = "";
+
+        this.resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                if (entry.contentRect) {
+                    const { renderTrigger } = this.state;
+
+                    const width = entry.contentRect.width - 29;
+
+                    this.tagCharactersAllowed = width / this.characterWidth;
+
+                    if ((this.tagCharactersDisplayed > this.tagCharactersAllowed) || (this.tagCharactersDisplayed + this.nextTagWidth < this.tagCharactersAllowed)) {
+                        this.setState({
+                            ...this.state,
+                            renderTrigger: renderTrigger + 1,
+                        })
+                    }
+                }
+            }
+        })
+    }
+
+    componentDidMount() {
+        let element = document.getElementById(this.sampleId);
+        if (element) {
+            this.resizeObserver.observe(element);
+        }
+    }
+
+    componentDidUpdate() {
+        let element = document.getElementById(this.sampleId);
+        if (element) {
+            this.resizeObserver.observe(element);
+        }
     }
 
     render() {
-        const { className, searchResults, onDocumentSelected, ...rest } = this.props;
+        const { className, searchResults, onDocumentSelected, selectedResultView, ...rest } = this.props;
 
         let cn = "cards pr-4";
         if (className) {
@@ -28,52 +79,63 @@ class CardCollectionView extends Component<SearchResultsProps, SearchResultsStat
             itemDivs = searchResults.map((item: DocumentInfoVM) => {
                 const {id, author, title, timestamp, private_tag=[], public_tag=[], selected, status, isUpdating=true, publication_date } = item;
 
+                this.sampleId = id;
+
                 let cn = 'position-relative result-item';
                 if (selected) {
                     cn += ' selected shadow-lg'
                 }
 
-                let publicTagDivs: any[] = [];
-                if (public_tag) {
-                    forEachKVP(public_tag, (tag: string) => {
+                let hoverTagDivs: any[] = [];
+                let displayPublicTagDivs: any[] = [];
+                let displayPrivateTagDivs: any[] = [];
 
-                        if (tag.length > 0) {
-                            publicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag}/>)
-                        }
-                    })
-                }
-
-                let truncatedPublicTagDivs: any[] = [];
                 let length = 0;
+                let totalLength = 0;
+
+                let nextTagRecorded = false;
+
+                this.tagCharactersDisplayed = 0;
+                this.nextTagWidth = 0;
+
                 if (public_tag) {
                     forEachKVP(public_tag, (tag: string) => {
                         if (tag.length > 0) {
-                            if (length < 3) {
-                                truncatedPublicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag + "_short"}/>)
+                            this.tagCharactersDisplayed += (tag.length + (46 / this.characterWidth));
+
+                            if (this.tagCharactersDisplayed < this.tagCharactersAllowed) {
+                                displayPublicTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag + "_short"}
+                                />);
+                                length++;
+                            } else if (!nextTagRecorded) {
+                                this.nextTagWidth = tag.length;
+                                nextTagRecorded = true;
                             }
-                            length++;
+
+                            totalLength++;
+
+                            hoverTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} isGlobal={true} key={tag}/>)
                         }
                     })
                 }
 
-                let privateTagDivs: any[] = [];
-                if (private_tag) {
-                    forEachKVP(private_tag, (tag: string) => {
-
-                        if (tag.length > 0) {
-                            privateTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} key={tag}/>)
-                        }
-                    })
-                }
-
-                let truncatedPrivateTagDivs: any[] = [];
                 if (private_tag) {
                     forEachKVP(private_tag, (tag: string) => {
                         if (tag.length > 0) {
-                            if (length < 3) {
-                                truncatedPrivateTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} key={tag + "_short"}/>)
+                            this.tagCharactersDisplayed += (tag.length + (46 / this.characterWidth));
+
+                            if (this.tagCharactersDisplayed < this.tagCharactersAllowed) {
+                                displayPrivateTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} key={tag + "_short"}
+                                />);
+                                length++;
+                            } else if (!nextTagRecorded) {
+                                this.nextTagWidth = tag.length;
+                                nextTagRecorded = true;
                             }
-                            length++;
+
+                            totalLength++;
+
+                            hoverTagDivs?.push(<Tag name={tag} text={tag} isEdit={false} key={tag}/>)
                         }
                     })
                 }
@@ -112,25 +174,28 @@ class CardCollectionView extends Component<SearchResultsProps, SearchResultsStat
                                       </TooltipPortal>
                                       <TooltipPortal portalContent={
                                           <div className={'d-flex justify-content-start align-items-center overflow-hidden'}>
-                                              <div className={'d-inline-flex align-items-center flex-wrap'}>
-                                                  {privateTagDivs}
-                                              </div>
                                               <div className={'d-inline-flex flex-wrap align-items-center'}>
-                                                  {publicTagDivs}
+                                                  {hoverTagDivs}
                                               </div>
                                           </div>
 
                                       }>
-                                          <div className={'d-flex justify-content-start align-items-center overflow-hidden h-gap-2'}>
-                                              <div className={'d-flex align-items-center h-gap-2'}>
-                                                  {truncatedPublicTagDivs}
-                                              </div>
-                                              <div className={'d-flex align-items-center h-gap-2'}>
-                                                  {truncatedPrivateTagDivs}
-                                              </div>
+                                          <div id={id} className={'d-flex justify-content-start align-items-center h-gap-2'}>
                                               {
-                                                  ((public_tag && length > 3) || (private_tag && length > 3)) &&
-                                                  <EllipsisSVG className={"ml-5 small-image-container"}/>
+                                                  JSON.stringify(public_tag) !== "{}" &&
+                                                  <div className={'d-flex align-items-center h-gap-2'}>
+                                                      {displayPublicTagDivs}
+                                                  </div>
+                                              }
+                                              {
+                                                  JSON.stringify(private_tag) !== "{}" &&
+                                                  <div className={'d-flex align-items-center h-gap-2'}>
+                                                      {displayPrivateTagDivs}
+                                                  </div>
+                                              }
+                                              {
+                                                  (length < totalLength) &&
+                                                  <EllipsisSVG className={"ml-3 small-image-container"}/>
                                               }
                                           </div>
                                       </TooltipPortal>
