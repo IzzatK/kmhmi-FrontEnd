@@ -228,7 +228,7 @@ export class AuthorizationService extends Plugin implements IAuthorizationServic
     }
 
     isAuthorized(): boolean {
-        return this.getState().isAuthorized;
+        return isDev() ? true :  this.getState().isAuthorized;
     }
 
     isDodWarningAccepted(): boolean {

@@ -1,0 +1,25 @@
+.pockets-panel {
+}
+
+.pockets-panel .action-bar {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+.pockets-panel .pocket-node:hover > .action-bar {
+    animation: slideLeftIn 0.2s forwards ease-in;
+    animation-delay: 100ms;
+}
+
+@keyframes slideLeftIn {
+    0% {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0%);
+
+    }
+}
+

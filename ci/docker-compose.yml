@@ -15,5 +15,7 @@ services:
       - ./nginx/:/etc/nginx/templates/
       # SSL certificates
       - ./certs/:/etc/x509/https
+#     Lets Encrypt installed on server, so just use that
+#      - /etc/letsencrypt/:/etc/letsencrypt/
       # Website static files can be placed here.
       - ./ui/:/usr/share/nginx/html/navy/

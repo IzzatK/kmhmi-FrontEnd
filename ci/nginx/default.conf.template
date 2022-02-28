@@ -17,6 +17,10 @@ server {
     ssl_certificate_key /etc/x509/https/key.pem;
     ssl_certificate /etc/x509/https/cert.pem;
 
+    # Let LetsEncrypt handle certificate management
+    #ssl_certificate_key /etc/letsencrypt/live/navyanalytics.com/privkey.pem;
+    #ssl_certificate /etc/letsencrypt/live/navyanalytics.com/fullchain.pem;
+
     # ----------------------------------------------------------------------------
     # Common headers applied to all requests!
     # ----------------------------------------------------------------------------

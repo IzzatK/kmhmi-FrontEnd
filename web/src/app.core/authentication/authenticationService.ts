@@ -12,6 +12,7 @@ import {IStorage} from "../../framework.api";
 import {Plugin} from "../../framework/extras/plugin";
 import {createSlice, PayloadAction, Slice} from "@reduxjs/toolkit";
 import {UserInfo} from "../../app.model";
+import {isDev} from "../../framework/extras/environmentUtils";
 
 
 type AuthenticationState = {
@@ -202,7 +203,7 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
     }
 
     getAuthenticationStatus(): AuthenticationStatus {
-        return this.getState().registrationStatus;
+        return isDev() ? AuthenticationStatus.ACTIVE :  this.getState().registrationStatus;
     }
 
     setRegistrationStatus(status: AuthenticationStatus) {

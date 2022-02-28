@@ -6,6 +6,7 @@ import {UploadPanelPresenter} from "../../../components/systemToolPanels/uploadP
 import {ProfilePanelPresenter} from "../../../components/systemToolPanels/profilePanel/profilePanelPresenter";
 import {TagsPanelPresenter} from "../../../components/systemToolPanels/tagsPanel/tagsPanelPresenter";
 import {StatsPanelPresenter} from "../../../components/systemToolPanels/statsPanel/statsPanelPresenter";
+import {PocketsPanelPresenter} from "../../../components/systemToolPanels/pocketsPanel/pocketsPanelPresenter";
 import {SystemToolbarPresenter} from "../../../components/systemToolbar/systemToolbarPresenter";
 import {referenceService, statService, tagService} from "../../../../app.core/serviceComposition";
 import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
@@ -93,6 +94,7 @@ export class AppView extends Component<Props, State> {
                                     <ProfilePanelPresenter/>
                                     <TagsPanelPresenter/>
                                     <StatsPanelPresenter/>
+                                    <PocketsPanelPresenter/>
                                 </div>
                                 <SystemToolbarPresenter style={{zIndex: '1'}}/>
                             </React.Fragment>
