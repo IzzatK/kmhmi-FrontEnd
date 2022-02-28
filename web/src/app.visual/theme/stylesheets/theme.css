@@ -51,7 +51,31 @@ body > * {
 
     /* Logout Panel */
 
-
+    /* Pockets Panel */
+    --pocket-node-pocket-color: var(--app-whiteSmoke);
+    --pocket-node-pocket-background: var(--app-black);
+    --pocket-node-pocket-border-color: transparent;
+    --pocket-node-pocket-hover-color: var(--app-whiteSmoke);
+    --pocket-node-pocket-hover-background: var(--app-black);
+    --pocket-node-pocket-hover-border-color: transparent;
+    --pocket-node-pocket-selected-color: var(--app-whiteSmoke);
+    --pocket-node-pocket-selected-background: var(--app-blackRussian);
+    --pocket-node-pocket-selected-border-color: var(--app-silver);
+    --pocket-node-report-color: var(--app-white);
+    --pocket-node-report-background: var(--app-airForceBlue);
+    --pocket-node-report-border-color: var(--app-bleach);
+    --pocket-node-report-hover-color: var(--app-white);
+    --pocket-node-report-hover-background: var(--app-airForceBlue);
+    --pocket-node-report-hover-border-color: var(--app-bleach);
+    --pocket-node-report-selected-color: var(--app-white);
+    --pocket-node-report-selected-background: var(--app-airForceBlue);
+    --pocket-node-report-selected-border-color: var(--app-bleach);
+    --pocket-node-document-color: var(--app-bunker);
+    --pocket-node-document-background: var(--app-bleach);
+    --pocket-node-document-hover-color: var(--app-bunker);
+    --pocket-node-document-hover-background: var(--app-white);
+    --pocket-node-document-selected-color: var(--app-bunker);
+    --pocket-node-document-selected-background: var(--app-white);
 
     /* System Banner */
     --system-banner-background: var(--app-nero);
@@ -395,6 +419,21 @@ body > * {
     --light-tooltip-color: var(--app-bunker);
     --tooltip-bg-color: var(--app-vulcan);
     --light-tooltip-bg-color: var(--app-white);
+
+    /* TreeView */
+    /*--tree-view-connector: 0.1rem dashed #154f70;*/
+    /*--tree-view-disclosure-background: #154f70;*/
+    /*--tree-view-disclosure-hover-background: #91b5cf;*/
+    /*--tree-view-primary-color: var(--app-whiteSmoke);*/
+    /*--tree-view-secondary-color: var(--app-suvaGrey);*/
+    /*--tree-view-content-first-child-background: var(--app-black);*/
+    /*--tree-view-content-first-child-selected-background: var(--app-blackRussian);*/
+    /*--tree-view-content-first-child-selected-border: var(--app-silver);*/
+    /*--tree-view-content-first-child-hover-background: var(--app-black);*/
+    /*--tree-view-content-background: var(--app-bleach);*/
+    /*--tree-view-content-color: var(--app-bunker);*/
+    /*--tree-view-content-selected-background: var(--app-white);*/
+    /*--tree-view-content-hover-background: var(--app-white);*/
 
     /*NOT USED*/
     /* Advanced Search */

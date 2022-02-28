@@ -6,7 +6,7 @@
     opacity: 0;
 }
 
-.pockets-panel .pocket-node:hover > .action-bar {
+.pockets-panel .pocket-node.selected > .action-bar {
     animation: slideLeftIn 0.2s forwards ease-in;
     animation-delay: 100ms;
 }
@@ -23,3 +23,56 @@
     }
 }
 
+.pockets-panel .pocket-node.report {
+    color: var(--pocket-node-report-color);
+    background: var(--pocket-node-report-background);
+    border: none;
+    border-bottom: 6px solid var(--pocket-node-report-border-color);
+}
+
+.pockets-panel .pocket-node:hover.report {
+    color: var(--pocket-node-report-hover-color);
+    background: var(--pocket-node-report-hover-background);
+    border: none;
+    border-bottom: 6px solid var(--pocket-node-report-hover-border-color);
+}
+
+.pockets-panel .pocket-node.selected.report {
+    color: var(--pocket-node-report-selected-color);
+    background: var(--pocket-node-report-selected-background);
+    border: none;
+    border-bottom: 6px solid var(--pocket-node-report-selected-border-color);
+}
+
+.pockets-panel .pocket-node.pocket {
+    color: var(--pocket-node-pocket-color);
+    background: var(--pocket-node-pocket-background);
+    border: 1px solid var(--pocket-node-pocket-border-color);
+}
+
+.pockets-panel .pocket-node:hover.pocket {
+    color: var(--pocket-node-pocket-hover-color);
+    background: var(--pocket-node-report-hover-background);
+    border: 1px solid var(--pocket-node-pocket-hover-border-color);
+}
+
+.pockets-panel .pocket-node.selected.pocket {
+    color: var(--pocket-node-pocket-selected-color);
+    background: var(--pocket-node-pocket-selected-background);
+    border: 1px solid var(--pocket-node-pocket-selected-border-color);
+}
+
+.pockets-panel .pocket-node.document {
+    color: var(--pocket-node-document-color);
+    background: var(--pocket-node-document-background);
+}
+
+.pockets-panel .pocket-node:hover.document {
+    color: var(--pocket-node-document-hover-color);
+    background: var(--pocket-node-document-hover-background);
+}
+
+.pockets-panel .pocket-node.selected.document {
+    color: var(--pocket-node-document-selected-color);
+    background: var(--pocket-node-document-selected-background);
+}

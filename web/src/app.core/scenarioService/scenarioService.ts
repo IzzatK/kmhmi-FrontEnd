@@ -19,7 +19,7 @@ import {ListSVG} from "../../app.visual/theme/svgs/listSVG";
 import CardCollectionView from "../../app.visual/components/searchResultsPanel/renderers/cardCollectionView";
 import TableCollectionView from "../../app.visual/components/searchResultsPanel/renderers/tableCollectionView";
 import ListCollectionView from "../../app.visual/components/searchResultsPanel/renderers/listCollectionView";
-import {CircleSVG} from "../../app.visual/theme/svgs/circleSVG";
+import {PocketSVG} from "../../app.visual/theme/svgs/pocketSVG";
 
 export class ScenarioService extends Plugin implements IScenarioService {
     public static readonly class: string = 'ScenarioService';
@@ -139,7 +139,7 @@ export class ScenarioService extends Plugin implements IScenarioService {
         this.createMenuItem(SystemToolMenuItem, 'components/tagsPanel', 'Tags', false, TagsSVG);
         // this.createMenuItem(SystemToolMenuItem, 'components/statsPanel', 'Stats', false, StatsSVG);
         this.createMenuItem(SystemToolMenuItem, 'components/profilePanel', 'Profile', false, ProfileSVG);
-        this.createMenuItem(SystemToolMenuItem, 'components/pocketsPanel', 'Pockets', false, CircleSVG);
+        this.createMenuItem(SystemToolMenuItem, 'components/pocketsPanel', 'Pockets', false, PocketSVG);
     }
 
     createSearchResultsTools() {
