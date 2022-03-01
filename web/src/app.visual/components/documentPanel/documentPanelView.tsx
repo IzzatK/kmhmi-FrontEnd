@@ -21,9 +21,10 @@ import {CSSTransition} from "react-transition-group";
 import {getClassNames} from "../../../framework.visual/extras/utils/animationUtils";
 import {CheckMarkSVG} from "../../theme/svgs/checkMarkSVG";
 import {Size} from "../../theme/widgets/loadingIndicator/loadingIndicatorModel";
+import ContextMenu from "../../theme/widgets/contextMenu/contextMenu";
 
 class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState> {
-    private resizeObserver: ResizeObserver;
+    private tagsResizeObserver: ResizeObserver;
     private readonly characterWidth: number;
     private tagCharactersAllowed: number;
     private tagCharactersDisplayed: number;
@@ -48,7 +49,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         this.tagCharactersDisplayed = 0;
         this.nextTagWidth = 0;
 
-        this.resizeObserver = new ResizeObserver(entries => {
+        this.tagsResizeObserver = new ResizeObserver(entries => {
             for (let entry of entries) {
                 if (entry.contentRect) {
                     const { renderTrigger } = this.state;
@@ -79,7 +80,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
 
         let element = document.getElementById('tag-row');
         if (element) {
-            this.resizeObserver.observe(element);
+            this.tagsResizeObserver.observe(element);
         }
     }
 
@@ -792,7 +793,8 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                             </div>
                         }
                     </div>
-                    <div className={"body flex-fill d-flex align-self-stretch position-relative"}>
+                    <div id={'documentPdfPreview'} className={"body flex-fill d-flex align-self-stretch position-relative"}>
+                        <ContextMenu targetId={'documentPdfPreview'} options={['View', 'Update', 'Delete']}/>
                         {
                             id ?
                                 preview_url.length > 0 ?
