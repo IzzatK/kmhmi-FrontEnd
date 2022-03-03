@@ -9,7 +9,7 @@ import ComboBox from "../../theme/widgets/comboBox/comboBox";
 import Tag from "../../theme/widgets/tag/tag";
 import GlobalSwitchButton from "../../theme/widgets/globalSwitchButton/globalSwitchButton";
 import {bindInstanceMethods} from "../../../framework/extras/typeUtils";
-import {DocumentPanelProps, DocumentPanelState, DocumentInfoVM, EditPropertyVM} from "./documentPanelModel";
+import {DocumentPanelProps, DocumentPanelState, DocumentInfoVM, EditPropertyVM, ExcerptVM} from "./documentPanelModel";
 import {InfoSVG} from "../../theme/svgs/infoSVG";
 import Card from "../../theme/widgets/card/card";
 import CheckBox from "../../theme/widgets/checkBox/checkBox";
@@ -21,7 +21,8 @@ import {CSSTransition} from "react-transition-group";
 import {getClassNames} from "../../../framework.visual/extras/utils/animationUtils";
 import {CheckMarkSVG} from "../../theme/svgs/checkMarkSVG";
 import {Size} from "../../theme/widgets/loadingIndicator/loadingIndicatorModel";
-import ContextMenu from "../../theme/widgets/contextMenu/contextMenu";
+import TextArea from "../../theme/widgets/textEdit/textArea";
+import Popup from "../../theme/widgets/popup/popup";
 
 class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState> {
     private tagsResizeObserver: ResizeObserver;
@@ -42,6 +43,8 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
             isPrivate: false,
             showTagEditor: false,
             renderTrigger: 0,
+            showPopup: false,
+            tmpExcerpt: {},
         }
 
         this.characterWidth = 8.15;//pixels
@@ -308,6 +311,63 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         this.setState({
             ...this.state,
             showTagEditor: showTagEditor,
+        })
+    }
+
+    _onSaveExcerpt() {
+        const { onSaveExcerpt, document:doc, userProfile } = this.props;
+        const { tmpExcerpt } = this.state;
+        const { pocket, note } = tmpExcerpt;
+        const { id:docId } = doc;
+        const { id:userId } = userProfile
+
+        const selectedText = document.getSelection()?.toString();
+
+        if (docId && userId && selectedText && pocket && onSaveExcerpt) {
+            onSaveExcerpt(docId, userId, selectedText, pocket, note);
+        }
+
+        document.getSelection()?.removeAllRanges();
+
+        this.setState({
+            ...this.state,
+            tmpExcerpt: {},
+            showPopup: false,
+        })
+    }
+
+    _setPopupVisible(visible: boolean) {
+        if (!visible) {
+            document.getSelection()?.removeAllRanges();
+        }
+
+        this.setState({
+            ...this.state,
+            showPopup: visible,
+        })
+    }
+
+    _detectTextSelection() {
+        if (document.getSelection()?.toString() !== "") {
+            this._setPopupVisible(true);
+        }
+    }
+
+    _onTmpExcerptChanged(name: string, value: string) {
+        const { tmpExcerpt } = this.state;
+
+        let nextExcerpt = {
+            ...tmpExcerpt,
+            [name]: value
+        };
+
+        this.setTmpExcerpt(nextExcerpt);
+    }
+
+    setTmpExcerpt(excerpt: ExcerptVM) {
+        this.setState({
+            ...this.state,
+            tmpExcerpt: excerpt,
         })
     }
 
@@ -634,19 +694,29 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
 
     render() {
         const {
-            document, onUpdateDocument, onRemoveDocument, pdfRenderer: PdfRenderer, editProperties, userProfile, token,
-            className, permissions
+            document, onUpdateDocument, onRemoveDocument, onSaveExcerpt, pdfRenderer: PdfRenderer, editProperties, userProfile, token,
+            className, permissions, pockets,
         } = this.props;
         const {id, preview_url = "", original_url, isUpdating=false, upload_date, publication_date, file_type, uploaded_by,
             primary_sme_name, primary_sme_phone, primary_sme_email, secondary_sme_name, secondary_sme_phone, secondary_sme_email,
             file_name, file_size, status, nlpComplete, nlpCompleteAnimation, showStatusBanner} = document || {};
 
-        const { tmpDocument, isDirty, isGlobal, isPrivate } = this.state;
+        const { tmpDocument, isDirty, isGlobal, isPrivate, showPopup, tmpExcerpt } = this.state;
 
         let cn = "document-panel d-flex";
         if (className) {
             cn += ` ${className}`;
         }
+
+        let pocketId = tmpExcerpt["pocket"] ? tmpExcerpt["pocket"] : "";
+        let pocketTitle = "";
+        if (pockets && pockets[pocketId]) {
+            pocketTitle = pockets[pocketId].title;
+        } else {
+            pocketTitle = pocketId;
+        }
+
+        let note = tmpExcerpt["note"] ? tmpExcerpt["note"] : "";
 
         return (
             <div className={cn}>
@@ -737,7 +807,6 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                                       this.getCellRenderer(tmpDocument, document, editProperties['primary_sme_email'])
                                                   }
                                               </div>
-
                                           </div>
 
                                           <div className={'sme-grid'}>
@@ -793,8 +862,30 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                             </div>
                         }
                     </div>
-                    <div id={'documentPdfPreview'} className={"body flex-fill d-flex align-self-stretch position-relative"}>
-                        <ContextMenu targetId={'documentPdfPreview'} options={['View', 'Update', 'Delete']}/>
+                    <div className={"body flex-fill d-flex align-self-stretch position-relative"} onMouseUp={() => this._detectTextSelection()}>
+                        <Popup padding={"75%"}
+                               isVisible={showPopup}
+                               onCancel={() => this._setPopupVisible(false)}
+                        >
+                            <div className={"d-flex flex-column bg-accent rounded"}>
+                                <div className={"d-flex flex-column v-gap-2 p-3"}>
+                                    <div className={"header-3"}>Excerpt</div>
+                                    <ComboBox items={pockets}
+                                              title={pocketTitle}
+                                              onSelect={(value: string) => this._onTmpExcerptChanged("pocket", value)}
+                                    />
+                                    <TextArea className={"p-0"}
+                                              name={"note"}
+                                              onSubmit={this._onTmpExcerptChanged}
+                                              value={note}
+                                    />
+                                </div>
+                                <div className={"d-flex justify-content-end bg-selected p-3 h-gap-3"}>
+                                    <Button light={true} text={"Remove"} onClick={() => this._setPopupVisible(false)}/>
+                                    <Button light={true} text={"Save"} onClick={() => this._onSaveExcerpt()}/>
+                                </div>
+                            </div>
+                        </Popup>
                         {
                             id ?
                                 preview_url.length > 0 ?

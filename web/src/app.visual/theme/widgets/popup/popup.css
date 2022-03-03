@@ -16,6 +16,11 @@
     right: 1rem;
 }
 
+.popup .popup-content .close .button {
+    min-width: 1.7rem;
+    height: 1.7rem;
+}
+
 .popup .popup-content .close .button svg {
     fill: var(--popup-color);
 }
@@ -24,7 +29,7 @@
     max-width: 29rem;
 }
 
-.popup .popup-content svg {
+.popup .popup-content .graphic {
     fill: var(--popup-color);
 }
 

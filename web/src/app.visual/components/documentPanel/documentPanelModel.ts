@@ -12,6 +12,8 @@ export type DocumentPanelProps = {
     userProfile: UserProfileVM;
     token: string;
     permissions: PermissionsVM;
+    pockets: Record<string, PocketVM>;
+    onSaveExcerpt: (documentId: string, userId: string, selectedText: string, pocketId: string, note?: string) => void;
 }
 
 export type DocumentPanelState = {
@@ -21,6 +23,8 @@ export type DocumentPanelState = {
     isPrivate: boolean;
     showTagEditor: boolean;
     renderTrigger: number;
+    showPopup: boolean;
+    tmpExcerpt: ExcerptVM;
 }
 
 export type UserProfileVM = {
@@ -78,4 +82,14 @@ export type PermissionsVM = {
     canDelete: boolean,
     canDownload: boolean,
     canModify: boolean
+}
+
+export type PocketVM = {
+    title: string;
+}
+
+export type ExcerptVM = {
+    [key: string]: any;
+    pocket?: string;
+    note?: string;
 }

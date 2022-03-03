@@ -44,7 +44,6 @@ class ContextMenu extends Component<ContextMenuProps, ContextMenuState> {
     }
 
     _contextMenuEventHandler(event: any, targetId: string) {
-        console.log(document.getSelection()?.toString())
         const targetElement = document.getElementById(targetId)
 
         if (targetElement && targetElement.contains(event.target)) {
@@ -90,7 +89,7 @@ class ContextMenu extends Component<ContextMenuProps, ContextMenuState> {
     }
 
     render() {
-        const { className, options } = this.props;
+        const { className, children } = this.props;
         const { visible , posX, posY } = this.state;
 
         let cn = "context-menu flex-column justify-content-center align-items-center position-absolute";
@@ -101,21 +100,9 @@ class ContextMenu extends Component<ContextMenuProps, ContextMenuState> {
             cn += ` d-none`;
         }
 
-        let optionsDivs: any[] = [];
-        if (options) {
-            optionsDivs = options.map((option) => {
-                return (
-                        <li key={option}>
-                            {option}
-                        </li>
-                    );
-
-            })
-        }
-
         return (
             <div className={cn} ref={this.contextRef} style={{left: posX, top: posY }}>
-                {optionsDivs}
+                {children}
             </div>
         );
     }

@@ -140,6 +140,9 @@ body > * {
     --document-panel-pdf-icon-color: var(--app-shuttleGrey);
     --document-panel-pdf-color: var(--app-suvaGrey);
     --document-panel-pdf-icon-secondary-color: var(--app-bleach);
+    --document-panel-context-menu-color: var(--app-nero);
+    --document-panel-context-menu-text-area-color: var(--app-suvaGrey);
+    --documnent-panel-context-menu-text-area-background: var(--app-whiteSmoke);
 
     /* System Toolbar */
     --system-toolbar-background: var(--app-blackRussian);

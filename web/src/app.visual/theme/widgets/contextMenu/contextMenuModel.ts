@@ -1,7 +1,6 @@
 export type ContextMenuProps = {
     className?: string;
     targetId: string;
-    options?: string[];
     parentWidth?: number;
     parentHeight?: number;
 }

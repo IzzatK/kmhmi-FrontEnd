@@ -45,13 +45,15 @@ class DocumentPanel extends Presenter {
                 userProfile: authenticationService.getUserProfile(),
                 token: authenticationService.getToken(),
                 permissions: this.getPermissions(state),
+                // pockets: this.getPockets(state),
             }
         }
 
         this.mapDispatchToProps = () => {
             return {
                 onUpdateDocument: (document: DocumentInfoVM) => documentService.updateDocument(document),
-                onRemoveDocument: (id: string) => documentService.removeDocument(id)
+                onRemoveDocument: (id: string) => documentService.removeDocument(id),
+                // onSaveExcerpt: (documentId: string, userId: string, selectedText: string, pocketId: string, note?: string) => pocketService.,
             };
         }
 
@@ -316,6 +318,21 @@ class DocumentPanel extends Presenter {
             }
         }
     )
+
+    // getPockets = createSelector(
+    //     [() => pocketService.getPockets()],
+    //     (items) => {
+    //         let itemVMs: Record<string, PocketVM> = {};
+    //
+    //         forEachKVP(items, (itemKey: string, itemValue: PocketVM) => {
+    //             itemVMs[itemKey] = {
+    //                 ...itemValue
+    //             };
+    //         })
+    //
+    //         return itemVMs;
+    //     }
+    // )
 }
 
 export const {

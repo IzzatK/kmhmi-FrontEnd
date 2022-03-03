@@ -178,3 +178,29 @@
     width: auto !important;
     justify-content: start !important;
 }
+
+.document-panel .popup {
+    width: 33.3rem;
+    height: 23.7rem;
+    color: var(--document-panel-context-menu-color);
+}
+
+.document-panel .popup .popup-content {
+    padding: 0 !important;
+}
+
+.document-panel .popup .text-area {
+    min-width: 31.4rem;
+    min-height: 8.1rem;
+}
+
+.document-panel .popup .text-area textarea {
+    background: var(--documnent-panel-context-menu-text-area-background);
+    color: var(--document-panel-context-menu-text-area-color);
+    border: none;
+    font-style: italic;
+}
+
+.document-panel .popup .combo-box {
+    width: 13.8rem;
+}
