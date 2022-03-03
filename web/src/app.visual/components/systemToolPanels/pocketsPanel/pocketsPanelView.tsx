@@ -7,6 +7,10 @@ import TreeView from "../../../theme/widgets/treeView/treeView";
 import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
 import {PocketNodeView} from "./pocketNodeView";
 import Button from "../../../theme/widgets/button/button";
+import {ShareSVG} from "../../../theme/svgs/shareSVG";
+import {DownloadSVG} from "../../../theme/svgs/downloadSVG";
+import {SettingsSVG} from "../../../theme/svgs/settingsSVG";
+import {RemoveSVG} from "../../../theme/svgs/removeSVG";
 
 class PocketsPanelView extends Component<PocketsPanelProps, PocketsPanelState> {
     constructor(props: any, context: any) {
@@ -23,24 +27,33 @@ class PocketsPanelView extends Component<PocketsPanelProps, PocketsPanelState> {
             case 'pocket':
                 actions = (
                     <React.Fragment>
-                        <Button text={'Share'} />
-                        <Button text={'Download'} />
-                        <Button text={'Settings'} />
+                        <Button>
+                            <ShareSVG className={"small-image-container"}/>
+                        </Button>
+                        <Button>
+                            <DownloadSVG className={"small-image-container"}/>
+                        </Button>
+                        <Button>
+                            <SettingsSVG className={"small-image-container"}/>
+                        </Button>
                     </React.Fragment>
                 )
                 cn = "pocket display-3 p-4";
                 break;
             case 'report':
-                actions = (
-                    <React.Fragment>
-                        <Button text={'Download'} />
-                        <Button text={'Delete'} />
-                    </React.Fragment>
-                )
-
                 cn = "report display-2 px-3 pt-3 pb-5";
                 break;
             case 'document':
+                actions = (
+                    <React.Fragment>
+                        <Button>
+                            <DownloadSVG className={"small-image-container"}/>
+                        </Button>
+                        <Button>
+                            <RemoveSVG className={"small-image-container"}/>
+                        </Button>
+                    </React.Fragment>
+                )
                 cn = "document display-2 px-3 pt-3 pb-5";
                 break;
             case 'excerpt':

@@ -47,7 +47,6 @@ class TreeNode extends Component<TreeViewProps, TreeViewState> {
     render() {
         const { node, className, selectionPath, onSelected, cellContentRenderer, index, ...rest } = this.props;
         const { childNodes } = node;
-
         const { expanded } = this.state;
 
         let divs = [];
@@ -89,7 +88,7 @@ class TreeNode extends Component<TreeViewProps, TreeViewState> {
                     {/*        }*/}
                     {/*    </div>*/}
                     {/*</div>*/}
-                    <div className={`tree-node-content ${(expanded || selectionPath && selectionPath === node.path) && index !== 0 ? "font-weight-semi-bold" : ""}`} onClick={() => this._onSelected(node)}>
+                    <div className={`tree-node-content ${(expanded || (selectionPath && selectionPath === node.path)) && index !== 0 ? "font-weight-semi-bold" : ""}`} onClick={() => this._onSelected(node)}>
                         {
                             cellContentRenderer ? cellContentRenderer(node, childNodes && childNodes.length > 0 && expanded) :
                                 <div className={`node-title`}>{node.name ? node.name : "n/a"}</div>

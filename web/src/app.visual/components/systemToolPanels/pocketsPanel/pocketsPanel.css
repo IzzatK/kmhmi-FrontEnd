@@ -76,3 +76,7 @@
     color: var(--pocket-node-document-selected-color);
     background: var(--pocket-node-document-selected-background);
 }
+
+.pockets-panel .pocket-node .button {
+    background: transparent;
+}
