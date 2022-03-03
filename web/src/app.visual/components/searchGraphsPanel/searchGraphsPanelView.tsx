@@ -14,7 +14,7 @@ export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGr
         super(props, context);
 
         this.state = {
-            isAlternate: true,
+            isAlternate: false,
         }
     }
 
@@ -84,7 +84,7 @@ export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGr
                                 className={''}
                                 data={totalUploadsData}
                                 divName={'totalUploadsDiv'}
-                                name={'Total Uploads'}
+                                name={'KP Uploads'}
                                 color={'var(--xy-chart-header-background)'}
                                 minimized={!isExpanded}
                             />
@@ -111,18 +111,18 @@ export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGr
                         !isAlternate &&
                         <div className={`d-grid`}>
                             <CirclePieChart
-                                className={''}
+                                className={'span-2'}
                                 data={departmentData}
-                                divName={"docsByDeptDiv"}
+                                divName={'docsByDeptDiv'}
                                 name={"Documents by Department"}
                                 color={'var(--variable-radius-pie-chart-header-background)'}
                                 minimized={!isExpanded}
                                 onSelect={(id: string) => this.onSearchParamChanged('department', id)}
                             />
                             <CirclePieChart
-                                className={''}
+                                className={'span-2'}
                                 data={purposeData}
-                                divName={"docsByPurposeDiv"}
+                                divName={'docsByPurposeDiv'}
                                 name={"Documents by Purpose"}
                                 color={'var(--draggable-pie-chart-header-background)'}
                                 minimized={!isExpanded}
@@ -132,12 +132,12 @@ export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGr
                                 className={''}
                                 data={totalUploadsData}
                                 divName={'totalUploadsDiv'}
-                                name={'Total Uploads'}
+                                name={'KP Uploads'}
                                 color={'var(--xy-chart-header-background)'}
                                 minimized={!isExpanded}
                             />
                             <WordCloud
-                                className={''}
+                                className={'span-3'}
                                 data={customTagsData}
                                 divName={'commonTagsDiv'}
                                 name={'Common Tags on Documents'}
@@ -146,9 +146,9 @@ export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGr
                                 onSelect={(id: string) => this.onSearchParamChanged('tags', id)}
                             />
                             <CirclePieChart
-                                className={''}
+                                className={'span-2'}
                                 data={docTypeData}
-                                divName={"docTypeDiv"}
+                                divName={'docTypeDiv'}
                                 name={"Document Type"}
                                 color={'var(--donut-pie-chart-header-background)'}
                                 minimized={!isExpanded}
