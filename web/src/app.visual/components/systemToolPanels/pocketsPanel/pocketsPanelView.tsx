@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import './pocketsPanel.css';
 import '../../../theme/stylesheets/panel.css';
-import {PocketsPanelProps, PocketsPanelState} from "./pocketsPanelModel";
 import ScrollBar from "../../../theme/widgets/scrollBar/scrollBar";
 import TreeView from "../../../theme/widgets/treeView/treeView";
 import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
@@ -11,15 +10,16 @@ import {ShareSVG} from "../../../theme/svgs/shareSVG";
 import {DownloadSVG} from "../../../theme/svgs/downloadSVG";
 import {SettingsSVG} from "../../../theme/svgs/settingsSVG";
 import {RemoveSVG} from "../../../theme/svgs/removeSVG";
+import {PocketsPanelProps} from "./pocketsPanelModel";
 
-class PocketsPanelView extends Component<PocketsPanelProps, PocketsPanelState> {
+class PocketsPanelView extends Component<PocketsPanelProps> {
     constructor(props: any, context: any) {
         super(props, context);
 
         bindInstanceMethods(this);
     }
 
-    getCellContentRenderer(node: any, showHint: boolean) {
+    getCellContentRenderer(node: any) {
         let actions = null;
         let cn = "";
 
@@ -63,8 +63,17 @@ class PocketsPanelView extends Component<PocketsPanelProps, PocketsPanelState> {
         }
 
         return (
-            <PocketNodeView className={cn} title={node.name} subTitle={''} actions={actions}/>
+            <PocketNodeView className={cn} title={node.name} subTitle={''} actions={actions} onSelect={this.onSelect} id={node.id} path={node.path}/>
         )
+    }
+
+    onSelect(id: string, selected: boolean) {
+        if (selected) {
+            this.props.addSelectionPath(id);
+        }
+        else {
+            this.props.removeSelectionPath(id);
+        }
     }
 
     render() {

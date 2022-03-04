@@ -1,9 +1,12 @@
 import {Component} from "react";
 import {PocketNodeProps, PocketNodeState} from "./pocketsPanelModel";
+import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
 
 export class PocketNodeView extends Component<PocketNodeProps, PocketNodeState> {
     constructor(props: any) {
         super(props);
+
+        bindInstanceMethods(this);
 
         this.state = {
             selected: false,
@@ -19,10 +22,25 @@ export class PocketNodeView extends Component<PocketNodeProps, PocketNodeState> 
         })
     }
 
+
+    componentDidUpdate(prevProps: Readonly<PocketNodeProps>, prevState: Readonly<PocketNodeState>, snapshot?: any) {
+        if (this.props.selected != null) {
+            if (this.props.selected != this.state.selected) {
+                this._setSelected(this.props.selected);
+            }
+        }
+    }
+
     _toggleSelected() {
         const { selected } = this.state;
 
-        this._setSelected(!selected);
+        const nextSelected = !selected;
+
+        this._setSelected(nextSelected);
+
+        if (this.props.onSelect != null) {
+            this.props.onSelect(this.props.id, nextSelected);
+        }
     }
 
     render() {
@@ -39,7 +57,7 @@ export class PocketNodeView extends Component<PocketNodeProps, PocketNodeState> 
         }
 
         return (
-            <div onClick={() => this._toggleSelected()} className={cn}>
+            <div onClick={this._toggleSelected} className={cn}>
                 <div className={"d-flex flex-row v-gap-2 justify-content-center align-items-center"}>
                     <div className={"node-title"}>{title ? title : ''}</div>
                     <div className={"node-sub-title"}>{subTitle ? subTitle : ''}</div>

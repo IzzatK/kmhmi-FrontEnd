@@ -1,6 +1,4 @@
 import {SearchViewController, SearchWrapperProps, SearchWrapperState} from "./searchModel";
-import {makeGuid} from "../../../../../framework.visual/extras/utils/uniqueIdUtils";
-import {UserInfo} from "../../../../../app.model";
 import {IController} from "../../../../../framework.visual.api/iController";
 
 

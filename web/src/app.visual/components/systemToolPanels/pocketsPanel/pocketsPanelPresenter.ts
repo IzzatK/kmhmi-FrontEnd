@@ -5,7 +5,7 @@ import {createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 
 type PocketSliceState = {
-    selectionPaths: Set<string>
+    selectionPaths: string[]
 }
 
 type PocketCaseReducers =  {
@@ -14,7 +14,7 @@ type PocketCaseReducers =  {
 };
 
 
-class PocketsPanel extends Presenter<PocketSliceState, PocketCaseReducers> {
+class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReducers> {
 
     constructor() {
         super();
@@ -33,11 +33,10 @@ class PocketsPanel extends Presenter<PocketSliceState, PocketCaseReducers> {
         this.model = createSlice({
             name: this.id,
             initialState: {
-                selectionPaths: new Set()
+                selectionPaths: []
             } as PocketSliceState,
             reducers: {
                 addSelectionPath: (state: PocketSliceState, action: PayloadAction<string>) => {
-                    debugger
                     const selectionPath = action.payload;
                     let matchedPath = '';
 
@@ -47,13 +46,16 @@ class PocketsPanel extends Presenter<PocketSliceState, PocketCaseReducers> {
                         }
                     })
 
-                    if (matchedPath) {
-                        state.selectionPaths.delete(matchedPath);
-                    }
-                    state.selectionPaths.add(selectionPath);
+                    // if (matchedPath) {
+                    //     const index = state.selectionPaths.indexOf(matchedPath);
+                    //     if (index !== -1) {
+                    //         state.selectionPaths.splice(index, 1);
+                    //     }
+                    // }
+
+                    state.selectionPaths.push(selectionPath);
                 },
                 removeSelectionPath: (state:PocketSliceState, action:PayloadAction<string>) => {
-                    debugger
                     const selectionPath = action.payload;
                     let matchedPath = '';
 
@@ -64,10 +66,14 @@ class PocketsPanel extends Presenter<PocketSliceState, PocketCaseReducers> {
                         }
                     })
 
-                    if (matchedPath) {
-                        state.selectionPaths.delete(matchedPath);
-                    }
-                    state.selectionPaths.add(selectionPath);
+                    // if (matchedPath) {
+                    //     const index = state.selectionPaths.indexOf(matchedPath);
+                    //     if (index !== -1) {
+                    //         state.selectionPaths.splice(index, 1);
+                    //     }
+                    // }
+
+                    state.selectionPaths.push(selectionPath);
                 }
             },
         });
@@ -164,4 +170,4 @@ const mockData = [
 export const {
     connectedPresenter: PocketsPanelPresenter,
     componentId: PocketsPanelId
-} = createComponentWrapper(PocketsPanel);
+} = createComponentWrapper(_PocketsPanelPresenter);
