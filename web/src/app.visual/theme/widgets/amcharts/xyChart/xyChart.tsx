@@ -35,9 +35,7 @@ export class XYChart extends Component<XYChartProps, XYChartState> {
         // lineSeries.strokeWidth = 4;
         // lineSeries.stroke = am4core.color("#48A8FF");
 
-        let scrollbarX = new am4charts.XYChartScrollbar();
-        scrollbarX.series.push(columnSeries);
-        chart.scrollbarX = scrollbarX;
+        chart.scrollbarX = new am4core.Scrollbar();
 
         this.chart = chart;
     }
@@ -73,7 +71,7 @@ export class XYChart extends Component<XYChartProps, XYChartState> {
                     <div id={divName} className={'w-100 h-100'}/>
                 </div>
                 <div className={"legend d-flex flex-column position-absolute shadow-lg mt-2 ml-3"}>
-                    <div className={"legend-title p-3 header-3 cursor-pointer"} style={{background: color,}}>{name}</div>
+                    <div className={"legend-title p-3 header-3 cursor-pointer font-weight-semi-bold"} style={{background: color,}}>{name}</div>
                 </div>
             </div>
 
