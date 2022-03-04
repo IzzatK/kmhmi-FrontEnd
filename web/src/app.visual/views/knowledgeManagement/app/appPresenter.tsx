@@ -44,8 +44,8 @@ class App extends Presenter {
                 currentSystemTool: displayService.getSelectedNodeId('system-tool-panel'),
                 isDocumentVisible: this.isDocumentVisible(state),
                 permissions: this.getPermissions(state),
-                isAuthorized: authorizationService.isAuthorized(),
-                isAuthorizing: authorizationService.isAuthorizing()
+                isAuthorized: true,//authorizationService.isAuthorized(),
+                isAuthorizing: false// authorizationService.isAuthorizing()
             }
         }
     }

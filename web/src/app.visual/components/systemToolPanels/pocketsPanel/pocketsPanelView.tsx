@@ -67,17 +67,17 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         )
     }
 
-    onSelect(id: string, selected: boolean) {
+    onSelect(path: string, selected: boolean) {
         if (selected) {
-            this.props.addSelectionPath(id);
+            this.props.addSelectionPath(path);
         }
         else {
-            this.props.removeSelectionPath(id);
+            this.props.removeSelectionPath(path);
         }
     }
 
     render() {
-        const { className, data } = this.props;
+        const { className, data, selectionPaths } = this.props;
 
         let cn = "d-flex position-absolute w-100 h-100 align-items-center justify-content-center";
 
@@ -96,12 +96,10 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                     </div>
                     <div className={'flex-fill'}>
                         <ScrollBar className={'flex-fill'} renderTrackHorizontal={false}>
-                            <TreeView data={data} cellContentRenderer={this.getCellContentRenderer}/>
+                            <TreeView selectionPaths={selectionPaths} data={data} cellContentRenderer={this.getCellContentRenderer}/>
                         </ScrollBar>
                     </div>
-
                 </div>
-
             </div>
         );
     }

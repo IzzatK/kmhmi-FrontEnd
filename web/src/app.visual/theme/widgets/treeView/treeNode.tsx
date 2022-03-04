@@ -45,7 +45,7 @@ class TreeNode extends Component<TreeViewProps, TreeViewState> {
     }
 
     render() {
-        const { node, className, selectionPath, onSelected, cellContentRenderer, index, ...rest } = this.props;
+        const { node, className, selectionPaths, onSelected, cellContentRenderer, index, ...rest } = this.props;
         const { childNodes } = node;
         const { expanded } = this.state;
 
@@ -59,7 +59,7 @@ class TreeNode extends Component<TreeViewProps, TreeViewState> {
                     <TreeNode key={childNode.id}
                               node={childNode}
                               onSelected={onSelected}
-                              selectionPath={selectionPath}
+                              selectionPaths={selectionPaths}
                               cellContentRenderer={cellContentRenderer}
                               index={childIndex + 1}
                     />
@@ -71,7 +71,7 @@ class TreeNode extends Component<TreeViewProps, TreeViewState> {
         if (index === 0) {
             cn += ` first-child`;
         }
-        if (selectionPath && selectionPath === node.path) {
+        if (selectionPaths && selectionPaths === node.path) {
             cn += ` selected`;
         }
         if (expanded) {
@@ -88,7 +88,7 @@ class TreeNode extends Component<TreeViewProps, TreeViewState> {
                     {/*        }*/}
                     {/*    </div>*/}
                     {/*</div>*/}
-                    <div className={`tree-node-content ${(expanded || (selectionPath && selectionPath === node.path)) && index !== 0 ? "font-weight-semi-bold" : ""}`} onClick={() => this._onSelected(node)}>
+                    <div className={`tree-node-content ${(expanded || (selectionPaths && selectionPaths === node.path)) && index !== 0 ? "font-weight-semi-bold" : ""}`} onClick={() => this._onSelected(node)}>
                         {
                             cellContentRenderer ? cellContentRenderer(node, childNodes && childNodes.length > 0 && expanded) :
                                 <div className={`node-title`}>{node.name ? node.name : "n/a"}</div>

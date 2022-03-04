@@ -39,7 +39,7 @@ export class PocketNodeView extends Component<PocketNodeProps, PocketNodeState> 
         this._setSelected(nextSelected);
 
         if (this.props.onSelect != null) {
-            this.props.onSelect(this.props.id, nextSelected);
+            this.props.onSelect(this.props.path, nextSelected);
         }
     }
 

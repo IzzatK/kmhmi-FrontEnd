@@ -2,7 +2,7 @@ export type TreeViewProps = {
     className?: string;
     data?: any;
     onSelected?: (node: any) => void;
-    selectionPath?: any;
+    selectionPaths?: string[];
     cellContentRenderer?: any;
     node?: any;
     index?: number;

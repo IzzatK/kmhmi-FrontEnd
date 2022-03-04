@@ -6,6 +6,7 @@ export type PocketsPanelProps = {
     data: any;
     addSelectionPath: (selectionPath: string) => void;
     removeSelectionPath: (selectionPath: string) => void;
+    selectionPaths: string[];
 }
 
 export type PocketsPanelState = {

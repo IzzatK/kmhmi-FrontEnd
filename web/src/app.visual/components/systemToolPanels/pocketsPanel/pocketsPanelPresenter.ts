@@ -41,17 +41,17 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
                     let matchedPath = '';
 
                     state.selectionPaths.forEach((existingPath:string) => {
-                        if (existingPath.includes(selectionPath)) {
+                        if (selectionPath.includes(existingPath)) {
                             matchedPath = existingPath;
                         }
                     })
 
-                    // if (matchedPath) {
-                    //     const index = state.selectionPaths.indexOf(matchedPath);
-                    //     if (index !== -1) {
-                    //         state.selectionPaths.splice(index, 1);
-                    //     }
-                    // }
+                    if (matchedPath) {
+                        const index = state.selectionPaths.indexOf(matchedPath);
+                        if (index !== -1) {
+                            state.selectionPaths.splice(index, 1);
+                        }
+                    }
 
                     state.selectionPaths.push(selectionPath);
                 },
@@ -61,26 +61,29 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
 
                     state.selectionPaths.forEach((existingPath:string) => {
                         // reverse includes from adding
-                        if (selectionPath.includes(existingPath)) {
+                        if (existingPath.includes(selectionPath)) {
                             matchedPath = existingPath;
                         }
                     })
 
-                    // if (matchedPath) {
-                    //     const index = state.selectionPaths.indexOf(matchedPath);
-                    //     if (index !== -1) {
-                    //         state.selectionPaths.splice(index, 1);
-                    //     }
-                    // }
+                    if (matchedPath) {
+                        const index = state.selectionPaths.indexOf(matchedPath);
+                        if (index !== -1) {
+                            state.selectionPaths.splice(index, 1);
+                        }
+                    }
 
-                    state.selectionPaths.push(selectionPath);
+                    if (selectionPath.includes('/')) {
+                        state.selectionPaths.push(selectionPath);
+                    }
                 }
             },
         });
 
         this.mapStateToProps = (state: any, props: any) => {
             return {
-                data: this.getTreeData(state)
+                data: this.getTreeData(state),
+                selectionPaths: this.getSelectionPaths(state)
             }
         }
 
@@ -112,6 +115,7 @@ const mockData = [
         properties: {
             location: "extra prop",
         },
+        path: "pocket_01",
         childNodes: [
             {
                 id: "report_01",
@@ -120,6 +124,7 @@ const mockData = [
                 properties: {
                     location: "extra prop",
                 },
+                path: "pocket_01/report_01",
                 childNodes: [
                     {
                         id: "document_01",
@@ -128,6 +133,7 @@ const mockData = [
                         properties: {
                             location: "extra prop",
                         },
+                        path: "pocket_01/report_01/document_01",
                     },
                     {
                         id: "document_02",
@@ -136,6 +142,7 @@ const mockData = [
                         properties: {
                             location: "extra prop",
                         },
+                        path: "pocket_01/report_01/document_02",
                     },
                     {
                         id: "document_03",
@@ -144,6 +151,7 @@ const mockData = [
                         properties: {
                             location: "extra prop",
                         },
+                        path: "pocket_01/report_01/document_02",
                     }
                 ]
             },
@@ -156,6 +164,7 @@ const mockData = [
         properties: {
             location: "extra prop",
         },
+        path: "pocket_02",
     },
     {
         id: "pocket_03",
@@ -164,6 +173,7 @@ const mockData = [
         properties: {
             location: "extra prop",
         },
+        path: "pocket_03",
     }
 ];
 
