@@ -42,7 +42,7 @@ export class RepositoryService extends BasePlugin implements IRepositoryService 
         }
 
         this.model = createSlice({
-            name: 'application/repository',
+            name: 'framework.core/repository',
             initialState: this.initialState,
             reducers: {
                 addOrUpdateHandler: (state, action: PayloadAction<RepoAction>) => {

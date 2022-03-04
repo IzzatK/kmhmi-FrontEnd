@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {getClassNames} from "../../framework.visual/extras/utils/animationUtils";
+import {getClassNames} from "../extras/utils/animationUtils";
 import {CSSTransition} from "react-transition-group";
 import {displayService} from "../../app.core/serviceComposition";
 

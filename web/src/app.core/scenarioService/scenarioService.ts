@@ -1,12 +1,12 @@
 import {ParamType, ReferenceType, SearchBannerMenuItem, SearchParamInfo, SortPropertyInfo} from "../../app.model";
-import {RepoItem} from "../../framework/services/repoService/repoItem";
-import {nameOf, Nullable} from "../../framework/extras/typeUtils";
+import {RepoItem} from "../../framework.core/services/repoService/repoItem";
+import {nameOf, Nullable} from "../../framework.core/extras/typeUtils";
 import {forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
 import {getDateWithoutTime} from "../../framework.visual/extras/utils/timeUtils";
 import {IStorage} from "../../framework.api";
 import {IScenarioService} from "../../app.core.api";
-import {Plugin} from "../../framework/extras/plugin";
-import {MenuItem} from "../../framework/model/menuItem";
+import {Plugin} from "../../framework.core/extras/plugin";
+import {MenuItem} from "../../framework.core/model/menuItem";
 import {GraphSVG} from "../../app.visual/theme/svgs/graphSVG";
 import {SystemToolMenuItem} from "../../app.visual/model/systemToolMenuItem";
 import {UploadSVG} from "../../app.visual/theme/svgs/uploadSVG";
@@ -135,11 +135,11 @@ export class ScenarioService extends Plugin implements IScenarioService {
     }
 
     createSystemTools() {
-        this.createMenuItem(SystemToolMenuItem, 'components/uploadPanel', 'Upload', false, UploadSVG);
-        this.createMenuItem(SystemToolMenuItem, 'components/tagsPanel', 'Tags', false, TagsSVG);
+        this.createMenuItem(SystemToolMenuItem, 'app.visual/components/uploadPanel', 'Upload', false, UploadSVG);
+        this.createMenuItem(SystemToolMenuItem, 'app.visual/components/tagsPanel', 'Tags', false, TagsSVG);
         // this.createMenuItem(SystemToolMenuItem, 'components/statsPanel', 'Stats', false, StatsSVG);
-        this.createMenuItem(SystemToolMenuItem, 'components/profilePanel', 'Profile', false, ProfileSVG);
-        this.createMenuItem(SystemToolMenuItem, 'components/pocketsPanel', 'Pockets', false, PocketSVG);
+        this.createMenuItem(SystemToolMenuItem, 'app.visual/components/profilePanel', 'Profile', false, ProfileSVG);
+        this.createMenuItem(SystemToolMenuItem, 'app.visual/components/pocketsPanel', 'Pockets', false, PocketSVG);
     }
 
     createSearchResultsTools() {

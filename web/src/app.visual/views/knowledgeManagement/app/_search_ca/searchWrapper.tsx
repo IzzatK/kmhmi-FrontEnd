@@ -7,7 +7,7 @@ import {
     SearchWrapperProps, SearchWrapperState, SearchViewProps, SearchViewController
 } from "./searchModel";
 import {connect} from "react-redux";
-import {createDisplayConnector} from "../../../../../framework/wrappers/displayWrapper";
+import {createDisplayConnector} from "../../../../../framework.visual/wrappers/displayWrapper";
 import {SearchPresenter} from "./searchPresenter";
 import {SearchController} from "./searchController";
 import {Wrapper} from "../../../../../framework.visual/ca/wrapper";

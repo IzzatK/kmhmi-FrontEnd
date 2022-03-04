@@ -2,7 +2,7 @@ import React from "react";
 import './tag.css';
 import TextEdit from "../textEdit/textEdit";
 import {DeleteSVG} from "../../svgs/deleteSVG";
-import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
 import {TagProps, TagState} from "./tagModel";
 
 class Tag extends React.Component<TagProps, TagState> {

@@ -6,7 +6,7 @@ import { CreateUserRequestConverter } from "../converters/users/createUserReques
 import { UserStatusResponseConverter } from "../converters/users/userStatusResponseConverter";
 import { UpdateUserRequestConverter } from "../converters/users/updateUserRequestConverter";
 import {forEach} from "../../../framework.visual/extras/utils/collectionUtils";
-import {Nullable, promiseFulfilled} from "../../../framework/extras/typeUtils";
+import {Nullable, promiseFulfilled} from "../../../framework.core/extras/typeUtils";
 import {EntityProvider} from "../../common/providers/entityProvider";
 import {IEntityProvider, IUserProvider} from "../../../app.core.api";
 import {RoleInfo} from "../../../app.model";

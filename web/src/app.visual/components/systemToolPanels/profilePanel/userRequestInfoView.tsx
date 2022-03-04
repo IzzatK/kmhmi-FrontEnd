@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {ProfilePanelProps, ProfilePanelState} from "./profilePanelModel";
-import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
 import Button from "../../../theme/widgets/button/button";
 import Card from "../../../theme/widgets/card/card";
 import ComboBox from "../../../theme/widgets/comboBox/comboBox";

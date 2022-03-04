@@ -8,7 +8,7 @@ import {ParamType} from "../../../app.model";
 import ComboBox from "../../theme/widgets/comboBox/comboBox";
 import Tag from "../../theme/widgets/tag/tag";
 import GlobalSwitchButton from "../../theme/widgets/globalSwitchButton/globalSwitchButton";
-import {bindInstanceMethods} from "../../../framework/extras/typeUtils";
+import {bindInstanceMethods} from "../../../framework.core/extras/typeUtils";
 import {DocumentPanelProps, DocumentPanelState, DocumentInfoVM, EditPropertyVM, ExcerptVM} from "./documentPanelModel";
 import {InfoSVG} from "../../theme/svgs/infoSVG";
 import Card from "../../theme/widgets/card/card";

@@ -1,4 +1,4 @@
-import {Nullable} from "../../framework/extras/typeUtils";
+import {Nullable} from "../../framework.core/extras/typeUtils";
 import {DocumentInfo, SearchParamInfo, SortPropertyInfo} from "../../app.model";
 import {IPlugin} from "../../framework.api";
 import {IUserService} from "../users/iUserService";

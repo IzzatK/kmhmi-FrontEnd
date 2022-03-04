@@ -1,4 +1,4 @@
-import {getValueOrDefault} from "../../../framework/extras/typeUtils";
+import {getValueOrDefault} from "../../../framework.core/extras/typeUtils";
 import {StatInfo} from "../../../app.model";
 import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
 import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";

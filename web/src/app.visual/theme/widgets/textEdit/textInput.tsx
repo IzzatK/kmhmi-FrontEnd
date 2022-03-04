@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './textEdit.css';
-import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
 import {TextEditProps, TextEditState} from "./textEditModel";
 
 class TextInput extends Component<TextEditProps, TextEditState> {

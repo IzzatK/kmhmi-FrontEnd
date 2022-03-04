@@ -1,6 +1,6 @@
 import {RoleInfo} from "../../../app.model";
 import {EntityProvider} from "../../common/providers/entityProvider";
-import {Nullable} from "../../../framework/extras/typeUtils";
+import {Nullable} from "../../../framework.core/extras/typeUtils";
 import { GetSingleRoleResponseConverter } from "../converters/roles/getSingleRoleResponseConverter";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;

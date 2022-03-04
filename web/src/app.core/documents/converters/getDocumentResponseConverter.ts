@@ -1,5 +1,5 @@
 import {KM_API_SERVER_URL} from "../../../app.config/config";
-import {getValueOrDefault} from "../../../framework/extras/typeUtils";
+import {getValueOrDefault} from "../../../framework.core/extras/typeUtils";
 import {DocumentInfo} from "../../../app.model";
 import {ErrorHandler} from "../../common/providers/entityProvider";
 import {Converter} from "../../common/converters/converter";

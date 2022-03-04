@@ -2,7 +2,7 @@ import React from 'react';
 import './login.css';
 
 import {Presenter} from "../../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../../framework/wrappers/componentWrapper";
+import {createComponentWrapper} from "../../../../framework.visual/wrappers/componentWrapper";
 import {LoginDispatchProps, LoginStateProps} from "./loginModel";
 import {LoginView} from "./loginView";
 

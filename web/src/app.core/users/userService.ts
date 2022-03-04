@@ -9,9 +9,9 @@ import {
     IUserService,
     AuthenticationStatus
 } from "../../app.core.api";
-import {nameOf, Nullable} from "../../framework/extras/typeUtils";
+import {nameOf, Nullable} from "../../framework.core/extras/typeUtils";
 import {ISelectionService} from "../../framework.api";
-import {Plugin} from "../../framework/extras/plugin";
+import {Plugin} from "../../framework.core/extras/plugin";
 import {UserRequestInfo} from "../../app.model/userRequestInfo";
 import {createSelector, OutputSelector} from "@reduxjs/toolkit";
 import {getDateWithoutTime} from "../../framework.visual/extras/utils/timeUtils";

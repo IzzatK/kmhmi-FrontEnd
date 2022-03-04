@@ -1,4 +1,4 @@
-import {nameOf} from "../../../framework/extras/typeUtils";
+import {nameOf} from "../../../framework.core/extras/typeUtils";
 import {DocumentInfo} from "../../../app.model";
 import {Converter} from "../../common/converters/converter";
 import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";

@@ -1,6 +1,6 @@
 import TagsPanelView from "./tagsPanelView";
 import {Presenter} from "../../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../../framework/wrappers/componentWrapper";
+import {createComponentWrapper} from "../../../../framework.visual/wrappers/componentWrapper";
 import {createSelector} from "@reduxjs/toolkit";
 import {selectionService, tagService} from "../../../../app.core/serviceComposition";
 import {TagInfoVM} from "./tagsPanelModel";
@@ -11,7 +11,7 @@ class TagsPanel extends Presenter {
     constructor() {
         super();
 
-        this.id ='components/tagsPanel';
+        this.id ='app.visual/components/tagsPanel';
 
         this.view = TagsPanelView;
 

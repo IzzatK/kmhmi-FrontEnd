@@ -4,7 +4,7 @@ import '../../../theme/stylesheets/panel.css';
 import {PocketsPanelProps, PocketsPanelState} from "./pocketsPanelModel";
 import ScrollBar from "../../../theme/widgets/scrollBar/scrollBar";
 import TreeView from "../../../theme/widgets/treeView/treeView";
-import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
 import {PocketNodeView} from "./pocketNodeView";
 import Button from "../../../theme/widgets/button/button";
 import {ShareSVG} from "../../../theme/svgs/shareSVG";

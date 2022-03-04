@@ -1,6 +1,6 @@
-import {RepoItem} from "../framework/services/repoService/repoItem";
+import {RepoItem} from "../framework.core/services/repoService/repoItem";
 import {ParamType} from "./paramType";
-import {Nullable} from "../framework/extras/typeUtils";
+import {Nullable} from "../framework.core/extras/typeUtils";
 
 export class SearchParamInfo extends RepoItem {
     title?: Nullable<string> = '';

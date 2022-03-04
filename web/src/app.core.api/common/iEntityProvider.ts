@@ -1,4 +1,4 @@
-import {Nullable} from "../../framework/extras/typeUtils";
+import {Nullable} from "../../framework.core/extras/typeUtils";
 import {IBasePlugin, IRepositoryService} from "../../framework.api";
 import {ILoggablePlugin} from "../../framework.api";
 import {IHttpService} from "../../framework.api";

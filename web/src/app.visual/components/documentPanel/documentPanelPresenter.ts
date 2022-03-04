@@ -1,7 +1,7 @@
 import DocumentPanelView from "./documentPanelView";
 import {createSelector} from "@reduxjs/toolkit";
 import {Presenter} from "../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
+import {createComponentWrapper} from "../../../framework.visual/wrappers/componentWrapper";
 import DocumentPdfPreview from "./documentPdfPreview";
 import {DocumentInfo, ParamType, ReferenceType} from "../../../app.model";
 import {

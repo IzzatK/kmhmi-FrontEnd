@@ -1,10 +1,10 @@
 import {ILogger, ILogService, IRepositoryService, IStorage} from "../../../framework.api";
 import {appDataStore} from "../../serviceComposition";
 import {IHttpService} from "../../../framework.api";
-import {Nullable} from "../../../framework/extras/typeUtils";
-import {BasePlugin} from "../../../framework/extras/basePlugin";
+import {Nullable} from "../../../framework.core/extras/typeUtils";
+import {BasePlugin} from "../../../framework.core/extras/basePlugin";
 import {IConverter, IEntityProvider} from "../../../app.core.api";
-import {IRepoItem} from "../../../framework/services/repoService/repoItem";
+import {IRepoItem} from "../../../framework.core/services/repoService/repoItem";
 
 export type RequestHandler = (requestData?: any) => any;
 export type ResponseHandler<T> = (responseData: any, errorHandler: ErrorHandler) => T;

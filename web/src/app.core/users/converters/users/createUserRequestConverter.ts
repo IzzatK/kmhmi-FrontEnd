@@ -1,4 +1,4 @@
-import {nameOf} from "../../../../framework/extras/typeUtils";
+import {nameOf} from "../../../../framework.core/extras/typeUtils";
 import {ReferenceInfo, ReferenceType, UserInfo} from "../../../../app.model";
 import {Converter} from "../../../common/converters/converter";
 import {getDateWithoutTime} from "../../../../framework.visual/extras/utils/timeUtils";

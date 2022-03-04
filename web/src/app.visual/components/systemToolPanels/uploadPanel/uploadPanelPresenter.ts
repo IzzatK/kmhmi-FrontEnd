@@ -1,6 +1,6 @@
 import UploadPanelView from "./uploadPanelView";
 import {Presenter} from "../../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../../framework/wrappers/componentWrapper";
+import {createComponentWrapper} from "../../../../framework.visual/wrappers/componentWrapper";
 import {createSelector} from "@reduxjs/toolkit";
 import {forEach} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {DocumentPanelId} from "../../documentPanel/documentPanelPresenter";
@@ -17,7 +17,7 @@ class UploadPanel extends Presenter {
     constructor() {
         super();
 
-        this.id ='components/uploadPanel';
+        this.id ='app.visual/components/uploadPanel';
 
         this.view = UploadPanelView;
 

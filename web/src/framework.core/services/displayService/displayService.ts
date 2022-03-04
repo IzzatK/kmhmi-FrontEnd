@@ -40,7 +40,7 @@ export class DisplayService extends BasePlugin implements IDisplayService {
         this.appendClassName(DisplayService.class);
 
         this.model = createSlice({
-            name: 'application/display',
+            name: 'framework.core/display',
             initialState: {
                 nodes: {},
                 containers: {}

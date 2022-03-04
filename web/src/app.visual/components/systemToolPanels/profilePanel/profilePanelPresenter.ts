@@ -1,6 +1,6 @@
 import ProfilePanelView from "./profilePanelView";
 import {Presenter} from "../../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../../framework/wrappers/componentWrapper";
+import {createComponentWrapper} from "../../../../framework.visual/wrappers/componentWrapper";
 import {forEach, forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {createSelector} from "@reduxjs/toolkit";
 import {ReferenceType, UserInfo} from "../../../../app.model";
@@ -19,7 +19,7 @@ class ProfilePanel extends Presenter {
     constructor() {
         super();
 
-        this.id ='components/profilePanel';
+        this.id ='app.visual/components/profilePanel';
 
         this.view = ProfilePanelView;
 

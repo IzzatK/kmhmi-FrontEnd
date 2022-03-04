@@ -1,4 +1,4 @@
-import {Nullable} from "../../framework/extras/typeUtils";
+import {Nullable} from "../../framework.core/extras/typeUtils";
 import {IBasePlugin} from "../IBasePlugin";
 import {IStorage} from "../iDataStore";
 

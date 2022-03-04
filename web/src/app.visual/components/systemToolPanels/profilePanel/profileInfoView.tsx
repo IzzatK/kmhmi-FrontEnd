@@ -4,7 +4,7 @@ import Button from "../../../theme/widgets/button/button";
 import Card from "../../../theme/widgets/card/card";
 import ComboBox from "../../../theme/widgets/comboBox/comboBox";
 import TextEdit from "../../../theme/widgets/textEdit/textEdit";
-import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
 import {ProfilePanelProps, ProfilePanelState} from "./profilePanelModel";
 import Popup from "../../../theme/widgets/popup/popup";
 import {FileSVG} from "../../../theme/svgs/fileSVG";

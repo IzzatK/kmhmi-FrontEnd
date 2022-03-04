@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import './loginPanel.css';
 import {LoginPanelProps, LoginPanelState, UserInfoVM} from "./loginPanelModel";
-import {bindInstanceMethods, nameOf} from "../../../framework/extras/typeUtils";
+import {bindInstanceMethods, nameOf} from "../../../framework.core/extras/typeUtils";
 import Button from "../../theme/widgets/button/button";
 import TextEdit from "../../theme/widgets/textEdit/textEdit";
 

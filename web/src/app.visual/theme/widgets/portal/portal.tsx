@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {PositioningPortal} from "@codastic/react-positioning-portal/lib";
-import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
 import {PortalProps, PortalState} from "./portalModel";
 
 class Portal extends Component<PortalProps, PortalState> {

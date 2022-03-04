@@ -2,7 +2,7 @@ import React from 'react';
 import {displayService} from "../../../../../app.core/serviceComposition";
 import {Presenter} from '../../../../../framework.visual/extras/presenter';
 import {SearchView} from "./searchView";
-import {createComponentWrapper} from "../../../../../framework/wrappers/componentWrapper";
+import {createComponentWrapper} from "../../../../../framework.visual/wrappers/componentWrapper";
 
 class Search extends Presenter {
     constructor(props: any) {

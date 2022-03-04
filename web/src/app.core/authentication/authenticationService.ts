@@ -7,12 +7,12 @@ import {
     IAuthorizationService,
     IUserProvider
 } from "../../app.core.api";
-import {Nullable} from "../../framework/extras/typeUtils";
+import {Nullable} from "../../framework.core/extras/typeUtils";
 import {IStorage} from "../../framework.api";
-import {Plugin} from "../../framework/extras/plugin";
+import {Plugin} from "../../framework.core/extras/plugin";
 import {createSlice, PayloadAction, Slice} from "@reduxjs/toolkit";
 import {UserInfo} from "../../app.model";
-import {isDev} from "../../framework/extras/environmentUtils";
+import {isDev} from "../../framework.core/extras/environmentUtils";
 
 
 type AuthenticationState = {
@@ -55,7 +55,7 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
         this.logoutOptions = { redirectUri : this.REDIRECT_URI };
 
         this.model = createSlice({
-            name: 'application/authentication',
+            name: 'app.core/authentication',
             initialState: {
                 hasError: false,
                 profile: {

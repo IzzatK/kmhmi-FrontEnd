@@ -1,7 +1,7 @@
 import {Presenter} from "../../../framework.visual/extras/presenter";
 import LandingPanelView from "./landingPanelView";
 import {LandingPanelDispatchProps, LandingPanelStateProps, UserInfoVM} from "./landingPanelModel";
-import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
+import {createComponentWrapper} from "../../../framework.visual/wrappers/componentWrapper";
 import {createSelector} from "@reduxjs/toolkit";
 import {authenticationService, authorizationService} from "../../../app.core/serviceComposition";
 import {AuthenticationProfile, AuthenticationStatus} from "../../../app.core.api";

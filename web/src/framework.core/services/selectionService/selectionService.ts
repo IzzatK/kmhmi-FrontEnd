@@ -27,7 +27,7 @@ export class SelectionService extends BasePlugin implements ISelectionService {
         this.appendClassName(SelectionService.class);
 
         this.model = createSlice({
-            name: 'application/selection',
+            name: 'framework.core/selection',
             initialState: {
                 contextMap: {}
             },

@@ -7,7 +7,7 @@ import {ArrowRightSVG} from "../../../theme/svgs/arrowRightSVG";
 import {ArrowLeftSVG} from "../../../theme/svgs/arrowLeftSVG";
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
 import {TooltipPortal} from "../../../theme/widgets/tooltipPortal/tooltipPortal";
-import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
 import Tag from "../../../theme/widgets/tag/tag";
 import {EllipsisSVG} from "../../../theme/svgs/ellipsisSVG";
 import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";

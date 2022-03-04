@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './systemBanner.css';
 import Button from "../../theme/widgets/button/button";
-import {bindInstanceMethods} from "../../../framework/extras/typeUtils";
+import {bindInstanceMethods} from "../../../framework.core/extras/typeUtils";
 import {SystemBannerProps, SystemBannerState} from "./systemBannerModel";
 
 class SystemBannerView extends Component<SystemBannerProps, SystemBannerState> {

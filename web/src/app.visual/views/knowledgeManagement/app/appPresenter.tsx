@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import {DocumentPanelId} from "../../../components/documentPanel/documentPanelPresenter";
 import {Presenter} from "../../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../../framework/wrappers/componentWrapper";
+import {createComponentWrapper} from "../../../../framework.visual/wrappers/componentWrapper";
 import {
     authenticationService,
     authorizationService,
@@ -14,7 +14,7 @@ import {PermissionsVM, StateProps} from "./appModel";
 import {createSelector} from "@reduxjs/toolkit";
 import {PermissionInfo} from "../../../../app.model/permissionInfo";
 import {PERMISSION_ENTITY, PERMISSION_OPERATOR, AuthenticationStatus} from "../../../../app.core.api";
-import {NodeInfo} from "../../../../framework/services/displayService/displayService";
+import {NodeInfo} from "../../../../framework.core/services/displayService/displayService";
 
 class App extends Presenter {
     constructor() {

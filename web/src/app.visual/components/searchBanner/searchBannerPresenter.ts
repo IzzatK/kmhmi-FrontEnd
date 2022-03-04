@@ -1,7 +1,7 @@
 import {createSelector} from "@reduxjs/toolkit";
 import SearchBannerView from "./searchBannerView";
 import {Presenter} from "../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
+import {createComponentWrapper} from "../../../framework.visual/wrappers/componentWrapper";
 import {forEach} from "../../../framework.visual/extras/utils/collectionUtils";
 import {
     displayService,

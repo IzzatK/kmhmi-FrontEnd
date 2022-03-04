@@ -3,9 +3,9 @@ import {createSelector, Selector} from "@reduxjs/toolkit";
 import {StatType} from "../../app.model";
 import {forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
 import {IStatService} from "../../app.core.api";
-import {Plugin} from "../../framework/extras/plugin";
+import {Plugin} from "../../framework.core/extras/plugin";
 import { IEntityProvider } from "../../app.core.api";
-import {Nullable} from "../../framework/extras/typeUtils";
+import {Nullable} from "../../framework.core/extras/typeUtils";
 
 export class StatService extends Plugin implements IStatService {
     public static readonly class: string = 'StatService';

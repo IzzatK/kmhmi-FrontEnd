@@ -1,7 +1,7 @@
 import {Presenter} from "../../../framework.visual/extras/presenter";
 import LoginPanelView from "./loginPanelView";
 import {LoginPanelDispatchProps, LoginPanelStateProps, UserInfoVM} from "./loginPanelModel";
-import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
+import {createComponentWrapper} from "../../../framework.visual/wrappers/componentWrapper";
 import {authenticationService, authorizationService} from "../../../app.core/serviceComposition";
 import {UserInfo} from "../../../app.model";
 import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";

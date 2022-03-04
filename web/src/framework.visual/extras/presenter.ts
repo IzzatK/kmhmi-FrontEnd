@@ -1,12 +1,16 @@
 import {bindActionCreators} from "redux";
 import {makeGuid} from "./utils/uniqueIdUtils";
+import {bindInstanceMethods, Nullable} from "../../framework.core/extras/typeUtils";
+import {SliceCaseReducers} from "@reduxjs/toolkit/src/createSlice";
+import {Slice} from "@reduxjs/toolkit";
 
-export class Presenter{
+
+export class Presenter<SliceState=null, CaseReducers extends SliceCaseReducers<SliceState> = {}> {
     _mapStateToProps?: (state: any, props: any) => any;
     _mapDispatchToProps?: (state: any, props: any) => any;
     _view: any = null;
     _id: any = null;
-    _model: any = null;
+    _model: Slice<SliceState, CaseReducers> | null = null;
     _displayOptions: any = null;
     _metadataId: any = null;
 
@@ -47,6 +51,8 @@ export class Presenter{
         //         onAction: (arg) => dispatch(this.onAction(arg))
         //     };
         // }
+
+        bindInstanceMethods(this);
     }
 
     createMapDispatchToProps(dispatch: any, dispatchActions: any={}) {
@@ -122,5 +128,16 @@ export class Presenter{
 
     set metadataId(value) {
         this._metadataId = value;
+    }
+
+    getPersistentState(state: any): Nullable<SliceState> {
+
+        let result: Nullable<SliceState> = null;
+
+        if (this.model != null) {
+            result = state[this.model.name];
+        }
+
+        return result;
     }
 }

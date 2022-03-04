@@ -1,7 +1,7 @@
 import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
 import {IConverter} from "../../../app.core.api";
 import {TagInfo} from "../../../app.model";
-import {Nullable} from "../../../framework/extras/typeUtils";
+import {Nullable} from "../../../framework.core/extras/typeUtils";
 import {Converter} from "../../common/converters/converter";
 
 export class GetTagArrayResponseConverter extends Converter<any,TagInfo[]>{

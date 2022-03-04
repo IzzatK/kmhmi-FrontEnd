@@ -1,6 +1,6 @@
 import {UserInfo} from "../../../../../app.model";
 import {UserInfoVM} from "../appModel";
-import {Nullable} from "../../../../../framework/extras/typeUtils";
+import {Nullable} from "../../../../../framework.core/extras/typeUtils";
 
 export type SearchAppStateModel = {
     user: UserInfo;

@@ -8,7 +8,7 @@ import ComboBox from "../../../theme/widgets/comboBox/comboBox";
 import TextEdit from "../../../theme/widgets/textEdit/textEdit";
 import {arrayEquals, forEach, forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {NewUserProfileInfoView} from "./newUserProfileInfoView";
-import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
 import {ProfilePanelProps, ProfilePanelState, UserInfoVM} from "./profilePanelModel";
 import {UserRequestInfoView} from "./userRequestInfoView";
 import SearchBox from "../../../theme/widgets/searchBox/searchBox";

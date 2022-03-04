@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import './popup.css';
 import {PopupProps, PopupState} from "./popupModel";
-import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
 import Button from "../button/button";
 import {DeleteSVG} from "../../svgs/deleteSVG";
 

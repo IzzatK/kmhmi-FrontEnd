@@ -1,12 +1,12 @@
 import StatsPanelView from "./statsPanelView";
 import {Presenter} from "../../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../../framework/wrappers/componentWrapper";
+import {createComponentWrapper} from "../../../../framework.visual/wrappers/componentWrapper";
 
 class StatsPanel extends Presenter {
     constructor() {
         super();
 
-        this.id ='components/statsPanel';
+        this.id ='app.visual/components/statsPanel';
 
         this.view = StatsPanelView;
 

@@ -7,13 +7,13 @@ import {
     PERMISSION_LEVEL,
     PERMISSION_OPERATOR,
 } from "../../app.core.api";
-import {Nullable} from "../../framework/extras/typeUtils";
+import {Nullable} from "../../framework.core/extras/typeUtils";
 import {IStorage} from "../../framework.api";
-import {Plugin} from "../../framework/extras/plugin";
+import {Plugin} from "../../framework.core/extras/plugin";
 import {createSelector, createSlice, OutputSelector, PayloadAction, Selector, Slice} from "@reduxjs/toolkit";
 import {PermissionInfo} from "../../app.model/permissionInfo";
 import {forEach} from "../../framework.visual/extras/utils/collectionUtils";
-import {isDev} from "../../framework/extras/environmentUtils";
+import {isDev} from "../../framework.core/extras/environmentUtils";
 import {UserInfo} from "../../app.model";
 
 type AuthorizationState = {
@@ -51,7 +51,7 @@ export class AuthorizationService extends Plugin implements IAuthorizationServic
         this.appendClassName(AuthorizationService.class);
 
         this.model = createSlice({
-            name: 'application/authorization',
+            name: 'app.core/authorization',
             initialState: {
                 hasError: false,
                 isAuthorizing: true,

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './progressBar.css';
 import {clamp} from "../../../../framework.visual/extras/utils/mathUtils";
 import {ProgressBarProps, ProgressBarState} from "./progressBarModel";
-import {bindInstanceMethods} from "../../../../framework/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
 
 
 class ProgressBar extends Component<ProgressBarProps, ProgressBarState> {

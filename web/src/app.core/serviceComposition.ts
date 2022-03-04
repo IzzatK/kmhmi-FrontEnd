@@ -1,8 +1,8 @@
-import {RepositoryService} from "../framework/services/repoService/repoService";
+import {RepositoryService} from "../framework.core/services/repoService/repoService";
 import {ILogService, IStorage} from "../framework.api";
-import {LogService} from "../framework/services/logService/logService";
-import {SelectionService} from "../framework/services/selectionService/selectionService";
-import {DisplayService} from "../framework/services/displayService/displayService";
+import {LogService} from "../framework.core/services/logService/logService";
+import {SelectionService} from "../framework.core/services/selectionService/selectionService";
+import {DisplayService} from "../framework.core/services/displayService/displayService";
 import {DocumentService} from "./documents/documentService";
 import {ReferenceService} from "./references/referenceService";
 import {UserService} from "./users/userService";
@@ -22,7 +22,7 @@ import {IStatService} from "../app.core.api";
 import {ITagService} from "../app.core.api";
 import {IUserService} from "../app.core.api";
 import {IEntityProvider} from "../app.core.api";
-import {HttpService} from "../framework/services/httpService/httpService";
+import {HttpService} from "../framework.core/services/httpService/httpService";
 import {IHttpService} from "../framework.api";
 import {
     DocumentInfo,
@@ -36,7 +36,7 @@ import {StatProvider} from "./stats/providers/statProvider";
 import {TagProvider} from "./tags/providers/tagProvider";
 import {IUserProvider} from "../app.core.api";
 import {RoleProvider} from "./users/providers/roleProvider";
-import {AppDataStore} from "../framework/redux/reduxStore";
+import {AppDataStore} from "../framework.core/redux/reduxStore";
 import {PermissionInfo} from "../app.model/permissionInfo";
 import {PermissionProvider} from "./authorization/providers/permissionProvider";
 import {AuthorizationService} from "./authorization/authorizationService";
