@@ -1,20 +1,19 @@
-import {createSelector, OutputSelector} from "@reduxjs/toolkit";
-import {forEach, forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
-import {DocumentInfo, MetadataInfo, MetadataType, ParamType, SearchParamInfo, SortPropertyInfo} from "../../app.model";
 import {Nullable} from "../../framework.core/extras/typeUtils";
 
-import {IDocumentService, IEntityProvider, IUserService} from "../../app.core.api";
+import {IEntityProvider, IUserService} from "../../app.core.api";
 import {Plugin} from "../../framework.core/extras/plugin";
-import {RepoItem} from "../../framework.core/services/repoService/repoItem";
 import {IPocketService} from "../../app.core.api";
 import {PocketInfo} from "../../app.model";
+import {ISelectionService} from "../../framework.api";
+import {IWocketInfo} from "../../app.model/pockets/wocketInfo";
 
 export class PocketService extends Plugin implements IPocketService {
     public static readonly class:string = 'DocumentService';
+
     private userService: Nullable<IUserService> = null;
-    private pocketProvider?: Nullable<IEntityProvider<RepoItem>> = null;
+    private selectionService: Nullable<ISelectionService> = null;
 
-
+    private pocketProvider?: Nullable<IEntityProvider<IWocketInfo>> = null;
 
     constructor() {
         super();
@@ -33,8 +32,12 @@ export class PocketService extends Plugin implements IPocketService {
         super.configure();
     }
 
-    setUserService(userService: IUserService) {
-        this.userService = userService;
+    setUserService(service: IUserService): void {
+        this.userService = service;
+    }
+
+    setSelectionService(service: ISelectionService) {
+        this.selectionService = service;
     }
 
     createPocket(pocket: PocketInfo): void {
@@ -44,20 +47,30 @@ export class PocketService extends Plugin implements IPocketService {
     }
 
     fetchPocket(id: string): void {
+        this.pocketProvider?.getSingle(id)
+            .then((wockets: IWocketInfo[]) => {
+                this.addOrUpdateAllRepoItems(wockets);
+            })
     }
 
     fetchPockets(): void {
+
+        this.pocketProvider?.getAll()
+            .then((wockets: IWocketInfo[]) => {
+                this.addOrUpdateAllRepoItems(wockets);
+            })
     }
 
-    getPocket(id: string): Nullable<PocketInfo> {
-        return null;
+    getPocketItems(id: string): IWocketInfo[] {
+        return [];
     }
 
-    getPockets(id: string): Record<string, PocketInfo> {
-        return {};
+    getAllPocketItems(): IWocketInfo[] {
+        return [];
     }
 
-    setPocketProvider(provider: IEntityProvider<PocketInfo>): void {
+    setPocketProvider(provider: IEntityProvider<IWocketInfo>): void {
+        this.pocketProvider = provider;
     }
 
     updatePocket(modifiedPocket: Record<string, any>): void {

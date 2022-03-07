@@ -3,16 +3,11 @@
  */
 
 export * from "./documentInfo";
-export * from "./excerptInfo";
 export * from "./metadataInfo";
-export * from "./noteInfo";
 export * from "./paramType";
 export * from "./permissionInfo";
-export * from "./pocketInfo";
 export * from "./referenceInfo";
 export * from "./referenceType";
-export * from "./reportDocumentInfo";
-export * from "./reportInfo";
 export * from "./roleInfo";
 export * from "./searchBannerMenuItem";
 export * from "./searchParamInfo";
@@ -26,3 +21,8 @@ export * from "./tagInfo";
 export * from "./tagType";
 export * from "./userInfo";
 export * from "./userRequestInfo";
+export * from "./pockets/excerptInfo";
+export * from "./pockets/noteInfo";
+export * from "./pockets/pocketInfo";
+export * from "./pockets/reportDocumentInfo";
+export * from "./pockets/reportInfo";

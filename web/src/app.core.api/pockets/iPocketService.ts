@@ -1,8 +1,8 @@
-import {Nullable} from "../../framework.core/extras/typeUtils";
-import {IPlugin} from "../../framework.api";
+import {IPlugin, ISelectionService} from "../../framework.api";
 import {IUserService} from "../users/iUserService";
 import {IEntityProvider} from "../common/iEntityProvider";
 import {PocketInfo} from "../../app.model";
+import {IWocketInfo} from "../../app.model/pockets/wocketInfo";
 
 export interface IPocketService extends IPlugin {
 
@@ -16,12 +16,12 @@ export interface IPocketService extends IPlugin {
 
     deletePocket(id: string): void;
 
+    getPocketItems(id: string): IWocketInfo[];
 
-    getPocket(id: string): Nullable<PocketInfo>;
+    getAllPocketItems(): IWocketInfo[];
 
-    getPockets(id: string): Record<string, PocketInfo>;
+    setPocketProvider(provider: IEntityProvider<IWocketInfo>): void;
 
     setUserService(userService: IUserService): void;
-
-    setPocketProvider(provider: IEntityProvider<PocketInfo>): void;
+    setSelectionService(service: ISelectionService): void;
 }

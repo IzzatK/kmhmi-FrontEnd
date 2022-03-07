@@ -6,7 +6,7 @@ export class SearchController implements IController<SearchWrapperProps, SearchW
     props: SearchWrapperProps;
     state: SearchWrapperState;
 
-    viewController: SearchViewController;
+    viewController!: SearchViewController;
 
     onStateChange: (state: SearchWrapperState, callback?: any) => void;
 
@@ -28,6 +28,7 @@ export class SearchController implements IController<SearchWrapperProps, SearchW
     }
 
     updateUser(name: string, value: string) {
+
         const nextUser = {
             ...this.state.viewModel?.user
         };
@@ -42,7 +43,7 @@ export class SearchController implements IController<SearchWrapperProps, SearchW
         }
 
         // can choose to keep this local
-        // this.onStateChange(nextState);
+        this.onStateChange(nextState);
 
         // or to send it out
         // this.props.updateUser(new UserInfo(makeGuid()));

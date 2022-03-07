@@ -14,7 +14,7 @@ import {UserProvider} from "./users/providers/userProvider";
 import {IRepositoryService} from "../framework.api";
 import {ISelectionService} from "../framework.api";
 import {IDisplayService} from "../framework.api";
-import {IAuthorizationService, IScenarioService} from "../app.core.api";
+import {IAuthorizationService, IPocketService, IScenarioService} from "../app.core.api";
 import {IAuthenticationService} from "../app.core.api";
 import {IDocumentService} from "../app.core.api";
 import {IReferenceService} from "../app.core.api";
@@ -40,6 +40,9 @@ import {AppDataStore} from "../framework.core/redux/reduxStore";
 import {PermissionInfo} from "../app.model";
 import {PermissionProvider} from "./authorization/providers/permissionProvider";
 import {AuthorizationService} from "./authorization/authorizationService";
+import {MockPocketProvider} from "./pockets/providers/mockPocketProvider";
+import {PocketService} from "./pockets/pocketService";
+import {IWocketInfo} from "../app.model/pockets/wocketInfo";
 
 // create the framework plugins
 export const appDataStore:IStorage = new AppDataStore();
@@ -59,6 +62,7 @@ const tagProvider: IEntityProvider<TagInfo> = new TagProvider();
 const roleProvider: IEntityProvider<RoleInfo> = new RoleProvider();
 const userProvider: IUserProvider = new UserProvider();
 const permissionProvider: IEntityProvider<PermissionInfo> = new PermissionProvider()
+const pocketProvider: IEntityProvider<IWocketInfo> = new MockPocketProvider();
 
 
 // create the application application
@@ -69,9 +73,10 @@ export const referenceService: IReferenceService = new ReferenceService();
 export const statService: IStatService = new StatService();
 export const tagService: ITagService = new TagService();
 export const userService: IUserService = new UserService();
+export const pocketService: IPocketService = new PocketService();
 
 
-// create the ui application. jk. that's alot of work.
+// create the ui plugins. jk. that's alot of work.
 
 
 
@@ -141,10 +146,17 @@ userProvider.setHttpService(httpService);
 userProvider.setRoleProvider(roleProvider);
 userProvider.start();
 
+// permissions
 permissionProvider.setLogService(logService);
 permissionProvider.setRepositoryService(repoService);
 permissionProvider.setHttpService(httpService);
 permissionProvider.start();
+
+// pockets
+pocketProvider.setLogService(logService);
+pocketProvider.setRepositoryService(repoService);
+pocketProvider.setHttpService(httpService);
+pocketProvider.start();
 
 
 // set references and start application application
@@ -193,6 +205,11 @@ userService.setUserProvider(userProvider);
 userService.setAuthorizationService(authorizationService);
 userService.setAuthenticationService(authenticationService);
 userService.start();
+// pocket service
+pocketService.setLogService(logService);
+pocketService.setRepositoryService(repoService);
+pocketService.setSelectionService(selectionService);
+pocketService.start();
 
 // for the UI Components, using the Provider/Consumer pattern seems to be the way to go
 // not entirely sure yet for those pieces

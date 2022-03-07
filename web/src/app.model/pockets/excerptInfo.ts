@@ -1,6 +1,6 @@
-import {RepoItem} from "../framework.core/services/repoService/repoItem";
+import {WocketInfo} from "./wocketInfo";
 
-export class ExcerptInfo extends RepoItem {
+export class ExcerptInfo extends WocketInfo {
 
   public static class: string = 'ExcerptInfo';
 
