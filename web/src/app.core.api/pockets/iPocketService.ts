@@ -24,4 +24,11 @@ export interface IPocketService extends IPlugin {
 
     setUserService(userService: IUserService): void;
     setSelectionService(service: ISelectionService): void;
+
+    //Josiah's requests
+    updateReport(modifiedReport: Record<string, any>): void;
+    //for the current design, I need a way to create an excerpt and note at the same time - and maybe create a report as well if one does not already exist
+    //I'm not really sure at this point what all params need to be passed through
+    //it might also be nice to have this method kick off the update pocket api call
+    addOrUpdateExcerpt(pocketId: string, documentId: string, excerpt: string, note: string, reportId?: string): void;
 }
