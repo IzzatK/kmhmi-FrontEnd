@@ -1,6 +1,6 @@
 import {IPlugin, IStorage} from "../../framework.api";
 import {IEntityProvider} from "../common/iEntityProvider";
-import {PermissionInfo} from "../../app.model/permissionInfo";
+import {PermissionInfo} from "../../app.model";
 import {Nullable} from "../../framework.core/extras/typeUtils";
 import {UserInfo} from "../../app.model";
 import {IAuthenticationService} from "../authentication/iAuthenticationService";

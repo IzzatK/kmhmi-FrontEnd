@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 
-import {IWrapper} from "../../framework.visual.api/iWrapper";
-import {IPresenter} from "../../framework.visual.api/iPresenter";
-import {IController} from "../../framework.visual.api/iController";
+import {IWrapper} from "../../framework.visual.api";
+import {IPresenter} from "../../framework.visual.api";
+import {IController} from "../../framework.visual.api";
 
 export abstract class Wrapper<WrapperProps, WrapperState extends {viewModel?: ViewModel, viewController?: ViewController}, ViewModel, ViewController, ViewProps>
     extends Component<WrapperProps, WrapperState> implements IWrapper<WrapperProps, WrapperState, ViewProps> {

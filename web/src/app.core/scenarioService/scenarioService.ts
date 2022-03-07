@@ -6,13 +6,13 @@ import {getDateWithoutTime} from "../../framework.visual/extras/utils/timeUtils"
 import {IStorage} from "../../framework.api";
 import {IScenarioService} from "../../app.core.api";
 import {Plugin} from "../../framework.core/extras/plugin";
-import {MenuItem} from "../../framework.core/model/menuItem";
+import {MenuItem} from "../../framework.core/model";
 import {GraphSVG} from "../../app.visual/theme/svgs/graphSVG";
-import {SystemToolMenuItem} from "../../app.visual/model/systemToolMenuItem";
+import {SystemToolMenuItem} from "../../app.model/systemToolMenuItem";
 import {UploadSVG} from "../../app.visual/theme/svgs/uploadSVG";
 import {TagsSVG} from "../../app.visual/theme/svgs/tagsSVG";
 import {ProfileSVG} from "../../app.visual/theme/svgs/profileSVG";
-import {SearchResultsMenuItem} from "../../app.visual/model/searchResultsMenuItem";
+import {SearchResultsMenuItem} from "../../app.model/searchResultsMenuItem";
 import {CardsSVG} from "../../app.visual/theme/svgs/cardsSVG";
 import {TableSVG} from "../../app.visual/theme/svgs/tableSVG";
 import {ListSVG} from "../../app.visual/theme/svgs/listSVG";

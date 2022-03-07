@@ -10,7 +10,7 @@ import {
     userService
 } from "../../../../app.core/serviceComposition";
 import {AccountStatusVM, DepartmentVM, PermissionsVM, RoleVM, UserInfoVM} from "./profilePanelModel";
-import {PermissionInfo} from "../../../../app.model/permissionInfo";
+import {PermissionInfo} from "../../../../app.model";
 import {AuthenticationStatus, PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../../app.core.api";
 import {RegistrationStatusType} from "../../../model/registrationStatusType";
 

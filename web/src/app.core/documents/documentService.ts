@@ -6,7 +6,7 @@ import {Nullable} from "../../framework.core/extras/typeUtils";
 import {IDocumentService, IEntityProvider, IUserService} from "../../app.core.api";
 import {Plugin} from "../../framework.core/extras/plugin";
 import {getDateWithoutTime} from "../../framework.visual/extras/utils/timeUtils";
-import {StatusType} from "../../app.model/statusType";
+import {StatusType} from "../../app.model";
 
 export class DocumentService extends Plugin implements IDocumentService {
     public static readonly class:string = 'DocumentService';

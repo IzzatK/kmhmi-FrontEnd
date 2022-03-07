@@ -1,5 +1,5 @@
 import {SearchViewController, SearchWrapperProps, SearchWrapperState} from "./searchModel";
-import {IController} from "../../../../../framework.visual.api/iController";
+import {IController} from "../../../../../framework.visual.api";
 
 
 export class SearchController implements IController<SearchWrapperProps, SearchWrapperState, SearchViewController> {

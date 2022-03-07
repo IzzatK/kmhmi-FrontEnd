@@ -1,6 +1,6 @@
 import {EntityProvider} from "../../common/providers/entityProvider";
 import {GetPermissionArrayResponseConverter} from "../converters/getPermissionArrayResponseConverter";
-import {PermissionInfo} from "../../../app.model/permissionInfo";
+import {PermissionInfo} from "../../../app.model";
 import {GetPermissionArrayRequestConverter} from "../converters/getPermissionArrayRequestConverter";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;

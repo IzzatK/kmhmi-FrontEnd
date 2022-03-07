@@ -9,7 +9,7 @@ import {GetDocumentResponseConverter} from "../converters/getDocumentResponseCon
 import {UpdateDocumentRequestConverter} from "../converters/updateDocumentRequestConverter";
 import {UploadDocumentRequestConverter} from "../converters/uploadDocumentRequestConverter";
 import {UploadDocumentResponseConverter} from "../converters/uploadDocumentResponseConverter";
-import {StatusType} from "../../../app.model/statusType";
+import {StatusType} from "../../../app.model";
 
 export const serverUrl = process.env.REACT_APP_SERVER_URL;
 

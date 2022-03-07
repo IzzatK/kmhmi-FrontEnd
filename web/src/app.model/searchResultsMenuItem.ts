@@ -1,4 +1,4 @@
-import {MenuItem} from "../../framework.core/model/menuItem";
+import {MenuItem} from "../framework.core/model";
 
 export class SearchResultsMenuItem extends MenuItem {
     public static class: string = 'SearchResultsMenuItem';

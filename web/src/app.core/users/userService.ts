@@ -12,7 +12,7 @@ import {
 import {nameOf, Nullable} from "../../framework.core/extras/typeUtils";
 import {ISelectionService} from "../../framework.api";
 import {Plugin} from "../../framework.core/extras/plugin";
-import {UserRequestInfo} from "../../app.model/userRequestInfo";
+import {UserRequestInfo} from "../../app.model";
 import {createSelector, OutputSelector} from "@reduxjs/toolkit";
 import {getDateWithoutTime} from "../../framework.visual/extras/utils/timeUtils";
 
