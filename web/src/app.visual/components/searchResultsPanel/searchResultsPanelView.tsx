@@ -7,7 +7,7 @@ import ComboBox from "../../theme/widgets/comboBox/comboBox";
 import {SortSVG} from "../../theme/svgs/sortSVG";
 import {LoadingIndicator} from "../../theme/widgets/loadingIndicator/loadingIndicator";
 import {PageWidth, SearchResultsProps, SearchResultsState} from "./searchResultsModel";
-import {SearchResultsMenuItem} from "../../model/searchResultsMenuItem";
+import {SearchResultsMenuItem} from "../../../app.model/searchResultsMenuItem";
 import {forEach} from "../../../framework.visual/extras/utils/collectionUtils";
 
 class SearchResultsPanelView extends Component<SearchResultsProps, SearchResultsState> {

@@ -5,7 +5,7 @@ import {ErrorHandler} from "../../common/providers/entityProvider";
 import {Converter} from "../../common/converters/converter";
 import {getFormattedSize} from "../../../framework.visual/extras/utils/sizeUtils";
 import {forEach} from "../../../framework.visual/extras/utils/collectionUtils";
-import {StatusType} from "../../../app.model/statusType";
+import {StatusType} from "../../../app.model";
 
 export class GetDocumentResponseConverter extends Converter<any, DocumentInfo>{
     convert(fromData: any, reject: ErrorHandler): DocumentInfo {

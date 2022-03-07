@@ -37,7 +37,7 @@ import {TagProvider} from "./tags/providers/tagProvider";
 import {IUserProvider} from "../app.core.api";
 import {RoleProvider} from "./users/providers/roleProvider";
 import {AppDataStore} from "../framework.core/redux/reduxStore";
-import {PermissionInfo} from "../app.model/permissionInfo";
+import {PermissionInfo} from "../app.model";
 import {PermissionProvider} from "./authorization/providers/permissionProvider";
 import {AuthorizationService} from "./authorization/authorizationService";
 

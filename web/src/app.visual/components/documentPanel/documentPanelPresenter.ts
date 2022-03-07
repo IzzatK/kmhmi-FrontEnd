@@ -14,8 +14,8 @@ import {
 } from "../../../app.core/serviceComposition";
 import {DocumentInfoVM, PermissionsVM} from "./documentPanelModel";
 import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../app.core.api";
-import {PermissionInfo} from "../../../app.model/permissionInfo";
-import {StatusType} from "../../../app.model/statusType";
+import {PermissionInfo} from "../../../app.model";
+import {StatusType} from "../../../app.model";
 
 class DocumentPanel extends Presenter {
 

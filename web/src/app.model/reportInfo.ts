@@ -1,4 +1,4 @@
-import {RepoItem} from "../../framework.core/services/repoService/repoItem";
+import {RepoItem} from "../framework.core/services/repoService/repoItem";
 
 export class ReportInfo extends RepoItem {
 
@@ -22,7 +22,7 @@ export class ReportInfo extends RepoItem {
   }
 }
 
-enum CitationType {
+export enum CitationType {
   MLA='MLA',
   APA='APA',
   CHICAGO='Chicago',

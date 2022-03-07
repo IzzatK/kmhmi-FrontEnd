@@ -52,7 +52,7 @@
     "@types/react-custom-scrollbars": "^4.0.9",
     "@types/react-transition-group": "^4.4.4",
     "@types/recharts": "^1.8.23",
-    "barrelsby": "^2.3.0",
+    "barrelsby": "^2.3.3",
     "cross-env": "^7.0.3",
     "env-cmd": "^10.1.0",
     "prop-types": "^15.7.2",

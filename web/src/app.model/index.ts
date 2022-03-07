@@ -3,16 +3,26 @@
  */
 
 export * from "./documentInfo";
+export * from "./excerptInfo";
 export * from "./metadataInfo";
+export * from "./noteInfo";
 export * from "./paramType";
+export * from "./permissionInfo";
+export * from "./pocketInfo";
 export * from "./referenceInfo";
 export * from "./referenceType";
+export * from "./reportDocumentInfo";
+export * from "./reportInfo";
 export * from "./roleInfo";
+export * from "./searchBannerMenuItem";
 export * from "./searchParamInfo";
+export * from "./searchResultsMenuItem";
 export * from "./sortPropertyInfo";
 export * from "./statInfo";
 export * from "./statType";
+export * from "./statusType";
+export * from "./systemToolMenuItem";
 export * from "./tagInfo";
 export * from "./tagType";
 export * from "./userInfo";
-export * from "../app.visual/model/searchBannerMenuItem";
+export * from "./userRequestInfo";

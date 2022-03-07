@@ -11,7 +11,7 @@ import {Nullable} from "../../framework.core/extras/typeUtils";
 import {IStorage} from "../../framework.api";
 import {Plugin} from "../../framework.core/extras/plugin";
 import {createSelector, createSlice, OutputSelector, PayloadAction, Selector, Slice} from "@reduxjs/toolkit";
-import {PermissionInfo} from "../../app.model/permissionInfo";
+import {PermissionInfo} from "../../app.model";
 import {forEach} from "../../framework.visual/extras/utils/collectionUtils";
 import {isDev} from "../../framework.core/extras/environmentUtils";
 import {UserInfo} from "../../app.model";

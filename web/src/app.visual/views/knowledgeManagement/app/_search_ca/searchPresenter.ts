@@ -1,6 +1,5 @@
 import {SearchViewModel, SearchWrapperProps, SearchWrapperState} from "./searchModel";
-import {IPresenter} from "../../../../../framework.visual.api/iPresenter";
-import {bool} from "prop-types";
+import {IPresenter} from "../../../../../framework.visual.api";
 
 
 export class SearchPresenter implements IPresenter<SearchWrapperProps, SearchWrapperState, SearchViewModel>{

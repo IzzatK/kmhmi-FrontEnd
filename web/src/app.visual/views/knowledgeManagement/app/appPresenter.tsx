@@ -12,7 +12,7 @@ import {
 import {AppView} from "./appView";
 import {PermissionsVM, StateProps} from "./appModel";
 import {createSelector} from "@reduxjs/toolkit";
-import {PermissionInfo} from "../../../../app.model/permissionInfo";
+import {PermissionInfo} from "../../../../app.model";
 import {PERMISSION_ENTITY, PERMISSION_OPERATOR, AuthenticationStatus} from "../../../../app.core.api";
 import {NodeInfo} from "../../../../framework.core/services/displayService/displayService";
 
