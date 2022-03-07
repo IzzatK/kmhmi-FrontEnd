@@ -42,7 +42,7 @@ import {PermissionProvider} from "./authorization/providers/permissionProvider";
 import {AuthorizationService} from "./authorization/authorizationService";
 import {MockPocketProvider} from "./pockets/providers/mockPocketProvider";
 import {PocketService} from "./pockets/pocketService";
-import {IWocketInfo} from "../app.model/pockets/wocketInfo";
+import {PocketMapper} from "../app.model/pockets/pocketMapper";
 
 // create the framework plugins
 export const appDataStore:IStorage = new AppDataStore();
@@ -62,10 +62,10 @@ const tagProvider: IEntityProvider<TagInfo> = new TagProvider();
 const roleProvider: IEntityProvider<RoleInfo> = new RoleProvider();
 const userProvider: IUserProvider = new UserProvider();
 const permissionProvider: IEntityProvider<PermissionInfo> = new PermissionProvider()
-const pocketProvider: IEntityProvider<IWocketInfo> = new MockPocketProvider();
+const pocketProvider: IEntityProvider<PocketMapper> = new MockPocketProvider();
 
 
-// create the application application
+// create the application services
 export const authenticationService: IAuthenticationService = new AuthenticationService();
 export const authorizationService: IAuthorizationService = new AuthorizationService();
 export const documentService: IDocumentService = new DocumentService();

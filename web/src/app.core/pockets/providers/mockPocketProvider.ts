@@ -1,12 +1,13 @@
 import {EntityProvider} from "../../common/providers/entityProvider";
-import {PocketInfo} from "../../../app.model";
-import {IRepoItem, RepoItem} from "../../../framework.core/services/repoService/repoItem";
+import {PocketInfo, ReportInfo} from "../../../app.model";
 import {Nullable} from "../../../framework.core/extras/typeUtils";
-import {IWocketInfo} from "../../../app.model/pockets/wocketInfo";
+import {PocketMapper} from "../../../app.model/pockets/pocketMapper";
+import {forEach} from "../../../framework.visual/extras/utils/collectionUtils";
+import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
 
 export const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-export class MockPocketProvider extends EntityProvider<IWocketInfo[]> {
+export class MockPocketProvider extends EntityProvider<PocketMapper> {
     baseUrl: string = `${serverUrl}/pockets`;
     public static class: string = 'MockPocketProvider';
 
@@ -17,89 +18,129 @@ export class MockPocketProvider extends EntityProvider<IWocketInfo[]> {
 
     start() {
         super.start();
+
+        generatePocketMapper();
+        generatePocketMapper();
+        generatePocketMapper();
     }
 
-
-    getAll(uiRequestData?: any): Promise<IWocketInfo[]> {
+    getAll(uiRequestData?: any): Promise<PocketMapper[]> {
         return new Promise((resolve, reject) => {
-            resolve(mockHMIData);
+            resolve(Object.values(pocketMappers));
         });
     }
 
-    getSingle(id: string): Promise<Nullable<IWocketInfo[]>> {
+    getSingle(id: string): Promise<Nullable<PocketMapper>> {
         return new Promise((resolve, reject) => {
-            resolve(null);
+            resolve(pocketMappers[id] || null);
         });
     }
 
-
-    remove(id: string): Promise<Nullable<IWocketInfo[]>> {
+    remove(id: string): Promise<Nullable<PocketMapper>> {
         return new Promise((resolve, reject) => {
-            let repoItem: Nullable<IRepoItem> = null;
+            let result: Nullable<PocketMapper> = null;
 
-            mockHMIData = mockHMIData.filter((item:IWocketInfo) => {
-                if (item.id === id) {
-                    repoItem = item;
+            forEach(pocketMappers, (pocketMapper: PocketMapper) => {
+                if (pocketMapper.id == id) {
+                    result = pocketMapper;
+                    return true;
                 }
-                return item.id !== id;
-            });
+            })
 
-            resolve(repoItem);
+            resolve(result);
+        });
+    }
+
+
+    create(uiRequestData: any, onUpdated?: (item: PocketMapper) => void): Promise<Nullable<PocketMapper>> {
+        return new Promise((resolve, reject) => {
+            let pocketMapper = generatePocketMapper();
+
+            resolve(pocketMapper);
+        });
+    }
+
+    update(id: string, uiRequestData: any): Promise<Nullable<PocketMapper>> {
+        return new Promise((resolve, reject) => {
+            let pocketMapper = pocketMappers[id];
+
+            if (pocketMapper != null) {
+                return super.update(id, uiRequestData);
+            }
         });
     }
 }
 
-let mockHMIData = [
-    [
-        {
-            className: "PocketInfo",
-            id: "pocket_01",
-            name: "Air Space Pocket",
-            path: "pocket_01",
-        },
-        {
-            className: "ReportInfo",
-            id: "report_01",
-            pocket_id: "pocket_01",
-            name: "Report: Air Space",
-            path: "pocket_01/report_01",
-        },
-        {
-            className: "ReportDocumentInfo",
-            id: "document_01",
-            report_id: "report_01",
-            name: "Solar Flares.doc",
-            path: "pocket_01/report_01/document_01",
-        },
-        {
-            className: "ReportDocumentInfo",
-            id: "document_02",
-            report_id: "report_01",
-            name: "Starlight.doc",
-            path: "pocket_01/report_01/document_02",
-        },
-        {
-            className: "ReportInfo",
-            id: "document_03",
-            report_id: "report_01",
-            name: "Neptune.doc",
-            path: "pocket_01/report_01/document_02",
-        },
-        {
-            className: "PocketInfo",
-            id: "pocket_02",
-            name: "High School Pocket",
-            path: "pocket_02",
-        },
-        {
-            className: "PocketInfo",
-            id: "pocket_03",
-            name: "Nose Injuries Pocket",
-            path: "pocket_03",
-        }
-    ]
+const pocketMappers: Record<string, PocketMapper> = {};
 
-];
+const generatePocketMapper = (): PocketMapper => {
+
+    const pocketId = makeGuid();
+    const reportId = makeGuid();
+
+    const report: ReportInfo = new ReportInfo(reportId);
+    report.title = `title ${reportId}`;
+
+    const pocket: PocketInfo = new PocketInfo(pocketId);
+    pocket.title = `title ${pocketId}`;
+    pocket.reportId = reportId;
+
+    const pocketMapper = new PocketMapper(
+        pocket,
+        report,
+        {},
+        {},
+        {});
+
+    pocketMappers[pocketId] = pocketMapper;
+
+    return pocketMapper;
+}
+
+// let mockHMIData = [
+//     {
+//         id: "pocket_01",
+//         pocket: {
+//             className: "PocketInfo",
+//             id: "pocket_01",
+//             // title: "Air Space Pocket",
+//             // reportId: "report_01"
+//             // path: "pocket_01",
+//         },
+//         // report: {
+//         //     className: "ReportInfo",
+//         //     id: "report_01",
+//         //     title: "Report: Air Space",
+//         //     pocket_id: "pocket_01",
+//         //     // path: "pocket_01/report_01",
+//         // },
+//         // notes: {},
+//         // excerpts: {},
+//         // documents: {
+//         //     "document_01": {
+//         //         className: "ReportDocumentInfo",
+//         //         id: "document_01",
+//         //         title: "Solar Flares.doc",
+//         //         report_id: "report_01",
+//         //         // path: "pocket_01/report_01/document_01",
+//         //     },
+//         //     "document_02": {
+//         //         className: "ReportDocumentInfo",
+//         //         id: "document_02",
+//         //         title: "Starlight.doc",
+//         //         report_id: "report_01",
+//         //         // path: "pocket_01/report_01/document_02",
+//         //     },
+//         //     "document_03": {
+//         //         className: "ReportInfo",
+//         //         id: "document_03",
+//         //         title: "Neptune.doc",
+//         //         report_id: "report_01",
+//         //         // path: "pocket_01/report_01/document_02",
+//         //     }
+//         // }
+//     }
+// ]
 
 // const mockServerData = [
 //     {

@@ -2,28 +2,34 @@ import {IPlugin, ISelectionService} from "../../framework.api";
 import {IUserService} from "../users/iUserService";
 import {IEntityProvider} from "../common/iEntityProvider";
 import {PocketInfo} from "../../app.model";
-import {IWocketInfo} from "../../app.model/pockets/wocketInfo";
+import {Nullable} from "../../framework.core/extras/typeUtils";
+import {PocketMapper} from "../../app.model/pockets/pocketMapper";
 
 export interface IPocketService extends IPlugin {
+    // dependency injection
+    setPocketProvider(provider: IEntityProvider<PocketMapper>): void;
 
+    setUserService(userService: IUserService): void;
+    setSelectionService(service: ISelectionService): void;
+
+    // client methods
+    getPocketInfos(): Record<string, PocketInfo>;
+    getPocketInfo(id: string): Nullable<PocketInfo>;
+
+    getPocketMappers(): Record<string, PocketMapper>;
+    getPocketMapper(id: string): Nullable<PocketMapper>;
+
+    // server methods
     createPocket(pocket: PocketInfo) : void;
 
     fetchPocket(id: string): void;
 
     fetchPockets(): void;
 
-    updatePocket(modifiedPocket: Record<string, any>): void;
+    updatePocket(id: string, modifiedPocket: Record<string, any>): void;
 
     deletePocket(id: string): void;
 
-    getPocketItems(id: string): IWocketInfo[];
-
-    getAllPocketItems(): IWocketInfo[];
-
-    setPocketProvider(provider: IEntityProvider<IWocketInfo>): void;
-
-    setUserService(userService: IUserService): void;
-    setSelectionService(service: ISelectionService): void;
 
     //Josiah's requests
     updateReport(modifiedReport: Record<string, any>): void;

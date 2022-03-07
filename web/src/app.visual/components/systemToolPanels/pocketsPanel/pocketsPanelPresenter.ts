@@ -101,7 +101,7 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
     }
 
     getTreeData = createSelector(
-        [this.getSelectionPaths, () => mockData],
+        [this.getSelectionPaths, () => pocketService.getPocketMappers()],
         (selectionPaths, mockData) => {
             return mockData;
         }
