@@ -30,8 +30,7 @@ function DocumentPdfPreview(props: DocumentPanelProps) {
     const { Toolbar } = toolbarPluginInstance;
 
     const renderHighlightTarget = (props: RenderHighlightTargetProps) => {
-        console.log(props);
-        //TODO grab page range from here - maybe add popup here though that might be tricky
+        //can page range from here - maybe add popup here though that might be tricky
         return (
             <div/>
         );

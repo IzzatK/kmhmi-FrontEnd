@@ -23,6 +23,7 @@ import {CheckMarkSVG} from "../../theme/svgs/checkMarkSVG";
 import {Size} from "../../theme/widgets/loadingIndicator/loadingIndicatorModel";
 import TextArea from "../../theme/widgets/textEdit/textArea";
 import Popup from "../../theme/widgets/popup/popup";
+import {NoteSVG} from "../../theme/svgs/noteSVG";
 
 class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState> {
     private tagsResizeObserver: ResizeObserver;
@@ -44,6 +45,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
             showTagEditor: false,
             renderTrigger: 0,
             showPopup: false,
+            showNoteButton: false,
             tmpExcerpt: {},
         }
 
@@ -337,19 +339,24 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
     }
 
     _setPopupVisible(visible: boolean) {
-        if (!visible) {
-            document.getSelection()?.removeAllRanges();
-        }
-
         this.setState({
             ...this.state,
             showPopup: visible,
         })
     }
 
+    _setNoteButtonVisible(visible: boolean) {
+        this.setState({
+            ...this.state,
+            showNoteButton: visible,
+        })
+    }
+
     _detectTextSelection() {
         if (document.getSelection()?.toString() !== "") {
-            this._setPopupVisible(true);
+            this._setNoteButtonVisible(true);
+        } else {
+            this._setNoteButtonVisible(false);
         }
     }
 
@@ -701,7 +708,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
             primary_sme_name, primary_sme_phone, primary_sme_email, secondary_sme_name, secondary_sme_phone, secondary_sme_email,
             file_name, file_size, status, nlpComplete, nlpCompleteAnimation, showStatusBanner} = document || {};
 
-        const { tmpDocument, isDirty, isGlobal, isPrivate, showPopup, tmpExcerpt } = this.state;
+        const { tmpDocument, isDirty, isGlobal, isPrivate, showPopup, showNoteButton, tmpExcerpt } = this.state;
 
         let cn = "document-panel d-flex";
         if (className) {
@@ -886,6 +893,16 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                                 </div>
                             </div>
                         </Popup>
+                        {
+                            showNoteButton &&
+                            <div className={"note position-absolute"}>
+                                <Button className={"btn-transparent"} onClick={() => this._setPopupVisible(true)}>
+                                    <NoteSVG className={"small-image-container"}/>
+                                </Button>
+
+                            </div>
+                        }
+
                         {
                             id ?
                                 preview_url.length > 0 ?

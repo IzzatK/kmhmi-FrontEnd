@@ -204,3 +204,13 @@
 .document-panel .popup .combo-box {
     width: 13.8rem;
 }
+
+.document-panel .note {
+    right: 0;
+    top: 75%;
+    z-index: 1;
+}
+
+.document-panel .note .button {
+    fill: #48A8ff;
+}
