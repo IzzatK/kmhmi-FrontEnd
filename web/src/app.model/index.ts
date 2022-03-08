@@ -22,6 +22,7 @@ export * from "./tagType";
 export * from "./userInfo";
 export * from "./userRequestInfo";
 export * from "./pockets/excerptInfo";
+export * from "./pockets/excerptMapper";
 export * from "./pockets/noteInfo";
 export * from "./pockets/pocketInfo";
 export * from "./pockets/pocketMapper";

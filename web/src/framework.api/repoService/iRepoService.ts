@@ -13,6 +13,8 @@ export interface IRepositoryService extends IBasePlugin {
 
     getAll<Type extends IRepoItem>(className: string, includeSubTypes?: boolean, ...ids: string[]): Record<string, Type>;
 
+    getRepoKey<Type extends IRepoItem>(item: Type): string;
+
     addOrUpdateRepoItem<Type extends IRepoItem>(item: Type): void;
 
     addOrUpdateAllRepoItems<Type extends IRepoItem>(items: Type[]): void;

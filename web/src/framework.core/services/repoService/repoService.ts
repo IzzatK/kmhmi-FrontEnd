@@ -112,6 +112,10 @@ export class RepositoryService extends BasePlugin implements IRepositoryService 
         });
     }
 
+    getRepoKey<Type extends IRepoItem>(item: Type): string {
+        return item.id;
+    }
+
     getState() {
         return this.getRepoState();
     }

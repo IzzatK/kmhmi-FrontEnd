@@ -42,9 +42,6 @@ export class PocketService extends Plugin implements IPocketService {
 
     private pocketProvider?: Nullable<IEntityProvider<PocketMapper>> = null;
 
-    // private excerptSelectorPair: Nullable<KeyValuePair<string, ExcerptSelector>> = null;
-    // private noteSelectorPair: Nullable<KeyValuePair<string, NoteSelector>> = null;
-
     private readonly getAllPocketMapperSelector: GetAllPocketMapperSelector;
 
     private excerptMapperSelectorPair: Nullable<KeyValuePair<string, GetExcerptMapperSelector>> = null;
@@ -289,18 +286,6 @@ export class PocketService extends Plugin implements IPocketService {
     addOrUpdateExcerpt(reportId: string, documentId: string, excerpt: string, note: string): void {
     }
 
-    createExcerpt(): void {
-    }
-
-    createNote(): void {
-    }
-
-    deleteExcerpt(): void {
-    }
-
-    deleteNote(): void {
-    }
-
     getExcerptMappers(documentId: string): Nullable<Record<string, ExcerptMapper>> {
         if (this.excerptMapperSelectorPair == null ||
             this.excerptMapperSelectorPair.key != documentId) {
@@ -314,6 +299,26 @@ export class PocketService extends Plugin implements IPocketService {
         }
 
         return this.excerptMapperSelectorPair.value(this.getRepoState());
+    }
+
+    getExcerpt(id: string): Nullable<ExcerptInfo> {
+        return this.getRepoItem(ExcerptInfo.class, id);
+    }
+
+    createExcerpt(documentId: string, text: string, location: string): void {
+
+    }
+
+    createNote(excerptId: string, text: string): void {
+
+    }
+
+    deleteExcerpt(id: string): void {
+
+    }
+
+    deleteNote(id: string): void {
+
     }
 
     updateNote(): void {
