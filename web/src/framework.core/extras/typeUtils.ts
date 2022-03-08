@@ -49,3 +49,8 @@ export const bindInstanceMethods = (o: object) => {
 }
 
 export type Nullable<T> = T | null;
+
+export interface KeyValuePair<S, T> {
+    key: S;
+    value: T;
+}

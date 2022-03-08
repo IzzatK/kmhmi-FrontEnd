@@ -7,7 +7,6 @@ import {IStorage} from "../../../framework.api";
 import {IRepositoryService} from "../../../framework.api";
 
 interface RepoState {
-    storage: Record<string, Record<string, IRepoItem>> // redux by class, then by id
     classToFullClassNameMap: Record<string, string>,
     storageByClass: Record<string, Record<string, IRepoItem>> // redux by class, then by id
 }
@@ -36,7 +35,6 @@ export class RepositoryService extends BasePlugin implements IRepositoryService 
         this.appendClassName(RepositoryService.class);
 
         this.initialState = {
-            storage: {},
             classToFullClassNameMap: {},
             storageByClass: {}
         }

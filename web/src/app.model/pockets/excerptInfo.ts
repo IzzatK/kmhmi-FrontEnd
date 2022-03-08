@@ -7,9 +7,9 @@ export class ExcerptInfo extends WocketInfo {
   text?: string = '';
   content?: string = '';
   location? : string = '';
-  resourceId: string = '';
   authorId?: string = '';
-  reportId: string = '';
+  documentId?: string= '';
+  noteIds: Set<string> = new Set<string>();
 
   constructor(id: string)
   {

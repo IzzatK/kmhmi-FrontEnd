@@ -209,6 +209,7 @@ userService.start();
 pocketService.setLogService(logService);
 pocketService.setRepositoryService(repoService);
 pocketService.setSelectionService(selectionService);
+pocketService.setDocumentService(documentService);
 pocketService.setPocketProvider(pocketProvider);
 pocketService.start();
 

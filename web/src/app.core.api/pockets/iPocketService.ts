@@ -1,9 +1,10 @@
 import {IPlugin, ISelectionService} from "../../framework.api";
 import {IUserService} from "../users/iUserService";
 import {IEntityProvider} from "../common/iEntityProvider";
-import {PocketInfo} from "../../app.model";
+import {PocketInfo, PocketMapper} from "../../app.model";
 import {Nullable} from "../../framework.core/extras/typeUtils";
-import {PocketMapper} from "../../app.model";
+import {IDocumentService} from "../documents/iDocumentService";
+import {ExcerptMapper} from "../../app.model/pockets/excerptMapper";
 
 export interface IPocketService extends IPlugin {
     // dependency injection
@@ -11,6 +12,7 @@ export interface IPocketService extends IPlugin {
 
     setUserService(userService: IUserService): void;
     setSelectionService(service: ISelectionService): void;
+    setDocumentService(service: IDocumentService): void;
 
     // client methods
     getPocketInfos(): Record<string, PocketInfo>;
@@ -32,9 +34,24 @@ export interface IPocketService extends IPlugin {
 
 
     //Josiah's requests
-    updateReport(modifiedReport: Record<string, any>): void;
     //for the current design, I need a way to create an excerpt and note at the same time - and maybe create a report as well if one does not already exist
     //I'm not really sure at this point what all params need to be passed through
     //it might also be nice to have this method kick off the update pocket api call
-    addOrUpdateExcerpt(pocketId: string, documentId: string, excerpt: string, note: string, reportId?: string): void;
+    addOrUpdateExcerpt(reportId: string, documentId: string, excerpt: string, note: string): void;
+
+
+    updateReport(id: string, modifiedReport:Record<string, any>): void;
+
+    createExcerpt(): void;
+    deleteExcerpt(): void;
+
+    createNote(): void;
+    updateNote(): void;
+    deleteNote(): void;
+
+    getExcerptMappers(documentId: string): Nullable<Record<string, ExcerptMapper>>;
+
+    // createExcerpt(reportId: string, documentId: string, text: string, content: string, location:string): void;
+
+
 }

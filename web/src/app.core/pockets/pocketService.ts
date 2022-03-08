@@ -1,18 +1,20 @@
-import {Nullable} from "../../framework.core/extras/typeUtils";
-import {IEntityProvider, IPocketService, IUserService} from "../../app.core.api";
+import {KeyValuePair, Nullable} from "../../framework.core/extras/typeUtils";
+import {IDocumentService, IEntityProvider, IPocketService, IUserService} from "../../app.core.api";
 import {Plugin} from "../../framework.core/extras/plugin";
 import {
+    DocumentInfo,
     ExcerptInfo,
     NoteInfo,
     PocketInfo,
+    PocketMapper,
     ReportDocumentInfo,
     ReportInfo,
 } from "../../app.model";
 import {ISelectionService} from "../../framework.api";
-import {PocketMapper} from "../../app.model";
 import {forEach} from "../../framework.visual/extras/utils/collectionUtils";
 import {IRepoItem} from "../../framework.core/services/repoService/repoItem";
 import {createSelector, OutputSelector} from "@reduxjs/toolkit";
+import {ExcerptMapper} from "../../app.model/pockets/excerptMapper";
 
 
 type GetAllPocketMapperSelector = OutputSelector<any, Record<string, PocketMapper>,
@@ -23,15 +25,30 @@ type GetAllPocketMapperSelector = OutputSelector<any, Record<string, PocketMappe
      res5: Record<string, ExcerptInfo>)
         => (Record<string, PocketMapper>)>;
 
+type GetExcerptMapperSelector = OutputSelector<any, Record<string, ExcerptMapper>,
+    (res1: DocumentInfo, // try search document first
+     res2: ReportDocumentInfo, // then try report document
+     res3: Record<string, ExcerptInfo>,
+     res4: Record<string, NoteInfo>)
+        => Record<string, ExcerptMapper>>;
+
 export class PocketService extends Plugin implements IPocketService {
+
     public static readonly class:string = 'DocumentService';
 
     private userService: Nullable<IUserService> = null;
     private selectionService: Nullable<ISelectionService> = null;
+    private documentService: Nullable<IDocumentService> = null;
 
     private pocketProvider?: Nullable<IEntityProvider<PocketMapper>> = null;
 
+    // private excerptSelectorPair: Nullable<KeyValuePair<string, ExcerptSelector>> = null;
+    // private noteSelectorPair: Nullable<KeyValuePair<string, NoteSelector>> = null;
+
     private readonly getAllPocketMapperSelector: GetAllPocketMapperSelector;
+
+    private excerptMapperSelectorPair: Nullable<KeyValuePair<string, GetExcerptMapperSelector>> = null;
+    private getSingleExcerptMapperSelector: Nullable<GetExcerptMapperSelector> = null;
 
     constructor() {
         super();
@@ -79,6 +96,51 @@ export class PocketService extends Plugin implements IPocketService {
         )
     }
 
+    private makeGetSingleExcerptMapperSelector(id: string): GetExcerptMapperSelector {
+        return createSelector(
+            [
+                () => this.getRepoItem<DocumentInfo>(DocumentInfo.class, id),
+                () => this.getRepoItem<ReportDocumentInfo>(ReportDocumentInfo.class, id),
+                () => this.getAll<ExcerptInfo>(ExcerptInfo.class),
+                () => this.getAll<NoteInfo>(NoteInfo.class)
+            ],
+            (reportDocumentInfo, searchDocumentInfo, excerpts, notes) => {
+
+                const mappers: Record<string, ExcerptMapper> = {};
+
+                let documentInfo: Nullable<IRepoItem> = reportDocumentInfo;
+
+                if (documentInfo == null) {
+                    documentInfo = searchDocumentInfo;
+                }
+
+                if (documentInfo == null) {
+                    return mappers;
+                }
+
+                const documentId = documentInfo.id;
+                forEach(excerpts, (excerpt: ExcerptInfo) => {
+                    const excerptId = excerpt.id;
+
+                    if (excerpt.documentId == documentId) {
+                        const mapperNotes:Record<string, NoteInfo> = {};
+
+                        forEach(excerpt.noteIds, (noteId: string) => {
+                            let note = notes[noteId];
+                            if (note != null) {
+                                mapperNotes[noteId] = note;
+                            }
+                        })
+
+                        mappers[excerptId] = new ExcerptMapper(excerpt, mapperNotes);
+                    }
+                });
+
+                return mappers;
+            }
+        )
+    }
+
     private getFilteredRecords<T extends IRepoItem>(ids: Set<string>, lookup: Record<string, T>): Record<string, T> {
         const filteredRecords: Record<string, T> = {};
 
@@ -118,6 +180,10 @@ export class PocketService extends Plugin implements IPocketService {
 
     setSelectionService(service: ISelectionService) {
         this.selectionService = service;
+    }
+
+    setDocumentService(service: IDocumentService): void {
+        this.documentService = service
     }
 
     setPocketProvider(provider: IEntityProvider<PocketMapper>): void {
@@ -220,9 +286,40 @@ export class PocketService extends Plugin implements IPocketService {
         ]
     }
 
-    addOrUpdateExcerpt(pocketId: string, documentId: string, excerpt: string, note: string, reportId?: string): void {
+    addOrUpdateExcerpt(reportId: string, documentId: string, excerpt: string, note: string): void {
     }
 
-    updateReport(modifiedReport: Record<string, any>): void {
+    createExcerpt(): void {
+    }
+
+    createNote(): void {
+    }
+
+    deleteExcerpt(): void {
+    }
+
+    deleteNote(): void {
+    }
+
+    getExcerptMappers(documentId: string): Nullable<Record<string, ExcerptMapper>> {
+        if (this.excerptMapperSelectorPair == null ||
+            this.excerptMapperSelectorPair.key != documentId) {
+
+            const selector: GetExcerptMapperSelector = this.makeGetSingleExcerptMapperSelector(documentId);
+
+            this.excerptMapperSelectorPair = {
+                key: documentId,
+                value: selector
+            };
+        }
+
+        return this.excerptMapperSelectorPair.value(this.getRepoState());
+    }
+
+    updateNote(): void {
+    }
+
+    updateReport(id: string, modifiedReport: Record<string, any>): void {
+
     }
 }
