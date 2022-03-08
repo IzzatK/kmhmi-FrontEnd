@@ -158,7 +158,7 @@ export class RepositoryService extends BasePlugin implements IRepositoryService 
         }
     }
 
-    getRepoItem<Type extends IRepoItem>(className: string, id: string): Nullable<Type> {
+    getSingle<Type extends IRepoItem>(className: string, id: string): Nullable<Type> {
         let result: Nullable<Type> = null;
 
         let repoState: RepoState = this.getRepoState();
@@ -222,11 +222,11 @@ export class RepositoryService extends BasePlugin implements IRepositoryService 
         return this.storage?.getState()[this.model.name];
     }
 
-    getClassDictionary(): Record<string, string>{
+    private getClassDictionary(): Record<string, string>{
         return this.getRepoState().classToFullClassNameMap;
     }
 
-    removeAllByType(className: string, includeSubTypes: boolean = false) {
+    removeByType(className: string, includeSubTypes: boolean = false) {
         this.storage?.sendEvent(this.model.actions.removeByTypeHandler({className, includeSubTypes}))
     }
 
@@ -242,7 +242,11 @@ export class RepositoryService extends BasePlugin implements IRepositoryService 
         this.storage?.sendEvent(this.model.actions.removeHandler({items: [item]}));
     }
 
-    removeAllById(className: string, ...ids: string[]) {
+    removeById(className: string, ...ids: string[]) {
         this.storage?.sendEvent(this.model.actions.removeByIdHandler({className, ids}));
+    }
+
+    removeRepoItems<Type extends IRepoItem>(items: Type[]): void {
+        this.storage?.sendEvent(this.model.actions.removeHandler({items}));
     }
 }

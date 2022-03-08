@@ -36,7 +36,7 @@ export abstract class Converter<FromType, ToType> extends LoggablePlugin impleme
         let result: Nullable<T> = null;
 
         if (this.repoService != null) {
-            result = this.repoService.getRepoItem<T>(className, id);
+            result = this.repoService.getSingle<T>(className, id);
         }
         return result;
     }

@@ -3,6 +3,7 @@ import {Presenter} from "../../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../../framework.visual/wrappers/componentWrapper";
 import {createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {pocketService} from "../../../../app.core/serviceComposition";
+import {buildAllPocketNodes} from "../../../model/pocketUtils";
 
 
 type PocketSliceState = {
@@ -101,9 +102,10 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
     }
 
     getTreeData = createSelector(
-        [this.getSelectionPaths, () => pocketService.getPocketMappers()],
-        (selectionPaths, mockData) => {
-            return mockData;
+        [() => pocketService.getPocketMappers()],
+        (pocketMappers) => {
+            // build the tree-view from the pocket mapper
+            return buildAllPocketNodes(pocketMappers);
         }
     )
 }

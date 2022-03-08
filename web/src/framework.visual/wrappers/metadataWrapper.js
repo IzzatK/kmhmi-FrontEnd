@@ -68,7 +68,7 @@ export const createMetadataConnector = (WrappedComponent, metadataId) => {
     // If the mapStateToProps argument supplied to connect returns a function instead of an object,
     // it will be used to create an individual mapStateToProps function for each instance of the container.
     const mapStateToProps = (state, props) => {
-        let metadataInfo = repoService.getRepoItem(MetadataInfo.class, metadataId);
+        let metadataInfo = repoService.getSingle(MetadataInfo.class, metadataId);
 
         const { isLoading, hasError, errorMessage } = metadataInfo;
 

@@ -47,7 +47,7 @@ export abstract class EntityProvider<EntityType> extends BasePlugin implements I
         let result: Nullable<T> = null;
 
         if (this.repoService != null) {
-            result = this.repoService.getRepoItem<T>(className, id);
+            result = this.repoService.getSingle<T>(className, id);
         }
         return result;
     }

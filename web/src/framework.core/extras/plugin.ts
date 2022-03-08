@@ -42,7 +42,7 @@ export abstract class Plugin extends BasePlugin implements IBasePlugin {
         let result: Nullable<T> = null;
 
         if (this.repoService != null) {
-            result = this.repoService.getRepoItem<T>(className, id);
+            result = this.repoService.getSingle<T>(className, id);
         }
         return result;
     }
@@ -61,12 +61,16 @@ export abstract class Plugin extends BasePlugin implements IBasePlugin {
         this.repoService?.removeRepoItem(item);
     }
 
+    protected removeRepoItems<T extends IRepoItem>(items: T[]) {
+        this.repoService?.removeRepoItems(items);
+    }
+
     protected removeAllByType<T extends IRepoItem>(className: string) {
-        this.repoService?.removeAllByType(className, false);
+        this.repoService?.removeByType(className, false);
     }
 
     protected removeAllById<T extends IRepoItem>(className: string, ...ids: string[]) {
-        this.repoService?.removeAllById(className, ...ids);
+        this.repoService?.removeById(className, ...ids);
     }
 
     protected getRepoState() : any {

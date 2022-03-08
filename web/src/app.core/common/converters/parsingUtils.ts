@@ -40,7 +40,7 @@ export const parseClientReferenceValueOrDefault = (state: any, modifiedDocument:
     let value: string = modifiedDocument[propertyName] ? modifiedDocument[propertyName] : latestDocument[propertyName]
 
     if (value) {
-        let repoItem: Nullable<ReferenceInfo> = repoService.getRepoItem(ReferenceInfo.class, modifiedDocument[propertyName]);
+        let repoItem: Nullable<ReferenceInfo> = repoService.getSingle(ReferenceInfo.class, modifiedDocument[propertyName]);
         if (repoItem) {
             result = repoItem.title;
         }
@@ -53,7 +53,7 @@ export const parseClientTagValueOrDefault = (state: any, modifiedDocument:any, l
     let result = defaultValue;
 
     if (modifiedDocument[propertyName]) {
-        let repoItem: Nullable<ReferenceInfo> = repoService.getRepoItem(ReferenceInfo.class, modifiedDocument[propertyName]);
+        let repoItem: Nullable<ReferenceInfo> = repoService.getSingle(ReferenceInfo.class, modifiedDocument[propertyName]);
         if (repoItem) {
             result = repoItem.title;
         }

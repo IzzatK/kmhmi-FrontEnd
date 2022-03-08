@@ -26,7 +26,7 @@ export class UserService extends Plugin implements IUserService {
 
     getActiveUsersSelector: OutputSelector<any, Record<string, UserInfo>, (res1: Record<string, UserInfo>) => Record<string, UserInfo>>;
     getPendingUsersSelector: OutputSelector<any, Record<string, UserInfo>, (res1: Record<string, UserInfo>) => Record<string, UserInfo>>;
-    getSearchUsersSelector: OutputSelector<unknown, Record<string, UserInfo>, (res: Record<string, UserInfo>) => Record<string, UserInfo>>;
+    getSearchUsersSelector: OutputSelector<any, Record<string, UserInfo>, (res: Record<string, UserInfo>) => Record<string, UserInfo>>;
 
     constructor() {
         super();

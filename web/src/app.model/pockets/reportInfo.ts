@@ -10,9 +10,9 @@ export class ReportInfo extends WocketInfo {
   date: string =  '';
   citation: CitationType = CitationType.MLA;
 
-  documentIds?: Set<string>;
-  excerptIds?: Set<string>;
-  noteIds?: Set<string>;
+  documentIds: Set<string> = new Set<string>();
+  excerptIds: Set<string> = new Set<string>();
+  noteIds: Set<string> = new Set<string>();
 
   constructor(id: string)
   {

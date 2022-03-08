@@ -38,7 +38,7 @@ export const convertObjectToKeyObject = (object: { [s: string]: any; } | ArrayLi
     return result;
 };
 
-export const forEach = (items: any, consumer: any) => {
+export function forEach(items: any, consumer: any) {
     let itemKeys = Object.keys(items), itemsLength = itemKeys.length;
     for (let index = 0; index < itemsLength; index++) {
         let key = itemKeys[index];

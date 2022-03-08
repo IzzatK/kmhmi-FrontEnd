@@ -7,11 +7,11 @@ import {IBasePlugin} from "../IBasePlugin";
 export interface IRepositoryService extends IBasePlugin {
     setStorage(value: Nullable<IStorage>): void;
 
-    getRepoItem<Type extends IRepoItem>(className: string, id: string): Nullable<Type>;
+    getState(): any;
+
+    getSingle<Type extends IRepoItem>(className: string, id: string): Nullable<Type>;
 
     getAll<Type extends IRepoItem>(className: string, includeSubTypes?: boolean, ...ids: string[]): Record<string, Type>;
-
-    removeAllByType(className: string, includeSubTypes?: boolean): void;
 
     addOrUpdateRepoItem<Type extends IRepoItem>(item: Type): void;
 
@@ -19,7 +19,9 @@ export interface IRepositoryService extends IBasePlugin {
 
     removeRepoItem<Type extends IRepoItem>(item: Type): void;
 
-    removeAllById(className: string, ...ids: string[]): void;
+    removeById(className: string, ...ids: string[]): void;
 
-    getState(): any;
+    removeByType(className: string, includeSubTypes?: boolean): void;
+
+    removeRepoItems<Type extends IRepoItem>(items: Type[]): void;
 }
