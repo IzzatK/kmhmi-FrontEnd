@@ -42,7 +42,7 @@ import {PermissionProvider} from "./authorization/providers/permissionProvider";
 import {AuthorizationService} from "./authorization/authorizationService";
 import {MockPocketProvider} from "./pockets/providers/mockPocketProvider";
 import {PocketService} from "./pockets/pocketService";
-import {PocketMapper} from "../app.model/pockets/pocketMapper";
+import {PocketMapper} from "../app.model";
 
 // create the framework plugins
 export const appDataStore:IStorage = new AppDataStore();
@@ -209,6 +209,7 @@ userService.start();
 pocketService.setLogService(logService);
 pocketService.setRepositoryService(repoService);
 pocketService.setSelectionService(selectionService);
+pocketService.setPocketProvider(pocketProvider);
 pocketService.start();
 
 // for the UI Components, using the Provider/Consumer pattern seems to be the way to go

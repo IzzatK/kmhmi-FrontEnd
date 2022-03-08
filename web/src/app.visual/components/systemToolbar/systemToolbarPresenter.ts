@@ -11,7 +11,7 @@ import {
     repoService,
     selectionService
 } from "../../../app.core/serviceComposition";
-import {SystemToolMenuItem} from "../../../app.model/systemToolMenuItem";
+import {SystemToolMenuItem} from "../../../app.model";
 import {SystemToolVM} from "./systemToolbarModel";
 import {PERMISSION_ENTITY, PERMISSION_LEVEL, PERMISSION_OPERATOR} from "../../../app.core.api";
 import {UploadPanelId} from "../systemToolPanels/uploadPanel/uploadPanelPresenter";

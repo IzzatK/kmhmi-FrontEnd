@@ -7,6 +7,7 @@ export type PocketsPanelProps = {
     addSelectionPath: (selectionPath: string) => void;
     removeSelectionPath: (selectionPath: string) => void;
     selectionPaths: string[];
+    onCreatePocket: (title: string) => void;
 }
 
 export type PocketsPanelState = {

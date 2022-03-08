@@ -3,7 +3,7 @@ import {Presenter} from "../../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../../framework.visual/wrappers/componentWrapper";
 import {createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {pocketService} from "../../../../app.core/serviceComposition";
-import {buildAllPocketNodes} from "../../../model/pocketUtils";
+import {getPocketTree} from "../../../model/pocketUtils";
 
 
 type PocketSliceState = {
@@ -84,13 +84,14 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
 
         this.mapStateToProps = (state: any, props: any) => {
             return {
-                data: this.getTreeData(state),
+                data: getPocketTree(state),
                 selectionPaths: this.getSelectionPaths(state)
             }
         }
 
         this.mapDispatchToProps = (dispatch: any) => {
             return {
+                onCreatePocket: (title: string) => pocketService.createPocket(title),
                 addSelectionPath: (selectionPath: string) => dispatch(this.model?.actions.addSelectionPath(selectionPath)),
                 removeSelectionPath: (selectionPath: string) => dispatch(this.model?.actions.removeSelectionPath(selectionPath))
             };
@@ -100,14 +101,6 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
     private getSelectionPaths (state: any) {
         return this.getPersistentState(state)?.selectionPaths;
     }
-
-    getTreeData = createSelector(
-        [() => pocketService.getPocketMappers()],
-        (pocketMappers) => {
-            // build the tree-view from the pocket mapper
-            return buildAllPocketNodes(pocketMappers);
-        }
-    )
 }
 
 export const {

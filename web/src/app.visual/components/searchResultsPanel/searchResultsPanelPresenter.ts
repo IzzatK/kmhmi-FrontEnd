@@ -12,7 +12,7 @@ import {
     repoService,
     selectionService, userService
 } from "../../../app.core/serviceComposition";
-import {SearchResultsMenuItem} from "../../../app.model/searchResultsMenuItem";
+import {SearchResultsMenuItem} from "../../../app.model";
 import {MenuItemVM} from "../../../framework.visual/model/menuItemVM";
 import {DocumentInfoVM, ReferenceInfoVM, SortPropertyInfoVM} from "./searchResultsModel";
 

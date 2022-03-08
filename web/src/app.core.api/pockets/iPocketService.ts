@@ -3,7 +3,7 @@ import {IUserService} from "../users/iUserService";
 import {IEntityProvider} from "../common/iEntityProvider";
 import {PocketInfo} from "../../app.model";
 import {Nullable} from "../../framework.core/extras/typeUtils";
-import {PocketMapper} from "../../app.model/pockets/pocketMapper";
+import {PocketMapper} from "../../app.model";
 
 export interface IPocketService extends IPlugin {
     // dependency injection
@@ -20,7 +20,7 @@ export interface IPocketService extends IPlugin {
     getPocketMapper(id: string): Nullable<PocketMapper>;
 
     // server methods
-    createPocket(pocket: PocketInfo) : void;
+    createPocket(title: string) : void;
 
     fetchPocket(id: string): void;
 

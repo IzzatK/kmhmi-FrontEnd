@@ -1,7 +1,6 @@
 import {EntityProvider} from "../../common/providers/entityProvider";
-import {PocketInfo, ReportInfo} from "../../../app.model";
+import {PocketInfo, PocketMapper, ReportInfo} from "../../../app.model";
 import {Nullable} from "../../../framework.core/extras/typeUtils";
-import {PocketMapper} from "../../../app.model/pockets/pocketMapper";
 import {forEach} from "../../../framework.visual/extras/utils/collectionUtils";
 import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
 
@@ -19,9 +18,9 @@ export class MockPocketProvider extends EntityProvider<PocketMapper> {
     start() {
         super.start();
 
-        generatePocketMapper();
-        generatePocketMapper();
-        generatePocketMapper();
+        generatePocketMapper('Saturn');
+        generatePocketMapper('Earth');
+        generatePocketMapper('Neptune');
     }
 
     getAll(uiRequestData?: any): Promise<PocketMapper[]> {
@@ -51,10 +50,9 @@ export class MockPocketProvider extends EntityProvider<PocketMapper> {
         });
     }
 
-
-    create(uiRequestData: any, onUpdated?: (item: PocketMapper) => void): Promise<Nullable<PocketMapper>> {
+    create(uiRequestData: string, onUpdated?: (item: PocketMapper) => void): Promise<Nullable<PocketMapper>> {
         return new Promise((resolve, reject) => {
-            let pocketMapper = generatePocketMapper();
+            let pocketMapper = generatePocketMapper(uiRequestData);
 
             resolve(pocketMapper);
         });
@@ -73,16 +71,16 @@ export class MockPocketProvider extends EntityProvider<PocketMapper> {
 
 const pocketMappers: Record<string, PocketMapper> = {};
 
-const generatePocketMapper = (): PocketMapper => {
+const generatePocketMapper = (title: string): PocketMapper => {
 
     const pocketId = makeGuid();
     const reportId = makeGuid();
 
     const report: ReportInfo = new ReportInfo(reportId);
-    report.title = `title ${reportId}`;
+    report.title = `Report ${title} - ${reportId}`;
 
     const pocket: PocketInfo = new PocketInfo(pocketId);
-    pocket.title = `title ${pocketId}`;
+    pocket.title = `Pocket ${title} - ${pocketId}`;
     pocket.reportId = reportId;
 
     const pocketMapper = new PocketMapper(

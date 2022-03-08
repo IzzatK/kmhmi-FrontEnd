@@ -53,6 +53,7 @@ export class PocketService extends Plugin implements IPocketService {
                 const notesByReport: Record<string, Record<string, NoteInfo>> = {};
 
                 const me = this;
+
                 forEach(reports, (report: ReportInfo) => {
                     const reportId = report.id;
 
@@ -64,7 +65,7 @@ export class PocketService extends Plugin implements IPocketService {
                 forEach(pockets, (pocket: PocketInfo) => {
                     const pocketId = pocket.id;
 
-                    const report: Nullable<ReportInfo> = reports[pocketId];
+                    const report: Nullable<ReportInfo> = reports[pocket.reportId];
 
                     const docs = docsByReport[report.id];
                     const excerpts = excerptsByReport[report.id];
@@ -153,8 +154,8 @@ export class PocketService extends Plugin implements IPocketService {
         return result;
     }
 
-    createPocket(pocket: PocketInfo): void {
-        this.pocketProvider?.create(pocket)
+    createPocket(title: string): void {
+        this.pocketProvider?.create(title)
             .then((pocketMapper: Nullable<PocketMapper>) => {
                 if (pocketMapper != null) {
                     const items = this.flattenPocketMapper(pocketMapper);

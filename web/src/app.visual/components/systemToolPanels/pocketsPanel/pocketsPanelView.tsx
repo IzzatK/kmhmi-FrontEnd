@@ -11,6 +11,7 @@ import {DownloadSVG} from "../../../theme/svgs/downloadSVG";
 import {SettingsSVG} from "../../../theme/svgs/settingsSVG";
 import {RemoveSVG} from "../../../theme/svgs/removeSVG";
 import {PocketsPanelProps} from "./pocketsPanelModel";
+import {PocketNodeType, PocketNodeVM} from "../../../model/pocketUtils";
 
 class PocketsPanelView extends Component<PocketsPanelProps> {
     constructor(props: any, context: any) {
@@ -19,12 +20,12 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         bindInstanceMethods(this);
     }
 
-    getCellContentRenderer(node: any) {
+    getCellContentRenderer(node: PocketNodeVM) {
         let actions = null;
         let cn = "";
 
         switch (node.type) {
-            case 'pocket':
+            case PocketNodeType.POCKET:
                 actions = (
                     <React.Fragment>
                         <Button>
@@ -40,10 +41,10 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                 )
                 cn = "pocket display-3 p-4";
                 break;
-            case 'report':
+            case PocketNodeType.REPORT:
                 cn = "report display-2 px-3 pt-3 pb-5";
                 break;
-            case 'document':
+            case PocketNodeType.DOCUMENT:
                 actions = (
                     <React.Fragment>
                         <Button>
@@ -56,14 +57,14 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                 )
                 cn = "document display-2 px-3 pt-3 pb-5";
                 break;
-            case 'excerpt':
+            case PocketNodeType.EXCERPT:
                 break;
             default:
                 break;
         }
 
         return (
-            <PocketNodeView className={cn} title={node.name} subTitle={''} actions={actions} onSelect={this.onSelect} id={node.id} path={node.path}/>
+            <PocketNodeView className={cn} title={node.title} subTitle={''} actions={actions} onSelect={this.onSelect} id={node.id} path={node.path}/>
         )
     }
 
@@ -73,6 +74,12 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         }
         else {
             this.props.removeSelectionPath(path);
+        }
+    }
+
+    onCreatePocket() {
+        if (this.props.onCreatePocket != null) {
+            this.props.onCreatePocket('Sample')
         }
     }
 
@@ -92,7 +99,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
 
                     <div className={"d-flex justify-content-between px-3"}>
                         <Button text={"Sort"}/>
-                        <Button text={"Create Pocket"}/>
+                        <Button text={"Create Pocket"} onClick={this.onCreatePocket}/>
                     </div>
                     <div className={'flex-fill'}>
                         <ScrollBar className={'flex-fill'} renderTrackHorizontal={false}>
