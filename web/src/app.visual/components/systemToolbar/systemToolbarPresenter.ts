@@ -15,9 +15,11 @@ import {SystemToolMenuItem} from "../../../app.model";
 import {SystemToolVM} from "./systemToolbarModel";
 import {PERMISSION_ENTITY, PERMISSION_LEVEL, PERMISSION_OPERATOR} from "../../../app.core.api";
 import {UploadPanelId} from "../systemToolPanels/uploadPanel/uploadPanelPresenter";
+import {ReportPanelId} from "../reportPanel/reportPanelPresenter";
 
 
 export const SYSTEM_TOOLBAR_VIEW_ID = 'system-tool-panel';
+export const DOCUMENT_PREVIEW_VIEW_ID = 'document-preview-panel';
 
 class SystemToolbar extends Presenter {
     constructor() {
@@ -30,14 +32,16 @@ class SystemToolbar extends Presenter {
         this.mapStateToProps = (state: any, props: any) => {
             return {
                 documentPreviewTool: this.getDocumentPreviewToolVM(state),
-                tools: this.getToolVMs(state)
+                reportTool: this.getReportToolVM(state),
+                tools: this.getToolVMs(state),
             }
         }
 
         this.mapDispatchToProps = () => {
             return {
                 onDocumentPreviewSelected: () => this.onDocumentPreviewSelected(),
-                onToolSelected: (id: string) => this.onToolSelected(id)
+                onReportSelected: () => this.onReportSelected(),
+                onToolSelected: (id: string) => this.onToolSelected(id),
             };
         }
     }
@@ -66,6 +70,9 @@ class SystemToolbar extends Presenter {
         return displayService.getNodeInfo(DocumentPanelId);
     }
 
+    getReportNodeInfo = () => {
+        return displayService.getNodeInfo(ReportPanelId);
+    }
 
     getToolVMs = createSelector(
         [ this.getSelectedNode, this.getTools, authorizationService.getPermissions], // if this changes, will re-evaluate the combiner and trigger a re-render
@@ -94,10 +101,31 @@ class SystemToolbar extends Presenter {
     );
 
     onDocumentPreviewSelected() {
-        displayService.toggleNode(DocumentPanelId);
+        // displayService.toggleNode(DocumentPanelId);
+        let currentId = displayService.getSelectedNodeId(DOCUMENT_PREVIEW_VIEW_ID)
+        console.log(currentId);
+
+        if (currentId === DocumentPanelId) {
+            displayService.popNode(DOCUMENT_PREVIEW_VIEW_ID);
+        }
+        else {
+            displayService.pushNode(DocumentPanelId);
+        }
 
         if (selectionService.getContext("selected-document") !== '') {
             selectionService.setContext("selected-document", '');
+        }
+    }
+
+    onReportSelected() {
+        let currentId = displayService.getSelectedNodeId(DOCUMENT_PREVIEW_VIEW_ID)
+        console.log(currentId);
+
+        if (currentId === ReportPanelId) {
+            displayService.popNode(DOCUMENT_PREVIEW_VIEW_ID);
+        }
+        else {
+            displayService.pushNode(ReportPanelId);
         }
     }
 
@@ -109,6 +137,19 @@ class SystemToolbar extends Presenter {
                 graphic: DocPreviewSVG,
                 selected: nodeInfo ? nodeInfo.visible : false,
                 title: 'Preview'
+            }
+            return itemVM;
+        }
+    );
+
+    getReportToolVM = createSelector(
+        [this.getReportNodeInfo],
+        (nodeInfo) => {
+            const itemVM = {
+                id: ReportPanelId,
+                graphic: DocPreviewSVG,
+                selected: nodeInfo ? nodeInfo.visible : false,
+                title: 'Report'
             }
             return itemVM;
         }

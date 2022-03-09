@@ -14,6 +14,7 @@ import {ReferenceType} from "../../../../app.model";
 import {LandingPanelPresenter} from "../../../components/landingPanel/landingPanelPresenter";
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
 import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
+import { ReportPanelPresenter } from "../../../components/reportPanel/reportPanelPresenter";
 
 export class AppView extends Component<Props, State> {
     private interval!: NodeJS.Timer;
@@ -60,7 +61,7 @@ export class AppView extends Component<Props, State> {
     }
 
     render() {
-        const {className, currentSystemTool, isDocumentVisible, permissions, isAuthorized, isAuthorizing, ...rest} = this.props;
+        const {className, currentSystemTool, isDocumentVisible, isReportVisible, permissions, isAuthorized, isAuthorizing, ...rest} = this.props;
 
 
         let cn = `${className ? className : ''} d-flex h-100`;
@@ -87,6 +88,10 @@ export class AppView extends Component<Props, State> {
 
                                 <div className={isDocumentVisible ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
                                     <DocumentPanelPresenter className={isDocumentVisible ? 'flex-fill flex-basis-0' : ''}
+                                                            style={{zIndex: '9999'}}/>
+                                </div>
+                                <div className={isReportVisible ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
+                                    <ReportPanelPresenter className={isReportVisible ? 'flex-fill flex-basis-0' : ''}
                                                             style={{zIndex: '9999'}}/>
                                 </div>
                                 <div className={currentSystemTool ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>

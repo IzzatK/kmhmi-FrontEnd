@@ -7,15 +7,16 @@ import {DocumentInfo, ParamType, ReferenceType} from "../../../app.model";
 import {
     authenticationService,
     authorizationService,
-    documentService,
+    documentService, pocketService,
     referenceService,
     selectionService,
     userService,
 } from "../../../app.core/serviceComposition";
-import {DocumentInfoVM, PermissionsVM} from "./documentPanelModel";
+import {DocumentInfoVM, PermissionsVM, PocketVM} from "./documentPanelModel";
 import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../app.core.api";
 import {PermissionInfo} from "../../../app.model";
 import {StatusType} from "../../../app.model";
+import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
 
 class DocumentPanel extends Presenter {
 
@@ -30,7 +31,7 @@ class DocumentPanel extends Presenter {
         this.view = DocumentPanelView;
 
         this.displayOptions = {
-            containerId: '',
+            containerId: 'document-preview-panel',
             visible: false,
             appearClass: 'fadeIn',
             enterClass: 'fadeIn',
@@ -53,12 +54,16 @@ class DocumentPanel extends Presenter {
             return {
                 onUpdateDocument: (document: DocumentInfoVM) => documentService.updateDocument(document),
                 onRemoveDocument: (id: string) => documentService.removeDocument(id),
-                // onSaveExcerpt: (documentId: string, userId: string, selectedText: string, pocketId: string, note?: string) => pocketService.,
+                onSaveExcerpt: (documentId: string, userId: string, selectedText: string, pocketId: string, note?: string) => this._updatePocket(documentId, userId, selectedText, pocketId, note),
             };
         }
 
         this.pollingForNLPStatus = false;
         this.documentLookup = {};
+    }
+
+    _updatePocket(documentId: string, userId: string, selectedText: string, pocketId: string, note?: string) {
+
     }
 
     _getEditProperties = () => {
@@ -319,20 +324,20 @@ class DocumentPanel extends Presenter {
         }
     )
 
-    // getPockets = createSelector(
-    //     [() => pocketService.getPockets()],
-    //     (items) => {
-    //         let itemVMs: Record<string, PocketVM> = {};
-    //
-    //         forEachKVP(items, (itemKey: string, itemValue: PocketVM) => {
-    //             itemVMs[itemKey] = {
-    //                 ...itemValue
-    //             };
-    //         })
-    //
-    //         return itemVMs;
-    //     }
-    // )
+    getPockets = createSelector(
+        [() => pocketService.getPocketInfos()],
+        (items) => {
+            let itemVMs: Record<string, PocketVM> = {};
+
+            forEachKVP(items, (itemKey: string, itemValue: PocketVM) => {
+                itemVMs[itemKey] = {
+                    ...itemValue
+                };
+            })
+
+            return itemVMs;
+        }
+    )
 }
 
 export const {

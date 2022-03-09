@@ -11,7 +11,7 @@ class SystemToolbarView extends Component<SystemToolbarProps, SystemToolbarState
     }
 
     render() {
-        const { className, tools, onToolSelected, documentPreviewTool, onDocumentPreviewSelected, ...rest } = this.props;
+        const { className, tools, onToolSelected, documentPreviewTool, reportTool, onDocumentPreviewSelected, onReportSelected, ...rest } = this.props;
 
         let cn = "system-toolbar px-2 py-4 d-flex align-items-top justify-content-center";
 
@@ -24,13 +24,17 @@ class SystemToolbarView extends Component<SystemToolbarProps, SystemToolbarState
             toolbarDiv = <Toolbar tools={tools} onToolSelected={onToolSelected} orientation={'vertical'}/>
         }
 
-        const {selected:docSelected, title: docTitle} = documentPreviewTool;
+        const { selected: docSelected, title: docTitle } = documentPreviewTool;
+        const { selected: reportSelected, title: reportTitle } = reportTool;
 
         return (
             <div className={cn} {...rest}>
                 <div className={'d-flex flex-column v-gap-3'}>
                     <div className={'tool-item'}>
                         <Button tooltip={docTitle} onClick={onDocumentPreviewSelected} selected={docSelected}>
+                            <DocPreviewSVG className={'small-image-container'}/>
+                        </Button>
+                        <Button tooltip={reportTitle} onClick={onReportSelected} selected={reportSelected}>
                             <DocPreviewSVG className={'small-image-container'}/>
                         </Button>
                     </div>

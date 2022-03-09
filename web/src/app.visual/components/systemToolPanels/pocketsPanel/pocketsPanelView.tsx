@@ -21,6 +21,8 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
     }
 
     getCellContentRenderer(node: PocketNodeVM) {
+        const { id } = node;
+
         let actions = null;
         let cn = "";
 
@@ -28,13 +30,13 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
             case PocketNodeType.POCKET:
                 actions = (
                     <React.Fragment>
-                        <Button>
+                        <Button onClick={(e) => this._onToggleSharePocket(e)}>
                             <ShareSVG className={"small-image-container"}/>
                         </Button>
-                        <Button>
+                        <Button onClick={(e) => this._onDownloadPocket(e, id)}>
                             <DownloadSVG className={"small-image-container"}/>
                         </Button>
-                        <Button>
+                        <Button onClick={(e) => this._onToggleSettings(e)}>
                             <SettingsSVG className={"small-image-container"}/>
                         </Button>
                     </React.Fragment>
@@ -47,10 +49,10 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
             case PocketNodeType.DOCUMENT:
                 actions = (
                     <React.Fragment>
-                        <Button>
+                        <Button onClick={(e) => this._onDownloadDocument(e, id)}>
                             <DownloadSVG className={"small-image-container"}/>
                         </Button>
-                        <Button>
+                        <Button onClick={(e) => this._onRemoveDocument(e, id)}>
                             <RemoveSVG className={"small-image-container"}/>
                         </Button>
                     </React.Fragment>
@@ -66,6 +68,48 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         return (
             <PocketNodeView className={cn} title={node.title} subTitle={''} actions={actions} onSelect={this.onSelect} id={node.id} path={node.path}/>
         )
+    }
+
+    _onToggleSharePocket(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+        event.stopPropagation();
+
+        //open share ui
+    }
+
+    _onDownloadPocket(event: React.MouseEvent<HTMLDivElement, MouseEvent>, id: string) {
+        const { onDownloadPocket } = this.props;
+
+        event.stopPropagation();
+
+        if (onDownloadPocket) {
+            onDownloadPocket(id);
+        }
+    }
+
+    _onToggleSettings(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+        event.stopPropagation();
+
+        //opens settings ui
+    }
+
+    _onDownloadDocument(event: React.MouseEvent<HTMLDivElement, MouseEvent>, id: string) {
+        const { onDownloadDocument } = this.props;
+
+        event.stopPropagation();
+
+        if (onDownloadDocument) {
+            onDownloadDocument(id)
+        }
+    }
+
+    _onRemoveDocument(event: React.MouseEvent<HTMLDivElement, MouseEvent>, id: string) {
+        const { onRemoveDocument } = this.props;
+
+        event.stopPropagation();
+
+        if (onRemoveDocument) {
+            onRemoveDocument(id);
+        }
     }
 
     onSelect(path: string, selected: boolean) {

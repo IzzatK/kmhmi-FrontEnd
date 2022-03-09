@@ -2,6 +2,7 @@ export type StateProps = {
     className?: string;
     currentSystemTool: any;
     isDocumentVisible: any;
+    isReportVisible: any;
     permissions: PermissionsVM;
     isAuthorizing: boolean;
     isAuthorized: boolean;

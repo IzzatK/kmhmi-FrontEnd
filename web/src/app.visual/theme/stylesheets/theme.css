@@ -131,7 +131,7 @@ body > * {
 
     /* Document Panel */
     --document-panel-bg-color: var(--app-blackRussian);
-    --document-panel-pdf-bg-color: var(--app-blackRussian);
+    --document-panel-pdf-bg-color: var(--app-nero);
     --document-panel-color: var(--app-bleach);
     --document-panel-secondary-color: var(--app-whiteSmoke);
     --dcoument-panel-accent-color: var(--app-suvaGrey);
@@ -207,6 +207,12 @@ body > * {
     --pending-item-button-bg-color: transparent;
     --pending-item-loading-button-color: var(--app-airForceBlue);
     --pending-item-button-hover-bg-color: var(--app-black);
+
+    /* Report Panel */
+    --report-panel-bg-color: var(--app-blackRussian);
+    --report-panel-color: var(--app-bleach);
+    --report-panel-secondary-color: var(--app-whiteSmoke);
+    --report-panel-preview-bg-color: var(--app-nero);
 
     /* Widgets */
 

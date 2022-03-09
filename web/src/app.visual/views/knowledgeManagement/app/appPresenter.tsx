@@ -15,6 +15,7 @@ import {createSelector} from "@reduxjs/toolkit";
 import {PermissionInfo} from "../../../../app.model";
 import {PERMISSION_ENTITY, PERMISSION_OPERATOR, AuthenticationStatus} from "../../../../app.core.api";
 import {NodeInfo} from "../../../../framework.core/services/displayService/displayService";
+import {ReportPanelId} from "../../../components/reportPanel/reportPanelPresenter";
 
 class App extends Presenter {
     constructor() {
@@ -43,6 +44,7 @@ class App extends Presenter {
             return {
                 currentSystemTool: displayService.getSelectedNodeId('system-tool-panel'),
                 isDocumentVisible: this.isDocumentVisible(state),
+                isReportVisible: this.isReportVisible(state),
                 permissions: this.getPermissions(state),
                 isAuthorized: true,//authorizationService.isAuthorized(),
                 isAuthorizing: false// authorizationService.isAuthorizing()
@@ -52,6 +54,19 @@ class App extends Presenter {
 
     isDocumentVisible = createSelector<any, NodeInfo, boolean>(
         [() => displayService.getNodeInfo(DocumentPanelId)],
+        (nodeInfo) => {
+            let result = false;
+
+            if (nodeInfo && nodeInfo.visible) {
+                result = true;
+            }
+
+            return result;
+        }
+    )
+
+    isReportVisible = createSelector<any, NodeInfo, boolean>(
+        [() => displayService.getNodeInfo(ReportPanelId)],
         (nodeInfo) => {
             let result = false;
 

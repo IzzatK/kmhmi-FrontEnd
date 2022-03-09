@@ -5,7 +5,9 @@ export type SystemToolbarProps = {
     tools: SystemToolVM[];
     onToolSelected: (id: string) => void;
     documentPreviewTool: SystemToolVM;
+    reportTool: SystemToolVM;
     onDocumentPreviewSelected: () => void;
+    onReportSelected: () => void;
 }
 
 export type SystemToolbarState = {
