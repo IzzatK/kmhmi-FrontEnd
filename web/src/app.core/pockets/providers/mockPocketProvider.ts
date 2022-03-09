@@ -81,7 +81,7 @@ const generatePocketMapper = (title: string): PocketMapper => {
 
     const pocket: PocketInfo = new PocketInfo(pocketId);
     pocket.title = `Pocket ${title} - ${pocketId}`;
-    pocket.reportId = reportId;
+    pocket.report_id = reportId;
 
     const pocketMapper = new PocketMapper(
         pocket,

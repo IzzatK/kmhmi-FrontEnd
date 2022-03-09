@@ -4,15 +4,14 @@ export class ReportInfo extends WocketInfo {
 
   public static class: string = 'ReportInfo';
 
-  pocket_id: string =  '';
   author_id: string =  '';
   title: string =  '';
   date: string =  '';
   citation: CitationType = CitationType.MLA;
 
-  documentIds: Set<string> = new Set<string>();
-  excerptIds: Set<string> = new Set<string>();
-  noteIds: Set<string> = new Set<string>();
+  document_ids: Set<string> = new Set<string>();
+  excerpt_ids: Set<string> = new Set<string>();
+  note_ids: Set<string> = new Set<string>();
 
   constructor(id: string)
   {

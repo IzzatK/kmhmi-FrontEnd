@@ -7,7 +7,7 @@ export class PocketInfo extends WocketInfo {
   title: string =  '';
   author_id: string = '';
 
-  reportId: string = '';
+  report_id: string = '';
 
   constructor(id: string)
   {

@@ -1,14 +1,16 @@
 import {IPlugin, ISelectionService} from "../../framework.api";
 import {IUserService} from "../users/iUserService";
 import {IEntityProvider} from "../common/iEntityProvider";
-import {ExcerptInfo, PocketInfo, PocketMapper} from "../../app.model";
+import {ExcerptInfo, NoteInfo, PocketInfo, PocketMapper} from "../../app.model";
 import {Nullable} from "../../framework.core/extras/typeUtils";
 import {IDocumentService} from "../documents/iDocumentService";
-import {ExcerptMapper} from "../../app.model/pockets/excerptMapper";
+import {ExcerptMapper} from "../../app.model";
 
 export interface IPocketService extends IPlugin {
     // dependency injection
     setPocketProvider(provider: IEntityProvider<PocketMapper>): void;
+    setExcerptProvider(provider:IEntityProvider<ExcerptInfo>): void;
+    setNoteProvider(provider:IEntityProvider<NoteInfo>): void;
 
     setUserService(userService: IUserService): void;
     setSelectionService(service: ISelectionService): void;
@@ -48,9 +50,9 @@ export interface IPocketService extends IPlugin {
 
     getExcerpt(id: string): Nullable<ExcerptInfo>;
 
-    createExcerpt(documentId: string, text: string, location: string): void;
 
-    createNote(excerptId: string , text: string): void;
+
+
 
     deleteExcerpt(id: string): void;
 

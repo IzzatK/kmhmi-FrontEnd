@@ -6,7 +6,7 @@ export class NoteInfo extends WocketInfo {
 
   text: string = '';
   content: string = '';
-  authorId: string = '';
+  author_id: string = '';
 
   constructor(id: string)
   {

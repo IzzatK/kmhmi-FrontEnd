@@ -4,17 +4,17 @@ import {Plugin} from "../../framework.core/extras/plugin";
 import {
     DocumentInfo,
     ExcerptInfo,
+    ExcerptMapper,
     NoteInfo,
     PocketInfo,
     PocketMapper,
     ReportDocumentInfo,
-    ReportInfo,
+    ReportInfo
 } from "../../app.model";
 import {ISelectionService} from "../../framework.api";
 import {forEach} from "../../framework.visual/extras/utils/collectionUtils";
 import {IRepoItem} from "../../framework.core/services/repoService/repoItem";
 import {createSelector, OutputSelector} from "@reduxjs/toolkit";
-import {ExcerptMapper} from "../../app.model/pockets/excerptMapper";
 
 
 type GetAllPocketMapperSelector = OutputSelector<any, Record<string, PocketMapper>,
@@ -26,11 +26,16 @@ type GetAllPocketMapperSelector = OutputSelector<any, Record<string, PocketMappe
         => (Record<string, PocketMapper>)>;
 
 type GetExcerptMapperSelector = OutputSelector<any, Record<string, ExcerptMapper>,
-    (res1: DocumentInfo, // try search document first
-     res2: ReportDocumentInfo, // then try report document
+    (res2: ReportDocumentInfo,
      res3: Record<string, ExcerptInfo>,
      res4: Record<string, NoteInfo>)
         => Record<string, ExcerptMapper>>;
+
+type createExcerptReturnArgs = {
+    report: ReportInfo
+    reportDocument: ReportDocumentInfo,
+    excerpt: ExcerptInfo
+}
 
 export class PocketService extends Plugin implements IPocketService {
 
@@ -41,6 +46,9 @@ export class PocketService extends Plugin implements IPocketService {
     private documentService: Nullable<IDocumentService> = null;
 
     private pocketProvider?: Nullable<IEntityProvider<PocketMapper>> = null;
+    private excerptProvider?: Nullable<IEntityProvider<ExcerptInfo>> = null;
+    private noteProvider?: Nullable<IEntityProvider<NoteInfo>> = null;
+    private documentProvider?: Nullable<IEntityProvider<DocumentInfo>> = null;
 
     private readonly getAllPocketMapperSelector: GetAllPocketMapperSelector;
 
@@ -71,15 +79,15 @@ export class PocketService extends Plugin implements IPocketService {
                 forEach(reports, (report: ReportInfo) => {
                     const reportId = report.id;
 
-                    docsByReport[reportId] = me.getFilteredRecords(report.documentIds, reportDocumentInfos);
-                    excerptsByReport[reportId] = me.getFilteredRecords(report.excerptIds, excerpts);
-                    notesByReport[reportId] = me.getFilteredRecords(report.noteIds, notes);
+                    docsByReport[reportId] = me.getFilteredRecords(report.document_ids, reportDocumentInfos);
+                    excerptsByReport[reportId] = me.getFilteredRecords(report.excerpt_ids, excerpts);
+                    notesByReport[reportId] = me.getFilteredRecords(report.note_ids, notes);
                 });
 
                 forEach(pockets, (pocket: PocketInfo) => {
                     const pocketId = pocket.id;
 
-                    const report: Nullable<ReportInfo> = reports[pocket.reportId];
+                    const report: Nullable<ReportInfo> = reports[pocket.report_id];
 
                     const docs = docsByReport[report.id];
                     const excerpts = excerptsByReport[report.id];
@@ -96,32 +104,27 @@ export class PocketService extends Plugin implements IPocketService {
     private makeGetSingleExcerptMapperSelector(id: string): GetExcerptMapperSelector {
         return createSelector(
             [
-                () => this.getRepoItem<DocumentInfo>(DocumentInfo.class, id),
                 () => this.getRepoItem<ReportDocumentInfo>(ReportDocumentInfo.class, id),
                 () => this.getAll<ExcerptInfo>(ExcerptInfo.class),
                 () => this.getAll<NoteInfo>(NoteInfo.class)
             ],
-            (reportDocumentInfo, searchDocumentInfo, excerpts, notes) => {
+            (reportDocumentInfo, excerpts, notes) => {
 
                 const mappers: Record<string, ExcerptMapper> = {};
 
-                let documentInfo: Nullable<IRepoItem> = reportDocumentInfo;
-
-                if (documentInfo == null) {
-                    documentInfo = searchDocumentInfo;
-                }
+                let documentInfo: Nullable<ReportDocumentInfo> = reportDocumentInfo;
 
                 if (documentInfo == null) {
                     return mappers;
                 }
 
-                const documentId = documentInfo.id;
-                forEach(excerpts, (excerpt: ExcerptInfo) => {
-                    const excerptId = excerpt.id;
+                forEach(documentInfo.excerptIds, (excerptId: string) => {
 
-                    if (excerpt.documentId == documentId) {
-                        const mapperNotes:Record<string, NoteInfo> = {};
+                    let excerpt = this.getRepoItem<ExcerptInfo>(ExcerptInfo.class, excerptId);
 
+                    const mapperNotes:Record<string, NoteInfo> = {};
+
+                    if (excerpt != null) {
                         forEach(excerpt.noteIds, (noteId: string) => {
                             let note = notes[noteId];
                             if (note != null) {
@@ -185,6 +188,14 @@ export class PocketService extends Plugin implements IPocketService {
 
     setPocketProvider(provider: IEntityProvider<PocketMapper>): void {
         this.pocketProvider = provider
+    }
+
+    setExcerptProvider(provider: IEntityProvider<ExcerptInfo>): void {
+        this.excerptProvider = provider;
+    }
+
+    setNoteProvider(provider: IEntityProvider<NoteInfo>): void {
+        this.noteProvider = provider;
     }
 
     getPocketInfos(): Record<string, PocketInfo> {
@@ -263,8 +274,8 @@ export class PocketService extends Plugin implements IPocketService {
             });
     }
 
-    updatePocket(id: string, modifiedPocket: Record<string, any>): void {
-        this.pocketProvider?.update(id, modifiedPocket)
+    updatePocket(id: string, pocketMapper: PocketMapper): void {
+        this.pocketProvider?.update(id, pocketMapper)
             .then((pocketMapper: Nullable<PocketMapper>) => {
                 if (pocketMapper != null) {
                     const items = this.flattenPocketMapper(pocketMapper);
@@ -305,13 +316,132 @@ export class PocketService extends Plugin implements IPocketService {
         return this.getRepoItem(ExcerptInfo.class, id);
     }
 
-    createExcerpt(documentId: string, text: string, location: string): void {
+    createExcerpt(excerptText: string, reportId: string, documentId: string, text: string, location: string): Promise<createExcerptReturnArgs> {
+        const me = this;
 
+        return new Promise<createExcerptReturnArgs>((resolve, reject) => {
+            this.excerptProvider?.create({excerptText, location})
+                .then(excerpt => {
+
+                    const report = me.getRepoItem<ReportInfo>(ReportInfo.class, reportId);
+
+                    if (excerpt == null) {
+                        reject('Unable to create excerpt on the server')
+                    }
+                    else if (report == null) {
+                        reject(`Report with id ${reportId} does not exist`);
+                    }
+
+                    else {
+
+                        let reportDocument = this.getRepoItem<ReportDocumentInfo>(ReportDocumentInfo.class, documentId);
+
+                        // if the report does not contain the document id or if it is null, then set it up
+                        if (reportDocument == null || !report.document_ids.has(documentId)) {
+                            let docInfo = this.getRepoItem<DocumentInfo>(DocumentInfo.class, documentId);
+
+                            // create the report document from the search document
+                            if (docInfo != null) {
+                                reportDocument = new ReportDocumentInfo(docInfo.id);
+                                reportDocument.title = docInfo.title;
+                                reportDocument.author_id = docInfo.author;
+                                reportDocument.publication_date = docInfo.publication_date;
+                                reportDocument.excerptIds.add(excerpt.id);
+                            }
+
+                            // add the report id to the report
+                            if (reportDocument != null) {
+                                report.document_ids.add(reportDocument.id);
+                            }
+                        }
+
+                        if (reportDocument == null) {
+                            reject(`Could not find document with id - ${documentId}`);
+                        }
+                        else {
+                            resolve({report, reportDocument: reportDocument, excerpt});
+                        }
+                    }
+                })
+        });
     }
 
-    createNote(excerptId: string, text: string): void {
 
+    /***
+     * @param text - note text
+     * @param reportId - id of the report chosen by the user
+     * @param documentId - document currently visible to the user
+     * @param excerptText - highlighted text in the document
+     * @param location - location of text in the document
+     */
+    createNoteWithoutExcerpt(text: string, reportId: string, documentId: string, excerptText: string, location: string): void {
+        this.createExcerpt(text, reportId, documentId, excerptText, location)
+            .then(data => {
+                const report = data.report;
+                const reportDocument = data.reportDocument;
+                const excerpt = data.excerpt;
+
+                this.noteProvider?.create(text)
+                    .then(note => {
+
+                        if (note != null) {
+                            excerpt.noteIds.add(note.id);
+
+                            this.addOrUpdateAllRepoItems([report, reportDocument, excerpt, note]);
+
+                            // now find the pocket and send the update
+                            let pocketInfos = this.getAll<PocketInfo>(PocketInfo.class);
+                            forEach(pocketInfos, (pocket: PocketInfo) => {
+                                if (pocket.report_id == report.id) {
+                                    let pocketMapper = this.getPocketMapper(pocket.id);
+                                    if (pocketMapper != null) {
+                                        this.updatePocket(pocket.id, pocketMapper);
+                                    }
+                                    return true;
+                                }
+                            })
+                        }
+                        else {
+                            this.error(`Error when creating note with text "${text}"`);
+                        }
+
+                    })
+                    .catch(error => {
+                        this.error(error);
+                    })
+
+            })
+            .catch(error => {
+                this.error(error);
+            })
     }
+
+    // private createNoteWithExcerpt(text: string, reportId: string, excerptId: string) {
+    //     const excerpt = this.getRepoItem<ExcerptInfo>(ExcerptInfo.class, excerptId);
+    //     const report = this.getRepoItem<ReportInfo>(ReportInfo.class, reportId);
+    //
+    //     this.noteProvider?.create({text})
+    //         .then(note => {
+    //             if (note != null && excerpt != null) {
+    //
+    //                 excerpt.noteIds.add(note.id);
+    //
+    //                 // this will update the excerpt mapper;
+    //                 this.addOrUpdateAllRepoItems([excerpt, note]);
+    //
+    //                 let pocketId = report?.pocket_id;
+    //                 if (pocketId != null) {
+    //                     let pocketMapper = this.getPocketMapper(pocketId);
+    //
+    //                     // pocket mapper should re-calcuate automatically
+    //                     this.pocketProvider?.update(pocketId, pocketMapper);
+    //                 }
+    //             }
+    //             else {
+    //                 this.error(`Error when attempting to note attached to excerpt with id - ${excerptId}`);
+    //             }
+    //         })
+    // }
 
     deleteExcerpt(id: string): void {
 

@@ -7,6 +7,7 @@ export class ReportDocumentInfo extends WocketInfo {
   title: string = '';
   publication_date: string = '';
   author_id: string = '';
+  excerptIds: Set<string> = new Set<string>();
 
   constructor(id: string)
   {
