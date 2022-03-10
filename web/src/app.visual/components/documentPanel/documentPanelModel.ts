@@ -24,6 +24,7 @@ export type DocumentPanelState = {
     showTagEditor: boolean;
     renderTrigger: number;
     showPopup: boolean;
+    showNoteButton: boolean;
     tmpExcerpt: ExcerptVM;
 }
 

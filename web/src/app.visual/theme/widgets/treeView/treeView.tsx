@@ -9,7 +9,6 @@ class TreeView extends Component<TreeViewProps, TreeViewState> {
     }
 
     _onSelected(node: any) {
-        console.log("onSelected");
         const { onSelected } = this.props;
 
         if (onSelected) {
