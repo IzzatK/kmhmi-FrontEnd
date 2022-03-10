@@ -27,17 +27,11 @@ type GetAllPocketMapperSelector = OutputSelector<any, Record<string, PocketMappe
      res5: Record<string, ExcerptInfo>)
         => (Record<string, PocketMapper>)>;
 
-type GetReportMapperSelector = OutputSelector<any, Record<string, ExcerptMapper>,
-    (res2: ReportDocumentInfo,
-     res3: Record<string, ExcerptInfo>,
-     res4: Record<string, NoteInfo>)
-        => Record<string, ExcerptMapper>>;
-
-type GetExcerptMapperSelector = OutputSelector<any, Record<string, ExcerptMapper>,
-    (res2: ReportDocumentInfo,
-     res3: Record<string, ExcerptInfo>,
-     res4: Record<string, NoteInfo>)
-        => Record<string, ExcerptMapper>>;
+// type GetExcerptMapperSelector = OutputSelector<any, Record<string, ExcerptMapper>,
+//     (res2: ReportDocumentInfo,
+//      res3: Record<string, ExcerptInfo>,
+//      res4: Record<string, NoteInfo>)
+//         => Record<string, ExcerptMapper>>;
 
 type createExcerptReturnArgs = {
     report: ReportInfo
@@ -60,8 +54,8 @@ export class PocketService extends Plugin implements IPocketService {
 
     private readonly getAllPocketMapperSelector: GetAllPocketMapperSelector;
 
-    private excerptMapperSelectorPair: Nullable<KeyValuePair<string, GetExcerptMapperSelector>> = null;
-    private getSingleExcerptMapperSelector: Nullable<GetExcerptMapperSelector> = null;
+    // private excerptMapperSelectorPair: Nullable<KeyValuePair<string, GetExcerptMapperSelector>> = null;
+    // private getSingleExcerptMapperSelector: Nullable<GetExcerptMapperSelector> = null;
 
     constructor() {
         super();
@@ -120,45 +114,49 @@ export class PocketService extends Plugin implements IPocketService {
         )
     }
 
-    private makeGetSingleExcerptMapperSelector(id: string): GetExcerptMapperSelector {
-        return createSelector(
-            [
-                () => this.getRepoItem<ReportDocumentInfo>(ReportDocumentInfo.class, id),
-                () => this.getAll<ExcerptInfo>(ExcerptInfo.class),
-                () => this.getAll<NoteInfo>(NoteInfo.class)
-            ],
-            (reportDocumentInfo, excerpts, notes) => {
-
-                const mappers: Record<string, ExcerptMapper> = {};
-
-                let documentInfo: Nullable<ReportDocumentInfo> = reportDocumentInfo;
-
-                if (documentInfo == null) {
-                    return mappers;
-                }
-
-                forEach(documentInfo.excerptIds, (excerptId: string) => {
-
-                    let excerpt = this.getRepoItem<ExcerptInfo>(ExcerptInfo.class, excerptId);
-
-                    const mapperNotes:Record<string, NoteInfo> = {};
-
-                    if (excerpt != null) {
-                        forEach(excerpt.noteIds, (noteId: string) => {
-                            let note = notes[noteId];
-                            if (note != null) {
-                                mapperNotes[noteId] = note;
-                            }
-                        })
-
-                        mappers[excerptId] = new ExcerptMapper(excerpt, mapperNotes);
-                    }
-                });
-
-                return mappers;
-            }
-        )
+    getExcerptMappers(documentId: string): Nullable<Record<string, ExcerptMapper>> {
+        throw new Error("Method not implemented.");
     }
+
+    // private makeGetSingleExcerptMapperSelector(id: string): GetExcerptMapperSelector {
+    //     return createSelector(
+    //         [
+    //             () => this.getRepoItem<ReportDocumentInfo>(ReportDocumentInfo.class, id),
+    //             () => this.getAll<ExcerptInfo>(ExcerptInfo.class),
+    //             () => this.getAll<NoteInfo>(NoteInfo.class)
+    //         ],
+    //         (reportDocumentInfo, excerpts, notes) => {
+    //
+    //             const mappers: Record<string, ExcerptMapper> = {};
+    //
+    //             let documentInfo: Nullable<ReportDocumentInfo> = reportDocumentInfo;
+    //
+    //             if (documentInfo == null) {
+    //                 return mappers;
+    //             }
+    //
+    //             forEach(documentInfo.excerptIds, (excerptId: string) => {
+    //
+    //                 let excerpt = this.getRepoItem<ExcerptInfo>(ExcerptInfo.class, excerptId);
+    //
+    //                 const mapperNotes:Record<string, NoteInfo> = {};
+    //
+    //                 if (excerpt != null) {
+    //                     forEach(excerpt.noteIds, (noteId: string) => {
+    //                         let note = notes[noteId];
+    //                         if (note != null) {
+    //                             mapperNotes[noteId] = note;
+    //                         }
+    //                     })
+    //
+    //                     mappers[excerptId] = new ExcerptMapper(excerpt, mapperNotes);
+    //                 }
+    //             });
+    //
+    //             return mappers;
+    //         }
+    //     )
+    // }
 
     private getFilteredRecords<T extends IRepoItem>(ids: Set<string>, lookup: Record<string, T>): Record<string, T> {
         const filteredRecords: Record<string, T> = {};
@@ -297,13 +295,12 @@ export class PocketService extends Plugin implements IPocketService {
         this.pocketProvider?.update(id, pocketMapper)
             .then((pocketMapper: Nullable<PocketMapper>) => {
                 if (pocketMapper != null) {
-                    const items = this.flattenPocketMapper(pocketMapper);
-                    this.addOrUpdateAllRepoItems(items);
+                    this.addOrUpdateAllRepoItems(this.flattenPocketMapper(pocketMapper));
                 }
             })
     }
 
-    flattenPocketMapper(pocketMapper: PocketMapper) {
+    private flattenPocketMapper(pocketMapper: PocketMapper) {
         const result = [];
 
         result.push(pocketMapper.pocket);
@@ -332,20 +329,20 @@ export class PocketService extends Plugin implements IPocketService {
     addOrUpdateExcerpt(reportId: string, documentId: string, excerpt: string, note: string): void {
     }
 
-    getExcerptMappers(documentId: string): Nullable<Record<string, ExcerptMapper>> {
-        if (this.excerptMapperSelectorPair == null ||
-            this.excerptMapperSelectorPair.key != documentId) {
-
-            const selector: GetExcerptMapperSelector = this.makeGetSingleExcerptMapperSelector(documentId);
-
-            this.excerptMapperSelectorPair = {
-                key: documentId,
-                value: selector
-            };
-        }
-
-        return this.excerptMapperSelectorPair.value(this.getRepoState());
-    }
+    // getExcerptMappers(documentId: string): Nullable<Record<string, ExcerptMapper>> {
+    //     if (this.excerptMapperSelectorPair == null ||
+    //         this.excerptMapperSelectorPair.key != documentId) {
+    //
+    //         const selector: GetExcerptMapperSelector = this.makeGetSingleExcerptMapperSelector(documentId);
+    //
+    //         this.excerptMapperSelectorPair = {
+    //             key: documentId,
+    //             value: selector
+    //         };
+    //     }
+    //
+    //     return this.excerptMapperSelectorPair.value(this.getRepoState());
+    // }
 
     getExcerpt(id: string): Nullable<ExcerptInfo> {
         return this.getRepoItem(ExcerptInfo.class, id);
