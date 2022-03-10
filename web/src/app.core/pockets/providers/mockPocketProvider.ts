@@ -45,7 +45,7 @@ export class MockPocketProvider extends EntityProvider<PocketMapper> {
                     result = pocketMapper;
                     return true;
                 }
-            })
+            });
 
             resolve(result);
         });

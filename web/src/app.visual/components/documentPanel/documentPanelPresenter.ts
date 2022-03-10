@@ -338,6 +338,24 @@ class DocumentPanel extends Presenter {
             return itemVMs;
         }
     )
+
+    tmpMethod(documentId: string, excerptId?: string) {
+
+        pocketService.addOrUpdateNote(null, 'my text here', 'whatever blob')
+            .then(note => {
+                let excerptId = null;
+                if (note != null) {
+                    pocketService.addOrUpdateExcerpt(null, 'my test', 'some content', 'location', [note.id])
+                        .then(excerpt => {
+                            if (excerpt != null) {
+
+                            }
+                        })
+                }
+
+            })
+
+    }
 }
 
 export const {
