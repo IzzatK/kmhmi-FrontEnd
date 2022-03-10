@@ -499,10 +499,16 @@ export class PocketService extends Plugin implements IPocketService {
     }
 
     getReportMapper(reportId: string): Nullable<ReportMapper> {
-        throw new Error("Method not implemented.");
-    }
+        let result: Nullable<ReportMapper> = null;
 
-    getExcerptMappers(documentId: string): Nullable<Record<string, ExcerptMapper>> {
-        throw new Error("Method not implemented.");
+        let pocketMappers = this.getPocketMappers();
+
+        forEach(pocketMappers, (pocketMapper: PocketMapper) => {
+            if (pocketMapper.pocket.report_ids.includes(reportId)) {
+                result = pocketMapper.reportMappers[reportId];
+            }
+        })
+
+        return result;
     }
 }
