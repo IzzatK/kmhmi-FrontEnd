@@ -149,7 +149,8 @@ export class DocumentService extends Plugin implements IDocumentService {
     }
 
     clearSearch() {
-        this.clearAllParams()
+        this.clearDirtyFlags();
+        this.clearAllParams();
 
         this.setGetDocumentArrayMetadata(false)
 
@@ -177,7 +178,6 @@ export class DocumentService extends Plugin implements IDocumentService {
 
                 this.removeAllByType(DocumentInfo.class);
                 this.addOrUpdateAllRepoItems(values);
-                this.clearDirtyFlags();
 
             })
             .catch(error => {
