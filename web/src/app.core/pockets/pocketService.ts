@@ -114,10 +114,6 @@ export class PocketService extends Plugin implements IPocketService {
         )
     }
 
-    getExcerptMappers(documentId: string): Nullable<Record<string, ExcerptMapper>> {
-        throw new Error("Method not implemented.");
-    }
-
     // private makeGetSingleExcerptMapperSelector(id: string): GetExcerptMapperSelector {
     //     return createSelector(
     //         [
@@ -500,5 +496,13 @@ export class PocketService extends Plugin implements IPocketService {
 
     updateReport(id: string, modifiedReport: Record<string, any>): void {
 
+    }
+
+    getReportMapper(reportId: string): Nullable<ReportMapper> {
+        throw new Error("Method not implemented.");
+    }
+
+    getExcerptMappers(documentId: string): Nullable<Record<string, ExcerptMapper>> {
+        throw new Error("Method not implemented.");
     }
 }

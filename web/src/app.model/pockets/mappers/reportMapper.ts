@@ -1,4 +1,4 @@
-import {ReportInfo} from "./reportInfo";
+import {ReportInfo} from "../reportInfo";
 import {ReportDocumentMapper} from "./reportDocumentMapper";
 
 export class ReportMapper {

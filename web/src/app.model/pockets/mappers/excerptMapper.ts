@@ -1,5 +1,5 @@
-import {NoteInfo} from "./noteInfo";
-import {ExcerptInfo} from "./excerptInfo";
+import {NoteInfo} from "../noteInfo";
+import {ExcerptInfo} from "../excerptInfo";
 
 export class ExcerptMapper {
   protected _id: string;

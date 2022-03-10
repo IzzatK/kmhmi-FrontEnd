@@ -3,7 +3,7 @@ import {PocketInfo, PocketMapper, ReportInfo} from "../../../app.model";
 import {Nullable} from "../../../framework.core/extras/typeUtils";
 import {forEach} from "../../../framework.visual/extras/utils/collectionUtils";
 import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
-import {ReportMapper} from "../../../app.model/pockets/reportMapper";
+import {ReportMapper} from "../../../app.model/pockets/mappers/reportMapper";
 
 export const serverUrl = process.env.REACT_APP_SERVER_URL;
 

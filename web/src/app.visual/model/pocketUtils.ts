@@ -3,8 +3,8 @@ import {Nullable} from "../../framework.core/extras/typeUtils";
 import {createSelector} from "@reduxjs/toolkit";
 import {pocketService} from "../../app.core/serviceComposition";
 import {forEach} from "../../framework.visual/extras/utils/collectionUtils";
-import {ReportMapper} from "../../app.model/pockets/reportMapper";
-import {ReportDocumentMapper} from "../../app.model/pockets/reportDocumentMapper";
+import {ReportMapper} from "../../app.model/pockets/mappers/reportMapper";
+import {ReportDocumentMapper} from "../../app.model/pockets/mappers/reportDocumentMapper";
 
 export function buildSinglePocketNode(pocketMapper: PocketMapper) : Nullable<PocketNodeVM> {
     return null;

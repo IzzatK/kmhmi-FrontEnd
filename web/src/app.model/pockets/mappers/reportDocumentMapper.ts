@@ -1,6 +1,6 @@
 import {ExcerptMapper} from "./excerptMapper";
 
-import {ReportDocumentInfo} from "./reportDocumentInfo";
+import {ReportDocumentInfo} from "../reportDocumentInfo";
 
 export class ReportDocumentMapper {
   protected _id: string;

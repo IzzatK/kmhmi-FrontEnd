@@ -1,4 +1,4 @@
-import {PocketInfo} from "./pocketInfo";
+import {PocketInfo} from "../pocketInfo";
 import {ReportMapper} from "./reportMapper";
 
 export class PocketMapper {

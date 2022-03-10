@@ -5,7 +5,7 @@ import {ExcerptInfo, NoteInfo, PocketInfo, PocketMapper, ReportInfo} from "../..
 import {Nullable} from "../../framework.core/extras/typeUtils";
 import {IDocumentService} from "../documents/iDocumentService";
 import {ExcerptMapper} from "../../app.model";
-import {ReportMapper} from "../../app.model/pockets/reportMapper";
+import {ReportMapper} from "../../app.model/pockets/mappers/reportMapper";
 
 export interface IPocketService extends IPlugin {
     // dependency injection
@@ -24,15 +24,13 @@ export interface IPocketService extends IPlugin {
     getPocketMappers(): Record<string, PocketMapper>;
     getPocketMapper(id: string): Nullable<PocketMapper>;
 
+    getReportMapper(reportId: string): Nullable<ReportMapper>;
+
     // server methods
     createPocket(title: string) : void;
-
     fetchPocket(id: string): void;
-
     fetchPockets(): void;
-
     updatePocket(id: string, modifiedPocket: Record<string, any>): void;
-
     deletePocket(id: string): void;
 
 
@@ -42,16 +40,7 @@ export interface IPocketService extends IPlugin {
     //it might also be nice to have this method kick off the update pocket api call
     addOrUpdateExcerpt(reportId: string, documentId: string, excerpt: string, note: string): void;
 
-
     updateReport(id: string, modifiedReport:Record<string, any>): void;
-
-
-
-    getExcerptMappers(documentId: string): Nullable<Record<string, ExcerptMapper>>;
-
-    getExcerpt(id: string): Nullable<ExcerptInfo>;
-
-
 
     deleteExcerpt(id: string): void;
 
