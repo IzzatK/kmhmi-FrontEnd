@@ -1,10 +1,11 @@
 import {IPlugin, ISelectionService} from "../../framework.api";
 import {IUserService} from "../users/iUserService";
 import {IEntityProvider} from "../common/iEntityProvider";
-import {ExcerptInfo, NoteInfo, PocketInfo, PocketMapper} from "../../app.model";
+import {ExcerptInfo, NoteInfo, PocketInfo, PocketMapper, ReportInfo} from "../../app.model";
 import {Nullable} from "../../framework.core/extras/typeUtils";
 import {IDocumentService} from "../documents/iDocumentService";
 import {ExcerptMapper} from "../../app.model";
+import {ReportMapper} from "../../app.model/pockets/reportMapper";
 
 export interface IPocketService extends IPlugin {
     // dependency injection
@@ -52,13 +53,14 @@ export interface IPocketService extends IPlugin {
 
 
 
-
-
     deleteExcerpt(id: string): void;
 
     deleteNote(id: string): void;
 
     updateNote(): void;
+
+
+    // getReport(id: string): Nullable<ReportInfo>;
 
     // createExcerpt(reportId: string, documentId: string, text: string, content: string, location:string): void;
 

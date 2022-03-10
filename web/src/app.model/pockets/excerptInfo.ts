@@ -8,7 +8,7 @@ export class ExcerptInfo extends WocketInfo {
   content?: string = '';
   location? : string = '';
   authorId?: string = '';
-  noteIds: Set<string> = new Set<string>();
+  noteIds: string[] = [];
 
   constructor(id: string)
   {

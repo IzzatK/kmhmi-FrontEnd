@@ -27,5 +27,7 @@ export * from "./pockets/noteInfo";
 export * from "./pockets/pocketInfo";
 export * from "./pockets/pocketMapper";
 export * from "./pockets/reportDocumentInfo";
+export * from "./pockets/reportDocumentMapper";
 export * from "./pockets/reportInfo";
+export * from "./pockets/reportMapper";
 export * from "./pockets/wocketInfo";

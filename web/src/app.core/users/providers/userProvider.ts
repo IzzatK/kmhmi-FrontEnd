@@ -118,14 +118,7 @@ export class UserProvider extends EntityProvider<UserInfo> implements IUserProvi
                 (responseData, reject) => this.getUserResponseConverter.convert(responseData[0], reject))
                 .then(user => {
                     if (user != null) {
-                        this.getRole(id, user)
-                            .then(user => {
-                                resolve(user);
-                            })
-                            .catch(error => {
-                                // if the role failed to return, still resolve
-                                resolve(user);
-                            })
+                        resolve(user);
                     }
                     else {
                         reject(user);

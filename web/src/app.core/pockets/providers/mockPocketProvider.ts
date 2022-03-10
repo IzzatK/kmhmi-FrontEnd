@@ -3,6 +3,7 @@ import {PocketInfo, PocketMapper, ReportInfo} from "../../../app.model";
 import {Nullable} from "../../../framework.core/extras/typeUtils";
 import {forEach} from "../../../framework.visual/extras/utils/collectionUtils";
 import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
+import {ReportMapper} from "../../../app.model/pockets/reportMapper";
 
 export const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -81,14 +82,17 @@ const generatePocketMapper = (title: string): PocketMapper => {
 
     const pocket: PocketInfo = new PocketInfo(pocketId);
     pocket.title = `Pocket ${title} - ${pocketId}`;
-    pocket.report_id = reportId;
+    pocket.report_ids.push(report.id);
 
     const pocketMapper = new PocketMapper(
         pocket,
-        report,
-        {},
-        {},
-        {});
+        {
+            [report.id]: new ReportMapper(
+                report,
+                {}
+            )
+        }
+    )
 
     pocketMappers[pocketId] = pocketMapper;
 
