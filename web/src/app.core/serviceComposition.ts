@@ -29,7 +29,8 @@ import {
     ReferenceInfo,
     StatInfo,
     TagInfo,
-    RoleInfo} from "../app.model";
+    RoleInfo, NoteInfo, ExcerptInfo
+} from "../app.model";
 import {DocumentProvider} from "./documents/providers/documentProvider";
 import {ReferenceProvider} from "./references/providers/referenceProvider";
 import {StatProvider} from "./stats/providers/statProvider";
@@ -43,6 +44,8 @@ import {AuthorizationService} from "./authorization/authorizationService";
 import {MockPocketProvider} from "./pockets/providers/mockPocketProvider";
 import {PocketService} from "./pockets/pocketService";
 import {PocketMapper} from "../app.model";
+import {MockNoteProvider} from "./pockets/providers/mockNoteProvider";
+import {MockExcerptProvider} from "./pockets/providers/mockExcerptProvider";
 
 // create the framework plugins
 export const appDataStore:IStorage = new AppDataStore();
@@ -62,6 +65,8 @@ const tagProvider: IEntityProvider<TagInfo> = new TagProvider();
 const roleProvider: IEntityProvider<RoleInfo> = new RoleProvider();
 const userProvider: IUserProvider = new UserProvider();
 const permissionProvider: IEntityProvider<PermissionInfo> = new PermissionProvider()
+const noteProvider: IEntityProvider<NoteInfo> = new MockNoteProvider();
+const excerptProvider: IEntityProvider<ExcerptInfo> = new MockExcerptProvider();
 const pocketProvider: IEntityProvider<PocketMapper> = new MockPocketProvider();
 
 
@@ -152,6 +157,18 @@ permissionProvider.setRepositoryService(repoService);
 permissionProvider.setHttpService(httpService);
 permissionProvider.start();
 
+// excerpts
+excerptProvider.setLogService(logService);
+excerptProvider.setRepositoryService(repoService);
+excerptProvider.setHttpService(httpService);
+excerptProvider.start();
+
+// notes
+noteProvider.setLogService(logService);
+noteProvider.setRepositoryService(repoService);
+noteProvider.setHttpService(httpService);
+noteProvider.start();
+
 // pockets
 pocketProvider.setLogService(logService);
 pocketProvider.setRepositoryService(repoService);
@@ -210,6 +227,8 @@ pocketService.setLogService(logService);
 pocketService.setRepositoryService(repoService);
 pocketService.setSelectionService(selectionService);
 pocketService.setDocumentService(documentService);
+pocketService.setExcerptProvider(excerptProvider);
+pocketService.setNoteProvider(noteProvider);
 pocketService.setPocketProvider(pocketProvider);
 pocketService.start();
 
