@@ -1,0 +1,73 @@
+{
+  "pockets": [
+    {
+      "pocket_id": "string",
+      "title": "string",
+      "author_id": "string",
+      "reportMappers": [
+        {
+          "report_id": "string",
+          "syncResourceMappersWithTemplate": "boolean",
+          "resourceMappers": [
+            {
+              "resource_id": "string",
+              "syncExcerptMappersWithTemplate": "boolean",
+              "excerptMappers": [
+                {
+                  "excerptId": "string",
+                  "syncNoteMappersWithTemplate": "boolean",
+                  "noteMappers": [
+                    {
+                      "note_id": "string"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "noteMappers": [
+            {
+              "note_id": "string"
+            }
+          ]
+        }
+      ],
+      "templates": {
+        "reports": {
+          "report_id": "string",
+          "title": "string",
+          "date": "string",
+          "citation": ["MLA", "APA", "Chicago", "Harvard"]
+        },
+        "resources": [
+          {
+            "resource_id": "string",
+            "type": [ "DOCUMENT", "URL" ],
+            "title": "string",
+            "publication_date": "string",
+            "author_id": "string",
+            "excerpt_ids": []
+          }
+        ],
+        "excerpts": [
+          {
+            "excerpt_id": "string",
+            "text": "string",
+            "content": "string",
+            "location": "string",
+            "author_id": "string",
+            "note_ids": []
+          }
+        ],
+        "notes": [
+          {
+            "note_id": "string",
+            "text": "string",
+            "content": "string",
+            "author_id": "string"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -13,7 +13,13 @@ import {
     userService,
 } from "../../../app.core/serviceComposition";
 import {DocumentInfoVM, PermissionsVM, PocketVM} from "./documentPanelModel";
-import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../app.core.api";
+import {
+    ExcerptParamType,
+    NoteParamType,
+    PERMISSION_ENTITY,
+    PERMISSION_OPERATOR,
+    ReportDocumentParamType
+} from "../../../app.core.api";
 import {PermissionInfo} from "../../../app.model";
 import {StatusType} from "../../../app.model";
 import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
@@ -339,21 +345,38 @@ class DocumentPanel extends Presenter {
         }
     )
 
-    tmpMethod(documentId: string, excerptId?: string) {
+    tmpMethod(documentId: string) {
 
-        pocketService.addOrUpdateNote(null, 'my text here', 'whatever blob')
-            .then(note => {
-                let excerptId = null;
-                if (note != null) {
-                    pocketService.addOrUpdateExcerpt(null, 'my test', 'some content', 'location', [note.id])
-                        .then(excerpt => {
-                            if (excerpt != null) {
+        const noteParams: NoteParamType = {
+            text: 'something',
+            content: 'maybe'
+        };
 
-                            }
-                        })
-                }
+        const excerptParams: ExcerptParamType = {
+            text: 'something',
+            location: 'hard-coded',
+            content: 'maybe'
+        }
 
-            })
+        const reportDocumentParams: ReportDocumentParamType = {
+            id: documentId
+        }
+
+        pocketService.addNoteToExcerpt(noteParams, excerptParams, reportDocumentParams);
+
+        // pocketService.getOrCreateNote(null, 'my text here', 'whatever blob')
+        //     .then(note => {
+        //         let excerptId = null;
+        //         if (note != null) {
+        //             pocketService.getOrCreateExcerpt(null, 'my test', 'some content', 'location', [note.id])
+        //                 .then(excerpt => {
+        //                     if (excerpt != null) {
+        //
+        //                     }
+        //                 })
+        //         }
+        //
+        //     })
 
     }
 }

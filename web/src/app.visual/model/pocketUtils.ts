@@ -28,7 +28,7 @@ export const getPocketNodeVMs = createSelector(
                 id: pocket.id,
                 type: PocketNodeType.POCKET,
                 path: `/${pocket.id}`,
-                title: pocket.title,
+                title: pocket.title || '',
                 childNodes: []
             }
 
@@ -40,7 +40,7 @@ export const getPocketNodeVMs = createSelector(
                     id: reportMapper.id,
                     type: PocketNodeType.REPORT,
                     path: reportPath,
-                    title: reportMapper.report.title,
+                    title: reportMapper.report.title || '',
                     childNodes: []
                 }
 
@@ -52,7 +52,7 @@ export const getPocketNodeVMs = createSelector(
                         id: reportDocument.id,
                         type: PocketNodeType.DOCUMENT,
                         path: reportDocumentPath,
-                        title: reportDocument.title,
+                        title: reportDocument.title || '',
                         childNodes: []
                     }
 

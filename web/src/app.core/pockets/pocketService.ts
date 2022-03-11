@@ -1,5 +1,12 @@
 import {KeyValuePair, Nullable} from "../../framework.core/extras/typeUtils";
-import {IDocumentService, IEntityProvider, IPocketService, IUserService} from "../../app.core.api";
+import {
+    ExcerptParamType,
+    IDocumentService,
+    IEntityProvider,
+    IPocketService,
+    IUserService,
+    NoteParamType, PocketParamType, ReportDocumentParamType, ReportParamType
+} from "../../app.core.api";
 import {Plugin} from "../../framework.core/extras/plugin";
 import {
     DocumentInfo,
@@ -11,7 +18,7 @@ import {
     ReportDocumentInfo,
     ReportInfo,
     ReportMapper,
-    ReportDocumentMapper, CitationType
+    ReportDocumentMapper
 } from "../../app.model";
 import {ISelectionService} from "../../framework.api";
 import {forEach} from "../../framework.visual/extras/utils/collectionUtils";
@@ -47,9 +54,10 @@ export class PocketService extends Plugin implements IPocketService {
     private selectionService: Nullable<ISelectionService> = null;
     private documentService: Nullable<IDocumentService> = null;
 
-    private pocketProvider?: Nullable<IEntityProvider<PocketMapper>> = null;
-    private excerptProvider?: Nullable<IEntityProvider<ExcerptInfo>> = null;
-    private noteProvider?: Nullable<IEntityProvider<NoteInfo>> = null;
+    private pocketProvider: Nullable<IEntityProvider<PocketMapper>> = null;
+    private excerptProvider: Nullable<IEntityProvider<ExcerptInfo>> = null;
+    private noteProvider: Nullable<IEntityProvider<NoteInfo>> = null;
+    private reportProvider: Nullable<IEntityProvider<ReportInfo>> = null;
     private documentProvider?: Nullable<IEntityProvider<DocumentInfo>> = null;
 
     private readonly getAllPocketMapperSelector: GetAllPocketMapperSelector;
@@ -203,6 +211,10 @@ export class PocketService extends Plugin implements IPocketService {
         this.pocketProvider = provider
     }
 
+    setReportProvider(provider: IEntityProvider<ReportInfo>): void {
+        this.reportProvider = provider;
+    }
+
     setExcerptProvider(provider: IEntityProvider<ExcerptInfo>): void {
         this.excerptProvider = provider;
     }
@@ -247,10 +259,10 @@ export class PocketService extends Plugin implements IPocketService {
         let pocketMappers = this.getPocketMappers();
 
         forEach(pocketMappers, (pocketMapper: PocketMapper) => {
-            if (pocketMapper.pocket.report_ids.includes(reportId)) {
+            if (pocketMapper.pocket.report_ids?.includes(reportId)) {
                 result = pocketMapper.reportMappers[reportId];
             }
-        })
+        });
 
         return result;
     }
@@ -334,19 +346,59 @@ export class PocketService extends Plugin implements IPocketService {
         return result;
     }
 
-    addOrUpdateExcerpt(id: Nullable<string>, text: string, content: string, location: string, noteIds: string[]): Promise<Nullable<ExcerptInfo>> {
-        return Promise.resolve(null);
+    getOrCreateExcerpt(excerptParamType: ExcerptParamType): Promise<Nullable<ExcerptInfo>> {
+        return this.getOrCreateItem(ExcerptInfo.class, this.excerptProvider, excerptParamType);
     }
 
-    addOrUpdateNote(id: Nullable<string>, text: string, content: string): Promise<Nullable<NoteInfo>> {
-        return Promise.resolve(null);
+    getOrCreateNote(noteParam: NoteParamType): Promise<Nullable<NoteInfo>> {
+        return this.getOrCreateItem(NoteInfo.class, this.noteProvider, noteParam);
     }
 
-    addOrUpdateReport(id: string, title: string, citation: CitationType, documentIds: string[]): Promise<Nullable<ReportInfo>> {
-        return Promise.resolve(null);
+    getOrCreateReport(reportParams: ReportParamType): Promise<Nullable<ReportInfo>> {
+        return this.getOrCreateItem(ReportInfo.class, this.reportProvider, reportParams);
     }
 
-    addOrUpdateReportDocument(id: string, excerptIds: string[]): Promise<Nullable<ReportDocumentInfo>> {
+    getOrCreateItem<EntityType extends IRepoItem, ParamType extends {id?: string}>(entityClassName: string, entityProvider: Nullable<IEntityProvider<EntityType>>, params: ParamType) {
+        return new Promise<EntityType>((resolve, reject) => {
+                let lastPathIndex = entityClassName.lastIndexOf('/');
+                let shortClassName = entityClassName.slice(0, lastPathIndex);
+
+                if (params.id != null) {
+                    const reportItem = this.getRepoItem<EntityType>(entityClassName, params.id);
+
+                    if (reportItem != null) {
+                        resolve(reportItem);
+                    }
+                    else {
+                        this.error(`Error while retrieving ${shortClassName}: ${shortClassName} id was supplied but does not exist locally`);
+                    }
+                }
+                else {
+                    if (entityProvider == null) {
+                        this.error(`${shortClassName} Provider null in Pocket Service`);
+                        reject(null);
+                    }
+                    else {
+                        entityProvider.create(params)
+                            .then(result => {
+                                if (result != null) {
+                                    resolve(result);
+                                }
+                                else {
+                                    reject(null);
+                                }
+                            })
+                            .catch(error => {
+                                this.error(error + `\nError while creating ${shortClassName} with params ${JSON.stringify(params)}`);
+                                reject(null);
+                            });
+                    }
+                }
+            }
+        );
+    }
+
+    addOrUpdateReportDocument(reportDocumentParams: ReportDocumentParamType): Promise<Nullable<ReportDocumentInfo>> {
         return Promise.resolve(null);
     }
 
@@ -376,7 +428,23 @@ export class PocketService extends Plugin implements IPocketService {
     }
 
     removeReportDocument(id: string): void {
+
     }
+
+    addExcerptToReportDocument(excerptParams: ExcerptParamType, reportDocumentParams: ReportDocumentParamType): void {
+    }
+
+    addNoteToExcerpt(noteParams: NoteParamType, excerptParams: ExcerptParamType, reportDocumentParams: ReportDocumentParamType): void {
+    }
+
+    addNoteToReport(noteParams: NoteParamType, reportDocumentParams: ReportDocumentParamType): void {
+    }
+
+    addReportToPocket(reportParams: ReportParamType, pocketParams: PocketParamType): void {
+
+    }
+
+
 
 
 

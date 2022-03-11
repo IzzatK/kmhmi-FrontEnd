@@ -13,13 +13,16 @@ import {
 import {Nullable} from "../../framework.core/extras/typeUtils";
 import {IDocumentService} from "../documents/iDocumentService";
 import {ExcerptMapper} from "../../app.model";
-import {ReportMapper} from "../../app.model/pockets/mappers/reportMapper";
+import {ReportMapper} from "../../app.model";
+import {RepoItem} from "../../framework.core/services/repoService/repoItem";
+import {nameOf} from "../../framework.core/extras/typeUtils";
 
 export interface IPocketService extends IPlugin {
     /********** begin dependency injection **************************/
     setPocketProvider(provider: IEntityProvider<PocketMapper>): void;
     setExcerptProvider(provider:IEntityProvider<ExcerptInfo>): void;
     setNoteProvider(provider:IEntityProvider<NoteInfo>): void;
+    setReportProvider(provider: IEntityProvider<ReportInfo>): void;
 
     setUserService(userService: IUserService): void;
     setSelectionService(service: ISelectionService): void;
@@ -43,7 +46,7 @@ export interface IPocketService extends IPlugin {
 
 
     /*********** begin report methods *************************/
-    addOrUpdateReport(id: string, title: string, citation: CitationType, documentIds: string[]): Promise<Nullable<ReportInfo>>;
+    getOrCreateReport(reportParams: ReportParamType): Promise<Nullable<ReportInfo>>;
     removeReport(id: string): void;
 
     getReport(id:string): Nullable<ReportInfo>;
@@ -53,7 +56,7 @@ export interface IPocketService extends IPlugin {
 
 
     /*********** begin report document methods *************************/
-    addOrUpdateReportDocument(id: string, excerptIds: string[]): Promise<Nullable<ReportDocumentInfo>>;
+    addOrUpdateReportDocument(reportDocumentParams: ReportDocumentParamType): Promise<Nullable<ReportDocumentInfo>>;
     removeReportDocument(id: string): void;
 
     getReportDocument(id:string): Nullable<ReportDocumentInfo>;
@@ -61,7 +64,7 @@ export interface IPocketService extends IPlugin {
 
 
     /*********** begin excerpt methods *************************/
-    addOrUpdateExcerpt(id: Nullable<string>, text: string, content: string, location: string, noteIds: string[]): Promise<Nullable<ExcerptInfo>>;
+    getOrCreateExcerpt(excerptParams: ExcerptParamType): Promise<Nullable<ExcerptInfo>>;
     removeExcerpt(id: string): void;
 
     getExcerpt(id:string): Nullable<ExcerptInfo>;
@@ -69,12 +72,25 @@ export interface IPocketService extends IPlugin {
 
 
     /*********** begin note methods *************************/
-    addOrUpdateNote(id: Nullable<string>, text: string, content: string): Promise<Nullable<NoteInfo>>;
+    getOrCreateNote(noteParam: NoteParamType): Promise<Nullable<NoteInfo>>;
     removeNote(id: string): void;
 
     getNote(id:string): Nullable<NoteInfo>;
     /*********** end note methods *************************/
 
+
+
+    /*********** begin multi-part methods *************************/
+
+    addNoteToExcerpt(noteParams: NoteParamType, excerptParams: ExcerptParamType, reportDocumentParams: ReportDocumentParamType): void;
+
+    addNoteToReport(noteParams: NoteParamType, reportDocumentParams: ReportDocumentParamType): void;
+
+    addExcerptToReportDocument(excerptParams: ExcerptParamType, reportDocumentParams: ReportDocumentParamType): void;
+
+    addReportToPocket(reportParams: ReportParamType, pocketParams: PocketParamType): void;
+
+    /*********** end multi-part methods *************************/
 
 
     //Josiah's requests
@@ -95,6 +111,12 @@ export interface IPocketService extends IPlugin {
     // getReport(id: string): Nullable<ReportInfo>;
 
     // createExcerpt(reportId: string, documentId: string, text: string, content: string, location:string): void;
-
-
 }
+
+type OmitParamsType = 'className';
+
+export type ExcerptParamType = Omit<Partial<ExcerptInfo>, OmitParamsType>;
+export type NoteParamType = Omit<Partial<NoteInfo>, OmitParamsType>;
+export type ReportDocumentParamType = Omit<Partial<ReportDocumentInfo>, OmitParamsType>;
+export type ReportParamType = Omit<Partial<ReportInfo>, OmitParamsType>;
+export type PocketParamType = Omit<Partial<PocketInfo>, OmitParamsType>;

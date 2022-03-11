@@ -4,15 +4,9 @@ import {Nullable} from "../../../framework.core/extras/typeUtils";
 import {forEach} from "../../../framework.visual/extras/utils/collectionUtils";
 import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
 import {ReportMapper} from "../../../app.model/pockets/mappers/reportMapper";
+import {ExcerptParamType} from "../../../app.core.api";
 
 export const serverUrl = process.env.REACT_APP_SERVER_URL;
-
-type CreateExcerptType = {
-    text: string,
-    location: string,
-    content: string,
-    authorId: string
-};
 
 export class MockExcerptProvider extends EntityProvider<ExcerptInfo> {
     baseUrl: string = `${serverUrl}/pockets/excerpts`;
@@ -23,7 +17,7 @@ export class MockExcerptProvider extends EntityProvider<ExcerptInfo> {
         super.appendClassName(MockExcerptProvider.class);
     }
 
-    create(uiRequestData: CreateExcerptType, onUpdated?: (item: ExcerptInfo) => void): Promise<Nullable<ExcerptInfo>> {
+    create(uiRequestData: ExcerptParamType, onUpdated?: (item: ExcerptInfo) => void): Promise<Nullable<ExcerptInfo>> {
         return new Promise((resolve, reject) => {
             let result = generateExcerpt(uiRequestData);
 
@@ -32,12 +26,12 @@ export class MockExcerptProvider extends EntityProvider<ExcerptInfo> {
     }
 }
 
-const generateExcerpt = (data: CreateExcerptType): ExcerptInfo => {
+const generateExcerpt = (data: ExcerptParamType): ExcerptInfo => {
    const excerpt = new ExcerptInfo(makeGuid());
 
-   excerpt.content = data.content;
-   excerpt.text = data.text;
-   excerpt.location = data.location;
+   excerpt.content = data.content || excerpt.content;
+   excerpt.text = data.text || excerpt.text;
+   excerpt.location = data.location || excerpt.location;
 
    return excerpt;
 }
