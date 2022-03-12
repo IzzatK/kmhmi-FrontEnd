@@ -1,4 +1,3 @@
-import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
 import {TagInfo} from "../../../app.model";
 import {Converter} from "../../common/converters/converter";
 

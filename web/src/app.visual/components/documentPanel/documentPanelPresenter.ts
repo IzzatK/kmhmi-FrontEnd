@@ -11,14 +11,14 @@ import {
     referenceService,
     selectionService,
     userService,
-} from "../../../app.core/serviceComposition";
+} from "../../../serviceComposition";
 import {DocumentInfoVM, PermissionsVM, PocketVM} from "./documentPanelModel";
 import {
     ExcerptParamType,
     NoteParamType,
     PERMISSION_ENTITY,
     PERMISSION_OPERATOR,
-    ReportDocumentParamType
+    ResourceParamType
 } from "../../../app.core.api";
 import {PermissionInfo} from "../../../app.model";
 import {StatusType} from "../../../app.model";
@@ -358,11 +358,11 @@ class DocumentPanel extends Presenter {
             content: 'maybe'
         }
 
-        const reportDocumentParams: ReportDocumentParamType = {
+        const reportDocumentParams: ResourceParamType = {
             id: documentId
         }
 
-        pocketService.addNoteToExcerpt(noteParams, excerptParams, reportDocumentParams);
+        // pocketService.addNoteToExcerpt(noteParams, excerptParams, reportDocumentParams);
 
         // pocketService.getOrCreateNote(null, 'my text here', 'whatever blob')
         //     .then(note => {

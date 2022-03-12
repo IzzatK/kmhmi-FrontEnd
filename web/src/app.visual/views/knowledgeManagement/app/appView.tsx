@@ -8,8 +8,7 @@ import {TagsPanelPresenter} from "../../../components/systemToolPanels/tagsPanel
 import {StatsPanelPresenter} from "../../../components/systemToolPanels/statsPanel/statsPanelPresenter";
 import {PocketsPanelPresenter} from "../../../components/systemToolPanels/pocketsPanel/pocketsPanelPresenter";
 import {SystemToolbarPresenter} from "../../../components/systemToolbar/systemToolbarPresenter";
-import {referenceService, statService, tagService} from "../../../../app.core/serviceComposition";
-import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
+import {referenceService, statService, tagService} from "../../../../serviceComposition";
 import {ReferenceType} from "../../../../app.model";
 import {LandingPanelPresenter} from "../../../components/landingPanel/landingPanelPresenter";
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";

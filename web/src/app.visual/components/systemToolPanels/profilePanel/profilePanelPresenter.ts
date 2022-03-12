@@ -8,7 +8,7 @@ import {
     authorizationService,
     referenceService,
     userService
-} from "../../../../app.core/serviceComposition";
+} from "../../../../serviceComposition";
 import {AccountStatusVM, DepartmentVM, PermissionsVM, RoleVM, UserInfoVM} from "./profilePanelModel";
 import {PermissionInfo} from "../../../../app.model";
 import {AuthenticationStatus, PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../../app.core.api";

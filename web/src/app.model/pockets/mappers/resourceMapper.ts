@@ -1,15 +1,15 @@
 import {ExcerptMapper} from "./excerptMapper";
+import {ResourceInfo} from "../resourceInfo";
 
-import {ReportDocumentInfo} from "../reportDocumentInfo";
 
-export class ReportDocumentMapper {
+export class ResourceMapper {
   protected _id: string;
 
-  constructor(protected _document: ReportDocumentInfo,
+  constructor(protected _resource: ResourceInfo,
               protected _excerptMappers: Record<string, ExcerptMapper>
   )
   {
-    this._id = _document.id;
+    this._id = _resource.id;
     this._excerptMappers = _excerptMappers;
   }
 
@@ -17,8 +17,8 @@ export class ReportDocumentMapper {
     return this._id;
   }
 
-  get document(): ReportDocumentInfo {
-    return this._document;
+  get resource(): ResourceInfo {
+    return this._resource;
   }
 
   get excerptMappers(): Record<string, ExcerptMapper> {

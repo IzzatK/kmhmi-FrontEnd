@@ -1,4 +1,4 @@
-import {IConverter} from "../../../../app.core.api";
+import {IConverter} from "../../../../framework.api";
 import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {UserInfo} from "../../../../app.model";
 import {Converter} from "../../../common/converters/converter";

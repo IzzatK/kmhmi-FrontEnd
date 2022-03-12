@@ -1,9 +1,8 @@
 import {Nullable} from "./typeUtils";
 import {IBasePlugin, IRepositoryService} from "../../framework.api";
-import {IRepoItem} from "../services/repoService/repoItem";
+import {IRepoItem} from "../services";
 import {BasePlugin} from "./basePlugin";
-import {ExcerptInfo} from "../../app.model";
-
+import {IEntityProvider} from "../../framework.api";
 
 export abstract class Plugin extends BasePlugin implements IBasePlugin {
     public static class: string = 'SimplePlugin';
@@ -76,5 +75,102 @@ export abstract class Plugin extends BasePlugin implements IBasePlugin {
 
     protected getRepoState() : any {
         return this.repoService?.getState();
+    }
+
+    protected deleteRemoteItem<EntityType extends IRepoItem>(className: string, id: string, entityProvider: Nullable<IEntityProvider<EntityType>>, updateLocal: boolean = true ) {
+        return new Promise<Nullable<EntityType>>((resolve, reject) => {
+
+                const entity = this.getRepoItem<EntityType>(className, id);
+
+                if (entity == null) {
+                    this.error(`Entity does not exist locally`);
+                    reject(null);
+                }
+                else {
+                    let lastPathIndex = entity.className.lastIndexOf('/');
+                    let shortClassName = entity.className.slice(0, lastPathIndex);
+
+                    if (entityProvider == null) {
+                        this.error(`${shortClassName} Provider is null!`);
+                        reject(null);
+                    }
+                    else {
+                        entityProvider.remove(entity.id)
+                            .then(result => {
+                                if (result != null && updateLocal) {
+                                    this.removeRepoItem(result);
+
+                                    resolve(result);
+                                }
+                                else {
+                                    reject(null);
+                                }
+                            })
+                            .catch(error => {
+                                this.error(`Error while deleting ${shortClassName} with id ${entity.id} + ${error}`);
+                                reject(null);
+                            });
+                    }
+                }
+            }
+        );
+    }
+
+    protected addOrUpdateRemoteItem<EntityType extends IRepoItem, ParamType extends {id?: string}>(entityClassName: string, entityProvider: Nullable<IEntityProvider<EntityType>>, params: ParamType, updateLocal: boolean = true) {
+        return new Promise<EntityType>((resolve, reject) => {
+                let lastPathIndex = entityClassName.lastIndexOf('/');
+                let shortClassName = entityClassName.slice(0, lastPathIndex);
+
+                if (params.id != null) {
+                    const repoItem = this.getRepoItem<EntityType>(entityClassName, params.id);
+
+                    if (repoItem != null) {
+                        if (entityProvider != null) {
+                            entityProvider.update(params.id, params)
+                                .then(result => {
+                                    if (result != null && updateLocal) {
+                                        this.addOrUpdateRepoItem(result);
+                                    }
+
+                                    resolve(result || repoItem);
+                                })
+                                .catch(error => {
+                                    this.error(`Error while updating ${shortClassName} \n ${error}`);
+                                    reject(repoItem);
+                                })
+                        }
+                        else {
+                            reject(repoItem);
+                        }
+                    }
+                    else {
+                        this.error(`Error while retrieving ${shortClassName}: ${shortClassName} id was supplied but does not exist locally`);
+                    }
+                }
+                else {
+                    if (entityProvider == null) {
+                        this.error(`${shortClassName} Provider is null!`);
+                        reject(null);
+                    }
+                    else {
+                        entityProvider.create(params)
+                            .then(result => {
+                                if (result != null && updateLocal) {
+                                    this.addOrUpdateRepoItem(result);
+
+                                    resolve(result);
+                                }
+                                else {
+                                    reject(null);
+                                }
+                            })
+                            .catch(error => {
+                                this.error(error + `\nError while creating ${shortClassName} with params ${JSON.stringify(params)}`);
+                                reject(null);
+                            });
+                    }
+                }
+            }
+        );
     }
 }

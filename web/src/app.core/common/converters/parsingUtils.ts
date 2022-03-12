@@ -1,6 +1,6 @@
 import {ReferenceInfo} from "../../../app.model";
 import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
-import {repoService} from "../../serviceComposition";
+import {repoService} from "../../../serviceComposition";
 import {Nullable} from "../../../framework.core/extras/typeUtils";
 
 export const parseServerReferenceValueOrDefault = (object: any, propertyName: string, defaultValue: any) => {

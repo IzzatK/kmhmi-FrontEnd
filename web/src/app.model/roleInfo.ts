@@ -1,4 +1,4 @@
-import {RepoItem} from "../framework.core/services/repoService/repoItem";
+import {RepoItem} from "../framework.core/services";
 
 export class RoleInfo extends RepoItem {
     public static class: string = 'RoleInfo';

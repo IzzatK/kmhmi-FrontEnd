@@ -1,4 +1,4 @@
-import {RepoItem} from "../framework.core/services/repoService/repoItem";
+import {RepoItem} from "../framework.core/services";
 
 let result: Record<string, Record<string, RepoItem>> = {};
 

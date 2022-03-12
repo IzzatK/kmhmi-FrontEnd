@@ -1,4 +1,4 @@
-import {IRepoItem, RepoItem} from "../../framework.core/services/repoService/repoItem";
+import {IRepoItem, RepoItem} from "../../framework.core/services";
 
 export class WocketInfo extends RepoItem implements IWocketInfo {
 

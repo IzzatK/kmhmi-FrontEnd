@@ -1,15 +1,16 @@
 import {PocketInfo} from "../pocketInfo";
-import {ReportMapper} from "./reportMapper";
+import {ResourceMapper} from "./resourceMapper";
+
 
 export class PocketMapper {
   protected _id: string;
 
   constructor(protected _pocket: PocketInfo,
-              protected _reportMappers: Record<string, ReportMapper>)
+              protected _resourceMappers: Record<string, ResourceMapper>)
   {
     this._id = _pocket.id;
     this._pocket = _pocket;
-    this._reportMappers = _reportMappers;
+    this._resourceMappers = _resourceMappers;
   }
 
   get id(): string {
@@ -20,7 +21,7 @@ export class PocketMapper {
     return this._pocket;
   }
 
-  get reportMappers(): Record<string, ReportMapper> {
-    return this._reportMappers;
+  get resourceMappers(): Record<string, ResourceMapper> {
+    return this._resourceMappers;
   }
 }

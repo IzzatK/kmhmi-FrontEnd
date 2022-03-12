@@ -1,6 +1,3 @@
-import { DocumentInfo, ReferenceType, ReferenceInfo, UserInfo, ParamType, SearchParamInfo } from "../../../app.model";
-import { IRepoItem } from "../../../framework.core/services/repoService/repoItem";
-
 export const convertArrayToObject = (array: any[], key: string | number) => {
     const initialValue = {};
     let result = {};

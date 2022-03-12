@@ -4,13 +4,12 @@ import {SearchParamInfo, UserInfo} from "../../app.model";
 import {
     IAuthenticationService,
     IAuthorizationService,
-    IEntityProvider,
     IReferenceService,
     IUserService,
     AuthenticationStatus
 } from "../../app.core.api";
 import {nameOf, Nullable} from "../../framework.core/extras/typeUtils";
-import {ISelectionService} from "../../framework.api";
+import {IEntityProvider, ISelectionService} from "../../framework.api";
 import {Plugin} from "../../framework.core/extras/plugin";
 import {UserRequestInfo} from "../../app.model";
 import {createSelector, OutputSelector} from "@reduxjs/toolkit";

@@ -1,5 +1,4 @@
 import {DragSource} from "react-dnd";
-import {DraggableType} from "./DragHelper";
 
 
 /**

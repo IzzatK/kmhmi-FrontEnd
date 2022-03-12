@@ -1,8 +1,8 @@
 import PocketsPanelView from "./pocketsPanelView";
 import {Presenter} from "../../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../../framework.visual/wrappers/componentWrapper";
-import {createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {pocketService} from "../../../../app.core/serviceComposition";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {pocketService} from "../../../../serviceComposition";
 import {getPocketTree} from "../../../model/pocketUtils";
 
 

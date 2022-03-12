@@ -1,6 +1,6 @@
 import {ReferenceType} from "../../app.model";
 import {IPlugin} from "../../framework.api";
-import {IEntityProvider} from "../common/iEntityProvider";
+import {IEntityProvider} from "../../framework.api/iEntityProvider";
 import {ReferenceInfo} from "../../app.model";
 
 export interface IReferenceService extends IPlugin {

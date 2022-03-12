@@ -2,7 +2,7 @@ import {UserInfo} from "../../app.model";
 import {IPlugin} from "../../framework.api";
 import {ISelectionService} from "../../framework.api";
 import {IReferenceService} from "../references/iReferenceService";
-import {IEntityProvider} from "../common/iEntityProvider";
+import {IEntityProvider} from "../../framework.api/iEntityProvider";
 import {Nullable} from "../../framework.core/extras/typeUtils";
 import {IAuthorizationService} from "../authorization/iAuthorizationService";
 import {UserRequestInfo} from "../../app.model";

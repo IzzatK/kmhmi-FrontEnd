@@ -1,4 +1,4 @@
-import {RepoItem} from "../services/repoService/repoItem";
+import {RepoItem} from "../services";
 
 export class MenuItem extends RepoItem {
     public static class: string = 'MetadataInfo';

@@ -3,7 +3,9 @@
  */
 
 export * from "./IBasePlugin";
+export * from "./iConverter";
 export * from "./iDataStore";
+export * from "./iEntityProvider";
 export * from "./iLoggablePlugin";
 export * from "./IPlugin";
 export * from "./displayService/iDisplayService";

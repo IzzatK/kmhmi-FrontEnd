@@ -1,7 +1,7 @@
-import {Nullable} from "../../framework.core/extras/typeUtils";
-import {IBasePlugin, IRepositoryService} from "../../framework.api";
-import {ILoggablePlugin} from "../../framework.api";
-import {IHttpService} from "../../framework.api";
+import {Nullable} from "../framework.core/extras/typeUtils";
+import {IBasePlugin, IRepositoryService} from "./index";
+import {ILoggablePlugin} from "./index";
+import {IHttpService} from "./index";
 
 export interface IEntityProvider<EntityType> extends IBasePlugin, ILoggablePlugin{
     getSingle(id: string): Promise<Nullable<EntityType>>;

@@ -8,8 +8,9 @@ import { UpdateUserRequestConverter } from "../converters/users/updateUserReques
 import {forEach} from "../../../framework.visual/extras/utils/collectionUtils";
 import {Nullable, promiseFulfilled} from "../../../framework.core/extras/typeUtils";
 import {EntityProvider} from "../../common/providers/entityProvider";
-import {IEntityProvider, IUserProvider} from "../../../app.core.api";
+import {IUserProvider} from "../../../app.core.api";
 import {RoleInfo} from "../../../app.model";
+import {IEntityProvider} from "../../../framework.api";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 

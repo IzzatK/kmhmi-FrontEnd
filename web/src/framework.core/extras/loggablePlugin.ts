@@ -1,5 +1,5 @@
 import {ILogger} from "../../framework.api";
-import {DefaultLogger} from "../services/logService/defaultLogger";
+import {DefaultLogger} from "../services";
 import {Nullable} from "./typeUtils";
 import {ILoggablePlugin} from "../../framework.api";
 import {LogLevel} from "../../framework.api";

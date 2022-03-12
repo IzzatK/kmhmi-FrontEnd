@@ -4,7 +4,7 @@ import {getDateWithoutTime} from "../../../../framework.visual/extras/utils/time
 import {ReferenceType} from "../../../../app.model";
 import {forEach} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {ReferenceInfo} from "../../../../app.model";
-import {repoService} from "../../../serviceComposition";
+import {repoService} from "../../../../serviceComposition";
 import {Converter} from "../../../common/converters/converter";
 import {AuthenticationStatus} from "../../../../app.core.api";
 

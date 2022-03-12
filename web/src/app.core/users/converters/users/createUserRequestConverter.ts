@@ -1,9 +1,6 @@
 import {nameOf} from "../../../../framework.core/extras/typeUtils";
-import {ReferenceInfo, ReferenceType, UserInfo} from "../../../../app.model";
+import {UserInfo} from "../../../../app.model";
 import {Converter} from "../../../common/converters/converter";
-import {getDateWithoutTime} from "../../../../framework.visual/extras/utils/timeUtils";
-import {repoService} from "../../../serviceComposition";
-import {forEach} from "../../../../framework.visual/extras/utils/collectionUtils";
 
 export class CreateUserRequestConverter extends Converter<any,any>{
 

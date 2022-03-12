@@ -1,4 +1,3 @@
-import * as documentAPI from "../../app.core/documents/providers/documentProvider";
 // import * as documents from "../../application/documents/documents";
 
 

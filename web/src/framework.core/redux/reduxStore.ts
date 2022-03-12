@@ -1,4 +1,4 @@
-import {Action, configureStore, PayloadAction, SliceCaseReducers, ThunkDispatch, Unsubscribe} from '@reduxjs/toolkit'
+import {configureStore, PayloadAction, SliceCaseReducers, Unsubscribe} from '@reduxjs/toolkit'
 import thunk from "redux-thunk";
 import config from "../../app.config/config";
 import {combineReducers} from "redux";

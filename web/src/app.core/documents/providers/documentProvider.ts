@@ -11,7 +11,7 @@ import {UploadDocumentRequestConverter} from "../converters/uploadDocumentReques
 import {UploadDocumentResponseConverter} from "../converters/uploadDocumentResponseConverter";
 import {StatusType} from "../../../app.model";
 
-export const serverUrl = process.env.REACT_APP_SERVER_URL;
+const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 export class DocumentProvider extends EntityProvider<DocumentInfo> {
     baseUrl: string = `${serverUrl}/documents`;

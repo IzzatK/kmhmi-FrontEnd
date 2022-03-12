@@ -4,7 +4,7 @@ import {createComponentWrapper} from "../../../framework.visual/wrappers/compone
 import {createSelector} from "@reduxjs/toolkit";
 import {ReferenceInfo, ReferenceType, StatType} from "../../../app.model";
 import {forEach, forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
-import {documentService, referenceService, repoService, statService} from "../../../app.core/serviceComposition";
+import {documentService, referenceService, statService} from "../../../serviceComposition";
 import {ReferenceInfoVM, SearchGraphsDispatchProps, SearchGraphsStateProps, StatVM} from "./searchGraphsModel";
 
 class SearchGraphsPanel extends Presenter {

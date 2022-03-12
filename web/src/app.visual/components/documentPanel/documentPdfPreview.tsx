@@ -9,9 +9,8 @@ import { toolbarPlugin } from '@react-pdf-viewer/toolbar';
 import type { ToolbarSlot } from '@react-pdf-viewer/toolbar';
 import type { RenderZoomInProps, RenderZoomOutProps } from '@react-pdf-viewer/zoom';
 import type { RenderGoToPageProps } from '@react-pdf-viewer/page-navigation';
-import type { RenderDownloadProps } from '@react-pdf-viewer/get-file';
 import type { RenderCurrentPageLabelProps } from '@react-pdf-viewer/page-navigation';
-import {SelectionData, highlightPlugin, RenderHighlightTargetProps} from '@react-pdf-viewer/highlight';
+import {highlightPlugin, RenderHighlightTargetProps} from '@react-pdf-viewer/highlight';
 import {ZoomInSVG} from "../../theme/svgs/zoomInSVG";
 import {ZoomOutSVG} from "../../theme/svgs/zoomOutSVG";
 import {DownloadSVG} from "../../theme/svgs/downloadSVG";
@@ -19,9 +18,6 @@ import {TextEditSVG} from "../../theme/svgs/textEditSVG";
 import {ArrowLeftSVG} from "../../theme/svgs/arrowLeftSVG";
 import {ArrowRightSVG} from "../../theme/svgs/arrowRightSVG";
 import Button from "../../theme/widgets/button/button";
-import ComboBox from "../../theme/widgets/comboBox/comboBox";
-import TextArea from "../../theme/widgets/textEdit/textArea";
-import Popup from "../../theme/widgets/popup/popup";
 
 function DocumentPdfPreview(props: DocumentPanelProps) {
     const {className, preview_url, original_url, userProfile, token, permissions, ...rest} = props;

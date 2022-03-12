@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './searchAdvancedPanel.css';
 import TextInput from "../../theme/widgets/textEdit/textInput";
 import ComboBox from "../../theme/widgets/comboBox/comboBox";
@@ -8,8 +7,6 @@ import {RemoveSVG} from "../../theme/svgs/removeSVG";
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 import {getClassNames} from "../../../framework.visual/extras/utils/animationUtils";
 import ScrollBar from "../../theme/widgets/scrollBar/scrollBar";
-import {Scrollbars} from "react-custom-scrollbars";
-import {convertObjectToArray} from "../../../framework.visual/extras/utils/collectionUtils";
 import {ParamType} from "../../../model";
 import {bindInstanceMethods} from "../../../framework/extras/typeUtils";
 

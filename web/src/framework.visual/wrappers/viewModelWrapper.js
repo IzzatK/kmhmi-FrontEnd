@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {appDataStore} from "../../app.core/serviceComposition";
+import {appDataStore} from "../../serviceComposition";
 import {bindInstanceMethods} from "../../framework.core/extras/typeUtils";
 
 export const createViewModelConnector = (WrappedComponent, name, model) => {

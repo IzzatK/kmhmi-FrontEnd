@@ -1,4 +1,4 @@
-import {RepoItem} from "../framework.core/services/repoService/repoItem";
+import {RepoItem} from "../framework.core/services";
 import {TagType} from "./tagType";
 
 export class TagInfo extends RepoItem {

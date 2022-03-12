@@ -9,7 +9,7 @@ import TextEdit from "../../theme/widgets/textEdit/textEdit";
 import {ArrowDownSVG} from "../../theme/svgs/arrowDownSVG";
 import {ArrowUpSVG} from "../../theme/svgs/arrowUpSVG";
 import {SearchGraphsPanelId} from "../searchGraphsPanel/searchGraphsPanelPresenter";
-import {bindInstanceMethods, Nullable} from "../../../framework.core/extras/typeUtils";
+import {bindInstanceMethods} from "../../../framework.core/extras/typeUtils";
 import {SearchBannerProps, SearchBannerState} from "./searchBannerModel";
 import {MenuItemVM} from "../../../framework.visual/model/menuItemVM";
 

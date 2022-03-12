@@ -1,4 +1,4 @@
-import {RepoItem} from "../framework.core/services/repoService/repoItem";
+import {RepoItem} from "../framework.core/services";
 import {AuthenticationStatus} from "../app.core.api";
 
 export class UserInfo extends RepoItem  {

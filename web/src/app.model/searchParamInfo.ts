@@ -1,4 +1,4 @@
-import {RepoItem} from "../framework.core/services/repoService/repoItem";
+import {RepoItem} from "../framework.core/services";
 import {ParamType} from "./paramType";
 import {Nullable} from "../framework.core/extras/typeUtils";
 

@@ -1,7 +1,6 @@
 import {ILogger} from "../../../framework.api";
 import {Appender, getLogger, Level, Logger} from "log4javascript";
 import {LogLevel} from "../../../framework.api";
-import exp from "constants";
 
 export class DefaultLogger implements ILogger {
     private log: Logger;

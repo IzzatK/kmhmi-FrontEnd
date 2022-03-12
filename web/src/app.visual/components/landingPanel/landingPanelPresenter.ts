@@ -3,7 +3,7 @@ import LandingPanelView from "./landingPanelView";
 import {LandingPanelDispatchProps, LandingPanelStateProps, UserInfoVM} from "./landingPanelModel";
 import {createComponentWrapper} from "../../../framework.visual/wrappers/componentWrapper";
 import {createSelector} from "@reduxjs/toolkit";
-import {authenticationService, authorizationService} from "../../../app.core/serviceComposition";
+import {authenticationService, authorizationService} from "../../../serviceComposition";
 import {AuthenticationProfile, AuthenticationStatus} from "../../../app.core.api";
 import {RegistrationStatusType} from "../../model/registrationStatusType";
 

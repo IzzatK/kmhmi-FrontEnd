@@ -1,10 +1,9 @@
 import {connect} from "react-redux";
 import {createViewModelConnector} from "./viewModelWrapper";
 import {createDisplayConnector} from "./displayWrapper";
-import React, {Component} from "react";
 import {createMetadataConnector} from "./metadataWrapper";
 import {MetadataInfo} from "../../app.model";
-import {appDataStore, displayService, repoService} from "../../app.core/serviceComposition";
+import {displayService, repoService} from "../../serviceComposition";
 
 export const createComponentWrapper = (presenterTemplate: any) => {
     const presenter = new presenterTemplate();

@@ -1,7 +1,6 @@
 import {Nullable} from "../../framework.core/extras/typeUtils";
-import {Dispatch} from "@reduxjs/toolkit";
 import {IStorage} from "../iDataStore";
-import {IRepoItem} from "../../framework.core/services/repoService/repoItem";
+import {IRepoItem} from "../../framework.core/services";
 import {IBasePlugin} from "../IBasePlugin";
 
 export interface IRepositoryService extends IBasePlugin {

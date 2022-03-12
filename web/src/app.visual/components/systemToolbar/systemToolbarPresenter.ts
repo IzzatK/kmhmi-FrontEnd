@@ -10,10 +10,10 @@ import {
     displayService,
     repoService,
     selectionService
-} from "../../../app.core/serviceComposition";
+} from "../../../serviceComposition";
 import {SystemToolMenuItem} from "../../../app.model";
 import {SystemToolVM} from "./systemToolbarModel";
-import {PERMISSION_ENTITY, PERMISSION_LEVEL, PERMISSION_OPERATOR} from "../../../app.core.api";
+import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../app.core.api";
 import {UploadPanelId} from "../systemToolPanels/uploadPanel/uploadPanelPresenter";
 import {ReportPanelId} from "../reportPanel/reportPanelPresenter";
 

@@ -1,11 +1,10 @@
-import {KeyValuePair, Nullable} from "../../framework.core/extras/typeUtils";
+import {Nullable} from "../../framework.core/extras/typeUtils";
 import {
     ExcerptParamType,
     IDocumentService,
-    IEntityProvider,
     IPocketService,
     IUserService,
-    NoteParamType, PocketParamType, ReportDocumentParamType, ReportParamType
+    NoteParamType, ResourceParamType
 } from "../../app.core.api";
 import {Plugin} from "../../framework.core/extras/plugin";
 import {
@@ -15,36 +14,22 @@ import {
     NoteInfo,
     PocketInfo,
     PocketMapper,
-    ReportDocumentInfo,
-    ReportInfo,
+    ResourceInfo,
     ReportMapper,
-    ReportDocumentMapper
+    ResourceMapper
 } from "../../app.model";
-import {ISelectionService} from "../../framework.api";
+import {IEntityProvider, ISelectionService} from "../../framework.api";
 import {forEach} from "../../framework.visual/extras/utils/collectionUtils";
-import {IRepoItem} from "../../framework.core/services/repoService/repoItem";
+import {IRepoItem} from "../../framework.core/services";
 import {createSelector, OutputSelector} from "@reduxjs/toolkit";
 
 
 type GetAllPocketMapperSelector = OutputSelector<any, Record<string, PocketMapper>,
     (res1: Record<string, PocketInfo>,
-     res2: Record<string, ReportInfo>,
-     res3: Record<string, ReportDocumentInfo>,
-     res4: Record<string, NoteInfo>,
-     res5: Record<string, ExcerptInfo>)
+     res3: Record<string, ResourceInfo>,
+     res5: Record<string, ExcerptInfo>,
+     res4: Record<string, NoteInfo>)
         => (Record<string, PocketMapper>)>;
-
-// type GetExcerptMapperSelector = OutputSelector<any, Record<string, ExcerptMapper>,
-//     (res2: ReportDocumentInfo,
-//      res3: Record<string, ExcerptInfo>,
-//      res4: Record<string, NoteInfo>)
-//         => Record<string, ExcerptMapper>>;
-
-type createExcerptReturnArgs = {
-    report: ReportInfo
-    reportDocument: ReportDocumentInfo,
-    excerpt: ExcerptInfo
-}
 
 export class PocketService extends Plugin implements IPocketService {
 
@@ -57,13 +42,11 @@ export class PocketService extends Plugin implements IPocketService {
     private pocketProvider: Nullable<IEntityProvider<PocketMapper>> = null;
     private excerptProvider: Nullable<IEntityProvider<ExcerptInfo>> = null;
     private noteProvider: Nullable<IEntityProvider<NoteInfo>> = null;
-    private reportProvider: Nullable<IEntityProvider<ReportInfo>> = null;
+    private resourceProvider: Nullable<IEntityProvider<ResourceInfo>> = null;
+
     private documentProvider?: Nullable<IEntityProvider<DocumentInfo>> = null;
 
     private readonly getAllPocketMapperSelector: GetAllPocketMapperSelector;
-
-    // private excerptMapperSelectorPair: Nullable<KeyValuePair<string, GetExcerptMapperSelector>> = null;
-    // private getSingleExcerptMapperSelector: Nullable<GetExcerptMapperSelector> = null;
 
     constructor() {
         super();
@@ -72,54 +55,50 @@ export class PocketService extends Plugin implements IPocketService {
         this.getAllPocketMapperSelector = createSelector(
             [
                 () => this.getAll<PocketInfo>(PocketInfo.class),
-                () => this.getAll<ReportInfo>(ReportInfo.class),
-                () => this.getAll<ReportDocumentInfo>(ReportDocumentInfo.class),
+                () => this.getAll<ResourceInfo>(ResourceInfo.class),
+                () => this.getAll<ExcerptInfo>(ExcerptInfo.class),
                 () => this.getAll<NoteInfo>(NoteInfo.class),
-                () => this.getAll<ExcerptInfo>(ExcerptInfo.class)
             ],
-            (pockets, reports, reportDocumentInfos, notes, excerpts) => {
+            (pockets, resources, excerpts, notes) => {
 
                 const pocketMappers: Record<string, PocketMapper> = {};
+                debugger
 
                 forEach(pockets, (pocketInfo: PocketInfo) => {
 
-                    const tmpReportMappers: Record<string, ReportMapper> = {};
+                    const tmpResourceMappers: Record<string, ResourceMapper> = {};
 
-                    forEach(pocketInfo.report_ids, (reportId: string) => {
+                    forEach(pocketInfo.resource_ids, (resourceId: string) => {
 
-                        const report: ReportInfo = reports[reportId];
-                        const tmpReportDocumentMappers: Record<string, ReportDocumentMapper> = {};
+                        const resource: ResourceInfo = resources[resourceId];
+                        const tmpExcerptMappers: Record<string, ExcerptMapper> = {};
 
-                        forEach(report.document_ids, (reportDocumentId: string) => {
+                        forEach(resource.excerptIds, (excerptId: string) => {
 
-                            const document:ReportDocumentInfo = reportDocumentInfos[reportDocumentId];
-                            const tmpExcerptMappers: Record<string, ExcerptMapper> = {};
+                            const excerpt: ExcerptInfo = excerpts[excerptId];
+                            const tmpNotes: Record<string, NoteInfo> = {};
 
-                            forEach(document.excerptIds, (excerptId: string) => {
-
-                                const excerpt: ExcerptInfo = excerpts[excerptId];
-                                const tmpNotes: Record<string, NoteInfo> = {};
-
-                                forEach(excerpt.noteIds, (noteId: string) => {
-                                    tmpNotes[noteId] = tmpNotes[noteId];
-                                });
-
-                                tmpExcerptMappers[excerptId] = new ExcerptMapper(excerpt, notes);
+                            forEach(excerpt.noteIds, (noteId: string) => {
+                                tmpNotes[noteId] = tmpNotes[noteId];
                             });
 
-                            tmpReportDocumentMappers[reportDocumentId] = new ReportDocumentMapper(document, tmpExcerptMappers);
+                            tmpExcerptMappers[excerptId] = new ExcerptMapper(excerpt, notes);
+                        });
 
-                        })
+                        tmpResourceMappers[resourceId] = new ResourceMapper(resource, tmpExcerptMappers);
 
-                        tmpReportMappers[reportId] = new ReportMapper(report, tmpReportDocumentMappers);
                     });
 
-                    pocketMappers[pocketInfo.id] = new PocketMapper(pocketInfo, tmpReportMappers);
+                    pocketMappers[pocketInfo.id] = new PocketMapper(pocketInfo, tmpResourceMappers);
                 });
 
                 return pocketMappers;
             }
         )
+    }
+
+    getReportMapper(reportId: string): Nullable<ReportMapper> {
+        throw new Error("Method not implemented.");
     }
 
     // private makeGetSingleExcerptMapperSelector(id: string): GetExcerptMapperSelector {
@@ -211,8 +190,8 @@ export class PocketService extends Plugin implements IPocketService {
         this.pocketProvider = provider
     }
 
-    setReportProvider(provider: IEntityProvider<ReportInfo>): void {
-        this.reportProvider = provider;
+    setResourceProvider(provider: IEntityProvider<ResourceInfo>): void {
+        this.resourceProvider = provider;
     }
 
     setExcerptProvider(provider: IEntityProvider<ExcerptInfo>): void {
@@ -249,20 +228,6 @@ export class PocketService extends Plugin implements IPocketService {
         if (pocketMappers[id] != null) {
             result = pocketMappers[id];
         }
-
-        return result;
-    }
-
-    getReportMapper(reportId: string): Nullable<ReportMapper> {
-        let result: Nullable<ReportMapper> = null;
-
-        let pocketMappers = this.getPocketMappers();
-
-        forEach(pocketMappers, (pocketMapper: PocketMapper) => {
-            if (pocketMapper.pocket.report_ids?.includes(reportId)) {
-                result = pocketMapper.reportMappers[reportId];
-            }
-        });
 
         return result;
     }
@@ -314,6 +279,8 @@ export class PocketService extends Plugin implements IPocketService {
     }
 
     updatePocket(id: string, pocketMapper: PocketMapper): void {
+
+
         this.pocketProvider?.update(id, pocketMapper)
             .then((pocketMapper: Nullable<PocketMapper>) => {
                 if (pocketMapper != null) {
@@ -325,230 +292,59 @@ export class PocketService extends Plugin implements IPocketService {
     private flattenPocketMapper(pocketMapper: PocketMapper) {
         const result = [];
 
+        debugger
+
         result.push(pocketMapper.pocket);
 
-        forEach(pocketMapper.reportMappers, (reportMapper: ReportMapper) => {
-           result.push(reportMapper.report);
+        forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
+            result.push(resourceMapper.resource);
 
-           forEach(reportMapper.reportDocumentMappers, (reportDocumentMapper: ReportDocumentMapper) => {
-               result.push(reportDocumentMapper.document);
+            forEach(resourceMapper.excerptMappers, (excerptMapper: ExcerptMapper) => {
+                result.push(excerptMapper.excerpt);
 
-               forEach(reportDocumentMapper.excerptMappers, (excerptMapper: ExcerptMapper) => {
-                   result.push(excerptMapper.excerpt);
-
-                   forEach(excerptMapper.notes, (note: NoteInfo) => {
-                       result.push(note);
-                   })
-               })
-           })
+                forEach(excerptMapper.notes, (note: NoteInfo) => {
+                    result.push(note);
+                });
+            });
         });
 
         return result;
     }
 
-    getOrCreateExcerpt(excerptParamType: ExcerptParamType): Promise<Nullable<ExcerptInfo>> {
-        return this.getOrCreateItem(ExcerptInfo.class, this.excerptProvider, excerptParamType);
-    }
-
-    getOrCreateNote(noteParam: NoteParamType): Promise<Nullable<NoteInfo>> {
-        return this.getOrCreateItem(NoteInfo.class, this.noteProvider, noteParam);
-    }
-
-    getOrCreateReport(reportParams: ReportParamType): Promise<Nullable<ReportInfo>> {
-        return this.getOrCreateItem(ReportInfo.class, this.reportProvider, reportParams);
-    }
-
-    getOrCreateItem<EntityType extends IRepoItem, ParamType extends {id?: string}>(entityClassName: string, entityProvider: Nullable<IEntityProvider<EntityType>>, params: ParamType) {
-        return new Promise<EntityType>((resolve, reject) => {
-                let lastPathIndex = entityClassName.lastIndexOf('/');
-                let shortClassName = entityClassName.slice(0, lastPathIndex);
-
-                if (params.id != null) {
-                    const reportItem = this.getRepoItem<EntityType>(entityClassName, params.id);
-
-                    if (reportItem != null) {
-                        resolve(reportItem);
-                    }
-                    else {
-                        this.error(`Error while retrieving ${shortClassName}: ${shortClassName} id was supplied but does not exist locally`);
-                    }
-                }
-                else {
-                    if (entityProvider == null) {
-                        this.error(`${shortClassName} Provider null in Pocket Service`);
-                        reject(null);
-                    }
-                    else {
-                        entityProvider.create(params)
-                            .then(result => {
-                                if (result != null) {
-                                    resolve(result);
-                                }
-                                else {
-                                    reject(null);
-                                }
-                            })
-                            .catch(error => {
-                                this.error(error + `\nError while creating ${shortClassName} with params ${JSON.stringify(params)}`);
-                                reject(null);
-                            });
-                    }
-                }
-            }
-        );
-    }
-
-    addOrUpdateReportDocument(reportDocumentParams: ReportDocumentParamType): Promise<Nullable<ReportDocumentInfo>> {
-        return Promise.resolve(null);
-    }
-
-    getExcerpt(id: string): Nullable<ExcerptInfo> {
-        return null;
-    }
-
-    getNote(id: string): Nullable<NoteInfo> {
-        return null;
-    }
-
-    getReport(id: string): Nullable<ReportInfo> {
-        return null;
-    }
-
-    getReportDocument(id: string): Nullable<ReportDocumentInfo> {
-        return null;
+    addOrUpdateExcerpt(excerptParamType: ExcerptParamType): Promise<Nullable<ExcerptInfo>> {
+        return this.addOrUpdateRemoteItem(ExcerptInfo.class, this.excerptProvider, excerptParamType);
     }
 
     removeExcerpt(id: string): void {
-    }
-
-    removeNote(id: string): void {
-    }
-
-    removeReport(id: string): void {
-    }
-
-    removeReportDocument(id: string): void {
 
     }
 
-    addExcerptToReportDocument(excerptParams: ExcerptParamType, reportDocumentParams: ReportDocumentParamType): void {
+    getExcerpt(id: string): Nullable<ExcerptInfo> {
+        return this.getRepoItem(ExcerptInfo.class, id);
     }
 
-    addNoteToExcerpt(noteParams: NoteParamType, excerptParams: ExcerptParamType, reportDocumentParams: ReportDocumentParamType): void {
+    addOrUpdateNote(noteParam: NoteParamType): Promise<Nullable<NoteInfo>> {
+        return this.addOrUpdateRemoteItem(NoteInfo.class, this.noteProvider, noteParam);
     }
 
-    addNoteToReport(noteParams: NoteParamType, reportDocumentParams: ReportDocumentParamType): void {
+    removeNote(id: string): Promise<Nullable<NoteInfo>> {
+        return this.deleteRemoteItem<NoteInfo>(NoteInfo.class, id, this.noteProvider);
     }
 
-    addReportToPocket(reportParams: ReportParamType, pocketParams: PocketParamType): void {
-
+    getNote(id: string): Nullable<NoteInfo> {
+        return this.getRepoItem(NoteInfo.class, id);
     }
 
 
+    addOrUpdateResource(reportDocumentParams: ResourceParamType): Promise<Nullable<ResourceInfo>> {
+        throw new Error('Method not implemented.');
+    }
 
+    removeResource(id: string): void {
+        throw new Error('Method not implemented.');
+    }
 
-
-    // private createExcerpt(excerptText: string, reportId: string, documentId: string, text: string, location: string): Promise<createExcerptReturnArgs> {
-    //     const me = this;
-    //
-    //     return new Promise<createExcerptReturnArgs>((resolve, reject) => {
-    //         this.excerptProvider?.create({excerptText, location})
-    //             .then(excerpt => {
-    //
-    //                 const report = me.getRepoItem<ReportInfo>(ReportInfo.class, reportId);
-    //
-    //                 if (excerpt == null) {
-    //                     reject('Unable to create excerpt on the server')
-    //                 }
-    //                 else if (report == null) {
-    //                     reject(`Report with id ${reportId} does not exist`);
-    //                 }
-    //
-    //                 else {
-    //
-    //                     let reportDocument = this.getRepoItem<ReportDocumentInfo>(ReportDocumentInfo.class, documentId);
-    //
-    //                     // if the report does not contain the document id or if it is null, then set it up
-    //                     if (reportDocument == null || !report.document_ids.includes(documentId)) {
-    //                         let docInfo = this.getRepoItem<DocumentInfo>(DocumentInfo.class, documentId);
-    //
-    //                         // create the report document from the search document
-    //                         if (docInfo != null) {
-    //                             reportDocument = new ReportDocumentInfo(docInfo.id);
-    //                             reportDocument.title = docInfo.title;
-    //                             reportDocument.author_id = docInfo.author;
-    //                             reportDocument.publication_date = docInfo.publication_date;
-    //                             if (!reportDocument.excerptIds.includes(excerpt.id)) {
-    //                                 reportDocument.excerptIds.push(excerpt.id);
-    //                             }
-    //                         }
-    //
-    //                         // add the report id to the report
-    //                         if (reportDocument != null) {
-    //                             if (!report.document_ids.includes(reportDocument.id)) {
-    //                                 report.document_ids.push(reportDocument.id);
-    //                             }
-    //                         }
-    //                     }
-    //
-    //                     if (reportDocument == null) {
-    //                         reject(`Could not find document with id - ${documentId}`);
-    //                     }
-    //                     else {
-    //                         resolve({report, reportDocument: reportDocument, excerpt});
-    //                     }
-    //                 }
-    //             })
-    //     });
-    // }
-    //
-    //
-    // /***
-    //  * @param text - note text
-    //  * @param reportId - id of the report chosen by the user
-    //  * @param documentId - document currently visible to the user
-    //  * @param excerptText - highlighted text in the document
-    //  * @param location - location of text in the document
-    //  */
-    // createNoteWithoutExcerpt(text: string, reportId: string, documentId: string, excerptText: string, location: string): void {
-    //     this.createExcerpt(text, reportId, documentId, excerptText, location)
-    //         .then(data => {
-    //             const report = data.report;
-    //             const reportDocument = data.reportDocument;
-    //             const excerpt = data.excerpt;
-    //
-    //             this.noteProvider?.create(text)
-    //                 .then(note => {
-    //                     if (note != null) {
-    //                         if (!excerpt.noteIds.includes(note.id)) {
-    //                             excerpt.noteIds.push(note.id);
-    //                         }
-    //
-    //                         this.addOrUpdateAllRepoItems([report, reportDocument, excerpt, note]);
-    //
-    //                         // now find the pocket and send the update
-    //                         let pocketInfos = this.getAll<PocketInfo>(PocketInfo.class);
-    //                         forEach(pocketInfos, (pocket: PocketInfo) => {
-    //                             if (pocket.report_ids.includes(report.id)) {
-    //                                 let pocketMapper = this.getPocketMapper(pocket.id);
-    //                                 if (pocketMapper != null) {
-    //                                     this.updatePocket(pocket.id, pocketMapper);
-    //                                 }
-    //                                 return true;
-    //                             }
-    //                         });
-    //                     }
-    //                     else {
-    //                         this.error(`Error when creating note with text "${text}"`);
-    //                     }
-    //                 })
-    //                 .catch(error => {
-    //                     this.error(error);
-    //                 })
-    //
-    //         })
-    //         .catch(error => {
-    //             this.error(error);
-    //         })
-    // }
+    getResource(id: string): Nullable<ResourceInfo> {
+        return this.getRepoItem(ResourceInfo.class, id);
+    }
 }

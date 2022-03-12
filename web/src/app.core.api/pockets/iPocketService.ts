@@ -1,28 +1,23 @@
 import {IPlugin, ISelectionService} from "../../framework.api";
 import {IUserService} from "../users/iUserService";
-import {IEntityProvider} from "../common/iEntityProvider";
+import {IEntityProvider} from "../../framework.api/iEntityProvider";
 import {
-    CitationType,
     ExcerptInfo,
     NoteInfo,
     PocketInfo,
     PocketMapper,
-    ReportDocumentInfo,
+    ResourceInfo,
     ReportInfo
 } from "../../app.model";
 import {Nullable} from "../../framework.core/extras/typeUtils";
 import {IDocumentService} from "../documents/iDocumentService";
-import {ExcerptMapper} from "../../app.model";
-import {ReportMapper} from "../../app.model";
-import {RepoItem} from "../../framework.core/services/repoService/repoItem";
-import {nameOf} from "../../framework.core/extras/typeUtils";
 
 export interface IPocketService extends IPlugin {
     /********** begin dependency injection **************************/
     setPocketProvider(provider: IEntityProvider<PocketMapper>): void;
+    setResourceProvider(provider: IEntityProvider<ResourceInfo>): void;
     setExcerptProvider(provider:IEntityProvider<ExcerptInfo>): void;
     setNoteProvider(provider:IEntityProvider<NoteInfo>): void;
-    setReportProvider(provider: IEntityProvider<ReportInfo>): void;
 
     setUserService(userService: IUserService): void;
     setSelectionService(service: ISelectionService): void;
@@ -45,36 +40,23 @@ export interface IPocketService extends IPlugin {
     /*********** end pocket methods *************************/
 
 
-    /*********** begin report methods *************************/
-    getOrCreateReport(reportParams: ReportParamType): Promise<Nullable<ReportInfo>>;
-    removeReport(id: string): void;
-
-    getReport(id:string): Nullable<ReportInfo>;
-
-    getReportMapper(reportId: string): Nullable<ReportMapper>;
-    /*********** end report methods *************************/
-
-
     /*********** begin report document methods *************************/
-    addOrUpdateReportDocument(reportDocumentParams: ReportDocumentParamType): Promise<Nullable<ReportDocumentInfo>>;
-    removeReportDocument(id: string): void;
-
-    getReportDocument(id:string): Nullable<ReportDocumentInfo>;
+    addOrUpdateResource(resourceParams: ResourceParamType): Promise<Nullable<ResourceInfo>>;
+    removeResource(id: string): void;
+    getResource(id:string): Nullable<ResourceInfo>;
     /*********** end report document methods *************************/
 
 
     /*********** begin excerpt methods *************************/
-    getOrCreateExcerpt(excerptParams: ExcerptParamType): Promise<Nullable<ExcerptInfo>>;
+    addOrUpdateExcerpt(excerptParams: ExcerptParamType): Promise<Nullable<ExcerptInfo>>;
     removeExcerpt(id: string): void;
-
     getExcerpt(id:string): Nullable<ExcerptInfo>;
     /*********** end excerpt methods *************************/
 
 
     /*********** begin note methods *************************/
-    getOrCreateNote(noteParam: NoteParamType): Promise<Nullable<NoteInfo>>;
+    addOrUpdateNote(noteParam: NoteParamType): Promise<Nullable<NoteInfo>>;
     removeNote(id: string): void;
-
     getNote(id:string): Nullable<NoteInfo>;
     /*********** end note methods *************************/
 
@@ -82,13 +64,13 @@ export interface IPocketService extends IPlugin {
 
     /*********** begin multi-part methods *************************/
 
-    addNoteToExcerpt(noteParams: NoteParamType, excerptParams: ExcerptParamType, reportDocumentParams: ReportDocumentParamType): void;
-
-    addNoteToReport(noteParams: NoteParamType, reportDocumentParams: ReportDocumentParamType): void;
-
-    addExcerptToReportDocument(excerptParams: ExcerptParamType, reportDocumentParams: ReportDocumentParamType): void;
-
-    addReportToPocket(reportParams: ReportParamType, pocketParams: PocketParamType): void;
+    // addNoteToExcerpt(noteParams: NoteParamType, excerptParams: ExcerptParamType, reportDocumentParams: ResourceParamType): void;
+    //
+    // addNoteToReport(noteParams: NoteParamType, reportDocumentParams: ResourceParamType): void;
+    //
+    // addExcerptToReportDocument(excerptParams: ExcerptParamType, reportDocumentParams: ResourceParamType): void;
+    //
+    // addReportToPocket(reportParams: ReportParamType, pocketParams: PocketParamType): void;
 
     /*********** end multi-part methods *************************/
 
@@ -117,6 +99,6 @@ type OmitParamsType = 'className';
 
 export type ExcerptParamType = Omit<Partial<ExcerptInfo>, OmitParamsType>;
 export type NoteParamType = Omit<Partial<NoteInfo>, OmitParamsType>;
-export type ReportDocumentParamType = Omit<Partial<ReportDocumentInfo>, OmitParamsType>;
+export type ResourceParamType = Omit<Partial<ResourceInfo>, OmitParamsType>;
 export type ReportParamType = Omit<Partial<ReportInfo>, OmitParamsType>;
 export type PocketParamType = Omit<Partial<PocketInfo>, OmitParamsType>;

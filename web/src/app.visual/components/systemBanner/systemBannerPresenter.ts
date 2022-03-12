@@ -6,7 +6,7 @@ import {
     documentService,
     referenceService,
     userService
-} from "../../../app.core/serviceComposition";
+} from "../../../serviceComposition";
 import {ReferenceType, UserInfo} from "../../../app.model";
 import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
 import {createSelector} from "@reduxjs/toolkit";

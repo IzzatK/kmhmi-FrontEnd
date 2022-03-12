@@ -1,8 +1,8 @@
 import {WocketInfo} from "./wocketInfo";
 
-export class ReportDocumentInfo extends WocketInfo {
+export class ResourceInfo extends WocketInfo {
 
-  public static class: string = 'ReportDocumentInfo';
+  public static class: string = 'ResourceInfo';
 
   title: string = '';
   publication_date: string = '';
@@ -13,6 +13,6 @@ export class ReportDocumentInfo extends WocketInfo {
   {
     super(id);
 
-    this.appendClassName(ReportDocumentInfo.class);
+    this.appendClassName(ResourceInfo.class);
   }
 }

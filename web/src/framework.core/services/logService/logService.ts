@@ -3,7 +3,7 @@ import {ILogService} from "../../../framework.api";
 import {ILogger} from "../../../framework.api";
 import {DefaultLogger} from "./defaultLogger";
 import {LogLevel} from "../../../framework.api";
-import {getRootLogger, JsonLayout, Level, PatternLayout, PopUpAppender} from "log4javascript";
+import {getRootLogger, Level, PatternLayout, PopUpAppender} from "log4javascript";
 import {Nullable} from "../../extras/typeUtils";
 
 export class LogService extends BasePlugin implements ILogService {

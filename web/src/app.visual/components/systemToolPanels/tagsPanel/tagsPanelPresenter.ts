@@ -2,7 +2,7 @@ import TagsPanelView from "./tagsPanelView";
 import {Presenter} from "../../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../../framework.visual/wrappers/componentWrapper";
 import {createSelector} from "@reduxjs/toolkit";
-import {selectionService, tagService} from "../../../../app.core/serviceComposition";
+import {selectionService, tagService} from "../../../../serviceComposition";
 import {TagInfoVM} from "./tagsPanelModel";
 import {forEach} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {TagInfo} from "../../../../app.model";

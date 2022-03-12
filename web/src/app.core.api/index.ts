@@ -4,8 +4,6 @@
 
 export * from "./authentication/iAuthenticationService";
 export * from "./authorization/iAuthorizationService";
-export * from "./common/iConverter";
-export * from "./common/iEntityProvider";
 export * from "./documents/iDocumentService";
 export * from "./pockets/iPocketService";
 export * from "./references/iReferenceService";

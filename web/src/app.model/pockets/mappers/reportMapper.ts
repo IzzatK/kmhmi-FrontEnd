@@ -1,15 +1,15 @@
 import {ReportInfo} from "../reportInfo";
-import {ReportDocumentMapper} from "./reportDocumentMapper";
+import {ResourceMapper} from "./resourceMapper";
 
 export class ReportMapper {
   protected _id: string;
 
   constructor(protected _report: ReportInfo,
-              protected _reportDocumentMappers: Record<string, ReportDocumentMapper>
+              protected _resourceMappers: Record<string, ResourceMapper>
   )
   {
     this._id = _report.id;
-    this._reportDocumentMappers = _reportDocumentMappers;
+    this._resourceMappers = _resourceMappers;
   }
 
   get id(): string {
@@ -20,7 +20,7 @@ export class ReportMapper {
     return this._report;
   }
 
-  get reportDocumentMappers(): Record<string, ReportDocumentMapper> {
-    return this._reportDocumentMappers;
+  get resourceMappers(): Record<string, ResourceMapper> {
+    return this._resourceMappers;
   }
 }

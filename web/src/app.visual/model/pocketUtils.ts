@@ -1,10 +1,9 @@
-import {ExcerptInfo, ExcerptMapper, NoteInfo, PocketMapper, ReportDocumentInfo} from "../../app.model";
+import {ExcerptMapper, NoteInfo, PocketMapper} from "../../app.model";
 import {Nullable} from "../../framework.core/extras/typeUtils";
 import {createSelector} from "@reduxjs/toolkit";
-import {pocketService} from "../../app.core/serviceComposition";
+import {pocketService} from "../../serviceComposition";
 import {forEach} from "../../framework.visual/extras/utils/collectionUtils";
-import {ReportMapper} from "../../app.model/pockets/mappers/reportMapper";
-import {ReportDocumentMapper} from "../../app.model/pockets/mappers/reportDocumentMapper";
+import {ResourceMapper} from "../../app.model";
 
 export function buildSinglePocketNode(pocketMapper: PocketMapper) : Nullable<PocketNodeVM> {
     return null;
@@ -32,80 +31,46 @@ export const getPocketNodeVMs = createSelector(
                 childNodes: []
             }
 
-            forEach(pocketMapper.reportMappers, (reportMapper: ReportMapper) => {
-                const report = reportMapper.report;
-                const reportPath = `${pocketPath}/${report.id}`;
+            forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
+                const resource = resourceMapper.resource;
+                const resourcePath = `${pocketPath}/${resource.id}`;
 
-                nodeVMs[reportPath] = {
-                    id: reportMapper.id,
-                    type: PocketNodeType.REPORT,
-                    path: reportPath,
-                    title: reportMapper.report.title || '',
+                nodeVMs[resourcePath] = {
+                    id: resource.id,
+                    type: PocketNodeType.DOCUMENT,
+                    path: resourcePath,
+                    title: resource.title || '',
                     childNodes: []
                 }
 
-                forEach(reportMapper.reportDocumentMappers, (reportDocumentMapper: ReportDocumentMapper) => {
-                    const reportDocument = reportDocumentMapper.document;
-                    const reportDocumentPath = `${reportPath}/${reportDocument.id}`;
+                forEach(resourceMapper.excerptMappers, (excerptMapper: ExcerptMapper) => {
+                    const excerpt = excerptMapper.excerpt;
+                    const excerptPath = `${resourcePath}/${excerpt.id}`;
 
-                    nodeVMs[reportDocumentPath] = {
-                        id: reportDocument.id,
-                        type: PocketNodeType.DOCUMENT,
-                        path: reportDocumentPath,
-                        title: reportDocument.title || '',
+                    nodeVMs[excerptPath] = {
+                        id: excerpt.id,
+                        type: PocketNodeType.EXCERPT,
+                        path: excerptPath,
+                        title: '',
                         childNodes: []
                     }
 
-                    forEach(reportDocumentMapper.excerptMappers, (excerptMapper: ExcerptMapper) => {
-                        const excerpt = excerptMapper.excerpt;
-                        const excerptPath = `${reportDocumentPath}/${excerpt.id}`;
+                    forEach(excerptMapper.notes, (note: NoteInfo) => {
+                        const notePath = `${excerptPath}/${note.id}`;
 
                         nodeVMs[excerptPath] = {
-                            id: excerpt.id,
+                            id: note.id,
                             type: PocketNodeType.EXCERPT,
-                            path: excerptPath,
+                            path: notePath,
                             title: '',
                             childNodes: []
                         }
-
-                        forEach(excerptMapper.notes, (note: NoteInfo) => {
-                            const notePath = `${excerptPath}/${note.id}`;
-
-                            nodeVMs[excerptPath] = {
-                                id: note.id,
-                                type: PocketNodeType.EXCERPT,
-                                path: notePath,
-                                title: '',
-                                childNodes: []
-                            }
-                        })
-
                     })
 
                 })
             });
-        })
+        });
 
-
-        // // build the hash map used to store data
-        // let nodeKeys = Object.keys(nodes), nodesLength = nodeKeys.length;
-        // for (let index = 0; index < nodesLength; index++) {
-        //     let node = nodes[nodeKeys[index]];
-        //
-        //     let nodeVM = {
-        //         id: node.path,
-        //         path: node.path,
-        //         type: node.type,
-        //         name: node.name,
-        //         properties: {
-        //             ...node.properties
-        //         },
-        //         notificationCount: 0,
-        //         childNodes : [],
-        //     };
-        //
-        //     nodeVMs[node.path] = nodeVM;
-        // }
         return nodeVMs;
     }
 );

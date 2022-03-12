@@ -7,8 +7,6 @@ import {CirclePieChart} from "../../theme/widgets/amcharts/circlePieChart/circle
 import {DonutPieChart} from "../../theme/widgets/amcharts/donutPieChart/donutPieChart";
 import {VariableRadiusDonutPieChart} from "../../theme/widgets/amcharts/variableRadiusDonutPieChart/variableRadiusDonutPieChart";
 import {SearchGraphsState, SearchGraphsProps} from "./searchGraphsModel";
-import {StackedBarChart} from "../../theme/widgets/amcharts/stackedBarChart/stackedBarChart";
-import {ListChart} from "../../theme/widgets/amcharts/listChart/listChart";
 
 export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGraphsState> {
 

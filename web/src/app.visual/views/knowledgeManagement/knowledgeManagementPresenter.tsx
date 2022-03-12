@@ -5,7 +5,7 @@ import KnowledgeManagementView from "./knowledgeManagementView";
 import {KnowledgeManagementDispatchProps, KnowledgeManagementStateProps} from "./knowledgeManagementModel";
 import {Presenter} from "../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../framework.visual/wrappers/componentWrapper";
-import {authenticationService} from "../../../app.core/serviceComposition";
+import {authenticationService} from "../../../serviceComposition";
 
 class KnowledgeManagement extends Presenter {
     constructor() {

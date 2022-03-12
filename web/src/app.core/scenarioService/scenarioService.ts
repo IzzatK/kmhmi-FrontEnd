@@ -1,5 +1,5 @@
 import {ParamType, ReferenceType, SearchBannerMenuItem, SearchParamInfo, SortPropertyInfo} from "../../app.model";
-import {RepoItem} from "../../framework.core/services/repoService/repoItem";
+import {RepoItem} from "../../framework.core/services";
 import {nameOf, Nullable} from "../../framework.core/extras/typeUtils";
 import {forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
 import {getDateWithoutTime} from "../../framework.visual/extras/utils/timeUtils";

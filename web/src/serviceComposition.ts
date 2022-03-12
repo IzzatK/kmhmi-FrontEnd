@@ -1,53 +1,63 @@
-import {RepositoryService} from "../framework.core/services/repoService/repoService";
-import {ILogService, IStorage} from "../framework.api";
-import {LogService} from "../framework.core/services/logService/logService";
-import {SelectionService} from "../framework.core/services/selectionService/selectionService";
-import {DisplayService} from "../framework.core/services/displayService/displayService";
-import {DocumentService} from "./documents/documentService";
-import {ReferenceService} from "./references/referenceService";
-import {UserService} from "./users/userService";
-import {AuthenticationService} from "./authentication/authenticationService";
-import {StatService} from "./stats/statService";
-import {TagService} from "./tags/tagService";
-import {ScenarioService} from "./scenarioService/scenarioService";
-import {UserProvider} from "./users/providers/userProvider";
-import {IRepositoryService} from "../framework.api";
-import {ISelectionService} from "../framework.api";
-import {IDisplayService} from "../framework.api";
-import {IAuthorizationService, IPocketService, IScenarioService} from "../app.core.api";
-import {IAuthenticationService} from "../app.core.api";
-import {IDocumentService} from "../app.core.api";
-import {IReferenceService} from "../app.core.api";
-import {IStatService} from "../app.core.api";
-import {ITagService} from "../app.core.api";
-import {IUserService} from "../app.core.api";
-import {IEntityProvider} from "../app.core.api";
-import {HttpService} from "../framework.core/services/httpService/httpService";
-import {IHttpService} from "../framework.api";
+import {
+    IDisplayService,
+    IHttpService,
+    ILogService,
+    IRepositoryService,
+    ISelectionService,
+    IStorage,
+    IEntityProvider
+} from "./framework.api";
+import {AppDataStore} from "./framework.core/redux/reduxStore";
+import {
+    DisplayService,
+    HttpService,
+    LogService,
+    RepositoryService,
+    SelectionService
+} from "./framework.core/services";
+
+import {
+    IAuthenticationService,
+    IAuthorizationService,
+    IDocumentService,
+    IPocketService,
+    IReferenceService, IScenarioService,
+    IStatService,
+    ITagService, IUserProvider,
+    IUserService
+} from "./app.core.api";
 import {
     DocumentInfo,
-    ReferenceInfo,
+    ExcerptInfo,
+    NoteInfo,
+    PermissionInfo,
+    PocketMapper, ReferenceInfo,
+    RoleInfo,
     StatInfo,
-    TagInfo,
-    RoleInfo, NoteInfo, ExcerptInfo
-} from "../app.model";
-import {DocumentProvider} from "./documents/providers/documentProvider";
-import {ReferenceProvider} from "./references/providers/referenceProvider";
-import {StatProvider} from "./stats/providers/statProvider";
-import {TagProvider} from "./tags/providers/tagProvider";
-import {IUserProvider} from "../app.core.api";
-import {RoleProvider} from "./users/providers/roleProvider";
-import {AppDataStore} from "../framework.core/redux/reduxStore";
-import {PermissionInfo} from "../app.model";
-import {PermissionProvider} from "./authorization/providers/permissionProvider";
-import {AuthorizationService} from "./authorization/authorizationService";
-import {MockPocketProvider} from "./pockets/providers/mockPocketProvider";
-import {PocketService} from "./pockets/pocketService";
-import {PocketMapper} from "../app.model";
-import {MockNoteProvider} from "./pockets/providers/mockNoteProvider";
-import {MockExcerptProvider} from "./pockets/providers/mockExcerptProvider";
+    TagInfo
+} from "./app.model";
+import {
+    AuthenticationService,
+    AuthorizationService,
+    DocumentProvider,
+    DocumentService,
+    PermissionProvider,
+    PocketService,
+    ReferenceProvider,
+    ReferenceService,
+    RoleProvider,
+    ScenarioService,
+    StatProvider,
+    StatService,
+    TagProvider,
+    TagService,
+    UserProvider,
+    UserService
+} from "./app.core";
+import {MockExcerptProvider, MockNoteProvider, MockPocketProvider} from "./app.testing/canary";
 
-// create the framework plugins
+
+
 export const appDataStore:IStorage = new AppDataStore();
 export const logService: ILogService = new LogService();
 export const repoService: IRepositoryService = new RepositoryService();

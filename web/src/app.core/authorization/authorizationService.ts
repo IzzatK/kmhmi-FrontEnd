@@ -2,13 +2,12 @@ import {
     AuthenticationStatus,
     IAuthenticationService,
     IAuthorizationService,
-    IEntityProvider,
     PERMISSION_ENTITY,
     PERMISSION_LEVEL,
     PERMISSION_OPERATOR,
 } from "../../app.core.api";
 import {Nullable} from "../../framework.core/extras/typeUtils";
-import {IStorage} from "../../framework.api";
+import {IEntityProvider, IStorage} from "../../framework.api";
 import {Plugin} from "../../framework.core/extras/plugin";
 import {createSelector, createSlice, OutputSelector, PayloadAction, Selector, Slice} from "@reduxjs/toolkit";
 import {PermissionInfo} from "../../app.model";

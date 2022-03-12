@@ -4,17 +4,16 @@ import {DocumentPanelId} from "../../../components/documentPanel/documentPanelPr
 import {Presenter} from "../../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../../framework.visual/wrappers/componentWrapper";
 import {
-    authenticationService,
     authorizationService,
     displayService,
     userService
-} from "../../../../app.core/serviceComposition";
+} from "../../../../serviceComposition";
 import {AppView} from "./appView";
 import {PermissionsVM, StateProps} from "./appModel";
 import {createSelector} from "@reduxjs/toolkit";
 import {PermissionInfo} from "../../../../app.model";
-import {PERMISSION_ENTITY, PERMISSION_OPERATOR, AuthenticationStatus} from "../../../../app.core.api";
-import {NodeInfo} from "../../../../framework.core/services/displayService/displayService";
+import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../../app.core.api";
+import {NodeInfo} from "../../../../framework.core/services";
 import {ReportPanelId} from "../../../components/reportPanel/reportPanelPresenter";
 
 class App extends Presenter {

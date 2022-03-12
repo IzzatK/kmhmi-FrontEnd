@@ -1,4 +1,4 @@
-import {createSlice, Dispatch, PayloadAction, Slice} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction, Slice} from "@reduxjs/toolkit";
 import {forEach, forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
 import {IRepoItem} from "./repoItem";
 import {BasePlugin} from "../../extras/basePlugin";

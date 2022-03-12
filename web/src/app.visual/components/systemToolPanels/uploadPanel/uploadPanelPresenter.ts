@@ -10,7 +10,7 @@ import {
     documentService,
     referenceService,
     selectionService
-} from "../../../../app.core/serviceComposition";
+} from "../../../../serviceComposition";
 import {PendingDocumentVM} from "./uploadPanelModel";
 
 class UploadPanel extends Presenter {

@@ -1,4 +1,4 @@
-import {RepoItem} from "../framework.core/services/repoService/repoItem";
+import {RepoItem} from "../framework.core/services";
 import {StatusType} from "./statusType";
 
 export class DocumentInfo extends RepoItem{

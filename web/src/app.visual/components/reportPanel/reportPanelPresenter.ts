@@ -1,12 +1,8 @@
 import {Presenter} from "../../../framework.visual/extras/presenter";
 import ReportPanelView from "./reportPanelView";
 import {createComponentWrapper} from "../../../framework.visual/wrappers/componentWrapper";
-import {CitationType, DocumentInfo, ExcerptInfo, NoteInfo} from "../../../app.model";
-import {createSelector} from "@reduxjs/toolkit";
-import {DocumentVM, ExcerptVM, NoteVM, ReportInfoVM} from "./reportPanelModel";
-import {documentService, pocketService, selectionService} from "../../../app.core/serviceComposition";
-import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
-import {Nullable} from "../../../framework.core/extras/typeUtils";
+import {CitationType} from "../../../app.model";
+import {selectionService} from "../../../serviceComposition";
 
 class ReportPanel extends Presenter {
     constructor() {

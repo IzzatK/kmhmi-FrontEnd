@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {getClassNames} from "../extras/utils/animationUtils";
 import {CSSTransition} from "react-transition-group";
-import {displayService} from "../../app.core/serviceComposition";
+import {displayService} from "../../serviceComposition";
 
 type Props = {
     visible: boolean;

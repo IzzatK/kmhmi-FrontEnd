@@ -1,7 +1,7 @@
 import {StatType} from "../../app.model";
 import {StatInfo} from "../../app.model";
 import {IPlugin} from "../../framework.api";
-import {IEntityProvider} from "../common/iEntityProvider";
+import {IEntityProvider} from "../../framework.api/iEntityProvider";
 
 export interface IStatService extends IPlugin {
     fetchStats(): void;

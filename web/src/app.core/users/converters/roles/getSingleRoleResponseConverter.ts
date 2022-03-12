@@ -2,7 +2,7 @@ import {RoleInfo} from "../../../../app.model";
 import {forEach, forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
 import {ReferenceType} from "../../../../app.model";
 import {Nullable} from "../../../../framework.core/extras/typeUtils";
-import {referenceService} from "../../../serviceComposition";
+import {referenceService} from "../../../../serviceComposition";
 import {Converter} from "../../../common/converters/converter";
 
 export class GetSingleRoleResponseConverter extends Converter<any, Nullable<RoleInfo>>{

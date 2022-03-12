@@ -7,13 +7,12 @@ import {
     SearchWrapperProps, SearchWrapperState, SearchViewProps, SearchViewController
 } from "./searchModel";
 import {connect} from "react-redux";
-import {createDisplayConnector} from "../../../../../framework.visual/wrappers/displayWrapper";
 import {SearchPresenter} from "./searchPresenter";
 import {SearchController} from "./searchController";
 import {Wrapper} from "../../../../../framework.visual/ca/wrapper";
 import {makeGuid} from "../../../../../framework.visual/extras/utils/uniqueIdUtils";
 import {UserInfo} from "../../../../../app.model";
-import {userService} from "../../../../../app.core/serviceComposition";
+import {userService} from "../../../../../serviceComposition";
 
 
 // wrapper ties all the pieces together
