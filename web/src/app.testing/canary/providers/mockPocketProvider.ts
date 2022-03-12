@@ -1,5 +1,13 @@
 import {EntityProvider} from "../../../app.core";
-import {PocketInfo, PocketMapper, ResourceInfo, ResourceMapper} from "../../../app.model";
+import {
+    ExcerptInfo,
+    ExcerptMapper,
+    NoteInfo,
+    PocketInfo,
+    PocketMapper,
+    ResourceInfo,
+    ResourceMapper
+} from "../../../app.model";
 import {Nullable} from "../../../framework.core/extras/typeUtils";
 import {forEach} from "../../../framework.visual/extras/utils/collectionUtils";
 import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
@@ -81,14 +89,29 @@ export class MockPocketProvider extends EntityProvider<PocketMapper> {
         const resource: ResourceInfo = new ResourceInfo(makeGuid());
         resource.title = `resource ${resource.id}`;
 
+        const excerpt: ExcerptInfo = new ExcerptInfo(makeGuid());
+        excerpt.text = 'some really lengthy excerpt text goes here';
+
+        const note: NoteInfo = new NoteInfo(makeGuid());
+        note.text = 'some note text can go here';
+
         pocket.resource_ids.push(resource.id);
+        resource.excerptIds.push(excerpt.id);
+        excerpt.noteIds.push(note.id);
 
         const pocketMapper = new PocketMapper(
             pocket,
             {
                 [resource.id]: new ResourceMapper(
                     resource,
-                    {}
+                    {
+                        [excerpt.id]: new ExcerptMapper(
+                            excerpt,
+                            {
+                                [note.id]: note
+                            }
+                        )
+                    }
                 )
             }
         )

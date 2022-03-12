@@ -35,6 +35,7 @@ export const getPocketNodeVMs = createSelector(
                 const resource = resourceMapper.resource;
                 const resourcePath = `${pocketPath}/${resource.id}`;
 
+                debugger
                 nodeVMs[resourcePath] = {
                     id: resource.id,
                     type: PocketNodeType.DOCUMENT,
@@ -58,7 +59,7 @@ export const getPocketNodeVMs = createSelector(
                     forEach(excerptMapper.notes, (note: NoteInfo) => {
                         const notePath = `${excerptPath}/${note.id}`;
 
-                        nodeVMs[excerptPath] = {
+                        nodeVMs[notePath] = {
                             id: note.id,
                             type: PocketNodeType.EXCERPT,
                             path: notePath,
@@ -71,6 +72,7 @@ export const getPocketNodeVMs = createSelector(
             });
         });
 
+        debugger
         return nodeVMs;
     }
 );

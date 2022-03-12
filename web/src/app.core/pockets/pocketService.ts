@@ -62,7 +62,6 @@ export class PocketService extends Plugin implements IPocketService {
             (pockets, resources, excerpts, notes) => {
 
                 const pocketMappers: Record<string, PocketMapper> = {};
-                debugger
 
                 forEach(pockets, (pocketInfo: PocketInfo) => {
 
@@ -291,8 +290,6 @@ export class PocketService extends Plugin implements IPocketService {
 
     private flattenPocketMapper(pocketMapper: PocketMapper) {
         const result = [];
-
-        debugger
 
         result.push(pocketMapper.pocket);
 

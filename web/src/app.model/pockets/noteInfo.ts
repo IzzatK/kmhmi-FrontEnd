@@ -2,7 +2,7 @@ import {WocketInfo} from "./wocketInfo";
 
 export class NoteInfo extends WocketInfo {
 
-  public static class: string = 'PocketInfo';
+  public static class: string = 'NoteInfo';
 
   text: string = '';
   content: string = '';
