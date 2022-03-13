@@ -4,13 +4,12 @@ import {ResourceMapper} from "./resourceMapper";
 
 export class PocketMapper {
   protected _id: string;
+  protected _resourceMappers: Record<string, ResourceMapper> = {};
 
-  constructor(protected _pocket: PocketInfo,
-              protected _resourceMappers: Record<string, ResourceMapper>)
+  constructor(protected _pocket: PocketInfo)
   {
     this._id = _pocket.id;
     this._pocket = _pocket;
-    this._resourceMappers = _resourceMappers;
   }
 
   get id(): string {

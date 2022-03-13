@@ -99,7 +99,7 @@ class TreeNode extends Component<TreeViewProps, TreeViewState> {
                 </div>
 
                 <div className={"tree-node-children-container"}>
-                    <CSSTransition in={expanded} timeout={300} classNames={"tree-node-children"} unmountOnExit={true}>
+                    <CSSTransition in={expanded} timeout={expanded ? 300: 300} classNames={"tree-node-children"} unmountOnExit={true}>
                         <ul className={"tree-node-children"}>
                             {divs}
                         </ul>

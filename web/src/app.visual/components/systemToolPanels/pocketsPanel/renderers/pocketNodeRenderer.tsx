@@ -4,10 +4,13 @@ import Button from "../../../../theme/widgets/button/button";
 import {ShareSVG} from "../../../../theme/svgs/shareSVG";
 import {DownloadSVG} from "../../../../theme/svgs/downloadSVG";
 import {SettingsSVG} from "../../../../theme/svgs/settingsSVG";
+import {bindInstanceMethods} from "../../../../../framework.core/extras/typeUtils";
 
 export class PocketNodeRenderer extends Component<PocketNodeRendererProps, PocketNodeRendererState> {
     constructor(props: any) {
         super(props);
+
+        bindInstanceMethods(this);
     }
 
     _onShare(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
@@ -50,7 +53,7 @@ export class PocketNodeRenderer extends Component<PocketNodeRendererProps, Pocke
         return (
             <div onClick={() => this.props.onSelect(path, selected)} className={cn}>
                 <div className={"d-flex flex-row v-gap-2 justify-content-center align-items-center"}>
-                    <div className={"node-title"}>{title ? title : ''}</div>
+                    <div className={"title"}>{title ? title : ''}</div>
                 </div>
                 <div className={'action-bar d-flex h-gap-3'}>
                     <Button onClick={this._onShare}>

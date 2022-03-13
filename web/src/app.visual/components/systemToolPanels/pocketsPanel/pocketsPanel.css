@@ -6,7 +6,7 @@
     opacity: 0;
 }
 
-.pockets-panel .pocket-node.selected > .action-bar {
+.pockets-panel .pocket-node > .action-bar {
     animation: slideLeftIn 0.2s forwards ease-in;
     animation-delay: 100ms;
 }

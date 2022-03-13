@@ -5,10 +5,13 @@ import {DownloadSVG} from "../../../../theme/svgs/downloadSVG";
 import {RemoveSVG} from "../../../../theme/svgs/removeSVG";
 import {ShareSVG} from "../../../../theme/svgs/shareSVG";
 import {SettingsSVG} from "../../../../theme/svgs/settingsSVG";
+import {bindInstanceMethods} from "../../../../../framework.core/extras/typeUtils";
 
 export class ExcerptNodeRenderer extends Component<NodeRendererProps> {
     constructor(props: any) {
         super(props);
+
+        bindInstanceMethods(this);
     }
 
     render() {
@@ -26,7 +29,7 @@ export class ExcerptNodeRenderer extends Component<NodeRendererProps> {
         return (
             <div onClick={() => this.props.onSelect(path, selected)} className={cn}>
                 <div className={"d-flex flex-row v-gap-2 justify-content-center align-items-center"}>
-                    <div className={"node-title"}>{title ? title : ''}</div>
+                    <div className={"title"}>{title ? title : ''}</div>
                 </div>
                 <div className={'action-bar d-flex h-gap-3'}>
 

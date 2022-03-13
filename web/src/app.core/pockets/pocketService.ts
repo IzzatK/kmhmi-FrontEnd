@@ -4,7 +4,8 @@ import {
     IDocumentService,
     IPocketService,
     IUserService,
-    NoteParamType, ResourceParamType
+    NoteParamType,
+    ResourceParamType
 } from "../../app.core.api";
 import {Plugin} from "../../framework.core/extras/plugin";
 import {
@@ -14,8 +15,8 @@ import {
     NoteInfo,
     PocketInfo,
     PocketMapper,
-    ResourceInfo,
     ReportMapper,
+    ResourceInfo,
     ResourceMapper
 } from "../../app.model";
 import {IEntityProvider, ISelectionService} from "../../framework.api";
@@ -64,31 +65,28 @@ export class PocketService extends Plugin implements IPocketService {
                 const pocketMappers: Record<string, PocketMapper> = {};
 
                 forEach(pockets, (pocketInfo: PocketInfo) => {
-
-                    const tmpResourceMappers: Record<string, ResourceMapper> = {};
+                    const pocketMapper = new PocketMapper(pocketInfo);
 
                     forEach(pocketInfo.resource_ids, (resourceId: string) => {
-
                         const resource: ResourceInfo = resources[resourceId];
-                        const tmpExcerptMappers: Record<string, ExcerptMapper> = {};
+                        const resourceMapper = new ResourceMapper(resource);
 
                         forEach(resource.excerptIds, (excerptId: string) => {
-
                             const excerpt: ExcerptInfo = excerpts[excerptId];
-                            const tmpNotes: Record<string, NoteInfo> = {};
+                            const excerptMapper = new ExcerptMapper(excerpt);
 
                             forEach(excerpt.noteIds, (noteId: string) => {
-                                tmpNotes[noteId] = tmpNotes[noteId];
+                                excerptMapper.notes[noteId] = notes[noteId];
                             });
 
-                            tmpExcerptMappers[excerptId] = new ExcerptMapper(excerpt, notes);
+                            resourceMapper.excerptMappers[excerptId] = excerptMapper;
                         });
 
-                        tmpResourceMappers[resourceId] = new ResourceMapper(resource, tmpExcerptMappers);
+                        pocketMapper.resourceMappers[resourceId] = resourceMapper;
 
                     });
 
-                    pocketMappers[pocketInfo.id] = new PocketMapper(pocketInfo, tmpResourceMappers);
+                    pocketMappers[pocketInfo.id] = pocketMapper;
                 });
 
                 return pocketMappers;
@@ -290,6 +288,8 @@ export class PocketService extends Plugin implements IPocketService {
 
     private flattenPocketMapper(pocketMapper: PocketMapper) {
         const result = [];
+
+        debugger
 
         result.push(pocketMapper.pocket);
 

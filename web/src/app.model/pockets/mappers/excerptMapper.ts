@@ -3,14 +3,12 @@ import {ExcerptInfo} from "../excerptInfo";
 
 export class ExcerptMapper {
   protected _id: string;
+  protected _notes: Record<string, NoteInfo> = {};
 
-  constructor(protected _excerpt: ExcerptInfo,
-              protected _notes: Record<string, NoteInfo>
-  )
+  constructor(protected _excerpt: ExcerptInfo)
   {
     this._id = _excerpt.id;
     this._excerpt = _excerpt;
-    this._notes = _notes;
   }
 
   get id(): string {

@@ -1,11 +1,11 @@
 .tree-view {
-    --tree-view-connector: 0.1rem dashed #86A6BD;
-    --tree-view-disclosure-background: #86A6BD;
+    --tree-view-connector: 0.1rem dashed #6085A6;
+    --tree-view-disclosure-background: #6085A6;
     --tree-view-disclosure-hover-background: #91b5cf;
-    --tree-view-primary-color: #000000;
-    --tree-view-secondary-color: #2B506B;
-    --tree-view-content-border: 0.1rem solid #86A6BD;
-    --tree-view-content-background: transparent linear-gradient(229deg, #FFFFFF 0%, #FFFFFF 100%) 0% 0% no-repeat padding-box;
+    --tree-view-primary-color: #FFFFFF;
+    --tree-view-secondary-color: #FFFFFF;
+    --tree-view-content-border: 0.1rem solid #6085A6;
+    --tree-view-content-background: #212227;
     --tree-view-content-selected-background: transparent linear-gradient(231deg, #D9E3EA 0%, #FFFFFF 100%) 0% 0% no-repeat padding-box;
     --tree-view-content-hover-background: rgba(217, 227, 234, 0.5);
 }
@@ -72,7 +72,7 @@
 }
 
 .tree-view ul li.tree-node > .tree-node-graphic:before {
-    width: 2.5rem;
+    width: 2.5rem !important;
     transform: translateY(-50%);
     z-index: -1;
     border-bottom: var(--tree-view-connector);
@@ -105,9 +105,9 @@
 }
 
 .tree-view .tree-node > .tree-node-graphic > .tree-node-disclosure > div > svg > * {
-    fill: var(--secondary-color);
+    fill: #212227;
     stroke: white;
-    stroke-width: 0.2rem;
+    stroke-width: 0.1rem;
 }
 
 .tree-view .tree-node > .tree-node-graphic > .tree-node-disclosure div {
@@ -126,7 +126,7 @@
 }
 
 .tree-view .tree-node > .tree-node-graphic > .tree-node-content {
-    flex: 1 1 auto;
+    flex: 1 1 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -146,8 +146,10 @@
 }
 
 .tree-view .tree-node > .tree-node-graphic > .tree-node-content .title {
-    font-size: 3.8rem;
-    min-height: 3.8rem;
+    font-size: 1.4rem;
+    line-height: 2rem;
+    /*font-size: 3.8rem;*/
+    /*min-height: 3.8rem;*/
     color: var(--tree-view-primary-color);
 }
 

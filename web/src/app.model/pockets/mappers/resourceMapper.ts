@@ -4,13 +4,11 @@ import {ResourceInfo} from "../resourceInfo";
 
 export class ResourceMapper {
   protected _id: string;
+  protected _excerptMappers: Record<string, ExcerptMapper> = {};
 
-  constructor(protected _resource: ResourceInfo,
-              protected _excerptMappers: Record<string, ExcerptMapper>
-  )
+  constructor(protected _resource: ResourceInfo)
   {
     this._id = _resource.id;
-    this._excerptMappers = _excerptMappers;
   }
 
   get id(): string {
