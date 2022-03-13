@@ -16,17 +16,28 @@ export type PocketsPanelProps = {
 export type PocketsPanelState = {
 }
 
-export type PocketNodeProps = {
+export type NodeRendererProps = {
     id: string;
     path: string;
-    className: string;
+    className?: string;
     title: string;
-    subTitle: string;
-    actions: Nullable<ReactNode>;
-    onSelect: (id: string, selected: boolean) => void;
+    onSelect: (id: string, selected?: boolean) => void;
     selected?: boolean;
 }
 
-export type PocketNodeState = {
-    selected: boolean;
+export type PocketNodeRendererProps = NodeRendererProps &
+    {
+        onShare: (id: string) => void;
+        onDownload: (id: string) => void;
+        onSettings: (id: string) => void;
+    }
+
+export type ResourceNodeRendererProps = NodeRendererProps &
+    {
+        onDownload: (id: string) => void;
+        onRemove: (id: string) => void;
+    }
+
+export type PocketNodeRendererState = {
+
 }

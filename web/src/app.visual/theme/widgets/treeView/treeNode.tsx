@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import './treeView.css';
 import {CSSTransition} from "react-transition-group";
 import {TreeViewProps, TreeViewState} from "./treeViewModel";
+import {TriangleSVG} from "../../svgs/triangleSVG";
+import {CircleSVG} from "../../svgs/circleSVG";
 
 class TreeNode extends Component<TreeViewProps, TreeViewState> {
     constructor(props: any) {
@@ -81,13 +83,13 @@ class TreeNode extends Component<TreeViewProps, TreeViewState> {
         return (
             <li className={cn} {...rest}>
                 <div className={"tree-node-graphic"}>
-                    {/*<div className={"tree-node-disclosure"} onClick={() => this._toggleExpanded()}>*/}
-                    {/*    <div className={"nano-image-container"}>*/}
-                    {/*        {(childNodes && childNodes.length > 0) ?*/}
-                    {/*            <TriangleSVG/> : <CircleSVG/>*/}
-                    {/*        }*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
+                    <div className={"tree-node-disclosure"} onClick={() => this._toggleExpanded()}>
+                        <div className={"nano-image-container"}>
+                            {(childNodes && childNodes.length > 0) ?
+                                <TriangleSVG/> : <CircleSVG/>
+                            }
+                        </div>
+                    </div>
                     <div className={`tree-node-content ${(expanded || (selectionPaths && selectionPaths === node.path)) && index !== 0 ? "font-weight-semi-bold" : ""}`} onClick={() => this._onSelected(node)}>
                         {
                             cellContentRenderer ? cellContentRenderer(node, childNodes && childNodes.length > 0 && expanded) :

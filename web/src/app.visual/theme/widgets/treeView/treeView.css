@@ -1,8 +1,14 @@
 .tree-view {
-
+    --tree-view-connector: 0.1rem dashed #86A6BD;
+    --tree-view-disclosure-background: #86A6BD;
+    --tree-view-disclosure-hover-background: #91b5cf;
+    --tree-view-primary-color: #000000;
+    --tree-view-secondary-color: #2B506B;
+    --tree-view-content-border: 0.1rem solid #86A6BD;
+    --tree-view-content-background: transparent linear-gradient(229deg, #FFFFFF 0%, #FFFFFF 100%) 0% 0% no-repeat padding-box;
+    --tree-view-content-selected-background: transparent linear-gradient(231deg, #D9E3EA 0%, #FFFFFF 100%) 0% 0% no-repeat padding-box;
+    --tree-view-content-hover-background: rgba(217, 227, 234, 0.5);
 }
-
-
 
 .tree-view,
 .tree-view ul.tree-node-children {
@@ -50,15 +56,15 @@
 
 .tree-view li.tree-node ul li{
     margin-left: 2.5rem;
-    /*border-left: var(--tree-view-connector)*/
+    border-left: var(--tree-view-connector)
 }
 
 .tree-view li.tree-node.root {
-    margin-left: 0;
+    margin-left: 0.0rem;
 }
 
 .tree-view li.root.tree-node > .tree-node-children-container > ul > li {
-    margin-left: 0;
+    margin-left: 0rem;
 }
 
 .tree-view ul li.tree-node:last-child {
@@ -69,7 +75,7 @@
     width: 2.5rem;
     transform: translateY(-50%);
     z-index: -1;
-    /*border-bottom: var(--tree-view-connector);*/
+    border-bottom: var(--tree-view-connector);
     border-left: none;
     content: "";
     /*display: inline-block;*/
@@ -78,7 +84,7 @@
 }
 
 .tree-view ul li.tree-node:last-child > .tree-node-graphic:before {
-    /*border-left: var(--tree-view-connector);*/
+    border-left: var(--tree-view-connector);
 }
 
 .tree-view .tree-node > .tree-node-graphic {
@@ -89,76 +95,65 @@
     align-items: stretch;
 }
 
-/*.tree-view .tree-node > .tree-node-graphic > .tree-node-disclosure {*/
-/*    display: flex;*/
-/*    align-items: center;*/
-/*    justify-content: center;*/
-/*    padding: 0.4rem;*/
-/*    align-self: stretch;*/
-/*    background: var(--tree-view-disclosure-background);*/
-/*}*/
+.tree-view .tree-node > .tree-node-graphic > .tree-node-disclosure {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem;
+    align-self: stretch;
+    background: var(--tree-view-disclosure-background);
+}
 
-/*.tree-view .tree-node > .tree-node-graphic > .tree-node-disclosure > div > svg > * {*/
-/*    fill: var(--primary-color);*/
-/*    stroke: white;*/
-/*    stroke-width: 0.2rem;*/
-/*}*/
+.tree-view .tree-node > .tree-node-graphic > .tree-node-disclosure > div > svg > * {
+    fill: var(--secondary-color);
+    stroke: white;
+    stroke-width: 0.2rem;
+}
 
-/*.tree-view .tree-node > .tree-node-graphic > .tree-node-disclosure div {*/
-/*    transform: rotate(-90deg);*/
-/*    transition: transform 300ms;*/
-/*}*/
+.tree-view .tree-node > .tree-node-graphic > .tree-node-disclosure div {
+    transform: rotate(-90deg);
+    transition: transform 300ms;
+}
 
-/*.tree-view .tree-node.expanded > .tree-node-graphic > .tree-node-disclosure div {*/
-/*    transform: rotate(0deg);*/
-/*    transition: transform 300ms;*/
-/*}*/
+.tree-view .tree-node.expanded > .tree-node-graphic > .tree-node-disclosure div {
+    transform: rotate(0deg);
+    transition: transform 300ms;
+}
 
-/*.tree-view .tree-node > .tree-node-graphic > .tree-node-disclosure:hover {*/
-/*    background: var(--tree-view-disclosure-hover-background);*/
-/*    cursor: pointer;*/
-/*}*/
+.tree-view .tree-node > .tree-node-graphic > .tree-node-disclosure:hover {
+    background: var(--tree-view-disclosure-hover-background);
+    cursor: pointer;
+}
 
 .tree-view .tree-node > .tree-node-graphic > .tree-node-content {
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
-    /*background: var(--tree-view-content-background);*/
-    /*border: 1px solid transparent;*/
+    justify-content: center;
+    align-self: flex-start;
+    padding: 0.5rem 1.0rem;
+    background: var(--tree-view-content-background);
+    border: var(--tree-view-content-border);
     cursor: pointer;
 }
 
-/*.tree-view .tree-node.first-child > .tree-node-graphic > .tree-node-content {*/
-/*    background: var(--tree-view-content-first-child-background);*/
-/*}*/
+.tree-view .tree-node > .tree-node-graphic > .tree-node-content:hover {
+    background: var(--tree-view-content-hover-background);
+}
 
-/*.tree-view .tree-node > .tree-node-graphic > .tree-node-content:hover {*/
-/*    background: var(--tree-view-content-hover-background);*/
-/*}*/
+.tree-view .tree-node.selected > .tree-node-graphic > .tree-node-content {
+    background: var(--tree-view-content-selected-background);
+}
 
-/*.tree-view .tree-node.first-child > .tree-node-graphic > .tree-node-content:hover {*/
-/*    background: var(--tree-view-content-first-child-hover-background);*/
-/*}*/
+.tree-view .tree-node > .tree-node-graphic > .tree-node-content .title {
+    font-size: 3.8rem;
+    min-height: 3.8rem;
+    color: var(--tree-view-primary-color);
+}
 
-/*.tree-view .tree-node.expanded > .tree-node-graphic > .tree-node-content,*/
-/*.tree-view .tree-node.selected > .tree-node-graphic > .tree-node-content {*/
-/*    background: var(--tree-view-content-selected-background);*/
-/*}*/
-
-/*.tree-view .tree-node.first-child.expanded > .tree-node-graphic > .tree-node-content,*/
-/*.tree-view .tree-node.first-child.selected > .tree-node-graphic > .tree-node-content {*/
-/*    background: var(--tree-view-content-first-child-selected-background);*/
-/*    border: 1px solid var(--tree-view-content-first-child-selected-border);*/
-/*}*/
-
-/*.tree-view .tree-node > .tree-node-graphic > .tree-node-content .title {*/
-/*    color: var(--tree-view-content-color);*/
-/*}*/
-
-/*.tree-view .tree-node.first-child > .tree-node-graphic > .tree-node-content .title {*/
-/*    color: var(--tree-view-primary-color);*/
-/*}*/
-
-/*.tree-view .tree-node > .tree-node-graphic > .tree-node-content .sub-title {*/
-/*    color: var(--tree-view-secondary-color);*/
-/*}*/
+.tree-view .tree-node > .tree-node-graphic > .tree-node-content .sub-title {
+    margin-top: 0.5rem;
+    font-size: 1.6rem;
+    height: 1.6rem;
+    color: var(--tree-view-secondary-color);
+}

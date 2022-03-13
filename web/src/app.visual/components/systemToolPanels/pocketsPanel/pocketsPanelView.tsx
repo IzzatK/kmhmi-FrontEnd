@@ -1,17 +1,16 @@
-import React, {Component} from 'react';
+import React, {Component, ReactElement} from 'react';
 import './pocketsPanel.css';
 import '../../../theme/stylesheets/panel.css';
 import ScrollBar from "../../../theme/widgets/scrollBar/scrollBar";
 import TreeView from "../../../theme/widgets/treeView/treeView";
-import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
-import {PocketNodeView} from "./pocketNodeView";
+import {bindInstanceMethods, Nullable} from "../../../../framework.core/extras/typeUtils";
 import Button from "../../../theme/widgets/button/button";
-import {ShareSVG} from "../../../theme/svgs/shareSVG";
-import {DownloadSVG} from "../../../theme/svgs/downloadSVG";
-import {SettingsSVG} from "../../../theme/svgs/settingsSVG";
-import {RemoveSVG} from "../../../theme/svgs/removeSVG";
 import {PocketsPanelProps} from "./pocketsPanelModel";
 import {PocketNodeType, PocketNodeVM} from "../../../model/pocketUtils";
+import {PocketNodeRenderer} from "./renderers/pocketNodeRenderer";
+import {ExcerptNodeRenderer} from "./renderers/excerptNodeRenderer";
+import {NoteNodeRenderer} from "./renderers/noteNodeRenderer";
+import {ResourceNodeRenderer} from "./renderers/resourceNodeRenderer";
 
 class PocketsPanelView extends Component<PocketsPanelProps> {
     constructor(props: any, context: any) {
@@ -21,98 +20,79 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
     }
 
     getCellContentRenderer(node: PocketNodeVM) {
-        const { id } = node;
+        const { id, path, title } = node;
 
-        let actions = null;
-        let cn = "";
+        let renderer: Nullable<ReactElement> = null;
 
         switch (node.type) {
             case PocketNodeType.POCKET:
-                actions = (
-                    <React.Fragment>
-                        <Button onClick={(e) => this._onToggleSharePocket(e)}>
-                            <ShareSVG className={"small-image-container"}/>
-                        </Button>
-                        <Button onClick={(e) => this._onDownloadPocket(e, id)}>
-                            <DownloadSVG className={"small-image-container"}/>
-                        </Button>
-                        <Button onClick={(e) => this._onToggleSettings(e)}>
-                            <SettingsSVG className={"small-image-container"}/>
-                        </Button>
-                    </React.Fragment>
+            {
+                renderer = (
+                    <PocketNodeRenderer id={id} path={path} title={title} onSelect={this.onSelect}
+                                        onShare={this._onSharePocket} onDownload={this._onDownloadPocket} onSettings={this._onToggleSettings} />
                 )
-                cn = "pocket display-3 p-4";
                 break;
-            case PocketNodeType.REPORT:
-                cn = "report display-2 px-3 pt-3 pb-5";
-                break;
+            }
             case PocketNodeType.DOCUMENT:
-                actions = (
-                    <React.Fragment>
-                        <Button onClick={(e) => this._onDownloadDocument(e, id)}>
-                            <DownloadSVG className={"small-image-container"}/>
-                        </Button>
-                        <Button onClick={(e) => this._onRemoveDocument(e, id)}>
-                            <RemoveSVG className={"small-image-container"}/>
-                        </Button>
-                    </React.Fragment>
+                renderer = (
+                    <ResourceNodeRenderer id={id} path={path} title={title} onSelect={this.onSelect}
+                                          onDownload={this._onDownloadDocument} onRemove={this._onRemoveDocument}/>
                 )
-                cn = "document display-2 px-3 pt-3 pb-5";
                 break;
             case PocketNodeType.EXCERPT:
+                renderer = (
+                    <ExcerptNodeRenderer id={id} path={path} title={title} onSelect={this.onSelect}/>
+                )
+                break;
+            case PocketNodeType.NOTE:
+                renderer = (
+                    <NoteNodeRenderer id={id} path={path} title={title} onSelect={this.onSelect}/>
+                )
                 break;
             default:
+                renderer = (
+                    <div className={'display-1, text-secondary'}>UNDEFINED CELL RENDERER</div>
+                )
                 break;
         }
 
-        return (
-            <PocketNodeView className={cn} title={node.title} subTitle={''} actions={actions} onSelect={this.onSelect} id={node.id} path={node.path}/>
-        )
+        return renderer;
     }
 
-    _onToggleSharePocket(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-        event.stopPropagation();
-
+    _onSharePocket(id: string) {
         //open share ui
     }
 
-    _onDownloadPocket(event: React.MouseEvent<HTMLDivElement, MouseEvent>, id: string) {
+    _onDownloadPocket(id: string) {
         const { onDownloadPocket } = this.props;
-
-        event.stopPropagation();
 
         if (onDownloadPocket) {
             onDownloadPocket(id);
         }
     }
 
-    _onToggleSettings(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-        event.stopPropagation();
+    _onToggleSettings(id: string) {
 
         //opens settings ui
     }
 
-    _onDownloadDocument(event: React.MouseEvent<HTMLDivElement, MouseEvent>, id: string) {
+    _onDownloadDocument(id: string) {
         const { onDownloadDocument } = this.props;
-
-        event.stopPropagation();
 
         if (onDownloadDocument) {
             onDownloadDocument(id)
         }
     }
 
-    _onRemoveDocument(event: React.MouseEvent<HTMLDivElement, MouseEvent>, id: string) {
+    _onRemoveDocument(id: string) {
         const { onRemoveDocument } = this.props;
-
-        event.stopPropagation();
 
         if (onRemoveDocument) {
             onRemoveDocument(id);
         }
     }
 
-    onSelect(path: string, selected: boolean) {
+    onSelect(path: string, selected?: boolean) {
         if (selected) {
             this.props.addSelectionPath(path);
         }
