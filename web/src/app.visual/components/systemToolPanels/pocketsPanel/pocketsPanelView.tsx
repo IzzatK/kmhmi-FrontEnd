@@ -12,6 +12,7 @@ import {ExcerptNodeRenderer} from "./renderers/excerptNodeRenderer";
 import {NoteNodeRenderer} from "./renderers/noteNodeRenderer";
 import {ResourceNodeRenderer} from "./renderers/resourceNodeRenderer";
 import {NodeRenderer} from "./renderers/nodeRenderer";
+import {TreeNodeVM} from "../../../theme/widgets/treeView/treeViewModel";
 
 class PocketsPanelView extends Component<PocketsPanelProps> {
     constructor(props: any, context: any) {
@@ -29,27 +30,25 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
             case PocketNodeType.POCKET:
             {
                 renderer = (
-                    <NodeRenderer id={id} path={path} onSelect={this.onSelect}>
-                        <PocketNodeRenderer id={id} path={path} title={title}
-                                            onShare={this._onSharePocket} onDownload={this._onDownloadPocket} onSettings={this._onToggleSettings} />
-                    </NodeRenderer>
+                    <PocketNodeRenderer id={id} path={path} title={title}
+                                        onShare={this._onSharePocket} onDownload={this._onDownloadPocket} onSettings={this._onToggleSettings} />
                 )
                 break;
             }
             case PocketNodeType.DOCUMENT:
                 renderer = (
-                    <ResourceNodeRenderer id={id} path={path} title={title} onSelect={this.onSelect}
+                    <ResourceNodeRenderer id={id} path={path} title={title}
                                           onDownload={this._onDownloadDocument} onRemove={this._onRemoveDocument}/>
                 )
                 break;
             case PocketNodeType.EXCERPT:
                 renderer = (
-                    <ExcerptNodeRenderer id={id} path={path} title={title} onSelect={this.onSelect}/>
+                    <ExcerptNodeRenderer id={id} path={path} title={title} />
                 )
                 break;
             case PocketNodeType.NOTE:
                 renderer = (
-                    <NoteNodeRenderer id={id} path={path} title={title} onSelect={this.onSelect}/>
+                    <NoteNodeRenderer id={id} path={path} title={title} />
                 )
                 break;
             default:
@@ -62,12 +61,12 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         return renderer;
     }
 
-    private _onNodeSelected() {
-
+    private _onNodeSelected(nodeVM: TreeNodeVM) {
+        debugger
     }
 
-    private _onNodeToggle() {
-
+    private _onNodeToggle(nodeVM: TreeNodeVM, expanded: boolean) {
+        debugger
     }
 
     _onSharePocket(id: string) {
@@ -100,15 +99,6 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
 
         if (onRemoveDocument) {
             onRemoveDocument(id);
-        }
-    }
-
-    onSelect(path: string, selected?: boolean) {
-        if (selected) {
-            this.props.addExpandedPath(path);
-        }
-        else {
-            this.props.removeExpandedPath(path);
         }
     }
 

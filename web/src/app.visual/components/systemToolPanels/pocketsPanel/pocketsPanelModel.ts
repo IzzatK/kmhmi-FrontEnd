@@ -20,8 +20,6 @@ export type NodeRendererProps = {
     path: string;
     className?: string;
     title?: string;
-    onSelect?: (id: string, selected?: boolean) => void;
-    selected?: boolean;
 }
 
 export type PocketNodeRendererProps = NodeRendererProps &

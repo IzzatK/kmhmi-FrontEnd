@@ -5,6 +5,7 @@ import {ShareSVG} from "../../../../theme/svgs/shareSVG";
 import {DownloadSVG} from "../../../../theme/svgs/downloadSVG";
 import {SettingsSVG} from "../../../../theme/svgs/settingsSVG";
 import {bindInstanceMethods} from "../../../../../framework.core/extras/typeUtils";
+import {RemoveSVG} from "../../../../theme/svgs/removeSVG";
 
 export class PocketNodeRenderer extends Component<PocketNodeRendererProps, PocketNodeRendererState> {
     constructor(props: any) {
@@ -39,19 +40,15 @@ export class PocketNodeRenderer extends Component<PocketNodeRendererProps, Pocke
 
 
     render() {
-        const {className, title, path, selected, id } = this.props;
+        const {className, title } = this.props;
 
-        let cn = "pocket-node d-flex flex-fill justify-content-between";
-
+        let cn = 'pocket-node d-flex justify-content-between';
         if (className) {
             cn += ` ${className}`;
         }
-        if (selected) {
-            cn += ` selected`
-        }
 
         return (
-            <div onClick={() => this.props.onSelect && this.props.onSelect(path, selected)} className={cn}>
+            <div className={cn}>
                 <div className={"d-flex flex-row v-gap-2 justify-content-center align-items-center"}>
                     <div className={"title"}>{title ? title : ''}</div>
                 </div>

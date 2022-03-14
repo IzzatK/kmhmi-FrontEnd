@@ -15,23 +15,22 @@ export class ExcerptNodeRenderer extends Component<NodeRendererProps> {
     }
 
     render() {
-        const {className, title } = this.props;
+        const { className, title } = this.props;
 
-        let cn = "excerpt-node d-flex flex-fill justify-content-between";
-
+        let cn = 'excerpt-node d-flex justify-content-between';
         if (className) {
             cn += ` ${className}`;
         }
 
         return (
-           <div className={cn}>
-               <div className={"d-flex flex-row v-gap-2 justify-content-center align-items-center"}>
-                   <div className={"title"}>{title ? title : ''}</div>
-               </div>
-               <div className={'action-bar d-flex h-gap-3'}>
+            <div className={cn}>
+                <div className={"d-flex flex-row v-gap-2 justify-content-center align-items-center"}>
+                    <div className={"title"}>{title ? title : ''}</div>
+                </div>
+                <div className={'action-bar d-flex h-gap-3'}>
 
-               </div>
-           </div>
+                </div>
+            </div>
         )
     }
 }

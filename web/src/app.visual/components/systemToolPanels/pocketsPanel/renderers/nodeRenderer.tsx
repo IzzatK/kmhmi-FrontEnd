@@ -15,20 +15,18 @@ export class NodeRenderer extends Component<NodeRendererProps> {
     }
 
     render() {
-        const {className, path, selected, children } = this.props;
+        const {className, title } = this.props;
 
-        let cn = "node d-flex flex-fill justify-content-between";
-
+        let cn = 'resource-node d-flex justify-content-between';
         if (className) {
             cn += ` ${className}`;
         }
-        if (selected) {
-            cn += ` selected`
-        }
 
         return (
-            <div className={cn} onClick={() => this.props.onSelect && this.props.onSelect(path, selected)}>
-                {children}
+            <div className={cn}>
+                <div className={"d-flex flex-row v-gap-2 justify-content-center align-items-center"}>
+                    <div className={"title"}>{title ? title : ''}</div>
+                </div>
             </div>
         )
     }

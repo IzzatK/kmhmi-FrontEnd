@@ -289,8 +289,6 @@ export class PocketService extends Plugin implements IPocketService {
     private flattenPocketMapper(pocketMapper: PocketMapper) {
         const result = [];
 
-        debugger
-
         result.push(pocketMapper.pocket);
 
         forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
