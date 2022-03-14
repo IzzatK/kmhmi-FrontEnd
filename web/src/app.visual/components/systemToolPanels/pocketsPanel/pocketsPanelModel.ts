@@ -1,11 +1,12 @@
-import {PocketNodeVM} from "../../../model/pocketUtils";
+import {PocketNodeType} from "../../../model/pocketNodeType";
+
 
 export type PocketsPanelProps = {
     className: string;
     data: PocketNodeVM[];
     selectionPath: string;
-    addExpandedPath: (selectionPath: string) => void;
-    removeExpandedPath: (selectionPath: string) => void;
+    onPocketItemSelected: (id: string) => void;
+    onPocketItemToggle: (id: string, expanded: boolean) => void;
     onCreatePocket: (title: string) => void;
     onDownloadDocument: (id: string) => void;
     onRemoveDocument: (id: string) => void;
@@ -37,4 +38,15 @@ export type ResourceNodeRendererProps = NodeRendererProps &
 
 export type PocketNodeRendererState = {
 
+}
+
+export type PocketNodeVM = {
+    id: string,
+    path: string,
+    title: string,
+    content: string,
+    type: PocketNodeType
+    // expanded: boolean,
+    // selected: boolean,
+    childNodes: PocketNodeVM[],
 }

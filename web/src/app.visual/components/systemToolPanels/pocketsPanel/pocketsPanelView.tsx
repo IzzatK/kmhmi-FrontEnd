@@ -5,14 +5,13 @@ import ScrollBar from "../../../theme/widgets/scrollBar/scrollBar";
 import TreeView from "../../../theme/widgets/treeView/treeView";
 import {bindInstanceMethods, Nullable} from "../../../../framework.core/extras/typeUtils";
 import Button from "../../../theme/widgets/button/button";
-import {PocketsPanelProps} from "./pocketsPanelModel";
-import {PocketNodeType, PocketNodeVM} from "../../../model/pocketUtils";
+import {PocketNodeVM, PocketsPanelProps} from "./pocketsPanelModel";
 import {PocketNodeRenderer} from "./renderers/pocketNodeRenderer";
 import {ExcerptNodeRenderer} from "./renderers/excerptNodeRenderer";
 import {NoteNodeRenderer} from "./renderers/noteNodeRenderer";
 import {ResourceNodeRenderer} from "./renderers/resourceNodeRenderer";
-import {NodeRenderer} from "./renderers/nodeRenderer";
 import {TreeNodeVM} from "../../../theme/widgets/treeView/treeViewModel";
+import {PocketNodeType} from "../../../model/pocketNodeType";
 
 class PocketsPanelView extends Component<PocketsPanelProps> {
     constructor(props: any, context: any) {
@@ -62,11 +61,15 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
     }
 
     private _onNodeSelected(nodeVM: TreeNodeVM) {
-        debugger
+        if (this.props.onPocketItemSelected != null) {
+            this.props.onPocketItemSelected(nodeVM.id);
+        }
     }
 
     private _onNodeToggle(nodeVM: TreeNodeVM, expanded: boolean) {
-        debugger
+        if (this.props.onPocketItemToggle != null) {
+            this.props.onPocketItemToggle(nodeVM.id, expanded);
+        }
     }
 
     _onSharePocket(id: string) {
