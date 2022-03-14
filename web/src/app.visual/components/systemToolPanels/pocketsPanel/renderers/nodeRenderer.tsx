@@ -7,7 +7,7 @@ import {ShareSVG} from "../../../../theme/svgs/shareSVG";
 import {SettingsSVG} from "../../../../theme/svgs/settingsSVG";
 import {bindInstanceMethods} from "../../../../../framework.core/extras/typeUtils";
 
-export class ExcerptNodeRenderer extends Component<NodeRendererProps> {
+export class NodeRenderer extends Component<NodeRendererProps> {
     constructor(props: any) {
         super(props);
 
@@ -15,23 +15,21 @@ export class ExcerptNodeRenderer extends Component<NodeRendererProps> {
     }
 
     render() {
-        const {className, title } = this.props;
+        const {className, path, selected, children } = this.props;
 
-        let cn = "excerpt-node d-flex flex-fill justify-content-between";
+        let cn = "node d-flex flex-fill justify-content-between";
 
         if (className) {
             cn += ` ${className}`;
         }
+        if (selected) {
+            cn += ` selected`
+        }
 
         return (
-           <div className={cn}>
-               <div className={"d-flex flex-row v-gap-2 justify-content-center align-items-center"}>
-                   <div className={"title"}>{title ? title : ''}</div>
-               </div>
-               <div className={'action-bar d-flex h-gap-3'}>
-
-               </div>
-           </div>
+            <div className={cn} onClick={() => this.props.onSelect && this.props.onSelect(path, selected)}>
+                {children}
+            </div>
         )
     }
 }

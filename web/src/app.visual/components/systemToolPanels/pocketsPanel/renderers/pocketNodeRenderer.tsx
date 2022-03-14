@@ -51,7 +51,7 @@ export class PocketNodeRenderer extends Component<PocketNodeRendererProps, Pocke
         }
 
         return (
-            <div onClick={() => this.props.onSelect(path, selected)} className={cn}>
+            <div onClick={() => this.props.onSelect && this.props.onSelect(path, selected)} className={cn}>
                 <div className={"d-flex flex-row v-gap-2 justify-content-center align-items-center"}>
                     <div className={"title"}>{title ? title : ''}</div>
                 </div>

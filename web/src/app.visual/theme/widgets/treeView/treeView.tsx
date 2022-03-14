@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import './treeView.css';
 import TreeNode from "./treeNode";
-import {TreeViewProps, TreeViewState} from "./treeViewModel";
+import {TreeViewProps} from "./treeViewModel";
 
-class TreeView extends Component<TreeViewProps, TreeViewState> {
+class TreeView extends Component<TreeViewProps> {
     constructor(props: any) {
         super(props);
     }
@@ -17,14 +17,14 @@ class TreeView extends Component<TreeViewProps, TreeViewState> {
     }
 
     render() {
-        const { className, data, selectionPaths, cellContentRenderer } = this.props;
+        const { className, rootNodes, selectionPaths, cellContentRenderer } = this.props;
 
         let cn = `${className ? className : ''} tree-view`;
 
-        let rootNodes: any[] = [];
+        let rootDivs: JSX.Element[] = [];
 
-        if (data && Array.isArray(data)) {
-            rootNodes = data.map(node => {
+        if (rootNodes && Array.isArray(rootNodes)) {
+            rootDivs = rootNodes.map(node => {
                 return (
                     <TreeNode className={"root"}
                               key={node.id}
@@ -40,7 +40,7 @@ class TreeView extends Component<TreeViewProps, TreeViewState> {
 
         return (
             <ul className={cn}>
-                {rootNodes}
+                {rootDivs}
             </ul>
         )
     }

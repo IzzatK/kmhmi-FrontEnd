@@ -1,11 +1,12 @@
 import React, {Component} from "react";
 import './treeView.css';
 import {CSSTransition} from "react-transition-group";
-import {TreeViewProps, TreeViewState} from "./treeViewModel";
+import {TreeNodeProps, TreeNodeState} from "./treeViewModel";
 import {TriangleSVG} from "../../svgs/triangleSVG";
 import {CircleSVG} from "../../svgs/circleSVG";
+import {forEach} from "../../../../framework.visual/extras/utils/collectionUtils";
 
-class TreeNode extends Component<TreeViewProps, TreeViewState> {
+class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
     constructor(props: any) {
         super(props);
 
@@ -30,6 +31,8 @@ class TreeNode extends Component<TreeViewProps, TreeViewState> {
         if (childNodes && childNodes.length > 0) {
             this._setExpanded(!expanded);
         }
+
+
     }
 
     _onSelected(node: any) {
@@ -51,11 +54,11 @@ class TreeNode extends Component<TreeViewProps, TreeViewState> {
         const { childNodes } = node;
         const { expanded } = this.state;
 
-        let divs = [];
+        let divs: JSX.Element[] = [];
 
         let childIndex = index || 0;
 
-        if (childNodes) {
+        if (childNodes != null) {
             divs = childNodes.map((childNode: any) => {
                 return (
                     <TreeNode key={childNode.id}
@@ -73,9 +76,21 @@ class TreeNode extends Component<TreeViewProps, TreeViewState> {
         if (index === 0) {
             cn += ` first-child`;
         }
-        if (selectionPaths && selectionPaths === node.path) {
+
+        let selected = false;
+        if (selectionPaths != null) {
+            forEach(selectionPaths, (selectionPath: string) => {
+                if (selectionPath === node.path) {
+                    selected = true;
+                    return true;
+                }
+            })
+        }
+
+        if (selected) {
             cn += ` selected`;
         }
+
         if (expanded) {
             cn += ` expanded`;
         }
@@ -90,7 +105,7 @@ class TreeNode extends Component<TreeViewProps, TreeViewState> {
                             }
                         </div>
                     </div>
-                    <div className={`tree-node-content ${(expanded || (selectionPaths && selectionPaths === node.path)) && index !== 0 ? "font-weight-semi-bold" : ""}`} onClick={() => this._onSelected(node)}>
+                    <div className={`tree-node-content ${expanded || selected && index !== 0 ? "font-weight-semi-bold" : ""}`} onClick={() => this._onSelected(node)}>
                         {
                             cellContentRenderer ? cellContentRenderer(node, childNodes && childNodes.length > 0 && expanded) :
                                 <div className={`node-title`}>{node.name ? node.name : "n/a"}</div>

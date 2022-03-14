@@ -11,6 +11,7 @@ import {PocketNodeRenderer} from "./renderers/pocketNodeRenderer";
 import {ExcerptNodeRenderer} from "./renderers/excerptNodeRenderer";
 import {NoteNodeRenderer} from "./renderers/noteNodeRenderer";
 import {ResourceNodeRenderer} from "./renderers/resourceNodeRenderer";
+import {NodeRenderer} from "./renderers/nodeRenderer";
 
 class PocketsPanelView extends Component<PocketsPanelProps> {
     constructor(props: any, context: any) {
@@ -28,8 +29,10 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
             case PocketNodeType.POCKET:
             {
                 renderer = (
-                    <PocketNodeRenderer id={id} path={path} title={title} onSelect={this.onSelect}
-                                        onShare={this._onSharePocket} onDownload={this._onDownloadPocket} onSettings={this._onToggleSettings} />
+                    <NodeRenderer id={id} path={path} onSelect={this.onSelect}>
+                        <PocketNodeRenderer id={id} path={path} title={title}
+                                            onShare={this._onSharePocket} onDownload={this._onDownloadPocket} onSettings={this._onToggleSettings} />
+                    </NodeRenderer>
                 )
                 break;
             }
@@ -127,7 +130,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                     </div>
                     <div className={'flex-fill'}>
                         <ScrollBar className={'flex-fill'} renderTrackHorizontal={false}>
-                            <TreeView selectionPaths={selectionPaths} data={data} cellContentRenderer={this.getCellContentRenderer}/>
+                            <TreeView selectionPaths={selectionPaths} rootNodes={data} cellContentRenderer={this.getCellContentRenderer}/>
                         </ScrollBar>
                     </div>
                 </div>

@@ -20,8 +20,8 @@ export type NodeRendererProps = {
     id: string;
     path: string;
     className?: string;
-    title: string;
-    onSelect: (id: string, selected?: boolean) => void;
+    title?: string;
+    onSelect?: (id: string, selected?: boolean) => void;
     selected?: boolean;
 }
 

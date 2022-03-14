@@ -6,7 +6,7 @@
     --tree-view-secondary-color: #FFFFFF;
     --tree-view-content-border: 0.1rem solid #6085A6;
     --tree-view-content-background: #212227;
-    --tree-view-content-selected-background: transparent linear-gradient(231deg, #D9E3EA 0%, #FFFFFF 100%) 0% 0% no-repeat padding-box;
+    --tree-view-content-selected-background: #3a3a46;
     --tree-view-content-hover-background: rgba(217, 227, 234, 0.5);
 }
 
