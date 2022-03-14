@@ -1,23 +1,32 @@
 import React, {Component} from "react";
 import './treeView.css';
 import TreeNode from "./treeNode";
-import {TreeViewProps} from "./treeViewModel";
+import {TreeNodeVM, TreeViewProps} from "./treeViewModel";
+import exp from "constants";
+import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
 
 class TreeView extends Component<TreeViewProps> {
     constructor(props: any) {
         super(props);
+        bindInstanceMethods(this);
     }
 
-    _onSelected(node: any) {
+    _onSelected(node: TreeNodeVM) {
         const { onSelected } = this.props;
-
         if (onSelected) {
             onSelected(node);
         }
     }
 
+    _onToggle(node: TreeNodeVM, expanded: boolean) {
+        const { onToggle } = this.props;
+        if (onToggle) {
+            onToggle(node, expanded);
+        }
+    }
+
     render() {
-        const { className, rootNodes, selectionPaths, cellContentRenderer } = this.props;
+        const { className, rootNodes, selectionPath, cellContentRenderer } = this.props;
 
         let cn = `${className ? className : ''} tree-view`;
 
@@ -29,8 +38,9 @@ class TreeView extends Component<TreeViewProps> {
                     <TreeNode className={"root"}
                               key={node.id}
                               node={node}
-                              onSelected={() => this._onSelected(node)}
-                              selectionPaths={selectionPaths}
+                              onSelected={this._onSelected}
+                              onToggle={this._onToggle}
+                              selectionPath={selectionPath}
                               cellContentRenderer={cellContentRenderer}
                               index={0}
                     />

@@ -1,12 +1,11 @@
-import {ReactNode} from "react";
-import {Nullable} from "../../../../framework.core/extras/typeUtils";
+import {PocketNodeVM} from "../../../model/pocketUtils";
 
 export type PocketsPanelProps = {
     className: string;
-    data: any;
-    addSelectionPath: (selectionPath: string) => void;
-    removeSelectionPath: (selectionPath: string) => void;
-    selectionPaths: string[];
+    data: PocketNodeVM[];
+    selectionPath: string;
+    addExpandedPath: (selectionPath: string) => void;
+    removeExpandedPath: (selectionPath: string) => void;
     onCreatePocket: (title: string) => void;
     onDownloadDocument: (id: string) => void;
     onRemoveDocument: (id: string) => void;

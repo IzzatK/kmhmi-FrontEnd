@@ -1,4 +1,4 @@
-import React, {Component, ReactElement} from 'react';
+import React, {Component, ElementType, ReactElement} from 'react';
 import './pocketsPanel.css';
 import '../../../theme/stylesheets/panel.css';
 import ScrollBar from "../../../theme/widgets/scrollBar/scrollBar";
@@ -20,10 +20,10 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         bindInstanceMethods(this);
     }
 
-    getCellContentRenderer(node: PocketNodeVM) {
+    getCellContentRenderer(node: PocketNodeVM): JSX.Element {
         const { id, path, title } = node;
 
-        let renderer: Nullable<ReactElement> = null;
+        let renderer: JSX.Element;
 
         switch (node.type) {
             case PocketNodeType.POCKET:
@@ -62,6 +62,14 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         return renderer;
     }
 
+    private _onNodeSelected() {
+
+    }
+
+    private _onNodeToggle() {
+
+    }
+
     _onSharePocket(id: string) {
         //open share ui
     }
@@ -97,10 +105,10 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
 
     onSelect(path: string, selected?: boolean) {
         if (selected) {
-            this.props.addSelectionPath(path);
+            this.props.addExpandedPath(path);
         }
         else {
-            this.props.removeSelectionPath(path);
+            this.props.removeExpandedPath(path);
         }
     }
 
@@ -111,7 +119,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
     }
 
     render() {
-        const { className, data, selectionPaths } = this.props;
+        const { className, data, selectionPath } = this.props;
 
         let cn = "d-flex position-absolute w-100 h-100 align-items-center justify-content-center";
 
@@ -130,7 +138,11 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                     </div>
                     <div className={'flex-fill'}>
                         <ScrollBar className={'flex-fill'} renderTrackHorizontal={false}>
-                            <TreeView selectionPaths={selectionPaths} rootNodes={data} cellContentRenderer={this.getCellContentRenderer}/>
+                            <TreeView selectionPath={selectionPath}
+                                      onSelected={this._onNodeSelected}
+                                      onToggle={this._onNodeToggle}
+                                      rootNodes={data}
+                                      cellContentRenderer={this.getCellContentRenderer}/>
                         </ScrollBar>
                     </div>
                 </div>

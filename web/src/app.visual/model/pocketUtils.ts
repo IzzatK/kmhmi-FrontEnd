@@ -28,6 +28,7 @@ export const getPocketNodeVMs = createSelector(
                 type: PocketNodeType.POCKET,
                 path: `/${pocket.id}`,
                 title: pocket.title || '',
+                content: '',
                 childNodes: []
             }
 
@@ -40,6 +41,7 @@ export const getPocketNodeVMs = createSelector(
                     type: PocketNodeType.DOCUMENT,
                     path: resourcePath,
                     title: resource.title || '',
+                    content: '',
                     childNodes: []
                 }
 
@@ -52,6 +54,7 @@ export const getPocketNodeVMs = createSelector(
                         type: PocketNodeType.EXCERPT,
                         path: excerptPath,
                         title: excerpt.text || '',
+                        content: '',
                         childNodes: []
                     }
 
@@ -63,6 +66,7 @@ export const getPocketNodeVMs = createSelector(
                             type: PocketNodeType.EXCERPT,
                             path: notePath,
                             title: note.text,
+                            content: '',
                             childNodes: []
                         }
                     })
@@ -112,6 +116,7 @@ export type PocketNodeVM = {
     id: string,
     path: string,
     title: string,
+    content: string,
     type: PocketNodeType
     // expanded: boolean,
     // selected: boolean,

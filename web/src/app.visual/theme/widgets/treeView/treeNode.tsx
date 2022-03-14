@@ -4,7 +4,7 @@ import {CSSTransition} from "react-transition-group";
 import {TreeNodeProps, TreeNodeState} from "./treeViewModel";
 import {TriangleSVG} from "../../svgs/triangleSVG";
 import {CircleSVG} from "../../svgs/circleSVG";
-import {forEach} from "../../../../framework.visual/extras/utils/collectionUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
 
 class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
     constructor(props: any) {
@@ -13,13 +13,38 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
         this.state = {
             expanded: false,
         }
+        bindInstanceMethods(this);
+    }
+
+
+    componentDidMount() {
+       this.syncExpandedPropToExpandedState();
+    }
+
+    componentDidUpdate(prevProps: Readonly<TreeNodeProps>, prevState: Readonly<TreeNodeState>, snapshot?: any) {
+        this.syncExpandedPropToExpandedState()
+    }
+
+    syncExpandedPropToExpandedState() {
+        const { node } = this.props;
+        if (node != null) {
+            if (node.expanded != null && node.expanded != this.state.expanded) {
+                this._setExpanded(node.expanded);
+            }
+        }
     }
 
     _setExpanded(expanded: boolean) {
         this.setState({
             ...this.state,
             expanded: expanded,
-        })
+        }, () => {
+            if (this.props.onToggle != null) {
+                if (this.props.node != null && this.props.node.expanded != this.state.expanded) {
+                    this.props.onToggle(this.props.node, this.state.expanded);
+                }
+            }
+        });
     }
 
     _toggleExpanded() {
@@ -28,16 +53,15 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
 
         const { expanded } = this.state;
 
+        const nextExpanded = !expanded;
+
         if (childNodes && childNodes.length > 0) {
-            this._setExpanded(!expanded);
+            this._setExpanded(nextExpanded);
         }
-
-
     }
 
     _onSelected(node: any) {
         const { onSelected } = this.props;
-        const { childNodes } = node;
 
         const { expanded } = this.state;
 
@@ -45,12 +69,11 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
             onSelected(node);
         }
 
-
         this._setExpanded(!expanded);
     }
 
     render() {
-        const { node, className, selectionPaths, onSelected, cellContentRenderer, index, ...rest } = this.props;
+        const { node, className, selectionPath, onSelected, onToggle, cellContentRenderer, index, ...rest } = this.props;
         const { childNodes } = node;
         const { expanded } = this.state;
 
@@ -64,7 +87,8 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
                     <TreeNode key={childNode.id}
                               node={childNode}
                               onSelected={onSelected}
-                              selectionPaths={selectionPaths}
+                              onToggle={onToggle}
+                              selectionPath={selectionPath}
                               cellContentRenderer={cellContentRenderer}
                               index={childIndex + 1}
                     />
@@ -78,13 +102,8 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
         }
 
         let selected = false;
-        if (selectionPaths != null) {
-            forEach(selectionPaths, (selectionPath: string) => {
-                if (selectionPath === node.path) {
-                    selected = true;
-                    return true;
-                }
-            })
+        if (selectionPath != null && selectionPath === node.path) {
+            selected = true;
         }
 
         if (selected) {
@@ -98,7 +117,7 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
         return (
             <li className={cn} {...rest}>
                 <div className={"tree-node-graphic"}>
-                    <div className={"tree-node-disclosure"} onClick={() => this._toggleExpanded()}>
+                    <div className={"tree-node-disclosure"} onClick={this._toggleExpanded}>
                         <div className={"nano-image-container"}>
                             {(childNodes && childNodes.length > 0) ?
                                 <TriangleSVG/> : <CircleSVG/>
@@ -107,8 +126,8 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
                     </div>
                     <div className={`tree-node-content ${expanded || selected && index !== 0 ? "font-weight-semi-bold" : ""}`} onClick={() => this._onSelected(node)}>
                         {
-                            cellContentRenderer ? cellContentRenderer(node, childNodes && childNodes.length > 0 && expanded) :
-                                <div className={`node-title`}>{node.name ? node.name : "n/a"}</div>
+                            cellContentRenderer ? cellContentRenderer(node) :
+                                <div className={`node-title`}>{node.title ? node.title : "n/a"}</div>
                         }
                     </div>
                 </div>
