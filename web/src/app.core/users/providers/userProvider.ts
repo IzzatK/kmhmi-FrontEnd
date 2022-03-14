@@ -183,16 +183,9 @@ export class UserProvider extends EntityProvider<UserInfo> implements IUserProvi
 
                             this.sendPut(id,
                                 () => this.updateUserRequestConverter.convert(converterData),
-                                (responseData, errorHandler) => this.userStatusResponseConverter.convert(responseData, errorHandler))
-                                .then(status => {
-                                    //have to fetch from the server
-                                    setTimeout(() => {
-                                        this.getSingle(id)
-                                            .then(user => {
-                                                resolve(user);
-                                            });
-                                    }, 0);
-
+                                (responseData, errorHandler) => this.getUserResponseConverter.convert(responseData, errorHandler))
+                                .then(user => {
+                                    resolve(user);
                                 })
                                 .catch(error => {
                                     console.log(error);
