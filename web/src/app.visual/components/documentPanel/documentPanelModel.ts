@@ -32,7 +32,22 @@ export type DocumentPanelState = {
     showTagEditor: boolean;
     renderTrigger: number;
     tmpExcerpt: ExcerptVM;
-    documentHighlightAreas: any[];
+    documentHighlightAreas?: any[];
+}
+
+export type DocumentPdfPreviewProps = {
+    className?: string;
+    preview_url: string;
+    original_url:string;
+    userProfile: UserProfileVM;
+    token: string;
+    permissions: PermissionsVM
+    tmpMethod?: (text: string, highlightArea: any) => void;
+    documentHighlightAreas?: any[];
+    tmpExcerpt: ExcerptVM;
+    pockets: Record<string, PocketVM>;
+    onPocketSelectionChanged?: (value: string) => void;
+    onSaveNote?: (text: string) => void;
 }
 
 export type UserProfileVM = {

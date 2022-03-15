@@ -23,7 +23,7 @@ import {Size} from "../../theme/widgets/loadingIndicator/loadingIndicatorModel";
 import DocumentPdfPreview from "./documentPdfPreview";
 import {getClassNames} from "../../../framework.visual";
 
-class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState> {
+export default class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState> {
     private tagsResizeObserver: ResizeObserver;
     private readonly characterWidth: number;
     private tagCharactersAllowed: number;
@@ -328,7 +328,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
             onSaveExcerpt(docId || "", text, JSON.stringify(highlightArea), "", note || "", "");
         }
 
-        let modifiedDocumentHighlightAreas = documentHighlightAreas.concat([highlightArea])
+        let modifiedDocumentHighlightAreas = documentHighlightAreas?.concat([highlightArea])
 
         this.setState({
             ...this.state,
@@ -336,6 +336,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
             documentHighlightAreas: modifiedDocumentHighlightAreas,
 
         })
+
     }
 
     _onTmpExcerptChanged(name: string, value: string) {
@@ -931,5 +932,3 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         );
     }
 }
-
-export default DocumentPanelView;

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import './documentPanel.css';
 import {Viewer, Worker} from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
@@ -13,7 +13,7 @@ import {
     highlightPlugin,
     RenderHighlightContentProps,
     RenderHighlightsProps,
-    RenderHighlightTargetProps
+    RenderHighlightTargetProps, Trigger
 } from '@react-pdf-viewer/highlight';
 import {ZoomInSVG} from "../../theme/svgs/zoomInSVG";
 import {ZoomOutSVG} from "../../theme/svgs/zoomOutSVG";
@@ -26,152 +26,47 @@ import {NoteSVG} from "../../theme/svgs/noteSVG";
 import ComboBox from "../../theme/widgets/comboBox/comboBox";
 import TextArea from "../../theme/widgets/textEdit/textArea";
 import {DeleteSVG} from "../../theme/svgs/deleteSVG";
+import {DocumentPdfPreviewProps} from "./documentPanelModel";
+import {renderHighlightContent, renderHighlights, renderHighlightTarget} from "./highlightPlugin";
 
-function DocumentPdfPreview(props: any) {
+function DocumentPdfPreview(props: DocumentPdfPreviewProps) {
     const {className, preview_url, original_url, userProfile, token, permissions, onSaveNote, tmpMethod, documentHighlightAreas, tmpExcerpt, pockets, onPocketSelectionChanged, ...rest} = props;
 
     // console.log("DocumentPdfPreview " + JSON.stringify(documentHighlightAreas))
     // console.log("pockets2=" + JSON.stringify(pockets));
 
 
-    const tmp = props;
-
     const toolbarPluginInstance = toolbarPlugin();
     const { Toolbar } = toolbarPluginInstance;
 
-    function renderHighlightTarget(props: RenderHighlightTargetProps) {
-        console.log(JSON.stringify(props))
-        return (
-            <div className={"note position-absolute d-flex"}
-                 style={{
-                     left: `${props.selectionRegion.left}%`,
-                     top: `${props.selectionRegion.top + props.selectionRegion.height}%`,
-                 }}
-            >
-                <Button className={"btn-transparent"} onClick={props.toggle}>
-                    <NoteSVG className={"small-image-container"}/>
-                </Button>
-            </div>
-        );
-    };
-
-    const onMessageChange = (message: string) => {
-        if (onSaveNote) {
-            onSaveNote(message)
-        }
-    }
-
-    const _onPocketSelectionChanged = (value: string) => {
-        if (onPocketSelectionChanged) {
-            onPocketSelectionChanged(value);
-        }
-    }
-
-    function renderHighlightContent(props: RenderHighlightContentProps) {
-        const addNote = () => {
-            if (tmp.tmpMethod) {
-                tmp.tmpMethod(props.selectedText, props.highlightAreas);
-            }
-            props.cancel();
-        };
 
 
-        // console.log("pockets3=" + JSON.stringify(tmp.pockets));
+    // const highlightPluginInstance = useMemo(() => {
+    //     return highlightPlugin({
+    //         renderHighlightTarget: (pluginProps: RenderHighlightTargetProps) => renderHighlightTarget(pluginProps, props),
+    //         renderHighlightContent: (pluginProps: RenderHighlightContentProps) => renderHighlightContent(pluginProps, props),
+    //         renderHighlights: (pluginProps: RenderHighlightsProps) => renderHighlights(pluginProps, props),
+    //     });
+    // }, [ props ]);
 
-        let pocketId = tmp.tmpExcerpt["pocket"] ? tmp.tmpExcerpt["pocket"] : "";
-        let pocketTitle = "";
-        if (tmp.pockets && tmp.pockets[pocketId]) {
-            pocketTitle = tmp.pockets[pocketId].title;
-        } else {
-            pocketTitle = pocketId;
-        }
+    const highlightPluginSupplier = useCallback((props) => {
+        return highlightPlugin({
+            renderHighlightTarget: (pluginProps: RenderHighlightTargetProps) => renderHighlightTarget(pluginProps, props),
+            renderHighlightContent: (pluginProps: RenderHighlightContentProps) => renderHighlightContent(pluginProps, props),
+            renderHighlights: (pluginProps: RenderHighlightsProps) => renderHighlights(pluginProps, props),
+        });
+    }, [props]);
 
-        let note = tmp.tmpExcerpt["note"] ? tmp.tmpExcerpt["note"] : "";
-
-        return (
-            <div
-                className={"popup d-flex flex-column bg-accent rounded position-absolute"}
-                style={{
-                    top: `${props.selectionRegion.top + props.selectionRegion.height}%`,
-                }}
-            >
-                <div className={"d-flex flex-column v-gap-2 p-3 position-relative"}>
-                    <div className={"position-absolute close"}>
-                        <Button className={"btn-transparent"} onClick={props.cancel}>
-                            <DeleteSVG className={"nano-image-container"}/>
-                        </Button>
-
-                    </div>
-                    <div className={"header-3"}>Excerpt</div>
-                    <ComboBox
-                        items={pockets}
-                        title={pocketTitle}
-                        onSelect={(value: string) => _onPocketSelectionChanged(value)}
-                    />
-                    <TextArea
-                        className={"p-0"}
-                        name={"note"}
-                        onChange={(e) => onMessageChange(e)}
-                        value={note}
-                    />
-                </div>
-                <div className={"d-flex justify-content-end bg-selected p-3 h-gap-3"}>
-                    <Button
-                        light={true}
-                        text={"Remove"}
-                        onClick={props.cancel}
-                    />
-                    <Button
-                        light={true}
-                        text={"Save"}
-                        onClick={addNote}
-                    />
-                </div>
-            </div>
-        );
-    };
-
-
-
-    function renderHighlights(props: RenderHighlightsProps) {
-        // console.log("renderHighlights " + JSON.stringify(tmp.documentHighlightAreas))
-        return (
-            <div>
-                {tmp.documentHighlightAreas?.map((note: any[]) => (
-                    <React.Fragment key={JSON.stringify(note)}>
-                        {note
-                            // Filter all highlights on the current page
-                            .filter((area: any) => area.pageIndex === props.pageIndex)
-                            .map((area: any, idx: any) => (
-                                <div
-                                    key={idx}
-                                    style={Object.assign(
-                                        {},
-                                        {
-                                            background: 'yellow',
-                                            opacity: 0.4,
-                                        },
-                                        props.getCssProperties(area, props.rotation)
-                                    )}
-                                />
-                            ))}
-                    </React.Fragment>
-                ))}
-            </div>
-        );
-    }
-
-
-    let highlightPluginInstance = highlightPlugin({
-        renderHighlightTarget,
-        renderHighlightContent,
-        renderHighlights,
-    });
+    // const highlightPluginInstance =  highlightPlugin({
+    //     renderHighlightTarget: (pluginProps: RenderHighlightTargetProps) => renderHighlightTarget(pluginProps, props),
+    //     renderHighlightContent: (pluginProps: RenderHighlightContentProps) => renderHighlightContent(pluginProps, props),
+    //     renderHighlights: (pluginProps: RenderHighlightsProps) => renderHighlights(pluginProps, props),
+    // });
 
     useEffect(() => {
-        console.log("props changed")
 
-    })
+
+    }, []);
 
     const _download = () => {
         let username = userProfile.username;
@@ -323,7 +218,7 @@ function DocumentPdfPreview(props: any) {
                                         // Register application
                                         // defaultLayoutPluginInstance,
                                         toolbarPluginInstance,
-                                        highlightPluginInstance,
+                                        highlightPluginSupplier(props),
                                     ]}
                                     theme={'dark'}
                                     httpHeaders={{
