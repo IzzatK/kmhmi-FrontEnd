@@ -49,24 +49,17 @@ function DocumentPdfPreview(props: DocumentPdfPreviewProps) {
     //     });
     // }, [ props ]);
 
-    const highlightPluginSupplier = useCallback((props) => {
-        return highlightPlugin({
-            renderHighlightTarget: (pluginProps: RenderHighlightTargetProps) => renderHighlightTarget(pluginProps, props),
-            renderHighlightContent: (pluginProps: RenderHighlightContentProps) => renderHighlightContent(pluginProps, props),
-            renderHighlights: (pluginProps: RenderHighlightsProps) => renderHighlights(pluginProps, props),
-        });
-    }, [props]);
+    const highlightPluginInstance = highlightPlugin({
+        renderHighlightTarget: (pluginProps: RenderHighlightTargetProps) => renderHighlightTarget(pluginProps, props),
+        renderHighlightContent: (pluginProps: RenderHighlightContentProps) => renderHighlightContent(pluginProps, props),
+        renderHighlights: (pluginProps: RenderHighlightsProps) => renderHighlights(pluginProps, props),
+    });
 
     // const highlightPluginInstance =  highlightPlugin({
     //     renderHighlightTarget: (pluginProps: RenderHighlightTargetProps) => renderHighlightTarget(pluginProps, props),
     //     renderHighlightContent: (pluginProps: RenderHighlightContentProps) => renderHighlightContent(pluginProps, props),
     //     renderHighlights: (pluginProps: RenderHighlightsProps) => renderHighlights(pluginProps, props),
     // });
-
-    useEffect(() => {
-
-
-    }, []);
 
     const _download = () => {
         let username = userProfile.username;
@@ -218,7 +211,7 @@ function DocumentPdfPreview(props: DocumentPdfPreviewProps) {
                                         // Register application
                                         // defaultLayoutPluginInstance,
                                         toolbarPluginInstance,
-                                        highlightPluginSupplier(props),
+                                        highlightPluginInstance,
                                     ]}
                                     theme={'dark'}
                                     httpHeaders={{
