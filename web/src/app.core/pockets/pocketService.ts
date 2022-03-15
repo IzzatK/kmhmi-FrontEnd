@@ -276,8 +276,6 @@ export class PocketService extends Plugin implements IPocketService {
     }
 
     updatePocket(id: string, pocketMapper: PocketMapper): void {
-
-
         this.pocketProvider?.update(id, pocketMapper)
             .then((pocketMapper: Nullable<PocketMapper>) => {
                 if (pocketMapper != null) {
@@ -310,8 +308,8 @@ export class PocketService extends Plugin implements IPocketService {
         return this.addOrUpdateRemoteItem(ExcerptInfo.class, this.excerptProvider, excerptParamType);
     }
 
-    removeExcerpt(id: string): void {
-
+    removeExcerpt(id: string) {
+        return this.deleteRemoteItem(ExcerptInfo.class, id, this.excerptProvider);
     }
 
     getExcerpt(id: string): Nullable<ExcerptInfo> {
@@ -330,13 +328,12 @@ export class PocketService extends Plugin implements IPocketService {
         return this.getRepoItem(NoteInfo.class, id);
     }
 
-
-    addOrUpdateResource(reportDocumentParams: ResourceParamType): Promise<Nullable<ResourceInfo>> {
-        throw new Error('Method not implemented.');
+    addOrUpdateResource(resourceParamType: ResourceParamType): Promise<Nullable<ResourceInfo>> {
+        return this.addOrUpdateRemoteItem(ResourceInfo.class, this.resourceProvider, resourceParamType);
     }
 
-    removeResource(id: string): void {
-        throw new Error('Method not implemented.');
+    removeResource(id: string) {
+        return this.deleteRemoteItem(ResourceInfo.class, id, this.resourceProvider);
     }
 
     getResource(id: string): Nullable<ResourceInfo> {
