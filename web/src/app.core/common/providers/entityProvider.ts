@@ -1,9 +1,9 @@
-import {ILogger, ILogService, IRepositoryService, IStorage} from "../../../framework.api";
+import {ILogger, ILogService, IRepositoryService, IStorage} from "../../../framework.core.api";
 import {appDataStore} from "../../../serviceComposition";
-import {IHttpService} from "../../../framework.api";
+import {IHttpService} from "../../../framework.core.api";
 import {Nullable} from "../../../framework.core/extras/utils/typeUtils";
 import {BasePlugin} from "../../../framework.core/extras/basePlugin";
-import {IConverter, IEntityProvider} from "../../../framework.api";
+import {IConverter, IEntityProvider} from "../../../framework.core.api";
 import {IRepoItem} from "../../../framework.core/services";
 
 export type RequestHandler = (requestData?: any) => any;

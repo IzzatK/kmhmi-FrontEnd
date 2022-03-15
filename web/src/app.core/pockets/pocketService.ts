@@ -19,7 +19,7 @@ import {
     ResourceInfo,
     ResourceMapper
 } from "../../app.model";
-import {IEntityProvider, ISelectionService} from "../../framework.api";
+import {IEntityProvider, ISelectionService} from "../../framework.core.api";
 import {forEach} from "../../framework.core/extras/utils/collectionUtils";
 import {IRepoItem} from "../../framework.core/services";
 import {createSelector, OutputSelector} from "@reduxjs/toolkit";

@@ -4,7 +4,7 @@ import {StatType} from "../../app.model";
 import {forEachKVP} from "../../framework.core/extras/utils/collectionUtils";
 import {IStatService} from "../../app.core.api";
 import {Plugin} from "../../framework.core/extras/plugin";
-import { IEntityProvider } from "../../framework.api";
+import { IEntityProvider } from "../../framework.core.api";
 import {Nullable} from "../../framework.core/extras/utils/typeUtils";
 
 export class StatService extends Plugin implements IStatService {

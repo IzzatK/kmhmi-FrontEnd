@@ -7,7 +7,7 @@ import {IDocumentService, IUserService} from "../../app.core.api";
 import {Plugin} from "../../framework.core/extras/plugin";
 import {getDateWithoutTime} from "../../framework.core/extras/utils/timeUtils";
 import {StatusType} from "../../app.model";
-import {IEntityProvider} from "../../framework.api";
+import {IEntityProvider} from "../../framework.core.api";
 
 export class DocumentService extends Plugin implements IDocumentService {
     public static readonly class:string = 'DocumentService';

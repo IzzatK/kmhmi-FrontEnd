@@ -9,7 +9,7 @@ import {
     AuthenticationStatus
 } from "../../app.core.api";
 import {nameOf, Nullable} from "../../framework.core/extras/utils/typeUtils";
-import {IEntityProvider, ISelectionService} from "../../framework.api";
+import {IEntityProvider, ISelectionService} from "../../framework.core.api";
 import {Plugin} from "../../framework.core/extras/plugin";
 import {UserRequestInfo} from "../../app.model";
 import {createSelector, OutputSelector} from "@reduxjs/toolkit";

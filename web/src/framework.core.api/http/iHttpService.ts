@@ -1,5 +1,5 @@
 import {IBasePlugin} from "../IBasePlugin";
-import {ILogger} from "../logService/iLogger";
+import {ILogger} from "../logging/iLogger";
 import {Nullable} from "../../framework.core/extras/utils/typeUtils";
 import {IAuthenticationService} from "../../app.core.api";
 

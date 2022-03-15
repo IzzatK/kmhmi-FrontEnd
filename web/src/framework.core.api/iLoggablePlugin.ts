@@ -1,4 +1,4 @@
-import {LogLevel} from "./logService/logLevel";
+import {LogLevel} from "./logging/logLevel";
 
 export interface ILoggablePlugin {
     debug(...messages: any[]): void;

@@ -1,5 +1,5 @@
 import {Nullable} from "../framework.core/extras/utils/typeUtils";
-import {ILogService} from "./logService/iLogService";
+import {ILogService} from "./logging/iLogService";
 
 export interface IBasePlugin {
     start: () => void;

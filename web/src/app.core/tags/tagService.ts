@@ -3,7 +3,7 @@ import {MetadataInfo, TagInfo} from "../../app.model";
 import {ITagService} from "../../app.core.api";
 import {Plugin} from "../../framework.core/extras/plugin";
 import {Nullable} from "../../framework.core/extras/utils/typeUtils";
-import {IEntityProvider} from "../../framework.api";
+import {IEntityProvider} from "../../framework.core.api";
 
 export class TagService extends Plugin implements ITagService {
     public static readonly class: string = 'TagService';

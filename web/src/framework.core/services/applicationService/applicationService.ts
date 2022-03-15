@@ -1,6 +1,6 @@
 
 // add a registry of the type you expect
-import {IBasePlugin} from "../../../framework.api";
+import {IBasePlugin} from "../../../framework.core.api";
 
 export namespace IApplicationService {
     type Constructor<T> = {

@@ -8,7 +8,7 @@ import {
     IUserProvider
 } from "../../app.core.api";
 import {Nullable} from "../../framework.core/extras/utils/typeUtils";
-import {IStorage} from "../../framework.api";
+import {IStorage} from "../../framework.core.api";
 import {Plugin} from "../../framework.core/extras/plugin";
 import {createSlice, PayloadAction, Slice} from "@reduxjs/toolkit";
 import {UserInfo} from "../../app.model";

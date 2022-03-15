@@ -1,5 +1,5 @@
-import {IPlugin} from "../../framework.api";
-import {IEntityProvider} from "../../framework.api/iEntityProvider";
+import {IPlugin} from "../../framework.core.api";
+import {IEntityProvider} from "../../framework.core.api/iEntityProvider";
 import {TagInfo} from "../../app.model";
 
 export interface ITagService extends IPlugin {

@@ -1,6 +1,6 @@
-import {IPlugin, ISelectionService} from "../../framework.api";
+import {IPlugin, ISelectionService} from "../../framework.core.api";
 import {IUserService} from "../users/iUserService";
-import {IEntityProvider} from "../../framework.api/iEntityProvider";
+import {IEntityProvider} from "../../framework.core.api/iEntityProvider";
 import {
     ExcerptInfo,
     NoteInfo,

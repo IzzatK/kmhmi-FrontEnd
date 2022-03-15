@@ -1,6 +1,6 @@
 import {Nullable} from "../../extras/utils/typeUtils";
 import {BasePlugin} from "../../extras/basePlugin";
-import {IHttpService} from "../../../framework.api";
+import {IHttpService} from "../../../framework.core.api";
 import {IAuthenticationService} from "../../../app.core.api";
 
 export class HttpService extends BasePlugin implements IHttpService {

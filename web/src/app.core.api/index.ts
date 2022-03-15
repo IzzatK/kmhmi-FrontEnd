@@ -7,7 +7,6 @@ export * from "./authorization/iAuthorizationService";
 export * from "./documents/iDocumentService";
 export * from "./pockets/iPocketService";
 export * from "./references/iReferenceService";
-export * from "./scenarioService/iScenarioService";
 export * from "./stats/iStatService";
 export * from "./tags/iTagService";
 export * from "./users/IUserProvider";

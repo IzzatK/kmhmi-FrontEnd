@@ -3,10 +3,11 @@ import {
     IHttpService,
     ILogService,
     IRepositoryService,
+    IScenarioService,
     ISelectionService,
     IStorage,
     IEntityProvider
-} from "./framework.api";
+} from "./framework.core.api";
 import {AppDataStore} from "./framework.core/redux/reduxStore";
 import {
     DisplayService,
@@ -21,10 +22,10 @@ import {
     IAuthorizationService,
     IDocumentService,
     IPocketService,
-    IReferenceService, IScenarioService,
+    IReferenceService,
     IStatService,
-    ITagService, IUserProvider,
-    IUserService
+    ITagService,
+    IUserProvider, IUserService
 } from "./app.core.api";
 import {
     DocumentInfo,

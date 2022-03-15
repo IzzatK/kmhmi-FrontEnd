@@ -1,4 +1,4 @@
-import {IPlugin, IStorage} from "../../framework.api";
+import {IPlugin, IStorage} from "../../framework.core.api";
 import {UserInfo} from "../../app.model";
 import {IAuthorizationService} from "../authorization/iAuthorizationService";
 import {IUserProvider} from "../users/IUserProvider";

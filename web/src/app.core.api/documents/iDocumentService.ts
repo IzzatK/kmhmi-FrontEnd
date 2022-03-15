@@ -1,8 +1,8 @@
 import {Nullable} from "../../framework.core/extras/utils/typeUtils";
 import {DocumentInfo, SearchParamInfo, SortPropertyInfo} from "../../app.model";
-import {IPlugin} from "../../framework.api";
+import {IPlugin} from "../../framework.core.api";
 import {IUserService} from "../users/iUserService";
-import {IEntityProvider} from "../../framework.api/iEntityProvider";
+import {IEntityProvider} from "../../framework.core.api/iEntityProvider";
 
 export interface IDocumentService extends IPlugin {
 

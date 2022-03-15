@@ -1,6 +1,6 @@
-import {IConverter} from "../../../framework.api";
+import {IConverter} from "../../../framework.core.api";
 import {LoggablePlugin} from "../../../framework.core/extras/loggablePlugin";
-import {ILoggablePlugin, ILogger, IRepositoryService} from "../../../framework.api";
+import {ILoggablePlugin, ILogger, IRepositoryService} from "../../../framework.core.api";
 import {bindInstanceMethods, Nullable} from "../../../framework.core/extras/utils/typeUtils";
 import {IRepoItem} from "../../../framework.core/services";
 

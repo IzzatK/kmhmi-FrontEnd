@@ -4,7 +4,7 @@ import {MetadataInfo, MetadataType, ReferenceInfo, ReferenceType} from "../../ap
 import {IReferenceService} from "../../app.core.api";
 import {Plugin} from "../../framework.core/extras/plugin";
 import {Nullable} from "../../framework.core/extras/utils/typeUtils";
-import {IEntityProvider} from "../../framework.api";
+import {IEntityProvider} from "../../framework.core.api";
 
 export class ReferenceService extends Plugin implements IReferenceService {
     public static readonly class: string = 'ReferenceService';

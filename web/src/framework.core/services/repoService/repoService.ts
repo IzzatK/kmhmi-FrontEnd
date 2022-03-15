@@ -3,8 +3,8 @@ import {forEach, forEachKVP} from "../../extras/utils/collectionUtils";
 import {IRepoItem} from "./repoItem";
 import {BasePlugin} from "../../extras/basePlugin";
 import {Nullable} from "../../extras/utils/typeUtils";
-import {IStorage} from "../../../framework.api";
-import {IRepositoryService} from "../../../framework.api";
+import {IStorage} from "../../../framework.core.api";
+import {IRepositoryService} from "../../../framework.core.api";
 
 interface RepoState {
     classToFullClassNameMap: Record<string, string>,

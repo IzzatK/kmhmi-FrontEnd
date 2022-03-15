@@ -1,8 +1,8 @@
 import {Nullable} from "./utils/typeUtils";
-import {IBasePlugin, IRepositoryService} from "../../framework.api";
+import {IBasePlugin, IRepositoryService} from "../../framework.core.api";
 import {IRepoItem} from "../services";
 import {BasePlugin} from "./basePlugin";
-import {IEntityProvider} from "../../framework.api";
+import {IEntityProvider} from "../../framework.core.api";
 
 export abstract class Plugin extends BasePlugin implements IBasePlugin {
     public static class: string = 'SimplePlugin';
