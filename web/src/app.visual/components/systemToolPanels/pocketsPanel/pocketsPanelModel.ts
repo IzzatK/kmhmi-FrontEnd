@@ -5,6 +5,7 @@ export type PocketsPanelProps = {
     className: string;
     data: PocketNodeVM[];
     selectionPath: string;
+    expandedPaths: string[];
     onPocketItemSelected: (id: string) => void;
     onPocketItemToggle: (id: string, expanded: boolean) => void;
     onCreatePocket: (title: string) => void;

@@ -29,6 +29,7 @@ export type TreeNodeProps = {
 
 export type TreeNodeState = {
     expanded: boolean;
+    selected: boolean;
 }
 
 export type TreeNodeVM = {
@@ -38,5 +39,4 @@ export type TreeNodeVM = {
     path: string,
     childNodes: TreeNodeVM[],
     selected?: boolean;
-    expanded?: boolean;
 }

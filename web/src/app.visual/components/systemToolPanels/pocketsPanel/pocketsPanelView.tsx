@@ -12,6 +12,7 @@ import {NoteNodeRenderer} from "./renderers/noteNodeRenderer";
 import {ResourceNodeRenderer} from "./renderers/resourceNodeRenderer";
 import {TreeNodeVM} from "../../../theme/widgets/treeView/treeViewModel";
 import {PocketNodeType} from "../../../model/pocketNodeType";
+import exp from "constants";
 
 class PocketsPanelView extends Component<PocketsPanelProps> {
     constructor(props: any, context: any) {
@@ -112,7 +113,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
     }
 
     render() {
-        const { className, data, selectionPath } = this.props;
+        const { className, data, selectionPath, expandedPaths } = this.props;
 
         let cn = "d-flex position-absolute w-100 h-100 align-items-center justify-content-center";
 
@@ -132,6 +133,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                     <div className={'flex-fill'}>
                         <ScrollBar className={'flex-fill'} renderTrackHorizontal={false}>
                             <TreeView selectionPath={selectionPath}
+                                      expandedPaths={expandedPaths}
                                       onSelected={this._onNodeSelected}
                                       onToggle={this._onNodeToggle}
                                       rootNodes={data}

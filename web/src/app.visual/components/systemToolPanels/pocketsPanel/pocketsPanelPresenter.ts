@@ -46,20 +46,30 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
                     const expandedPath = action.payload;
                     let matchedPath = '';
 
-                    state.expandedPaths.forEach((existingPath:string) => {
-                        if (expandedPath.includes(existingPath)) {
-                            matchedPath = existingPath;
-                        }
-                    })
+                    if (!state.expandedPaths.includes(expandedPath)) {
+                        state.expandedPaths.forEach((existingPath:string) => {
+                            if (expandedPath.startsWith(existingPath)) {
+                                matchedPath = existingPath;
+                                return true;
+                            }
+                            else if (existingPath.startsWith(expandedPath)) {
+                                matchedPath = existingPath;
+                                return true;
+                            }
+                        })
 
-                    if (matchedPath) {
-                        const index = state.expandedPaths.indexOf(matchedPath);
-                        if (index !== -1) {
-                            state.expandedPaths.splice(index, 1);
+                        if (matchedPath) {
+                            while (state.expandedPaths.indexOf(matchedPath) !== -1) {
+                                const index = state.expandedPaths.indexOf(matchedPath);
+                                if (index !== -1) {
+                                    state.expandedPaths.splice(index, 1);
+                                }
+                            }
+
                         }
+
+                        state.expandedPaths.push(expandedPath);
                     }
-
-                    state.expandedPaths.push(expandedPath);
                 },
                 removeExpandedPath: (state:PocketSliceState, action:PayloadAction<string>) => {
                     const expandedPath = action.payload;
@@ -69,6 +79,7 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
                         // reverse includes from adding
                         if (existingPath.includes(expandedPath)) {
                             matchedPath = existingPath;
+                            return true;
                         }
                     })
 
@@ -79,8 +90,10 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
                         }
                     }
 
-                    if (expandedPath.includes('/')) {
-                        state.expandedPaths.push(expandedPath);
+                    if (expandedPath.includes('/', 1)) {
+                        let index = expandedPath.lastIndexOf('/');
+                        const shortenedPath = expandedPath.substr(0, index);
+                        state.expandedPaths.push(shortenedPath);
                     }
                 }
             },
@@ -89,7 +102,8 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
         this.mapStateToProps = (state: any, props: any) => {
             return {
                 data: this.getPocketTree(state),
-                selectionPath: this.getSelectedPocketNodePath(state)
+                selectionPath: this.getSelectedPocketNodePath(state),
+                expandedPaths: this.getExpandedPaths(state)
             }
         }
 

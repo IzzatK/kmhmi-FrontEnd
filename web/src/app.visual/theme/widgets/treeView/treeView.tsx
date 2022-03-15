@@ -26,7 +26,7 @@ class TreeView extends Component<TreeViewProps> {
     }
 
     render() {
-        const { className, rootNodes, selectionPath, cellContentRenderer } = this.props;
+        const { className, rootNodes, selectionPath, expandedPaths, cellContentRenderer } = this.props;
 
         let cn = `${className ? className : ''} tree-view`;
 
@@ -41,6 +41,7 @@ class TreeView extends Component<TreeViewProps> {
                               onSelected={this._onSelected}
                               onToggle={this._onToggle}
                               selectionPath={selectionPath}
+                              expandedPaths={expandedPaths}
                               cellContentRenderer={cellContentRenderer}
                               index={0}
                     />
