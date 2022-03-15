@@ -2,7 +2,7 @@ import PocketsPanelView from "./pocketsPanelView";
 import {Presenter} from "../../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../../framework.visual/wrappers/componentWrapper";
 import {createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {displayService, pocketService, selectionService} from "../../../../serviceComposition";
+import {appDataStore, displayService, pocketService, selectionService} from "../../../../serviceComposition";
 import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
 import {ExcerptMapper, NoteInfo, PocketMapper, ResourceMapper} from "../../../../app.model";
 import {PocketNodeType} from "../../../model/pocketNodeType";
@@ -89,6 +89,7 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
         this.mapStateToProps = (state: any, props: any) => {
             return {
                 data: this.getPocketTree(state),
+                selectionPath: this.getSelectedPocketNodePath(state)
             }
         }
 
@@ -167,32 +168,20 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
         }
     );
 
-    getSelectedPocketNodeId = selectionService.makeGetContext("selected-pocket-node");
+    getSelectedPocketNodePath = selectionService.makeGetContext("selected-pocket-node-path");
 
     onPocketItemSelected(id: string) {
-        debugger;
-        selectionService.setContext("selected-pocket-node", id);
+        selectionService.setContext("selected-pocket-node-path", id);
     }
 
     onPocketItemToggle(id: string, expanded: boolean) {
-        debugger;
-        // selectionService.setContext("selected-pocket-node", id);
-    }
-
-    getSelectedPocketPath = createSelector(
-        [this.getPocketNodeVMs, this.getSelectedPocketNodeId],
-        (nodeVMs, selectedId) => {
-            let result = '';
-
-            forEach(nodeVMs, (nodeVM: PocketNodeVM) => {
-                if (nodeVM.id === selectedId) {
-                    result = nodeVM.path;
-                }
-            })
-
-            return result;
+        if (expanded) {
+            this.sendEvent(this.model?.actions.addExpandedPath(id));
         }
-    )
+        else {
+            this.sendEvent(this.model?.actions.removeExpandedPath(id));
+        }
+    }
 
     getPocketTree = createSelector(
         [this.getPocketNodeVMs],

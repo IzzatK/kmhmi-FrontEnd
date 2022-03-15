@@ -62,13 +62,13 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
 
     private _onNodeSelected(nodeVM: TreeNodeVM) {
         if (this.props.onPocketItemSelected != null) {
-            this.props.onPocketItemSelected(nodeVM.id);
+            this.props.onPocketItemSelected(nodeVM?.path || '');
         }
     }
 
     private _onNodeToggle(nodeVM: TreeNodeVM, expanded: boolean) {
         if (this.props.onPocketItemToggle != null) {
-            this.props.onPocketItemToggle(nodeVM.id, expanded);
+            this.props.onPocketItemToggle(nodeVM.path, expanded);
         }
     }
 

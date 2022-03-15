@@ -18,14 +18,26 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
 
 
     componentDidMount() {
-       this.syncExpandedPropToExpandedState();
+       this.syncPropsToState();
     }
 
     componentDidUpdate(prevProps: Readonly<TreeNodeProps>, prevState: Readonly<TreeNodeState>, snapshot?: any) {
-        this.syncExpandedPropToExpandedState()
+        this.syncPropsToState()
     }
 
-    syncExpandedPropToExpandedState() {
+
+    componentWillUnmount() {
+        if (this.props.node != null) {
+
+            if (this.props.selectionPath == this.props.node.path) {
+                if (this.props.onSelected != null) {
+                    this.props.onSelected(null);
+                }
+            }
+        }
+    }
+
+    syncPropsToState() {
         const { node } = this.props;
         if (node != null) {
             if (node.expanded != null && node.expanded != this.state.expanded) {
@@ -35,20 +47,22 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
     }
 
     _setExpanded(expanded: boolean) {
-        this.setState({
-            ...this.state,
-            expanded: expanded,
-        }, () => {
-            if (this.props.onToggle != null) {
-                if (this.props.node != null && this.props.node.expanded != this.state.expanded) {
-                    this.props.onToggle(this.props.node, this.state.expanded);
+        if (this.props.node != null && this.props.node.childNodes != null && this.props.node.childNodes.length > 0) {
+            this.setState({
+                ...this.state,
+                expanded: expanded,
+            }, () => {
+                if (this.props.onToggle != null) {
+                    if (this.props.node != null && this.props.node.expanded != this.state.expanded) {
+                        this.props.onToggle(this.props.node, this.state.expanded);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     _toggleExpanded() {
-        const { node } = this.props;
+        const { node, } = this.props;
         const { childNodes } = node;
 
         const { expanded } = this.state;
@@ -65,11 +79,20 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
 
         const { expanded } = this.state;
 
-        if (onSelected && !expanded) {
-            onSelected(node);
+        if (this.props.node != null) {
+
+            if (this.props.selectionPath !== this.props.node.path) {
+                if (onSelected != null) {
+                    onSelected(node);
+                }
+            }
+
+            if (!expanded) {
+                this._setExpanded(true);
+            }
         }
 
-        this._setExpanded(!expanded);
+
     }
 
     render() {

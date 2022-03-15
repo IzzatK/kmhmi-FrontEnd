@@ -3,6 +3,7 @@ import {makeGuid} from "../../framework.core/extras/utils/uniqueIdUtils";
 import {bindInstanceMethods, Nullable} from "../../framework.core/extras/utils/typeUtils";
 import {SliceCaseReducers} from "@reduxjs/toolkit/src/createSlice";
 import {Slice} from "@reduxjs/toolkit";
+import {appDataStore} from "../../serviceComposition";
 
 
 export class Presenter<SliceState=null, CaseReducers extends SliceCaseReducers<SliceState> = {}> {
@@ -67,6 +68,17 @@ export class Presenter<SliceState=null, CaseReducers extends SliceCaseReducers<S
             ),
         };
     };
+
+    sendEvent(action: { type: string, payload: any } | undefined): any {
+        if (this.model && action) {
+            appDataStore.sendEvent(action);
+        }
+    }
+
+    sendEventAsync(action: any): (dispatch: any) => void {
+        return appDataStore.sendEvent(action);
+    }
+
 
 
     get mapStateToProps() {

@@ -6,6 +6,7 @@ export type TreeViewProps = {
     onSelected?: (node: TreeNodeVM) => void;
     onToggle?: (node: TreeNodeVM, nextExpanded: boolean) => void;
     selectionPath?: string;
+    expandedPaths?: string[];
     cellContentRenderer: (node: any) => JSX.Element;
     index?: number;
     selected?: boolean;
@@ -20,6 +21,7 @@ export type TreeNodeProps = {
     onSelected?: (node: any) => void;
     onToggle?: (node: TreeNodeVM, nextExpanded: boolean) => void;
     selectionPath?: string;
+    expandedPaths?: string[];
     cellContentRenderer: (node: any) => JSX.Element;
     index?: number;
     node: TreeNodeVM;
