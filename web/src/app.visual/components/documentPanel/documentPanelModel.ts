@@ -1,10 +1,8 @@
 import {ParamType} from "../../../app.model";
 
 export type DocumentPanelProps = {
-    className: string;
+    className?: string;
     document: DocumentInfoVM;
-    onUpdateDocument: (document: DocumentInfoVM) => void;
-    onRemoveDocument: (id: string) => void;
     editProperties: Record<string, EditPropertyVM>;
     pdfRenderer: any;
     preview_url: string;
@@ -13,7 +11,17 @@ export type DocumentPanelProps = {
     token: string;
     permissions: PermissionsVM;
     pockets: Record<string, PocketVM>;
-    onSaveExcerpt: (documentId: string, userId: string, selectedText: string, pocketId: string, note?: string) => void;
+    documentHighlightAreas?: any[];
+
+    onUpdateDocument: (document: DocumentInfoVM) => void;
+    onRemoveDocument: (id: string) => void;
+
+    onSaveExcerpt: (documentId: string, excerptText: string, excerptContent: string, location: string, noteText: string, noteContent: string) => void;
+
+    onSaveNote?: (text: string) => void;
+
+    tmpMethod?: (text: string, highlightArea: any) => void;
+    onPocketSelectionChanged?: (value: string) => void;
 }
 
 export type DocumentPanelState = {
@@ -23,9 +31,8 @@ export type DocumentPanelState = {
     isPrivate: boolean;
     showTagEditor: boolean;
     renderTrigger: number;
-    showPopup: boolean;
-    showNoteButton: boolean;
     tmpExcerpt: ExcerptVM;
+    documentHighlightAreas: any[];
 }
 
 export type UserProfileVM = {
@@ -93,4 +100,5 @@ export type ExcerptVM = {
     [key: string]: any;
     pocket?: string;
     note?: string;
+    highlightArea?: any;
 }

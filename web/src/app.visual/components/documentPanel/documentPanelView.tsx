@@ -18,12 +18,10 @@ import Portal from "../../theme/widgets/portal/portal";
 import {AddNewSVG} from "../../theme/svgs/addNewSVG";
 import {MinimizeSVG} from "../../theme/svgs/minimizeSVG";
 import {CSSTransition} from "react-transition-group";
-import {getClassNames} from "../../../framework.visual/extras/utils/animationUtils";
 import {CheckMarkSVG} from "../../theme/svgs/checkMarkSVG";
 import {Size} from "../../theme/widgets/loadingIndicator/loadingIndicatorModel";
-import TextArea from "../../theme/widgets/textEdit/textArea";
-import Popup from "../../theme/widgets/popup/popup";
-import {NoteSVG} from "../../theme/svgs/noteSVG";
+import DocumentPdfPreview from "./documentPdfPreview";
+import {getClassNames} from "../../../framework.visual";
 
 class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState> {
     private tagsResizeObserver: ResizeObserver;
@@ -44,9 +42,8 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
             isPrivate: false,
             showTagEditor: false,
             renderTrigger: 0,
-            showPopup: false,
-            showNoteButton: false,
             tmpExcerpt: {},
+            documentHighlightAreas: [],
         }
 
         this.characterWidth = 8.15;//pixels
@@ -91,6 +88,7 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
 
     componentDidUpdate(prevProps: Readonly<DocumentPanelProps>, prevState: Readonly<DocumentPanelState>, snapshot?: any) {
         const { document } = this.props;
+        const { documentHighlightAreas } = this.state;
 
         if (document !== prevProps.document) {
             this.refreshDirtyFlag();
@@ -106,6 +104,10 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
             if (id !== prevId) {
                 this.setTmpDocument(tmpDocument);
             }
+        }
+
+        if (prevState.documentHighlightAreas !== documentHighlightAreas) {
+
         }
     }
 
@@ -316,48 +318,24 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
         })
     }
 
-    _onSaveExcerpt() {
-        const { onSaveExcerpt, document:doc, userProfile } = this.props;
-        const { tmpExcerpt } = this.state;
+    _onSaveExcerpt(text: string, highlightArea: any) {
+        const { onSaveExcerpt, document:doc } = this.props;
+        const { tmpExcerpt, documentHighlightAreas } = this.state;
         const { pocket, note } = tmpExcerpt;
         const { id:docId } = doc;
-        const { id:userId } = userProfile
 
-        const selectedText = document.getSelection()?.toString();
-
-        if (docId && userId && selectedText && pocket && onSaveExcerpt) {
-            onSaveExcerpt(docId, userId, selectedText, pocket, note);
+        if (onSaveExcerpt) {
+            onSaveExcerpt(docId || "", text, JSON.stringify(highlightArea), "", note || "", "");
         }
 
-        document.getSelection()?.removeAllRanges();
+        let modifiedDocumentHighlightAreas = documentHighlightAreas.concat([highlightArea])
 
         this.setState({
             ...this.state,
             tmpExcerpt: {},
-            showPopup: false,
-        })
-    }
+            documentHighlightAreas: modifiedDocumentHighlightAreas,
 
-    _setPopupVisible(visible: boolean) {
-        this.setState({
-            ...this.state,
-            showPopup: visible,
         })
-    }
-
-    _setNoteButtonVisible(visible: boolean) {
-        this.setState({
-            ...this.state,
-            showNoteButton: visible,
-        })
-    }
-
-    _detectTextSelection() {
-        if (document.getSelection()?.toString() !== "") {
-            this._setNoteButtonVisible(true);
-        } else {
-            this._setNoteButtonVisible(false);
-        }
     }
 
     _onTmpExcerptChanged(name: string, value: string) {
@@ -701,29 +679,23 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
 
     render() {
         const {
-            document, onUpdateDocument, onRemoveDocument, onSaveExcerpt, pdfRenderer: PdfRenderer, editProperties, userProfile, token,
-            className, permissions, pockets,
+            document, onUpdateDocument, onRemoveDocument, onSaveExcerpt, editProperties, userProfile, token,
+            className, permissions, pockets
         } = this.props;
         const {id, preview_url = "", original_url, isUpdating=false, upload_date, publication_date, file_type, uploaded_by,
             primary_sme_name, primary_sme_phone, primary_sme_email, secondary_sme_name, secondary_sme_phone, secondary_sme_email,
             file_name, file_size, status, nlpComplete, nlpCompleteAnimation, showStatusBanner} = document || {};
 
-        const { tmpDocument, isDirty, isGlobal, isPrivate, showPopup, showNoteButton, tmpExcerpt } = this.state;
+        const { tmpDocument, isDirty, isGlobal, isPrivate, tmpExcerpt, documentHighlightAreas } = this.state;
+
+        console.log(JSON.stringify(documentHighlightAreas))
 
         let cn = "document-panel d-flex";
         if (className) {
             cn += ` ${className}`;
         }
 
-        let pocketId = tmpExcerpt["pocket"] ? tmpExcerpt["pocket"] : "";
-        let pocketTitle = "";
-        if (pockets && pockets[pocketId]) {
-            pocketTitle = pockets[pocketId].title;
-        } else {
-            pocketTitle = pocketId;
-        }
-
-        let note = tmpExcerpt["note"] ? tmpExcerpt["note"] : "";
+        // console.log("pockets1=" + JSON.stringify(pockets))
 
         return (
             <div className={cn}>
@@ -869,44 +841,24 @@ class DocumentPanelView extends Component<DocumentPanelProps, DocumentPanelState
                             </div>
                         }
                     </div>
-                    <div className={"body flex-fill d-flex align-self-stretch position-relative"} onMouseUp={() => this._detectTextSelection()}>
-                        <Popup padding={"75%"}
-                               isVisible={showPopup}
-                               onCancel={() => this._setPopupVisible(false)}
-                        >
-                            <div className={"d-flex flex-column bg-accent rounded"}>
-                                <div className={"d-flex flex-column v-gap-2 p-3"}>
-                                    <div className={"header-3"}>Excerpt</div>
-                                    <ComboBox items={pockets}
-                                              title={pocketTitle}
-                                              onSelect={(value: string) => this._onTmpExcerptChanged("pocket", value)}
-                                    />
-                                    <TextArea className={"p-0"}
-                                              name={"note"}
-                                              onSubmit={this._onTmpExcerptChanged}
-                                              value={note}
-                                    />
-                                </div>
-                                <div className={"d-flex justify-content-end bg-selected p-3 h-gap-3"}>
-                                    <Button light={true} text={"Remove"} onClick={() => this._setPopupVisible(false)}/>
-                                    <Button light={true} text={"Save"} onClick={() => this._onSaveExcerpt()}/>
-                                </div>
-                            </div>
-                        </Popup>
-                        {
-                            showNoteButton &&
-                            <div className={"note position-absolute"}>
-                                <Button className={"btn-transparent"} onClick={() => this._setPopupVisible(true)}>
-                                    <NoteSVG className={"small-image-container"}/>
-                                </Button>
-
-                            </div>
-                        }
-
+                    <div className={"body flex-fill d-flex align-self-stretch position-relative"}>
                         {
                             id ?
                                 preview_url.length > 0 ?
-                                    <PdfRenderer preview_url={preview_url} original_url={original_url} userProfile={userProfile} token={token} permissions={permissions}/> :
+                                    <DocumentPdfPreview
+                                        preview_url={preview_url}
+                                        original_url={original_url || ""}
+                                        userProfile={userProfile}
+                                        token={token}
+                                        permissions={permissions}
+                                        onSaveNote={(text: string) => this._onTmpExcerptChanged("note", text)}
+                                        tmpMethod={(text: string, highlightArea: any) => this._onSaveExcerpt(text, highlightArea)}
+                                        documentHighlightAreas={documentHighlightAreas}
+                                        tmpExcerpt={tmpExcerpt}
+                                        pockets={pockets}
+                                        onPocketSelectionChanged={(value: string) => this._onTmpExcerptChanged("pocket", value)}
+                                        />
+                                    :
                                     <div className={"position-relative w-100 h-100"}>
                                         <LoadingIndicator/>
                                     </div>

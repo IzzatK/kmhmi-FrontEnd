@@ -1,8 +1,5 @@
 import DocumentPanelView from "./documentPanelView";
 import {createSelector} from "@reduxjs/toolkit";
-import {Presenter} from "../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../framework.visual/wrappers/componentWrapper";
-import DocumentPdfPreview from "./documentPdfPreview";
 import {DocumentInfo, ParamType, ReferenceType} from "../../../app.model";
 import {
     authenticationService,
@@ -12,7 +9,11 @@ import {
     selectionService,
     userService,
 } from "../../../serviceComposition";
-import {DocumentInfoVM, PermissionsVM, PocketVM} from "./documentPanelModel";
+import {
+    DocumentInfoVM,
+    PermissionsVM,
+    PocketVM
+} from "./documentPanelModel";
 import {
     ExcerptParamType,
     NoteParamType,
@@ -23,6 +24,7 @@ import {
 import {PermissionInfo} from "../../../app.model";
 import {StatusType} from "../../../app.model";
 import {forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
+import {createComponentWrapper, Presenter} from "../../../framework.visual";
 
 class DocumentPanel extends Presenter {
 
@@ -47,12 +49,12 @@ class DocumentPanel extends Presenter {
         this.mapStateToProps = (state: any) => {
             return {
                 document: this.getDocument(state),
-                pdfRenderer: DocumentPdfPreview,
+                // pdfRenderer: DocumentPdfPreview,
                 editProperties: this._getEditProperties(),
                 userProfile: authenticationService.getUserProfile(),
                 token: authenticationService.getToken(),
                 permissions: this.getPermissions(state),
-                // pockets: this.getPockets(state),
+                pockets: this.getPockets(state),
             }
         }
 
@@ -60,7 +62,9 @@ class DocumentPanel extends Presenter {
             return {
                 onUpdateDocument: (document: DocumentInfoVM) => documentService.updateDocument(document),
                 onRemoveDocument: (id: string) => documentService.removeDocument(id),
-                onSaveExcerpt: (documentId: string, userId: string, selectedText: string, pocketId: string, note?: string) => this._updatePocket(documentId, userId, selectedText, pocketId, note),
+                onSaveExcerpt: (documentId: string, excerptText: string, excerptContent: string, location: string, noteText: string, noteContent: string) => {
+                    this._saveExcerpt(documentId, excerptText, excerptContent, location, noteText, noteContent);
+                },
             };
         }
 
@@ -68,7 +72,9 @@ class DocumentPanel extends Presenter {
         this.documentLookup = {};
     }
 
-    _updatePocket(documentId: string, userId: string, selectedText: string, pocketId: string, note?: string) {
+    _saveExcerpt(documentId: string, excerptText: string, excerptContent: string, location: string, noteText: string, noteContent: string) {
+        // console.log(documentId + " " + excerptText + " " + excerptContent + " " + location + " " + noteText + " " + noteContent);
+
 
     }
 

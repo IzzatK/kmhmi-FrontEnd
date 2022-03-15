@@ -113,6 +113,10 @@
     -moz-user-select: text !important;
     -ms-user-select: text !important;
     user-select: text !important;
+
+}
+
+.document-panel .pdf-viewer .toolbar .button {
     background: transparent;
 }
 
@@ -181,8 +185,13 @@
 
 .document-panel .popup {
     width: 33.3rem;
-    height: 23.7rem;
+    /*height: 23.7rem;*/
     color: var(--document-panel-context-menu-color);
+    left: 0;
+    right: 0;
+    margin-right: auto;
+    margin-left: auto;
+    z-index: 1;
 }
 
 .document-panel .popup .popup-content {
@@ -213,4 +222,18 @@
 
 .document-panel .note .button {
     fill: #48A8ff;
+}
+
+.document-panel .popup .close {
+    top: 1rem;
+    right: 1rem;
+}
+
+.document-panel .popup .close .button {
+    min-width: 1.7rem;
+    height: 1.7rem;
+}
+
+.document-panel .popup .close .button svg {
+    fill: var(--popup-color);
 }

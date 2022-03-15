@@ -1,16 +1,20 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './documentPanel.css';
 import {Viewer, Worker} from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import '@react-pdf-viewer/highlight/lib/styles/index.css';
-import {DocumentPanelProps} from "./documentPanelModel";
 import { toolbarPlugin } from '@react-pdf-viewer/toolbar';
 import type { ToolbarSlot } from '@react-pdf-viewer/toolbar';
 import type { RenderZoomInProps, RenderZoomOutProps } from '@react-pdf-viewer/zoom';
 import type { RenderGoToPageProps } from '@react-pdf-viewer/page-navigation';
 import type { RenderCurrentPageLabelProps } from '@react-pdf-viewer/page-navigation';
-import {highlightPlugin, RenderHighlightTargetProps} from '@react-pdf-viewer/highlight';
+import {
+    highlightPlugin,
+    RenderHighlightContentProps,
+    RenderHighlightsProps,
+    RenderHighlightTargetProps
+} from '@react-pdf-viewer/highlight';
 import {ZoomInSVG} from "../../theme/svgs/zoomInSVG";
 import {ZoomOutSVG} from "../../theme/svgs/zoomOutSVG";
 import {DownloadSVG} from "../../theme/svgs/downloadSVG";
@@ -18,21 +22,156 @@ import {TextEditSVG} from "../../theme/svgs/textEditSVG";
 import {ArrowLeftSVG} from "../../theme/svgs/arrowLeftSVG";
 import {ArrowRightSVG} from "../../theme/svgs/arrowRightSVG";
 import Button from "../../theme/widgets/button/button";
+import {NoteSVG} from "../../theme/svgs/noteSVG";
+import ComboBox from "../../theme/widgets/comboBox/comboBox";
+import TextArea from "../../theme/widgets/textEdit/textArea";
+import {DeleteSVG} from "../../theme/svgs/deleteSVG";
 
-function DocumentPdfPreview(props: DocumentPanelProps) {
-    const {className, preview_url, original_url, userProfile, token, permissions, ...rest} = props;
+function DocumentPdfPreview(props: any) {
+    const {className, preview_url, original_url, userProfile, token, permissions, onSaveNote, tmpMethod, documentHighlightAreas, tmpExcerpt, pockets, onPocketSelectionChanged, ...rest} = props;
+
+    // console.log("DocumentPdfPreview " + JSON.stringify(documentHighlightAreas))
+    // console.log("pockets2=" + JSON.stringify(pockets));
+
+
+    const tmp = props;
 
     const toolbarPluginInstance = toolbarPlugin();
     const { Toolbar } = toolbarPluginInstance;
 
-    const renderHighlightTarget = (props: RenderHighlightTargetProps) => {
-        //can page range from here - maybe add popup here though that might be tricky
+    function renderHighlightTarget(props: RenderHighlightTargetProps) {
+        console.log(JSON.stringify(props))
         return (
-            <div/>
+            <div className={"note position-absolute d-flex"}
+                 style={{
+                     left: `${props.selectionRegion.left}%`,
+                     top: `${props.selectionRegion.top + props.selectionRegion.height}%`,
+                 }}
+            >
+                <Button className={"btn-transparent"} onClick={props.toggle}>
+                    <NoteSVG className={"small-image-container"}/>
+                </Button>
+            </div>
         );
     };
 
-    const highlightPluginInstance = highlightPlugin({renderHighlightTarget});
+    const onMessageChange = (message: string) => {
+        if (onSaveNote) {
+            onSaveNote(message)
+        }
+    }
+
+    const _onPocketSelectionChanged = (value: string) => {
+        if (onPocketSelectionChanged) {
+            onPocketSelectionChanged(value);
+        }
+    }
+
+    function renderHighlightContent(props: RenderHighlightContentProps) {
+        const addNote = () => {
+            if (tmp.tmpMethod) {
+                tmp.tmpMethod(props.selectedText, props.highlightAreas);
+            }
+            props.cancel();
+        };
+
+
+        // console.log("pockets3=" + JSON.stringify(tmp.pockets));
+
+        let pocketId = tmp.tmpExcerpt["pocket"] ? tmp.tmpExcerpt["pocket"] : "";
+        let pocketTitle = "";
+        if (tmp.pockets && tmp.pockets[pocketId]) {
+            pocketTitle = tmp.pockets[pocketId].title;
+        } else {
+            pocketTitle = pocketId;
+        }
+
+        let note = tmp.tmpExcerpt["note"] ? tmp.tmpExcerpt["note"] : "";
+
+        return (
+            <div
+                className={"popup d-flex flex-column bg-accent rounded position-absolute"}
+                style={{
+                    top: `${props.selectionRegion.top + props.selectionRegion.height}%`,
+                }}
+            >
+                <div className={"d-flex flex-column v-gap-2 p-3 position-relative"}>
+                    <div className={"position-absolute close"}>
+                        <Button className={"btn-transparent"} onClick={props.cancel}>
+                            <DeleteSVG className={"nano-image-container"}/>
+                        </Button>
+
+                    </div>
+                    <div className={"header-3"}>Excerpt</div>
+                    <ComboBox
+                        items={pockets}
+                        title={pocketTitle}
+                        onSelect={(value: string) => _onPocketSelectionChanged(value)}
+                    />
+                    <TextArea
+                        className={"p-0"}
+                        name={"note"}
+                        onChange={(e) => onMessageChange(e)}
+                        value={note}
+                    />
+                </div>
+                <div className={"d-flex justify-content-end bg-selected p-3 h-gap-3"}>
+                    <Button
+                        light={true}
+                        text={"Remove"}
+                        onClick={props.cancel}
+                    />
+                    <Button
+                        light={true}
+                        text={"Save"}
+                        onClick={addNote}
+                    />
+                </div>
+            </div>
+        );
+    };
+
+
+
+    function renderHighlights(props: RenderHighlightsProps) {
+        // console.log("renderHighlights " + JSON.stringify(tmp.documentHighlightAreas))
+        return (
+            <div>
+                {tmp.documentHighlightAreas?.map((note: any[]) => (
+                    <React.Fragment key={JSON.stringify(note)}>
+                        {note
+                            // Filter all highlights on the current page
+                            .filter((area: any) => area.pageIndex === props.pageIndex)
+                            .map((area: any, idx: any) => (
+                                <div
+                                    key={idx}
+                                    style={Object.assign(
+                                        {},
+                                        {
+                                            background: 'yellow',
+                                            opacity: 0.4,
+                                        },
+                                        props.getCssProperties(area, props.rotation)
+                                    )}
+                                />
+                            ))}
+                    </React.Fragment>
+                ))}
+            </div>
+        );
+    }
+
+
+    let highlightPluginInstance = highlightPlugin({
+        renderHighlightTarget,
+        renderHighlightContent,
+        renderHighlights,
+    });
+
+    useEffect(() => {
+        console.log("props changed")
+
+    })
 
     const _download = () => {
         let username = userProfile.username;
@@ -98,7 +237,6 @@ function DocumentPdfPreview(props: DocumentPanelProps) {
                                     {(props: ToolbarSlot) => {
                                         const {
                                             CurrentPageLabel,
-                                            Download,
                                             GoToNextPage,
                                             GoToPreviousPage,
                                             ZoomIn,
@@ -106,30 +244,23 @@ function DocumentPdfPreview(props: DocumentPanelProps) {
                                         } = props;
                                         return (
                                             <>
-                                                <div style={{ padding: '0px 2px' }}>
+                                                <div className={"toolbar"} style={{ padding: '0px 2px' }}>
                                                     {
                                                         permissions.canDownload &&
                                                         <Button onClick={() => _download()}>
                                                             <DownloadSVG className={'small-image-container cursor-pointer pdf-icon mx-5'}/>
                                                         </Button>
                                                     }
-                                                    {/*<Download>*/}
-                                                    {/*    {(props: RenderDownloadProps) => (*/}
-                                                    {/*        <div onClick={props.onClick}>*/}
-                                                    {/*            */}
-                                                    {/*        </div>*/}
-                                                    {/*    )}*/}
-                                                    {/*</Download>*/}
                                                 </div>
 
 
-                                                <div style={{ padding: '0px 2px' }}>
+                                                <div className={"toolbar"} style={{ padding: '0px 2px' }}>
                                                     <Button>
                                                         <TextEditSVG className={'small-image-container cursor-pointer pdf-icon mx-3'}/>
                                                     </Button>
                                                 </div>
 
-                                                <div style={{ padding: '0px 2px',  marginLeft: 'auto' }}>
+                                                <div className={"toolbar"} style={{ padding: '0px 2px',  marginLeft: 'auto' }}>
                                                     <GoToPreviousPage>
                                                         {(props: RenderGoToPageProps) => (
                                                             <div onClick={props.onClick}>
@@ -139,7 +270,7 @@ function DocumentPdfPreview(props: DocumentPanelProps) {
                                                     </GoToPreviousPage>
                                                 </div>
 
-                                                <div style={{ padding: '0px 2px' }}>
+                                                <div className={"toolbar"} style={{ padding: '0px 2px' }}>
                                                     <CurrentPageLabel>
                                                         {(props: RenderCurrentPageLabelProps) => (
                                                             <div className={'pagination'}>
@@ -152,7 +283,7 @@ function DocumentPdfPreview(props: DocumentPanelProps) {
                                                     </CurrentPageLabel>
                                                 </div>
 
-                                                <div style={{ padding: '0px 2px' }}>
+                                                <div className={"toolbar"} style={{ padding: '0px 2px' }}>
                                                     <GoToNextPage>
                                                         {(props: RenderGoToPageProps) => (
                                                             <div onClick={props.onClick}>
@@ -162,7 +293,7 @@ function DocumentPdfPreview(props: DocumentPanelProps) {
                                                     </GoToNextPage>
                                                 </div>
 
-                                                <div style={{ padding: '0px 2px', marginLeft: 'auto' }}>
+                                                <div className={"toolbar"} style={{ padding: '0px 2px', marginLeft: 'auto' }}>
                                                     <ZoomOut>
                                                         {(props: RenderZoomOutProps) => (
                                                             <div onClick={props.onClick}>
@@ -172,7 +303,7 @@ function DocumentPdfPreview(props: DocumentPanelProps) {
                                                     </ZoomOut>
                                                 </div>
 
-                                                <div style={{ padding: '0px 2px' }}>
+                                                <div className={"toolbar"} style={{ padding: '0px 2px' }}>
                                                     <ZoomIn>
                                                         {(props: RenderZoomInProps) => (
                                                             <div onClick={props.onClick}>
