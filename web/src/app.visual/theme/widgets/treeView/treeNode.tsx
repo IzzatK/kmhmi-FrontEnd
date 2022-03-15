@@ -14,7 +14,7 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
 
         this.state = {
             expanded: false,
-            selected: false
+            selected: false // computed property
         }
         bindInstanceMethods(this);
     }
@@ -51,10 +51,9 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
     }
 
     componentDidUpdate(prevProps: Readonly<TreeNodeProps>, prevState: Readonly<TreeNodeState>, snapshot?: any) {
-
         let dirty = false;
-        let expanded = false;
-        let selected = false;
+        let expanded = this.state.expanded;
+        let selected = this.state.selected;
 
         if (prevProps != this.props) {
             if (prevProps.expandedPaths !== this.props.expandedPaths) {
@@ -76,26 +75,14 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
                 dirty = true;
                 if (this.props.node != null) {
                     if (this.props.selectionPath == this.props.node.path) {
-                        debugger
                         selected = true;
                         if (this.hasChildren()) {
                             expanded = true;
                         }
                     }
-                }
-            }
-        }
-
-        if (prevState != this.state) {
-            if (prevState.expanded !== this.state.expanded) {
-                if (this.props.onToggle != null) {
-                    this.props.onToggle(this.props.node, this.state.expanded);
-                }
-            }
-
-            if (prevState.selected !== this.state.selected) {
-                if (this.props.onSelected != null) {
-                    this.props.onSelected(this.props.node)
+                    else {
+                        selected = false;
+                    }
                 }
             }
         }
@@ -104,7 +91,7 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
             this.setState({
                 expanded,
                 selected
-            })
+            });
         }
     }
 
@@ -119,7 +106,6 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
 
     componentWillUnmount() {
         if (this.props.node != null) {
-
             if (this.props.selectionPath == this.props.node.path) {
                 if (this.props.onSelected != null) {
                     this.props.onSelected(null);
@@ -128,43 +114,31 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
         }
     }
 
-    _setExpanded(expanded: boolean) {
-        if (this.props.node != null && this.props.node.childNodes != null && this.props.node.childNodes.length > 0) {
-            this.setState({
-                ...this.state,
-                expanded: expanded,
-            });
-        }
-    }
-
     _toggleExpanded() {
         const { expanded } = this.state;
         const nextExpanded = !expanded;
 
         if (this.hasChildren()) {
-            this._setExpanded(nextExpanded);
+            this.setState({
+                ...this.state,
+                expanded: nextExpanded,
+            }, () => {
+                // when local properties have changed, call handlers
+                if (this.props.onToggle != null) {
+                    this.props.onToggle(this.props.node, this.state.expanded);
+                }
+            });
         }
     }
 
-    _onSelected(node: any) {
-        const { onSelected } = this.props;
+    _onSelected() {
+        if (this.props.onSelected != null) {
+            this.props.onSelected(this.props.node);
 
-        const { expanded } = this.state;
-
-        if (this.props.node != null) {
-
-            if (this.props.selectionPath !== this.props.node.path) {
-                if (onSelected != null) {
-                    onSelected(node);
-                }
-            }
-
-            if (!expanded) {
-                this._setExpanded(true);
+            if (!this.state.expanded) {
+                this._toggleExpanded();
             }
         }
-
-
     }
 
     render() {
@@ -215,7 +189,7 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
                             }
                         </div>
                     </div>
-                    <div className={`tree-node-content ${expanded || selected && index !== 0 ? "font-weight-semi-bold" : ""}`} onClick={() => this._onSelected(node)}>
+                    <div className={`tree-node-content ${expanded || selected && index !== 0 ? "font-weight-semi-bold" : ""}`} onClick={this._onSelected}>
                         {
                             cellContentRenderer ? cellContentRenderer(node) :
                                 <div className={`node-title`}>{node.title ? node.title : "n/a"}</div>
