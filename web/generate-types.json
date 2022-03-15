@@ -4,6 +4,7 @@
     "./src/framework.core/services",
     "./src/framework.core.api",
     "./src/framework.visual.api",
+    "./src/framework.visual",
     "./src/app.model",
     "./src/app.core.api",
     "./src/app.core",
