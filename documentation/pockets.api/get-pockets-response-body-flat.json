@@ -1,0 +1,48 @@
+{
+  "pockets": [
+    {
+      "author_id": "string",
+      "excerpts": [
+        {
+          "author_id": "string",
+          "excerpt_id": "string",
+          "location": "string",
+          "note_ids": [ "string", "string", "string"],
+          "plain_text": "string",
+          "rte_text": "string"
+        }
+      ],
+      "note_ids": [ "string", "string", "string"],
+      "notes": [
+        {
+          "author_id": "string",
+          "note_id": "string",
+          "plain_text": "string",
+          "rte_text": "string"
+        }
+      ],
+      "pocket_id": "string",
+      "resources": [
+        {
+          "author_id": "string",
+          "excerpt_ids": [ "string", "string", "string"],
+          "note_ids": [ "string", "string", "string"],
+          "resource_id": "string",
+          "source_id": "string",
+          "title": "string"
+        }
+      ],
+      "sources": [
+        {
+          "author": "string",
+          "publication_date": "string",
+          "source_id": "string",
+          "title": "string",
+          "type": [ "KP", "BOOK", "JOURNAL", "URL"],
+          "version": "string"
+        }
+      ],
+      "title": "string"
+    }
+  ]
+}
