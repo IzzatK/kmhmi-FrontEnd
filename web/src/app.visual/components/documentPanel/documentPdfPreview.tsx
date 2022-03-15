@@ -117,7 +117,7 @@ function DocumentPdfPreview(props: DocumentPdfPreviewProps) {
                 preview_url.length &&
                 <div className={"position-relative w-100 h-100"}>
                     <div className={"position-absolute overflow-hidden w-100 h-100"}>
-                        <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.10.377/build/pdf.worker.min.js">
+                        <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.13.216/build/pdf.worker.min.js">
 
                             <div
                                 style={{
