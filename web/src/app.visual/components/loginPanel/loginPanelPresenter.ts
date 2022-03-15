@@ -4,7 +4,7 @@ import {LoginPanelDispatchProps, LoginPanelStateProps, UserInfoVM} from "./login
 import {createComponentWrapper} from "../../../framework.visual/wrappers/componentWrapper";
 import {authenticationService, authorizationService} from "../../../serviceComposition";
 import {UserInfo} from "../../../app.model";
-import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
+import {makeGuid} from "../../../framework.core/extras/utils/uniqueIdUtils";
 
 class LoginPanel extends Presenter {
     constructor() {

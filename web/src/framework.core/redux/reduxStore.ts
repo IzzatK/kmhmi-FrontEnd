@@ -2,7 +2,7 @@ import {configureStore, PayloadAction, SliceCaseReducers, Unsubscribe} from '@re
 import thunk from "redux-thunk";
 import config from "../../app.config/config";
 import {combineReducers} from "redux";
-import {bindInstanceMethods} from "../extras/typeUtils";
+import {bindInstanceMethods} from "../extras/utils/typeUtils";
 import {IStorage} from "../../framework.api";
 
 

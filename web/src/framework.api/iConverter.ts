@@ -1,4 +1,4 @@
-import {Nullable} from "../framework.core/extras/typeUtils";
+import {Nullable} from "../framework.core/extras/utils/typeUtils";
 import {IRepositoryService} from "./index";
 
 export interface IConverter<FromType, ToType> {

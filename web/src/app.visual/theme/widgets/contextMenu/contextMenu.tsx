@@ -1,7 +1,7 @@
 import React, {Component, createRef} from "react";
 import './contextMenu.css';
 import {ContextMenuProps, ContextMenuState} from "./contextMenuModel";
-import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
 
 class ContextMenu extends Component<ContextMenuProps, ContextMenuState> {
     private readonly contextRef: { current: any };

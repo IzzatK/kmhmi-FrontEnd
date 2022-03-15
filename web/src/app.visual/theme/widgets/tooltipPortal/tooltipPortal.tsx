@@ -1,6 +1,6 @@
 import React from "react";
 import Portal from "../portal/portal";
-import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
 import {TooltipPortalProps, TooltipPortalState} from './tooltipPortalModel';
 import './tooltipPortal.css';
 

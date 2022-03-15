@@ -1,4 +1,4 @@
-import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
+import {forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 import {ReferenceType} from "../../../app.model";
 import {ReferenceInfo} from "../../../app.model";
 import {Converter} from "../../common/converters/converter";

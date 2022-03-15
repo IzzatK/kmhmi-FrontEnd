@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import './reportPanel.css';
 import {ReportPanelProps, ReportPanelState} from "./reportPanelModel";
-import {bindInstanceMethods} from "../../../framework.core/extras/typeUtils";
+import {bindInstanceMethods} from "../../../framework.core/extras/utils/typeUtils";
 import Button from "../../theme/widgets/button/button";
 import ComboBox from "../../theme/widgets/comboBox/comboBox";
 import TextEdit from "../../theme/widgets/textEdit/textEdit";

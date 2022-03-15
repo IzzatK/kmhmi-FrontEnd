@@ -8,9 +8,9 @@ import {
     userService
 } from "../../../serviceComposition";
 import {ReferenceType, UserInfo} from "../../../app.model";
-import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
+import {makeGuid} from "../../../framework.core/extras/utils/uniqueIdUtils";
 import {createSelector} from "@reduxjs/toolkit";
-import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
+import {forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 import {RoleVM} from "./systemBannerModel";
 
 class SystemBanner extends Presenter {

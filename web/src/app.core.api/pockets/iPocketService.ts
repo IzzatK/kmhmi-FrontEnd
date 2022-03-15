@@ -9,7 +9,7 @@ import {
     ResourceInfo,
     ReportInfo
 } from "../../app.model";
-import {Nullable} from "../../framework.core/extras/typeUtils";
+import {Nullable} from "../../framework.core/extras/utils/typeUtils";
 import {IDocumentService} from "../documents/iDocumentService";
 
 export interface IPocketService extends IPlugin {

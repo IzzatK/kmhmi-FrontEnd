@@ -1,4 +1,4 @@
-import {Nullable} from "./typeUtils";
+import {Nullable} from "./utils/typeUtils";
 import {IBasePlugin, IRepositoryService} from "../../framework.api";
 import {IRepoItem} from "../services";
 import {BasePlugin} from "./basePlugin";

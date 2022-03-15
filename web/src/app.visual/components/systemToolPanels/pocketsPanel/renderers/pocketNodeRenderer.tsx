@@ -4,7 +4,7 @@ import Button from "../../../../theme/widgets/button/button";
 import {ShareSVG} from "../../../../theme/svgs/shareSVG";
 import {DownloadSVG} from "../../../../theme/svgs/downloadSVG";
 import {SettingsSVG} from "../../../../theme/svgs/settingsSVG";
-import {bindInstanceMethods} from "../../../../../framework.core/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../../framework.core/extras/utils/typeUtils";
 import {RemoveSVG} from "../../../../theme/svgs/removeSVG";
 
 export class PocketNodeRenderer extends Component<PocketNodeRendererProps, PocketNodeRendererState> {

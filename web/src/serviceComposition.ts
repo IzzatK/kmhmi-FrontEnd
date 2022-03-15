@@ -46,7 +46,6 @@ import {
     ReferenceProvider,
     ReferenceService,
     RoleProvider,
-    ScenarioService,
     StatProvider,
     StatService,
     TagProvider,
@@ -55,6 +54,7 @@ import {
     UserService
 } from "./app.core";
 import {MockExcerptProvider, MockNoteProvider, MockPocketProvider} from "./app.testing/canary";
+import {ScenarioService} from "./app.config/scenarioService";
 
 
 

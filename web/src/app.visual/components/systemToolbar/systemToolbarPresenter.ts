@@ -4,7 +4,7 @@ import {Presenter} from "../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../framework.visual/wrappers/componentWrapper";
 import {DocumentPanelId} from "../documentPanel/documentPanelPresenter";
 import {DocPreviewSVG} from "../../theme/svgs/docPreviewSVG";
-import {forEach} from "../../../framework.visual/extras/utils/collectionUtils";
+import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
 import {
     authorizationService,
     displayService,

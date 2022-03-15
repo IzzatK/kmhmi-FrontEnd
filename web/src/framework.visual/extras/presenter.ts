@@ -1,6 +1,6 @@
 import {bindActionCreators} from "redux";
-import {makeGuid} from "./utils/uniqueIdUtils";
-import {bindInstanceMethods, Nullable} from "../../framework.core/extras/typeUtils";
+import {makeGuid} from "../../framework.core/extras/utils/uniqueIdUtils";
+import {bindInstanceMethods, Nullable} from "../../framework.core/extras/utils/typeUtils";
 import {SliceCaseReducers} from "@reduxjs/toolkit/src/createSlice";
 import {Slice} from "@reduxjs/toolkit";
 

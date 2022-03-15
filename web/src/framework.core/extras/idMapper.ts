@@ -1,4 +1,4 @@
-import {Nullable} from "./typeUtils";
+import {Nullable} from "./utils/typeUtils";
 
 interface IKeyMapper {
     addLocalKey(className: string, localId: string): void;

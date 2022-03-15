@@ -1,7 +1,7 @@
 import React, {Component, createRef} from 'react';
 import './fileInput.css';
 import {UploadSVG} from "../../svgs/uploadSVG";
-import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
 import {FileInputProps, FileInputState} from "./fileInputModel";
 
 class FileInput extends Component<FileInputProps, FileInputState>  {

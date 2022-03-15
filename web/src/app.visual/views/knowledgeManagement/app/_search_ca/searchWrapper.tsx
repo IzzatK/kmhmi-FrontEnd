@@ -10,7 +10,7 @@ import {connect} from "react-redux";
 import {SearchPresenter} from "./searchPresenter";
 import {SearchController} from "./searchController";
 import {Wrapper} from "../../../../../framework.visual/ca/wrapper";
-import {makeGuid} from "../../../../../framework.visual/extras/utils/uniqueIdUtils";
+import {makeGuid} from "../../../../../framework.core/extras/utils/uniqueIdUtils";
 import {UserInfo} from "../../../../../app.model";
 import {userService} from "../../../../../serviceComposition";
 

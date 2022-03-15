@@ -8,9 +8,9 @@ import {
     ResourceInfo,
     ResourceMapper
 } from "../../../app.model";
-import {Nullable} from "../../../framework.core/extras/typeUtils";
-import {forEach} from "../../../framework.visual/extras/utils/collectionUtils";
-import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
+import {Nullable} from "../../../framework.core/extras/utils/typeUtils";
+import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
+import {makeGuid} from "../../../framework.core/extras/utils/uniqueIdUtils";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 

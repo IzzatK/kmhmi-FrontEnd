@@ -6,13 +6,13 @@ import {
     PERMISSION_LEVEL,
     PERMISSION_OPERATOR,
 } from "../../app.core.api";
-import {Nullable} from "../../framework.core/extras/typeUtils";
+import {Nullable} from "../../framework.core/extras/utils/typeUtils";
 import {IEntityProvider, IStorage} from "../../framework.api";
 import {Plugin} from "../../framework.core/extras/plugin";
 import {createSelector, createSlice, OutputSelector, PayloadAction, Selector, Slice} from "@reduxjs/toolkit";
 import {PermissionInfo} from "../../app.model";
-import {forEach} from "../../framework.visual/extras/utils/collectionUtils";
-import {isDev} from "../../framework.core/extras/environmentUtils";
+import {forEach} from "../../framework.core/extras/utils/collectionUtils";
+import {isDev} from "../../framework.core/extras/utils/environmentUtils";
 import {UserInfo} from "../../app.model";
 
 type AuthorizationState = {

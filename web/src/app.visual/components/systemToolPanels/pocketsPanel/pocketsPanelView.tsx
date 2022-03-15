@@ -3,7 +3,7 @@ import './pocketsPanel.css';
 import '../../../theme/stylesheets/panel.css';
 import ScrollBar from "../../../theme/widgets/scrollBar/scrollBar";
 import TreeView from "../../../theme/widgets/treeView/treeView";
-import {bindInstanceMethods, Nullable} from "../../../../framework.core/extras/typeUtils";
+import {bindInstanceMethods, Nullable} from "../../../../framework.core/extras/utils/typeUtils";
 import Button from "../../../theme/widgets/button/button";
 import {PocketNodeVM, PocketsPanelProps} from "./pocketsPanelModel";
 import {PocketNodeRenderer} from "./renderers/pocketNodeRenderer";

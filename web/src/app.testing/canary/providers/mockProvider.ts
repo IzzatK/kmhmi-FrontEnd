@@ -1,7 +1,7 @@
 import {EntityProvider} from "../../../app.core";
-import {Nullable} from "../../../framework.core/extras/typeUtils";
-import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
-import {makeGuid} from "../../../framework.visual/extras/utils/uniqueIdUtils";
+import {Nullable} from "../../../framework.core/extras/utils/typeUtils";
+import {forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
+import {makeGuid} from "../../../framework.core/extras/utils/uniqueIdUtils";
 
 type OmitParamsType = 'className';
 

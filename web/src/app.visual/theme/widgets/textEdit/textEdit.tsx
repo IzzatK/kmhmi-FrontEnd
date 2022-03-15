@@ -1,6 +1,6 @@
 import React, {Component, createRef} from 'react';
 import './textEdit.css';
-import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
 import {TextEditProps, TextEditState} from "./textEditModel";
 
 let tooltip = 0;

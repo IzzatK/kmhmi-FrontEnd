@@ -1,4 +1,4 @@
-import {forEach} from "../../../framework.visual/extras/utils/collectionUtils";
+import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
 import {SearchParamInfo} from "../../../app.model";
 import {Converter} from "../../common/converters/converter";
 

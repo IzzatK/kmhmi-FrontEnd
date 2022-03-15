@@ -2,7 +2,7 @@ import './searchBox.css';
 import React from "react";
 import Button from "../button/button";
 import {SearchSVG} from "../../svgs/searchSVG";
-import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
 import {SearchBoxProps, SearchBoxState} from "./searchBoxModel";
 
 class SearchBox extends React.Component<SearchBoxProps, SearchBoxState> {

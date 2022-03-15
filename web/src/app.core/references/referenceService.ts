@@ -1,9 +1,9 @@
 import {createSelector, Selector} from "@reduxjs/toolkit";
-import {forEach,} from "../../framework.visual/extras/utils/collectionUtils";
+import {forEach,} from "../../framework.core/extras/utils/collectionUtils";
 import {MetadataInfo, MetadataType, ReferenceInfo, ReferenceType} from "../../app.model";
 import {IReferenceService} from "../../app.core.api";
 import {Plugin} from "../../framework.core/extras/plugin";
-import {Nullable} from "../../framework.core/extras/typeUtils";
+import {Nullable} from "../../framework.core/extras/utils/typeUtils";
 import {IEntityProvider} from "../../framework.api";
 
 export class ReferenceService extends Plugin implements IReferenceService {

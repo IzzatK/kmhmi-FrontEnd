@@ -1,5 +1,5 @@
-import {makeGuid} from "../../framework.visual/extras/utils/uniqueIdUtils";
-import {forEach, forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
+import {makeGuid} from "../../framework.core/extras/utils/uniqueIdUtils";
+import {forEach, forEachKVP} from "../../framework.core/extras/utils/collectionUtils";
 import {SearchParamInfo, UserInfo} from "../../app.model";
 import {
     IAuthenticationService,
@@ -8,12 +8,12 @@ import {
     IUserService,
     AuthenticationStatus
 } from "../../app.core.api";
-import {nameOf, Nullable} from "../../framework.core/extras/typeUtils";
+import {nameOf, Nullable} from "../../framework.core/extras/utils/typeUtils";
 import {IEntityProvider, ISelectionService} from "../../framework.api";
 import {Plugin} from "../../framework.core/extras/plugin";
 import {UserRequestInfo} from "../../app.model";
 import {createSelector, OutputSelector} from "@reduxjs/toolkit";
-import {getDateWithoutTime} from "../../framework.visual/extras/utils/timeUtils";
+import {getDateWithoutTime} from "../../framework.core/extras/utils/timeUtils";
 
 export class UserService extends Plugin implements IUserService {
     public static readonly class: string = 'UserService';

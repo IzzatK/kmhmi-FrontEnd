@@ -4,7 +4,7 @@ import {CSSTransition} from "react-transition-group";
 import {TreeNodeProps, TreeNodeState} from "./treeViewModel";
 import {TriangleSVG} from "../../svgs/triangleSVG";
 import {CircleSVG} from "../../svgs/circleSVG";
-import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
 
 class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
     constructor(props: any) {

@@ -8,7 +8,7 @@ import {SortSVG} from "../../theme/svgs/sortSVG";
 import {LoadingIndicator} from "../../theme/widgets/loadingIndicator/loadingIndicator";
 import {PageWidth, SearchResultsProps, SearchResultsState} from "./searchResultsModel";
 import {SearchResultsMenuItem} from "../../../app.model";
-import {forEach} from "../../../framework.visual/extras/utils/collectionUtils";
+import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
 
 class SearchResultsPanelView extends Component<SearchResultsProps, SearchResultsState> {
     private resizeObserver: ResizeObserver;

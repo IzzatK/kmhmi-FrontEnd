@@ -7,12 +7,12 @@ import {
     IAuthorizationService,
     IUserProvider
 } from "../../app.core.api";
-import {Nullable} from "../../framework.core/extras/typeUtils";
+import {Nullable} from "../../framework.core/extras/utils/typeUtils";
 import {IStorage} from "../../framework.api";
 import {Plugin} from "../../framework.core/extras/plugin";
 import {createSlice, PayloadAction, Slice} from "@reduxjs/toolkit";
 import {UserInfo} from "../../app.model";
-import {isDev} from "../../framework.core/extras/environmentUtils";
+import {isDev} from "../../framework.core/extras/utils/environmentUtils";
 
 
 type AuthenticationState = {

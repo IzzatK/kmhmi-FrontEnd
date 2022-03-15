@@ -13,7 +13,7 @@ import {RemoveSVG} from "../../../theme/svgs/removeSVG";
 import {ApproveSVG} from "../../../theme/svgs/approveSVG";
 import Popup from "../../../theme/widgets/popup/popup";
 import {FileSVG} from "../../../theme/svgs/fileSVG";
-import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
 import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
 
 class UploadPanelView extends Component<UploadPanelProps, UploadPanelState> {

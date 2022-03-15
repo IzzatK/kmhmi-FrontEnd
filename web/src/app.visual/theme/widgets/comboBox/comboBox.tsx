@@ -4,8 +4,8 @@ import {ArrowDownSVG} from "../../svgs/arrowDownSVG";
 import {ArrowUpSVG} from "../../svgs/arrowUpSVG";
 import ComboBoxItem from "./comboBoxItem";
 import Portal from "../portal/portal";
-import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
-import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
+import {forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
 import {ComboBoxProps, ComboBoxState} from './comboBoxModel';
 import Button from "../button/button";
 

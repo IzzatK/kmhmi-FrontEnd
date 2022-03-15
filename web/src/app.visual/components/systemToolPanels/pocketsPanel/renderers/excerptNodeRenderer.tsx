@@ -5,7 +5,7 @@ import {DownloadSVG} from "../../../../theme/svgs/downloadSVG";
 import {RemoveSVG} from "../../../../theme/svgs/removeSVG";
 import {ShareSVG} from "../../../../theme/svgs/shareSVG";
 import {SettingsSVG} from "../../../../theme/svgs/settingsSVG";
-import {bindInstanceMethods} from "../../../../../framework.core/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../../framework.core/extras/utils/typeUtils";
 
 export class ExcerptNodeRenderer extends Component<NodeRendererProps> {
     constructor(props: any) {

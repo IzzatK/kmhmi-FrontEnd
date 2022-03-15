@@ -1,4 +1,4 @@
-import {Nullable} from "../../../framework.core/extras/typeUtils";
+import {Nullable} from "../../../framework.core/extras/utils/typeUtils";
 import {ParamType} from "../../../app.model";
 import {MenuItemVM} from "../../../framework.visual/model/menuItemVM";
 

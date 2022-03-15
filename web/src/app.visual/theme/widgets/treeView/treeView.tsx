@@ -3,7 +3,7 @@ import './treeView.css';
 import TreeNode from "./treeNode";
 import {TreeNodeVM, TreeViewProps} from "./treeViewModel";
 import exp from "constants";
-import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
 
 class TreeView extends Component<TreeViewProps> {
     constructor(props: any) {

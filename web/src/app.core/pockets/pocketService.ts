@@ -1,4 +1,4 @@
-import {Nullable} from "../../framework.core/extras/typeUtils";
+import {Nullable} from "../../framework.core/extras/utils/typeUtils";
 import {
     ExcerptParamType,
     IDocumentService,
@@ -20,7 +20,7 @@ import {
     ResourceMapper
 } from "../../app.model";
 import {IEntityProvider, ISelectionService} from "../../framework.api";
-import {forEach} from "../../framework.visual/extras/utils/collectionUtils";
+import {forEach} from "../../framework.core/extras/utils/collectionUtils";
 import {IRepoItem} from "../../framework.core/services";
 import {createSelector, OutputSelector} from "@reduxjs/toolkit";
 

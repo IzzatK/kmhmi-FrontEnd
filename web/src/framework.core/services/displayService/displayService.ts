@@ -1,6 +1,6 @@
 import {BasePlugin} from "../../extras/basePlugin";
 import {createSlice, PayloadAction, Slice} from "@reduxjs/toolkit";
-import {Nullable} from "../../extras/typeUtils";
+import {Nullable} from "../../extras/utils/typeUtils";
 import {IDisplayService, IStorage} from "../../../framework.api";
 
 export type NodeInfo = {

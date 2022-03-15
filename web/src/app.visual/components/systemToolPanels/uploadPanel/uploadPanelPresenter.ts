@@ -2,7 +2,7 @@ import UploadPanelView from "./uploadPanelView";
 import {Presenter} from "../../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../../framework.visual/wrappers/componentWrapper";
 import {createSelector} from "@reduxjs/toolkit";
-import {forEach} from "../../../../framework.visual/extras/utils/collectionUtils";
+import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
 import {DocumentPanelId} from "../../documentPanel/documentPanelPresenter";
 import {DocumentInfo, ReferenceType} from "../../../../app.model";
 import {

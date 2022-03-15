@@ -1,4 +1,4 @@
-import {Nullable} from "../../../../framework.core/extras/typeUtils";
+import {Nullable} from "../../../../framework.core/extras/utils/typeUtils";
 
 export type PortalProps = {
     className?: string;

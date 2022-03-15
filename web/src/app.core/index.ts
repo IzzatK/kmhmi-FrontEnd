@@ -27,7 +27,6 @@ export * from "./references/referenceService";
 export * from "./references/converters/getReferenceArrayRequestConverter";
 export * from "./references/converters/getReferenceArrayResponseConverter";
 export * from "./references/providers/referenceProvider";
-export * from "./scenarioService/scenarioService";
 export * from "./stats/statService";
 export * from "./stats/converters/getStatsRequestConverter";
 export * from "./stats/converters/getStatsResponseConverter";

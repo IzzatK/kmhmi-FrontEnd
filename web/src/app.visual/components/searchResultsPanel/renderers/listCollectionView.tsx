@@ -8,7 +8,7 @@ import {InfoSVG} from "../../../theme/svgs/infoSVG";
 import {DocumentInfoVM, SearchResultsProps, SearchResultsState} from "../searchResultsModel";
 import Tag from "../../../theme/widgets/tag/tag";
 import Card from "../../../theme/widgets/card/card";
-import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
+import {forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
 import {EllipsisSVG} from "../../../theme/svgs/ellipsisSVG";
 
 class ListCollectionView extends Component<SearchResultsProps, SearchResultsState> {

@@ -1,7 +1,7 @@
 import ProfilePanelView from "./profilePanelView";
 import {Presenter} from "../../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../../framework.visual/wrappers/componentWrapper";
-import {forEach, forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
+import {forEach, forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
 import {createSelector} from "@reduxjs/toolkit";
 import {ReferenceType, UserInfo} from "../../../../app.model";
 import {

@@ -7,7 +7,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import {appDataStore, authenticationService} from "./serviceComposition";
 import { KnowledgeManagementPresenter } from './app.visual/views/knowledgeManagement/knowledgeManagementPresenter';
-import {isDev} from "./framework.core/extras/environmentUtils";
+import {isDev} from "./framework.core/extras/utils/environmentUtils";
 
 ReactDOM.render(
     <React.StrictMode>

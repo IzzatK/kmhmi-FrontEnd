@@ -4,7 +4,7 @@ import ComboBox from "../../../theme/widgets/comboBox/comboBox";
 import TextEdit from "../../../theme/widgets/textEdit/textEdit";
 import Card from "../../../theme/widgets/card/card";
 import Button from "../../../theme/widgets/button/button";
-import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
 import {ProfilePanelProps, ProfilePanelState} from "./profilePanelModel";
 
 export class NewUserProfileInfoView extends Component<ProfilePanelProps, ProfilePanelState> {

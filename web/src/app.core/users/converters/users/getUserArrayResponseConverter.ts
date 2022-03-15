@@ -1,8 +1,8 @@
 import {IConverter} from "../../../../framework.api";
-import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
+import {forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
 import {UserInfo} from "../../../../app.model";
 import {Converter} from "../../../common/converters/converter";
-import {Nullable} from "../../../../framework.core/extras/typeUtils";
+import {Nullable} from "../../../../framework.core/extras/utils/typeUtils";
 
 export class GetUserArrayResponseConverter extends Converter<any,UserInfo[]> {
 

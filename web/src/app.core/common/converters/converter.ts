@@ -1,7 +1,7 @@
 import {IConverter} from "../../../framework.api";
 import {LoggablePlugin} from "../../../framework.core/extras/loggablePlugin";
 import {ILoggablePlugin, ILogger, IRepositoryService} from "../../../framework.api";
-import {bindInstanceMethods, Nullable} from "../../../framework.core/extras/typeUtils";
+import {bindInstanceMethods, Nullable} from "../../../framework.core/extras/utils/typeUtils";
 import {IRepoItem} from "../../../framework.core/services";
 
 export abstract class Converter<FromType, ToType> extends LoggablePlugin implements IConverter<FromType, ToType>, ILoggablePlugin {

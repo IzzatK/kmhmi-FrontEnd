@@ -2,7 +2,7 @@ import {createSelector, Selector} from "@reduxjs/toolkit";
 import {MetadataInfo, TagInfo} from "../../app.model";
 import {ITagService} from "../../app.core.api";
 import {Plugin} from "../../framework.core/extras/plugin";
-import {Nullable} from "../../framework.core/extras/typeUtils";
+import {Nullable} from "../../framework.core/extras/utils/typeUtils";
 import {IEntityProvider} from "../../framework.api";
 
 export class TagService extends Plugin implements ITagService {

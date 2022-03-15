@@ -1,5 +1,5 @@
 import {RepoItem} from "../framework.core/services";
-import {Nullable} from "../framework.core/extras/typeUtils";
+import {Nullable} from "../framework.core/extras/utils/typeUtils";
 
 export class SortPropertyInfo extends RepoItem {
     title?: Nullable<string> = '';

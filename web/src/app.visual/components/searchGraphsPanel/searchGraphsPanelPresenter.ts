@@ -3,7 +3,7 @@ import {Presenter} from "../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../framework.visual/wrappers/componentWrapper";
 import {createSelector} from "@reduxjs/toolkit";
 import {ReferenceInfo, ReferenceType, StatType} from "../../../app.model";
-import {forEach, forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
+import {forEach, forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 import {documentService, referenceService, statService} from "../../../serviceComposition";
 import {ReferenceInfoVM, SearchGraphsDispatchProps, SearchGraphsStateProps, StatVM} from "./searchGraphsModel";
 

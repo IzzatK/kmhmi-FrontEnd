@@ -1,4 +1,4 @@
-import {Nullable} from "../../extras/typeUtils";
+import {Nullable} from "../../extras/utils/typeUtils";
 import {BasePlugin} from "../../extras/basePlugin";
 import {IHttpService} from "../../../framework.api";
 import {IAuthenticationService} from "../../../app.core.api";

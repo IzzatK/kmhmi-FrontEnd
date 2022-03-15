@@ -1,11 +1,11 @@
 import {createSelector, OutputSelector} from "@reduxjs/toolkit";
-import {forEach, forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
+import {forEach, forEachKVP} from "../../framework.core/extras/utils/collectionUtils";
 import {DocumentInfo, MetadataInfo, MetadataType, ParamType, SearchParamInfo, SortPropertyInfo} from "../../app.model";
-import {Nullable} from "../../framework.core/extras/typeUtils";
+import {Nullable} from "../../framework.core/extras/utils/typeUtils";
 
 import {IDocumentService, IUserService} from "../../app.core.api";
 import {Plugin} from "../../framework.core/extras/plugin";
-import {getDateWithoutTime} from "../../framework.visual/extras/utils/timeUtils";
+import {getDateWithoutTime} from "../../framework.core/extras/utils/timeUtils";
 import {StatusType} from "../../app.model";
 import {IEntityProvider} from "../../framework.api";
 

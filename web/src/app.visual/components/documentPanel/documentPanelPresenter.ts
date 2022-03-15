@@ -22,7 +22,7 @@ import {
 } from "../../../app.core.api";
 import {PermissionInfo} from "../../../app.model";
 import {StatusType} from "../../../app.model";
-import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
+import {forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 
 class DocumentPanel extends Presenter {
 

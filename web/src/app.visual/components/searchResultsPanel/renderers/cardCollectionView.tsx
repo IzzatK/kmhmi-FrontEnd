@@ -7,7 +7,7 @@ import {TooltipPortal} from "../../../theme/widgets/tooltipPortal/tooltipPortal"
 import {DocumentInfoVM, SearchResultsProps, SearchResultsState} from "../searchResultsModel";
 import Tag from "../../../theme/widgets/tag/tag";
 import {EllipsisSVG} from "../../../theme/svgs/ellipsisSVG";
-import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
+import {forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
 
 class CardCollectionView extends Component<SearchResultsProps, SearchResultsState> {
     private resizeObserver: ResizeObserver;

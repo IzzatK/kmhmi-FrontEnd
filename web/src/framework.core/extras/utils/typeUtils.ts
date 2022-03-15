@@ -1,4 +1,4 @@
-import {forEachKVP} from "../../framework.visual/extras/utils/collectionUtils";
+import {forEachKVP} from "./collectionUtils";
 
 export const nameOf = <T>(name: keyof T) => name;
 

@@ -1,7 +1,7 @@
 import {ILogger, ILogService, IRepositoryService, IStorage} from "../../../framework.api";
 import {appDataStore} from "../../../serviceComposition";
 import {IHttpService} from "../../../framework.api";
-import {Nullable} from "../../../framework.core/extras/typeUtils";
+import {Nullable} from "../../../framework.core/extras/utils/typeUtils";
 import {BasePlugin} from "../../../framework.core/extras/basePlugin";
 import {IConverter, IEntityProvider} from "../../../framework.api";
 import {IRepoItem} from "../../../framework.core/services";

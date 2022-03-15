@@ -3,7 +3,7 @@ import {Presenter} from "../../../../framework.visual/extras/presenter";
 import {createComponentWrapper} from "../../../../framework.visual/wrappers/componentWrapper";
 import {createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {displayService, pocketService, selectionService} from "../../../../serviceComposition";
-import {forEach} from "../../../../framework.visual/extras/utils/collectionUtils";
+import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
 import {ExcerptMapper, NoteInfo, PocketMapper, ResourceMapper} from "../../../../app.model";
 import {PocketNodeType} from "../../../model/pocketNodeType";
 import {PocketNodeVM} from "./pocketsPanelModel";

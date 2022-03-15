@@ -1,5 +1,5 @@
 import {Converter} from "../../common/converters/converter";
-import {forEach} from "../../../framework.visual/extras/utils/collectionUtils";
+import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
 import {PermissionInfo} from "../../../app.model";
 import {
     PERMISSION_ENTITY,

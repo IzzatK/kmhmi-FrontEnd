@@ -1,8 +1,8 @@
 import {createSlice, PayloadAction, Slice} from "@reduxjs/toolkit";
-import {forEach, forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
+import {forEach, forEachKVP} from "../../extras/utils/collectionUtils";
 import {IRepoItem} from "./repoItem";
 import {BasePlugin} from "../../extras/basePlugin";
-import {Nullable} from "../../extras/typeUtils";
+import {Nullable} from "../../extras/utils/typeUtils";
 import {IStorage} from "../../../framework.api";
 import {IRepositoryService} from "../../../framework.api";
 

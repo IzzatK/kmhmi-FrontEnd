@@ -1,4 +1,4 @@
-import {nameOf} from "../../../../framework.core/extras/typeUtils";
+import {nameOf} from "../../../../framework.core/extras/utils/typeUtils";
 import {UserInfo} from "../../../../app.model";
 import {Converter} from "../../../common/converters/converter";
 

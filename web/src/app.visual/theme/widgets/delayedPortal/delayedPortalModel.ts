@@ -1,5 +1,5 @@
 import {ReactNode} from "react";
-import {Nullable} from "../../../../framework.core/extras/typeUtils";
+import {Nullable} from "../../../../framework.core/extras/utils/typeUtils";
 
 export type DelayedPortalProps = {
     isOpen: boolean;

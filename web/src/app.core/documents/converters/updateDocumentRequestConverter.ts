@@ -1,7 +1,7 @@
-import {nameOf} from "../../../framework.core/extras/typeUtils";
+import {nameOf} from "../../../framework.core/extras/utils/typeUtils";
 import {DocumentInfo} from "../../../app.model";
 import {Converter} from "../../common/converters/converter";
-import {forEachKVP} from "../../../framework.visual/extras/utils/collectionUtils";
+import {forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 
 export class UpdateDocumentRequestConverter extends Converter<any, any>{
 

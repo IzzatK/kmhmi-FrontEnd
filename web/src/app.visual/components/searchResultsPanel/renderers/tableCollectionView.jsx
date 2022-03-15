@@ -7,10 +7,10 @@ import {ArrowRightSVG} from "../../../theme/svgs/arrowRightSVG";
 import {ArrowLeftSVG} from "../../../theme/svgs/arrowLeftSVG";
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
 import {TooltipPortal} from "../../../theme/widgets/tooltipPortal/tooltipPortal";
-import {bindInstanceMethods} from "../../../../framework.core/extras/typeUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
 import Tag from "../../../theme/widgets/tag/tag";
 import {EllipsisSVG} from "../../../theme/svgs/ellipsisSVG";
-import {forEachKVP} from "../../../../framework.visual/extras/utils/collectionUtils";
+import {forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
 
 class TableCollectionView extends Component {
     resizeObserver;
