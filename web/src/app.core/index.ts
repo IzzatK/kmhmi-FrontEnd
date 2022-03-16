@@ -8,7 +8,6 @@ export * from "./authorization/converters/getPermissionArrayRequestConverter";
 export * from "./authorization/converters/getPermissionArrayResponseConverter";
 export * from "./authorization/providers/permissionProvider";
 export * from "./common/converters/converter";
-export * from "./common/converters/parsingUtils";
 export * from "./common/converters/types";
 export * from "./common/providers/entityProvider";
 export * from "./documents/documentService";

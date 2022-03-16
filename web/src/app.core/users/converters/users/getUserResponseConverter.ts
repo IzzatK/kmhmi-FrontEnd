@@ -1,8 +1,8 @@
 import {getValueOrDefault, Nullable} from "../../../../framework.core/extras/utils/typeUtils";
-import {UserInfo} from "../../../../app.model";
-import {parseServerReferenceValueOrDefault} from "../../../common/converters/parsingUtils";
+import {ReferenceInfo, UserInfo} from "../../../../app.model";
 import {Converter} from "../../../common/converters/converter";
 import {AuthenticationStatus} from "../../../../app.core.api";
+import {forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
 
 export class GetUserResponseConverter extends Converter<any, Nullable<UserInfo>>{
     convert(fromData: any, reject?: any): Nullable<UserInfo> {
@@ -20,9 +20,8 @@ export class GetUserResponseConverter extends Converter<any, Nullable<UserInfo>>
             department = getValueOrDefault(item, 'dept_id', '');
         }
         else if (item['department']) {
-            department = parseServerReferenceValueOrDefault(item, 'department', '');
+            department = this.parseServerReferenceValueOrDefault(item, 'department', '');
         }
-
 
 
         userInfo.dod_id = getValueOrDefault(item, 'dod_id', 0);
@@ -58,5 +57,36 @@ export class GetUserResponseConverter extends Converter<any, Nullable<UserInfo>>
         }
 
         return userInfo;
+    }
+
+    parseServerReferenceValueOrDefault(object: any, propertyName: string, defaultValue: any) {
+        let result = defaultValue;
+
+        const referenceInfos = this.getRepoItems<ReferenceInfo>(ReferenceInfo.class);
+
+        let title = object[propertyName];
+        if (title) {
+            let titleUpper = title.toUpperCase();
+
+            let referenceInfo: Nullable<ReferenceInfo> = null;
+
+            forEachKVP(referenceInfos, (itemKey: string, itemValue: ReferenceInfo) => {
+                if (itemValue.title.toUpperCase() === titleUpper) {
+                    referenceInfo = itemValue;
+                    result = referenceInfo.id;
+                    return true;
+                }
+            })
+
+            if (!referenceInfo) {
+                console.log(`Reference type with title '${titleUpper}' not found in ${JSON.stringify(referenceInfos)}`)
+            }
+
+        }
+        else {
+            console.log(`No ${propertyName} has been assigned for object ${JSON.stringify(object)}`)
+        }
+
+        return result;
     }
 }
