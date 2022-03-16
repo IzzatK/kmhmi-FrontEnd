@@ -59,7 +59,7 @@ class _SearchWrapper extends Wrapper<SearchWrapperProps, SearchWrapperState, Sea
 }
 
 // responsible for selecting data out of the app store
-export function createWrappedConnector(WrappedComponent: typeof _SearchWrapper) {
+export function createWrappedConnector(WrappedComponent: any) {
     // If the mapStateToProps argument supplied to connect returns a function instead of an object,
     // it will be used to create an individual mapStateToProps function for each instance of the container.
     function mapStateToProps(state: any): SearchAppStateModel {
