@@ -1,7 +1,7 @@
 import {IPlugin, IStorage} from "../../framework.core.api";
 import {UserInfo} from "../../app.model";
 import {IAuthorizationService} from "../authorization/iAuthorizationService";
-import {JIUserProvider} from "../users/jIUserProvider";
+import {IUserProvider} from "../users/iUserProvider";
 
 export interface IAuthenticationService extends IPlugin {
     login(): any;
@@ -20,7 +20,7 @@ export interface IAuthenticationService extends IPlugin {
 
     setAppDataStore(appDataStore: IStorage): void;
 
-    setUserProvider(userProvider: JIUserProvider): void;
+    setUserProvider(userProvider: IUserProvider): void;
     setAuthorizationService(authorizationService: IAuthorizationService): void;
 
     setRegistrationStatus(status: AuthenticationStatus): void;

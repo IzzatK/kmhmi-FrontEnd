@@ -8,13 +8,13 @@ import { UpdateUserRequestConverter } from "../converters/users/updateUserReques
 import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
 import {Nullable, promiseFulfilled} from "../../../framework.core/extras/utils/typeUtils";
 import {EntityProvider} from "../../common/providers/entityProvider";
-import {JIUserProvider} from "../../../app.core.api";
+import {IUserProvider} from "../../../app.core.api";
 import {RoleInfo} from "../../../app.model";
 import {IEntityProvider} from "../../../framework.core.api";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-export class UserProvider extends EntityProvider<UserInfo> implements JIUserProvider{
+export class UserProvider extends EntityProvider<UserInfo> implements IUserProvider{
     public static class: string = 'UserProvider';
     baseUrl: string = `${serverUrl}/users`;
 

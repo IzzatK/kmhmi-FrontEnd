@@ -25,7 +25,7 @@ import {
     IReferenceService,
     IStatService,
     ITagService,
-    JIUserProvider, IUserService
+    IUserProvider, IUserService
 } from "./app.core.api";
 import {
     DocumentInfo,
@@ -81,7 +81,7 @@ const referenceProvider: IEntityProvider<ReferenceInfo> = new ReferenceProvider(
 const statProvider: IEntityProvider<StatInfo> = new StatProvider();
 const tagProvider: IEntityProvider<TagInfo> = new TagProvider();
 const roleProvider: IEntityProvider<RoleInfo> = new RoleProvider();
-const userProvider: JIUserProvider = new UserProvider();
+const userProvider: IUserProvider = new UserProvider();
 const permissionProvider: IEntityProvider<PermissionInfo> = new PermissionProvider()
 const noteProvider: IEntityProvider<NoteInfo> = new MockNoteProvider();
 const excerptProvider: IEntityProvider<ExcerptInfo> = new MockExcerptProvider();

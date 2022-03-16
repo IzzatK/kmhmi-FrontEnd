@@ -5,7 +5,7 @@ import {
     AuthenticationStatus,
     IAuthenticationService,
     IAuthorizationService,
-    JIUserProvider
+    IUserProvider
 } from "../../app.core.api";
 import {Nullable} from "../../framework.core/extras/utils/typeUtils";
 import {IStorage} from "../../framework.core.api";
@@ -42,7 +42,7 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
     private authorizationService: Nullable<IAuthorizationService> = null;
 
     private model: AuthenticationSliceType;
-    private userProvider: Nullable<JIUserProvider> = null;
+    private userProvider: Nullable<IUserProvider> = null;
 
     constructor() {
         super();
@@ -113,7 +113,7 @@ export class AuthenticationService extends Plugin implements IAuthenticationServ
         this.appDataStore = appDataStore;
     }
 
-    setUserProvider(userProvider: JIUserProvider) {
+    setUserProvider(userProvider: IUserProvider) {
         this.userProvider = userProvider;
     }
 
