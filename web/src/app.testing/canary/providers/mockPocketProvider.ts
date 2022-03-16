@@ -11,6 +11,7 @@ import {
 import {Nullable} from "../../../framework.core/extras/utils/typeUtils";
 import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
 import {makeGuid} from "../../../framework.core/extras/utils/uniqueIdUtils";
+import {PocketParamType} from "../../../app.core.api";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -59,7 +60,7 @@ export class MockPocketProvider extends EntityProvider<PocketMapper> {
         });
     }
 
-    create(uiRequestData: string, onUpdated?: (item: PocketMapper) => void): Promise<Nullable<PocketMapper>> {
+    create(uiRequestData: PocketParamType, onUpdated?: (item: PocketMapper) => void): Promise<Nullable<PocketMapper>> {
         const me = this;
         return new Promise((resolve, reject) => {
             let pocketMapper = me.generatePocketMapper(uiRequestData);
@@ -79,12 +80,12 @@ export class MockPocketProvider extends EntityProvider<PocketMapper> {
         });
     }
 
-    generatePocketMapper(title: string): PocketMapper {
+    generatePocketMapper(params: PocketParamType): PocketMapper {
 
         const pocketId = makeGuid();
 
         const pocket: PocketInfo = new PocketInfo(pocketId);
-        pocket.title = `Pocket ${title} - ${pocketId}`;
+        pocket.title = `Pocket ${params.title} - ${pocketId}`;
 
         // const resource: ResourceInfo = new ResourceInfo(makeGuid());
         // resource.title = `resource ${resource.id}`;

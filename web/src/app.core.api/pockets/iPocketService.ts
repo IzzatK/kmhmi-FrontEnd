@@ -26,36 +26,36 @@ export interface IPocketService extends IPlugin {
 
 
     /********** begin pocket methods **************************/
-    createPocket(title: string) : void;
+    addOrUpdatePocket(params: PocketParamType, updateLocal?: boolean): Promise<Nullable<PocketMapper>>;
+    removePocket(id: string): void;
+
     fetchPocket(id: string): void;
     fetchPockets(): void;
-    updatePocket(id: string, modifiedPocket: Record<string, any>): void;
-    deletePocket(id: string): void;
+
+    getPocketMappers(): Record<string, PocketMapper>;
+    getPocketMapper(id:string): Nullable<PocketMapper>;
 
     getPocketInfos(): Record<string, PocketInfo>;
     getPocketInfo(id: string): Nullable<PocketInfo>;
 
-    getPocketMappers(): Record<string, PocketMapper>;
-    getPocketMapper(id: string): Nullable<PocketMapper>;
     /*********** end pocket methods *************************/
 
 
-    /*********** begin report document methods *************************/
-    addOrUpdateResource(resourceParams: ResourceParamType): Promise<Nullable<ResourceInfo>>;
+    /*********** begin resource methods *************************/
+    addOrUpdateResource(resourceParams: ResourceParamType, updateLocal?: boolean): Promise<Nullable<ResourceInfo>>;
     removeResource(id: string): void;
     getResource(id:string): Nullable<ResourceInfo>;
-    /*********** end report document methods *************************/
-
+    /*********** end resource methods *************************/
 
     /*********** begin excerpt methods *************************/
-    addOrUpdateExcerpt(excerptParams: ExcerptParamType): Promise<Nullable<ExcerptInfo>>;
+    addOrUpdateExcerpt(excerptParams: ExcerptParamType, updateLocal?: boolean): Promise<Nullable<ExcerptInfo>>;
     removeExcerpt(id: string): void;
     getExcerpt(id:string): Nullable<ExcerptInfo>;
     /*********** end excerpt methods *************************/
 
 
     /*********** begin note methods *************************/
-    addOrUpdateNote(noteParam: NoteParamType): Promise<Nullable<NoteInfo>>;
+    addOrUpdateNote(noteParam: NoteParamType, updateLocal?: boolean): Promise<Nullable<NoteInfo>>;
     removeNote(id: string): void;
     getNote(id:string): Nullable<NoteInfo>;
     /*********** end note methods *************************/
@@ -64,7 +64,7 @@ export interface IPocketService extends IPlugin {
 
     /*********** begin multi-part methods *************************/
 
-    // addNoteToExcerpt(noteParams: NoteParamType, excerptParams: ExcerptParamType, reportDocumentParams: ResourceParamType): void;
+    addNoteToExcerpt(noteParams: NoteParamType, excerptParams: ExcerptParamType, resourceParams: ResourceParamType, pocketParams: PocketParamType): void;
     //
     // addNoteToReport(noteParams: NoteParamType, reportDocumentParams: ResourceParamType): void;
     //
