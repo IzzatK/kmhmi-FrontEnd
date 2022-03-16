@@ -101,18 +101,18 @@ export class MockPocketProvider extends EntityProvider<PocketMapper> {
 
         const pocketMapper = new PocketMapper(pocket);
 
-        for (let resourceIndex = 0; resourceIndex < 5; resourceIndex++) {
+        for (let resourceIndex = 0; resourceIndex < 1; resourceIndex++) {
 
             const resource = new ResourceInfo(makeGuid());
             resource.title = `resource ${resource.id}`;
             const resourceMapper = new ResourceMapper(resource);
 
-            for (let excerptIndex = 0; excerptIndex < 5; excerptIndex++) {
+            for (let excerptIndex = 0; excerptIndex < 1; excerptIndex++) {
                 const excerpt = new ExcerptInfo(makeGuid());
                 excerpt.text = `Excerpt - Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`;
                 const excerptMapper = new ExcerptMapper(excerpt);
 
-                for (let noteIndex = 0; noteIndex < 5; noteIndex++) {
+                for (let noteIndex = 0; noteIndex < 1; noteIndex++) {
                     const note = new NoteInfo(makeGuid());
                     note.text = `Note - Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. `;
 

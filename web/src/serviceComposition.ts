@@ -32,7 +32,9 @@ import {
     ExcerptInfo,
     NoteInfo,
     PermissionInfo,
-    PocketMapper, ReferenceInfo,
+    PocketMapper,
+    ReferenceInfo,
+    ResourceInfo,
     RoleInfo,
     StatInfo,
     TagInfo
@@ -54,7 +56,12 @@ import {
     UserProvider,
     UserService
 } from "./app.core";
-import {MockExcerptProvider, MockNoteProvider, MockPocketProvider} from "./app.testing/canary";
+import {
+    MockExcerptProvider,
+    MockNoteProvider,
+    MockPocketProvider,
+    MockResourceProvider
+} from "./app.testing/canary";
 import {ScenarioService} from "./app.config/scenarioService";
 
 
@@ -78,6 +85,7 @@ const userProvider: IUserProvider = new UserProvider();
 const permissionProvider: IEntityProvider<PermissionInfo> = new PermissionProvider()
 const noteProvider: IEntityProvider<NoteInfo> = new MockNoteProvider();
 const excerptProvider: IEntityProvider<ExcerptInfo> = new MockExcerptProvider();
+const resourceProvider: IEntityProvider<ResourceInfo> = new MockResourceProvider();
 const pocketProvider: IEntityProvider<PocketMapper> = new MockPocketProvider();
 
 
@@ -168,6 +176,12 @@ permissionProvider.setRepositoryService(repoService);
 permissionProvider.setHttpService(httpService);
 permissionProvider.start();
 
+// resources
+resourceProvider.setLogService(logService);
+resourceProvider.setRepositoryService(repoService);
+resourceProvider.setHttpService(httpService);
+resourceProvider.start();
+
 // excerpts
 excerptProvider.setLogService(logService);
 excerptProvider.setRepositoryService(repoService);
@@ -238,6 +252,7 @@ pocketService.setLogService(logService);
 pocketService.setRepositoryService(repoService);
 pocketService.setSelectionService(selectionService);
 pocketService.setDocumentService(documentService);
+pocketService.setResourceProvider(resourceProvider);
 pocketService.setExcerptProvider(excerptProvider);
 pocketService.setNoteProvider(noteProvider);
 pocketService.setPocketProvider(pocketProvider);

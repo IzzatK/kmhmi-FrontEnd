@@ -135,7 +135,6 @@ export abstract class Plugin extends BasePlugin implements IBasePlugin {
                                     if (result != null && updateLocal) {
                                         this.addOrUpdateRepoItem(result);
                                     }
-
                                     resolve(result || repoItem);
                                 })
                                 .catch(error => {
@@ -159,9 +158,10 @@ export abstract class Plugin extends BasePlugin implements IBasePlugin {
                     else {
                         entityProvider.create(params)
                             .then(result => {
-                                if (result != null && updateLocal) {
-                                    this.addOrUpdateRepoItem(result);
-
+                                if (result != null) {
+                                    if (updateLocal) {
+                                        this.addOrUpdateRepoItem(result);
+                                    }
                                     resolve(result);
                                 }
                                 else {

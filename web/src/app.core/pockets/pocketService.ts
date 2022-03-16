@@ -64,6 +64,7 @@ export class PocketService extends Plugin implements IPocketService {
 
                 const pocketMappers: Record<string, PocketMapper> = {};
 
+                debugger
                 forEach(pockets, (pocketInfo: PocketInfo) => {
                     const pocketMapper = new PocketMapper(pocketInfo);
 
@@ -305,7 +306,7 @@ export class PocketService extends Plugin implements IPocketService {
     }
 
     addOrUpdateExcerpt(excerptParamType: ExcerptParamType): Promise<Nullable<ExcerptInfo>> {
-        return this.addOrUpdateRemoteItem(ExcerptInfo.class, this.excerptProvider, excerptParamType);
+        return this.addOrUpdateRemoteItem(ExcerptInfo.class, this.excerptProvider, excerptParamType, false);
     }
 
     removeExcerpt(id: string) {
@@ -317,11 +318,11 @@ export class PocketService extends Plugin implements IPocketService {
     }
 
     addOrUpdateNote(noteParam: NoteParamType): Promise<Nullable<NoteInfo>> {
-        return this.addOrUpdateRemoteItem(NoteInfo.class, this.noteProvider, noteParam);
+        return this.addOrUpdateRemoteItem(NoteInfo.class, this.noteProvider, noteParam, false);
     }
 
     removeNote(id: string): Promise<Nullable<NoteInfo>> {
-        return this.deleteRemoteItem<NoteInfo>(NoteInfo.class, id, this.noteProvider);
+        return this.deleteRemoteItem<NoteInfo>(NoteInfo.class, id, this.noteProvider, );
     }
 
     getNote(id: string): Nullable<NoteInfo> {
@@ -329,7 +330,7 @@ export class PocketService extends Plugin implements IPocketService {
     }
 
     addOrUpdateResource(resourceParamType: ResourceParamType): Promise<Nullable<ResourceInfo>> {
-        return this.addOrUpdateRemoteItem(ResourceInfo.class, this.resourceProvider, resourceParamType);
+        return this.addOrUpdateRemoteItem(ResourceInfo.class, this.resourceProvider, resourceParamType, false);
     }
 
     removeResource(id: string) {

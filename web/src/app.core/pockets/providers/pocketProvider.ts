@@ -1,11 +1,11 @@
 import {EntityProvider} from "../../common/providers/entityProvider";
-import {RepoItem} from "../../../framework.core/services";
+import {PocketMapper} from "../../../app.model";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-export class PocketProvider extends EntityProvider<RepoItem> {
+export class PocketProvider extends EntityProvider<PocketMapper> {
     baseUrl: string = `${serverUrl}/pockets`;
-    public static class: string = 'DocumentProvider';
+    public static class: string = 'PocketProvider';
 
     constructor() {
         super();

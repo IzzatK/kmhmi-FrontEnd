@@ -22,7 +22,7 @@ export interface IDocumentService extends IPlugin {
 
     clearDocuments(): void;
 
-    getDocument(state: any, id: string): Nullable<DocumentInfo>;
+    getDocument(id: string): Nullable<DocumentInfo>;
 
     approvePendingFile(id: string): void;
 
