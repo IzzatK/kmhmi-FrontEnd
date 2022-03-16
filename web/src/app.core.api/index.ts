@@ -9,5 +9,5 @@ export * from "./pockets/iPocketService";
 export * from "./references/iReferenceService";
 export * from "./stats/iStatService";
 export * from "./tags/iTagService";
-export * from "./users/IUserProvider";
+export * from "./users/jIUserProvider";
 export * from "./users/iUserService";
