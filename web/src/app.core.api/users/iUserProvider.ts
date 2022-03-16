@@ -1,4 +1,4 @@
-import {IEntityProvider} from "../../framework.core.api/iEntityProvider";
+import {IEntityProvider} from "../../framework.core.api";
 import {RoleInfo} from "../../app.model";
 import {UserInfo} from "../../app.model";
 
