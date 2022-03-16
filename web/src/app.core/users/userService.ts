@@ -31,8 +31,8 @@ export class UserService extends Plugin implements IUserService {
         super();
         this.appendClassName(UserService.class);
 
-        this.getActiveUsersSelector = createSelector<any, Record<string, UserInfo>, Record<string, UserInfo>>(
-            [() => this.getAll<UserInfo>(UserInfo.class)],
+        this.getActiveUsersSelector = createSelector(
+            [(s) => this.getAll<UserInfo>(UserInfo.class)],
             (users) => {
 
                 let result:Record<string, UserInfo> = {};
@@ -51,8 +51,8 @@ export class UserService extends Plugin implements IUserService {
             }
         )
 
-        this.getPendingUsersSelector = createSelector<any, Record<string, UserInfo>, Record<string, UserInfo>>(
-            [() => this.getAll<UserInfo>(UserInfo.class)],
+        this.getPendingUsersSelector = createSelector(
+            [(s) => this.getAll<UserInfo>(UserInfo.class)],
             (users) => {
 
                 let result:Record<string, UserInfo> = {};
@@ -67,7 +67,7 @@ export class UserService extends Plugin implements IUserService {
         )
 
         this.getSearchUsersSelector = createSelector(
-            [() => this.getActiveUsers()],
+            [(s) => this.getActiveUsers()],
             (items) => {
                 let result:Record<string, UserInfo> = {};
 

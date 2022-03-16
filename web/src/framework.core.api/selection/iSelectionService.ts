@@ -7,7 +7,7 @@ export interface ISelectionService extends IBasePlugin {
 
     setContext(key: string, value: string): void;
 
-    makeGetContext(key: string):  OutputSelector<unknown, any, (res: any) => any>;
+    makeGetContext(key: string):  OutputSelector<any, any, (res: any) => any>;
 
     setAppDataStore(appDataStore: IStorage): void;
 }

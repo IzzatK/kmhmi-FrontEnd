@@ -18,9 +18,9 @@ export class DocumentService extends Plugin implements IDocumentService {
 
     private pendingFilesQueue: any[];
 
-    getAllDocumentsSelector: OutputSelector<unknown, Record<string, DocumentInfo>, (res1: Record<string, DocumentInfo>, res2: any) => Record<string, DocumentInfo>>;
-    getSearchDocumentsSelector: OutputSelector<unknown, Record<string, DocumentInfo>, (res: Record<string, DocumentInfo>) => Record<string, DocumentInfo>>;
-    getPendingDocumentsSelector: OutputSelector<unknown, Record<string, DocumentInfo>, (res: Record<string, DocumentInfo>) => Record<string, DocumentInfo>>;
+    getAllDocumentsSelector: OutputSelector<any, Record<string, DocumentInfo>, (res1: Record<string, DocumentInfo>, res2: any) => Record<string, DocumentInfo>>;
+    getSearchDocumentsSelector: OutputSelector<any, Record<string, DocumentInfo>, (res: Record<string, DocumentInfo>) => Record<string, DocumentInfo>>;
+    getPendingDocumentsSelector: OutputSelector<any, Record<string, DocumentInfo>, (res: Record<string, DocumentInfo>) => Record<string, DocumentInfo>>;
 
     constructor() {
         super();
@@ -31,7 +31,7 @@ export class DocumentService extends Plugin implements IDocumentService {
         this.pendingFilesQueue = [];
 
         this.getAllDocumentsSelector = createSelector(
-            [() => this.getAll<DocumentInfo>(DocumentInfo.class), () => this.userService?.getCurrentUserId()],
+            [(s) => this.getAll<DocumentInfo>(DocumentInfo.class), (s) => this.userService?.getCurrentUserId()],
             (documents, currentUserId) => {
                 let result: Record<string, DocumentInfo> = {};
 
@@ -62,7 +62,7 @@ export class DocumentService extends Plugin implements IDocumentService {
         );
 
         this.getSearchDocumentsSelector = createSelector(
-            [this.getAllDocuments],
+            [(s) => this.getAllDocuments()],
             (items) => {
                 let result:Record<string, DocumentInfo> = {};
 
@@ -79,7 +79,7 @@ export class DocumentService extends Plugin implements IDocumentService {
         );
 
         this.getPendingDocumentsSelector = createSelector(
-            [this.getAllDocuments],
+            [(s) => this.getAllDocuments()],
             (items) => {
                 let result: Record<string, DocumentInfo> = {};
 

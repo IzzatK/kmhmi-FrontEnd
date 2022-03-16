@@ -51,7 +51,7 @@ class App extends Presenter {
         }
     }
 
-    isDocumentVisible = createSelector<any, NodeInfo, boolean>(
+    isDocumentVisible = createSelector(
         [() => displayService.getNodeInfo(DocumentPanelId)],
         (nodeInfo) => {
             let result = false;
@@ -64,7 +64,7 @@ class App extends Presenter {
         }
     )
 
-    isReportVisible = createSelector<any, NodeInfo, boolean>(
+    isReportVisible = createSelector(
         [() => displayService.getNodeInfo(ReportPanelId)],
         (nodeInfo) => {
             let result = false;
@@ -77,7 +77,7 @@ class App extends Presenter {
         }
     )
 
-    getPermissions = createSelector<any, string, Record<string, PermissionInfo>, PermissionsVM>(
+    getPermissions = createSelector(
         [() => userService.getCurrentUserId(), authorizationService.getPermissions],
         (currentUserId, permissionInfoLookup) => {
             let result: PermissionsVM = {

@@ -111,8 +111,8 @@ class ProfilePanel extends Presenter {
         return user;
     }
 
-    getPermissions = createSelector<any, string, Record<string, PermissionInfo>, PermissionsVM>(
-        [() => userService.getCurrentUserId(), authorizationService.getPermissions],
+    getPermissions = createSelector(
+        [(s) => userService.getCurrentUserId(), (s) => authorizationService.getPermissions()],
         (currentUserId, permissionInfoLookup) => {
 
             return {

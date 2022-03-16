@@ -97,7 +97,7 @@ class SearchResultsPanel extends Presenter {
     getSelectedDocumentId = selectionService.makeGetContext("selected-document");
 
     getSearchResultVMs = createSelector(
-        [documentService.getSearchDocuments, this.getSelectedDocumentId, this.getDepartmentVMs, this.getStatusVMs, this.getPurposeVMs],
+        [(s) => documentService.getSearchDocuments(), (s) => this.getSelectedDocumentId(s), (s) => this.getDepartmentVMs(s), (s) => this.getStatusVMs(s), (s) => this.getPurposeVMs(s)],
         (items, selectedId, departments, statuses, purposes) => {
             let departmentVMs: Record<string, ReferenceInfoVM> = {};
 
@@ -208,7 +208,7 @@ class SearchResultsPanel extends Presenter {
     getSelectedResultViewId = selectionService.makeGetContext("search-panel-result-view");
 
     getResultViewVMs = createSelector(
-        [this.getResultViews, this.getSelectedResultViewId],
+        [(s) => this.getResultViews(), (s) => this.getSelectedResultViewId(s)],
         (items, selectedId) => {
             let itemVMs: Record<string, MenuItemVM> = {};
 

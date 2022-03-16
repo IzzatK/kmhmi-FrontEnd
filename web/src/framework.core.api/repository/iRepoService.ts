@@ -1,12 +1,12 @@
 import {Nullable} from "../../framework.core/extras/utils/typeUtils";
 import {IStorage} from "../iDataStore";
-import {IRepoItem} from "../../framework.core/services";
+import {IRepoItem, RepoState} from "../../framework.core/services";
 import {IBasePlugin} from "../IBasePlugin";
 
 export interface IRepositoryService extends IBasePlugin {
     setStorage(value: Nullable<IStorage>): void;
 
-    getState(): any;
+    getState(): RepoState;
 
     getSingle<Type extends IRepoItem>(className: string, id: string): Nullable<Type>;
 

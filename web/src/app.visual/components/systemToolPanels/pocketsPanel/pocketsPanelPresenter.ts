@@ -198,7 +198,7 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
     }
 
     getPocketTree = createSelector(
-        [this.getPocketNodeVMs],
+        [(s) => this.getPocketNodeVMs(s)],
         (nodeVMs) => {
 
             // build the visual data structure, using the hash map

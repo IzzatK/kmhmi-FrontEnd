@@ -37,8 +37,8 @@ class LandingPanel extends Presenter {
         }
     }
 
-    getAccountStatus = createSelector<any, AuthenticationStatus, boolean, RegistrationStatusType>(
-        [() => authenticationService.getAuthenticationStatus(), () => authorizationService.isAuthorized()],
+    getAccountStatus = createSelector(
+        [(s) => authenticationService.getAuthenticationStatus(), (s) => authorizationService.isAuthorized()],
         (registerStatus, isAuthorized) => {
             let result = RegistrationStatusType.NONE;
 
@@ -68,7 +68,7 @@ class LandingPanel extends Presenter {
         }
     )
 
-    getCurrentUserProfile = createSelector<any, AuthenticationProfile, UserInfoVM>(
+    getCurrentUserProfile = createSelector(
         [() => authenticationService.getUserProfile()],
         (userProfile) => {
             let userVM: UserInfoVM = {

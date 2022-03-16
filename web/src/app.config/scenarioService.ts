@@ -25,7 +25,7 @@ export class ScenarioService extends Plugin implements IScenarioService {
     public static readonly class: string = 'ScenarioService';
     private dataAppStore: Nullable<IStorage> = null;
 
-    constructor() {
+    public constructor() {
         super();
         this.appendClassName(ScenarioService.class);
     }

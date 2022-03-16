@@ -166,8 +166,8 @@ class DocumentPanel extends Presenter {
     getSelectedDocumentId = selectionService.makeGetContext("selected-document");
 
     getDocument = createSelector(
-        [this.getSelectedDocumentId, documentService.getAllDocuments, userService.getCurrentUserId], // if this changes, will re-evaluate the combiner and trigger a re-render
-        (documentId, documents: DocumentInfo[], currentUserId: string) => {
+        [(s) => this.getSelectedDocumentId(s),(s) => documentService.getAllDocuments(), (s) => userService.getCurrentUserId()], // if this changes, will re-evaluate the combiner and trigger a re-render
+        (documentId, documents: Record<string, DocumentInfo>, currentUserId: string) => {
 
             let document = documents[documentId];
 
@@ -322,8 +322,8 @@ class DocumentPanel extends Presenter {
         }
     );
 
-    getPermissions = createSelector<any, DocumentInfoVM, string, Record<string, PermissionInfo>, PermissionsVM>(
-        [this.getDocument, () => userService.getCurrentUserId(), authorizationService.getPermissions],
+    getPermissions = createSelector(
+        [(s) => this.getDocument(s), (s) => userService.getCurrentUserId(), (s) => authorizationService.getPermissions],
         (documentInfoVM, currentUserId, permissionInfoLookup) => {
 
             let uploadedBy = documentInfoVM?.uploadedBy_id || null;

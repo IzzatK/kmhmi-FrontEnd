@@ -65,7 +65,7 @@ class UploadPanel extends Presenter {
     getSelectedDocumentId = selectionService.makeGetContext("selected-document");
 
     getPendingFilesVMs = createSelector(
-        [documentService.getPendingDocuments, this.getSelectedDocumentId, () => referenceService.getAllReferences(ReferenceType.STATUS)],
+        [(s) => documentService.getPendingDocuments(), (s) => this.getSelectedDocumentId(s), (s) => referenceService.getAllReferences(ReferenceType.STATUS)],
         (items, selectedId, statusReferenceInfos) => {
             let itemVMs: Record<string, PendingDocumentVM> = {};
 
@@ -132,7 +132,7 @@ class UploadPanel extends Presenter {
                     file_name: file_name,
                     isUpdating: isUpdating,
                     status: newStatus,
-                    selected: newId === selectedId,
+                    selected: newId == selectedId,
                     deleted: newIsDeleted,
                 }
 

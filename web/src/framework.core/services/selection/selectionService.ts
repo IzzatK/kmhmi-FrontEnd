@@ -22,7 +22,7 @@ export class SelectionService extends BasePlugin implements ISelectionService {
     private storage: Nullable<IStorage> = null;
     private model: SelectionSliceType;
 
-    constructor() {
+    public constructor() {
         super();
         this.appendClassName(SelectionService.class);
 
@@ -85,7 +85,7 @@ export class SelectionService extends BasePlugin implements ISelectionService {
 
     makeGetContext(key: string) {
         return createSelector(
-            [this.getContextMap],
+            [(s) => this.getContextMap()],
             (contextMap) => {
                 let result = contextMap[key];
 

@@ -55,10 +55,10 @@ export class PocketService extends Plugin implements IPocketService {
 
         this.getAllPocketMapperSelector = createSelector(
             [
-                () => this.getAll<PocketInfo>(PocketInfo.class),
-                () => this.getAll<ResourceInfo>(ResourceInfo.class),
-                () => this.getAll<ExcerptInfo>(ExcerptInfo.class),
-                () => this.getAll<NoteInfo>(NoteInfo.class),
+                (s) => this.getAll<PocketInfo>(PocketInfo.class),
+                (s) => this.getAll<ResourceInfo>(ResourceInfo.class),
+                (s) => this.getAll<ExcerptInfo>(ExcerptInfo.class),
+                (s) => this.getAll<NoteInfo>(NoteInfo.class),
             ],
             (pockets, resources, excerpts, notes) => {
 

@@ -6,7 +6,7 @@ import {Nullable} from "../../extras/utils/typeUtils";
 import {IStorage} from "../../../framework.core.api";
 import {IRepositoryService} from "../../../framework.core.api";
 
-interface RepoState {
+export interface RepoState {
     classToFullClassNameMap: Record<string, string>,
     storageByClass: Record<string, Record<string, IRepoItem>> // redux by class, then by id
 }
@@ -30,7 +30,7 @@ export class RepositoryService extends BasePlugin implements IRepositoryService 
     private readonly initialState: RepoState;
     private model: RepoSliceType;
 
-    constructor() {
+    public constructor() {
         super();
         this.appendClassName(RepositoryService.class);
 

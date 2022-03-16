@@ -35,7 +35,7 @@ export class DisplayService extends BasePlugin implements IDisplayService {
     private model: DisplaySliceType;
 
 
-    constructor() {
+    public constructor() {
         super();
         this.appendClassName(DisplayService.class);
 

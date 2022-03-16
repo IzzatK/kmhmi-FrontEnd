@@ -73,8 +73,12 @@ export abstract class Plugin extends BasePlugin implements IBasePlugin {
         this.repoService?.removeById(className, ...ids);
     }
 
-    protected getRepoState() : any {
-        return this.repoService?.getState();
+    protected getRepoState() : any | undefined {
+        let result = undefined;
+        if (this.repoService) {
+            result = this.repoService.getState();
+        }
+        return result;
     }
 
     protected deleteRemoteItem<EntityType extends IRepoItem>(className: string, id: string, entityProvider: Nullable<IEntityProvider<EntityType>>, updateLocal: boolean = true ) {

@@ -16,7 +16,7 @@ export class LogService extends BasePlugin implements ILogService {
 
     public static class: string = 'LogService';
 
-    constructor() {
+    public constructor() {
         super();
         this.appendClassName(LogService.class);
 

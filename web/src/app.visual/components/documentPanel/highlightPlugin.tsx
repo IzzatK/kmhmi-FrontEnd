@@ -26,7 +26,6 @@ import TextArea from "../../theme/widgets/textEdit/textArea";
 // };
 
 export function renderHighlightTarget(pluginProps: RenderHighlightTargetProps, props: DocumentPdfPreviewProps) {
-    debugger;
     console.log(JSON.stringify(pluginProps))
     return (
         <div className={"note position-absolute d-flex"}
