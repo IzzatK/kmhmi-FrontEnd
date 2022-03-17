@@ -22,9 +22,9 @@ export class MockProvider<EntityType> extends EntityProvider<EntityType> {
         super.appendClassName(MockProvider.class);
     }
 
-    create(uiRequestData: Omit<Partial<EntityType>, OmitParamsType>, onUpdated?: (item: EntityType) => void): Promise<Nullable<EntityType>> {
+    create(partialParams: Omit<Partial<EntityType>, OmitParamsType>, onUpdated?: (item: EntityType) => void): Promise<Nullable<EntityType>> {
         return new Promise((resolve, reject) => {
-            let result = this.generateItem(uiRequestData);
+            let result = this.generateItem(partialParams);
 
             resolve(result);
         });
@@ -53,14 +53,14 @@ export class MockProvider<EntityType> extends EntityProvider<EntityType> {
         });
     }
 
-    update(id: string, uiRequestData: Omit<Partial<EntityType>, OmitParamsType>): Promise<Nullable<EntityType>> {
+    update(id: string, partialParams: Omit<Partial<EntityType>, OmitParamsType>): Promise<Nullable<EntityType>> {
         const me = this;
         return new Promise<Nullable<EntityType>>((resolve, reject) => {
             const tmp = me.items[id];
 
             if (tmp != null) {
                 const resultRecord: Record<string, any> = tmp;
-                const updateRecord: Record<string, any> = uiRequestData;
+                const updateRecord: Record<string, any> = partialParams;
 
                 forEachKVP(updateRecord, (key:string, newValue: any) => {
                     resultRecord[key] = newValue;

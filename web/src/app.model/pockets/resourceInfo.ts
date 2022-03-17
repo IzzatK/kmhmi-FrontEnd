@@ -5,9 +5,15 @@ export class ResourceInfo extends WocketInfo {
   public static class: string = 'ResourceInfo';
 
   title: string = '';
-  publication_date: string = '';
   author_id: string = '';
   excerptIds: string[] = [];
+
+  source_id: string = '';
+  source_author: string = '';
+  source_publication_date: string = 'string';
+  source_title: string = '';
+  source_type: string = '';
+  source_version: string = '';
 
   constructor(id: string)
   {

@@ -6,7 +6,7 @@ import {
     IUserService,
     NoteParamType,
     PocketParamType,
-    ResourceParamType
+    ResourceParamType,
 } from "../../app.core.api";
 import {Plugin} from "../../framework.core/extras/plugin";
 import {
@@ -24,16 +24,19 @@ import {IEntityProvider, ISelectionService} from "../../framework.core.api";
 import {forEach} from "../../framework.core/extras/utils/collectionUtils";
 import {IRepoItem} from "../../framework.core/services";
 import {createSelector, OutputSelector} from "@reduxjs/toolkit";
+import {documentService} from "../../serviceComposition";
+import {resolveObjectURL} from "buffer";
 
 
 type GetAllPocketMapperSelector = OutputSelector<any, Record<string, PocketMapper>,
     (res1: Record<string, PocketInfo>,
-     res3: Record<string, ResourceInfo>,
-     res5: Record<string, ExcerptInfo>,
+     res2: Record<string, ResourceInfo>,
+     res3: Record<string, ExcerptInfo>,
      res4: Record<string, NoteInfo>)
         => (Record<string, PocketMapper>)>;
 
 export class PocketService extends Plugin implements IPocketService {
+
     public static readonly class:string = 'DocumentService';
 
     private userService: Nullable<IUserService> = null;
@@ -56,7 +59,7 @@ export class PocketService extends Plugin implements IPocketService {
                 (s) => this.getAll<PocketInfo>(PocketInfo.class),
                 (s) => this.getAll<ResourceInfo>(ResourceInfo.class),
                 (s) => this.getAll<ExcerptInfo>(ExcerptInfo.class),
-                (s) => this.getAll<NoteInfo>(NoteInfo.class),
+                (s) => this.getAll<NoteInfo>(NoteInfo.class)
             ],
             (pockets, resources, excerpts, notes) => {
 
@@ -66,22 +69,43 @@ export class PocketService extends Plugin implements IPocketService {
                     const pocketMapper = new PocketMapper(pocketInfo);
 
                     forEach(pocketInfo.resource_ids, (resourceId: string) => {
+
                         const resource: ResourceInfo = resources[resourceId];
-                        const resourceMapper = new ResourceMapper(resource);
 
-                        forEach(resource.excerptIds, (excerptId: string) => {
-                            const excerpt: ExcerptInfo = excerpts[excerptId];
-                            const excerptMapper = new ExcerptMapper(excerpt);
+                        if (resource == null) {
+                            this.warn(`Pocket ${pocketInfo.id} refers to resource ${resourceId}, but resource ${resourceId} not found!`)
+                        }
+                        else {
 
-                            forEach(excerpt.noteIds, (noteId: string) => {
-                                excerptMapper.notes[noteId] = notes[noteId];
+                            const resourceMapper = new ResourceMapper(resource);
+
+                            forEach(resource.excerptIds, (excerptId: string) => {
+                                const excerpt: ExcerptInfo = excerpts[excerptId];
+
+                                if (excerpt == null) {
+                                    this.warn(`Resource ${resourceId} refers to excerpt ${excerptId}, but excerpt ${excerptId} not found!`)
+                                }
+                                else {
+
+                                    const excerptMapper = new ExcerptMapper(excerpt);
+
+                                    forEach(excerpt.noteIds, (noteId: string) => {
+                                        const note: NoteInfo = notes[noteId];
+
+                                        if (note == null) {
+                                            this.warn(`Excerpt ${excerptId} refers to note ${noteId}, but note ${noteId} not found!`)
+                                        }
+                                        else {
+                                            excerptMapper.notes[noteId] = notes[noteId];
+                                        }
+                                    });
+
+                                    resourceMapper.excerptMappers[excerptId] = excerptMapper;
+                                }
                             });
 
-                            resourceMapper.excerptMappers[excerptId] = excerptMapper;
-                        });
-
-                        pocketMapper.resourceMappers[resourceId] = resourceMapper;
-
+                            pocketMapper.resourceMappers[resourceId] = resourceMapper;
+                        }
                     });
 
                     pocketMappers[pocketInfo.id] = pocketMapper;
@@ -228,6 +252,7 @@ export class PocketService extends Plugin implements IPocketService {
     }
 
     addOrUpdatePocket(params: PocketParamType, updateLocal: boolean = true): Promise<Nullable<PocketMapper>> {
+        debugger
         return new Promise<PocketMapper>((resolve, reject) => {
                 let shortClassName = 'PocketMapper'
 
@@ -237,7 +262,6 @@ export class PocketService extends Plugin implements IPocketService {
                     if (existingItem != null) {
 
                         // check if params other than id exist on params
-
                         if (this.pocketProvider != null) {
                             this.pocketProvider.update(params.id, params)
                                 .then(result => {
@@ -377,6 +401,7 @@ export class PocketService extends Plugin implements IPocketService {
     }
 
     addOrUpdateResource(resourceParamType: ResourceParamType, updateLocal: boolean = true): Promise<Nullable<ResourceInfo>> {
+        debugger
         return this.addOrUpdateRemoteItem(ResourceInfo.class, this.resourceProvider, resourceParamType, updateLocal);
     }
 
@@ -404,10 +429,45 @@ export class PocketService extends Plugin implements IPocketService {
             resourceParams.author_id = authorId || '';
         }
 
+        if (resourceParams.source_id) {
+            const document = documentService.getDocument(resourceParams.source_id);
+            if (document != null) {
+                resourceParams.source_title = document.title || '---';
+                resourceParams.source_author = document.author || '---';
+                resourceParams.source_publication_date = document.publication_date || '---';
+                resourceParams.source_version = '---';
+            }
+        }
+
+        if (!pocketParams.id) {
+            pocketParams.author_id = authorId || '';
+        }
+
+        let resourceSupplier = () => this.addOrUpdateResource(resourceParams, false);
+
+        if (pocketParams.id) {
+            debugger
+            let pocketMapper = this.getPocketMapper(pocketParams.id);
+
+            if (pocketMapper != null) {
+                // check if the source is already included in a resource for this pocket
+                forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
+                    if (resourceMapper.resource.source_id == resourceParams.source_id) {
+                        debugger
+                        resourceSupplier = () => new Promise<Nullable<ResourceInfo>>((resolve, reject) => {
+                            debugger
+                            resolve(resourceMapper.resource);
+                        });
+                        return true;
+                    }
+                })
+            }
+        }
+
         Promise.all([
             this.addOrUpdateNote(noteParams, false),
             this.addOrUpdateExcerpt(excerptParams, false),
-            this.addOrUpdateResource(resourceParams, false),
+            resourceSupplier(),
             this.addOrUpdatePocket(pocketParams, false)]
         )
             .then((values) => {
@@ -416,23 +476,16 @@ export class PocketService extends Plugin implements IPocketService {
                 const resource: Nullable<ResourceInfo> = values[2];
                 const pocketMapper: Nullable<PocketMapper> = values[3];
 
+                debugger
                 if (note == null || excerpt == null || resource == null) {
                     throw new Error('Cannot create excerpt due to null return value')
                 }
                 else {
                     const updateItems: IRepoItem[] = [];
 
-                    debugger
                     if (!resource.excerptIds.includes(excerpt.id)) {
                         resource.excerptIds.push(excerpt.id);
 
-                        // copy info from source document
-                        const document = this.documentService?.getDocument(resource.id);
-
-                        if (document != null) {
-                            resource.title = document.title;
-                            resource.publication_date = document.publication_date;
-                        }
                         updateItems.push(resource);
                     }
 
@@ -454,7 +507,7 @@ export class PocketService extends Plugin implements IPocketService {
 
             })
             .catch(error => {
-
+                debugger
             })
     }
 }

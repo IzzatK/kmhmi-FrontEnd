@@ -143,7 +143,7 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
                         id: resource.id,
                         type: PocketNodeType.DOCUMENT,
                         path: resourcePath,
-                        title: resource.title || '',
+                        title: resource.source_title || '',
                         content: '',
                         childNodes: []
                     }

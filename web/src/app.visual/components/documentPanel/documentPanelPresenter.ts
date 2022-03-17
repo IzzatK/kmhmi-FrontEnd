@@ -28,7 +28,7 @@ import {
     PERMISSION_ENTITY,
     PERMISSION_OPERATOR,
     PocketParamType,
-    ResourceParamType
+    ResourceParamType,
 } from "../../../app.core.api";
 import {StatusType} from "../../../app.model";
 import {forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
@@ -70,8 +70,8 @@ class DocumentPanel extends Presenter {
             return {
                 onUpdateDocument: (document: DocumentInfoVM) => documentService.updateDocument(document),
                 onRemoveDocument: (id: string) => documentService.removeDocument(id),
-                onSaveExcerpt: (documentId: string, excerptText: string, excerptContent: string, location: string, noteText: string, noteContent: string) => {
-                    this._saveExcerpt(documentId, excerptText, excerptContent, location, noteText, noteContent);
+                onSaveExcerpt: (pocketId: string, documentId: string, excerptText: string, excerptContent: string, location: string, noteText: string, noteContent: string) => {
+                    this._saveExcerpt(pocketId, documentId, excerptText, excerptContent, location, noteText, noteContent);
                 },
             };
         }
@@ -80,7 +80,7 @@ class DocumentPanel extends Presenter {
         this.documentLookup = {};
     }
 
-    _saveExcerpt(documentId: string, excerptText: string, excerptContent: string, location: string, noteText: string, noteContent: string) {
+    _saveExcerpt(pocketId: string, documentId: string, excerptText: string, excerptContent: string, location: string, noteText: string, noteContent: string) {
         // console.log(documentId + " " + excerptText + " " + excerptContent + " " + location + " " + noteText + " " + noteContent);
 
         const excerptParams: ExcerptParamType = {
@@ -95,11 +95,11 @@ class DocumentPanel extends Presenter {
         };
 
         const resourceParams: ResourceParamType = {
-
+            source_id: documentId
         }
 
         const pocketParams: PocketParamType = {
-
+            id: pocketId
         }
 
         pocketService.addNoteToExcerpt(noteParams, excerptParams, resourceParams, pocketParams);

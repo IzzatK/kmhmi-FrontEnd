@@ -4,10 +4,12 @@ import {ResourceMapper} from "./resourceMapper";
 export class ReportMapper {
   protected _id: string;
   protected _resourceMappers: Record<string, ResourceMapper> = {};
+  protected _report: ReportInfo
 
-  constructor(protected _report: ReportInfo)
+  constructor(report: ReportInfo)
   {
-    this._id = _report.id;
+    this._id = report.id;
+    this._report = report;
   }
 
   get id(): string {

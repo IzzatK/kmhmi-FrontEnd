@@ -1,6 +1,5 @@
-import {IPlugin, ISelectionService} from "../../framework.core.api";
-import {IUserService} from "../users/iUserService";
-import {IEntityProvider} from "../../framework.core.api/iEntityProvider";
+import {IPlugin, ISelectionService, IEntityProvider} from "../../framework.core.api";
+import {Nullable} from "../../framework.core/extras/utils/typeUtils";
 import {
     ExcerptInfo,
     NoteInfo,
@@ -9,7 +8,7 @@ import {
     ResourceInfo,
     ReportInfo
 } from "../../app.model";
-import {Nullable} from "../../framework.core/extras/utils/typeUtils";
+import {IUserService} from "../users/iUserService";
 import {IDocumentService} from "../documents/iDocumentService";
 
 export interface IPocketService extends IPlugin {
@@ -59,7 +58,6 @@ export interface IPocketService extends IPlugin {
     removeNote(id: string): void;
     getNote(id:string): Nullable<NoteInfo>;
     /*********** end note methods *************************/
-
 
 
     /*********** begin multi-part methods *************************/

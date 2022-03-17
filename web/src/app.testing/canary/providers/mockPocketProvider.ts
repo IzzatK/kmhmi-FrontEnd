@@ -9,7 +9,7 @@ import {
     ResourceMapper
 } from "../../../app.model";
 import {Nullable} from "../../../framework.core/extras/utils/typeUtils";
-import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
+import {forEach, forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 import {makeGuid} from "../../../framework.core/extras/utils/uniqueIdUtils";
 import {PocketParamType} from "../../../app.core.api";
 
@@ -65,17 +65,33 @@ export class MockPocketProvider extends EntityProvider<PocketMapper> {
         return new Promise((resolve, reject) => {
             let pocketMapper = me.generatePocketMapper(uiRequestData);
 
+            me.pocketMappers[pocketMapper.id] = pocketMapper;
+
             resolve(pocketMapper);
         });
     }
 
-    update(id: string, uiRequestData: any): Promise<Nullable<PocketMapper>> {
+    update(id: string, partialParams: PocketParamType): Promise<Nullable<PocketMapper>> {
         const me = this;
         return new Promise((resolve, reject) => {
-            let pocketMapper = me.pocketMappers[id];
+            const tmp = me.pocketMappers[id];
 
-            if (pocketMapper != null) {
-                return me.update(id, uiRequestData);
+            if (partialParams.id) {
+                delete partialParams.id;
+            }
+
+            if (tmp != null) {
+                const resultRecord: Record<string, any> = tmp;
+                const updateRecord: Record<string, any> = partialParams;
+
+                forEachKVP(updateRecord, (key:string, newValue: any) => {
+                    resultRecord[key] = newValue;
+                })
+
+                resolve(tmp);
+            }
+            else {
+                reject(null);
             }
         });
     }
@@ -106,6 +122,9 @@ export class MockPocketProvider extends EntityProvider<PocketMapper> {
 
             const resource = new ResourceInfo(makeGuid());
             resource.title = `resource ${resource.id}`;
+            resource.source_id = makeGuid();
+            resource.source_publication_date = `${new Date()}`;
+            resource.source_title = `source ${resource.source_id}`;
             const resourceMapper = new ResourceMapper(resource);
 
             for (let excerptIndex = 0; excerptIndex < 1; excerptIndex++) {
