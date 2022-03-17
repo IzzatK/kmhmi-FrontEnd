@@ -19,6 +19,7 @@ export class PocketRequestConverter extends Converter<PocketMapper, any> {
             id: "pocket_id",
             title: "title",
             author_id: "author_id",
+            note_ids: "note_ids",
         }
 
         const ResourceProperties: Partial<Record<keyof ResourceInfo, string>> = {
@@ -26,6 +27,16 @@ export class PocketRequestConverter extends Converter<PocketMapper, any> {
             title: "title",
             author_id: "author_id",
             excerptIds: "excerpt_ids",
+            note_ids: "note_ids",
+        }
+
+        const SourceProperties: Partial<Record<keyof ResourceInfo, string>> = {
+            source_id: "source_id",
+            source_author: "author",
+            source_publication_date: "publication_date",
+            source_title: "title",
+            source_type: "type",
+            source_version: "version",
         }
 
         const ExcerptProperties: Partial<Record<keyof ExcerptInfo, string>> = {
@@ -52,13 +63,13 @@ export class PocketRequestConverter extends Converter<PocketMapper, any> {
         let serverNotes: any[] = [];
 
         forEachKVP(pocketMapper.pocket, (itemKey: keyof PocketInfo, itemValue: any) => {
-            let serverNoteKey = PocketProperties[itemKey]?.toString();
+            let serverPocketKey = PocketProperties[itemKey]?.toString();
 
-            if (serverNoteKey) {
+            if (serverPocketKey) {
                 let itemValueString = JSON.stringify(itemValue);
 
                 if (itemValueString !== "" && itemValueString !== "[]" && itemValueString !== "{}") {
-                    serverPocket[serverNoteKey] = itemValue;
+                    serverPocket[serverPocketKey] = itemValue;
                 }
             }
         });
@@ -66,33 +77,42 @@ export class PocketRequestConverter extends Converter<PocketMapper, any> {
         forEachKVP(pocketMapper.resourceMappers, (itemKey: string, resourceMapper: ResourceMapper) => {
 
             let serverResource: Record<string, string> = {};
+            let serverSource: Record<string, string> = {};
 
             forEachKVP(resourceMapper.resource, (itemKey: keyof ResourceInfo, itemValue: any) => {
-                let serverNoteKey = ResourceProperties[itemKey]?.toString();
+                let serverResourceKey = ResourceProperties[itemKey]?.toString();
+                let serverSourceKey = SourceProperties[itemKey]?.toString();
 
-                if (serverNoteKey) {
+                if (serverResourceKey) {
                     let itemValueString = JSON.stringify(itemValue);
 
                     if (itemValueString !== "" && itemValueString !== "[]" && itemValueString !== "{}") {
-                        serverResource[serverNoteKey] = itemValue;
+                        serverResource[serverResourceKey] = itemValue;
+                    }
+                } else if (serverSourceKey) {
+                    let itemValueString = JSON.stringify(itemValue);
+
+                    if (itemValueString !== "" && itemValueString !== "[]" && itemValueString !== "{}") {
+                        serverSource[serverSourceKey] = itemValue;
                     }
                 }
             });
 
             serverResources.push(serverResource);
+            serverSources.push(serverSource);
 
             forEachKVP(resourceMapper.excerptMappers, (itemKey: string, excerptMapper: ExcerptMapper) => {
 
                 let serverExcerpt: Record<string, string> = {};
 
                 forEachKVP(excerptMapper.excerpt, (itemKey: keyof ExcerptInfo, itemValue: any) => {
-                    let serverNoteKey = ExcerptProperties[itemKey]?.toString();
+                    let serverExcerptKey = ExcerptProperties[itemKey]?.toString();
 
-                    if (serverNoteKey) {
+                    if (serverExcerptKey) {
                         let itemValueString = JSON.stringify(itemValue);
 
                         if (itemValueString !== "" && itemValueString !== "[]" && itemValueString !== "{}") {
-                            serverExcerpt[serverNoteKey] = itemValue;
+                            serverExcerpt[serverExcerptKey] = itemValue;
                         }
                     }
                 });

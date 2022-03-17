@@ -7,6 +7,7 @@ export class ResourceInfo extends WocketInfo {
   title: string = '';
   author_id: string = '';
   excerptIds: string[] = [];
+  note_ids: string[] = [];
 
   source_id: string = '';
   source_author: string = '';

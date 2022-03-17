@@ -20,15 +20,20 @@ export class PocketResponseConverter extends Converter<any, PocketMapper> {
         let resourceInfos: Record<string, ResourceInfo> = {};
         let resourceIds: string[] = [];
 
-        let resourcePublicationDates: Record<string, string> = {};
+        let sourceInfos: Record<string, any> = {};
 
         if (sources && Array.isArray(sources)) {
             forEach(sources, (source: any) => {
-                const { publication_date } = source;
+                let sourceInfo: Record<string, string> = {};
 
-                if (publication_date) {
-                    resourcePublicationDates[getValueOrDefault(source, 'source_id', '')] = publication_date;
-                }
+                sourceInfo["source_id"] = getValueOrDefault(source, 'source_id', '');
+                sourceInfo["source_author"] = getValueOrDefault(source, 'author', '');
+                sourceInfo["source_publication_date"] = getValueOrDefault(source, 'publication_data', '');
+                sourceInfo["source_title"] = getValueOrDefault(source, 'title', '');
+                sourceInfo["source_type"] = getValueOrDefault(source, 'type', '');
+                sourceInfo["source_version"] = getValueOrDefault(source, 'version', '');
+
+                sourceInfos[getValueOrDefault(source, 'source_id', '')] = sourceInfo;
             })
         }
 
@@ -42,9 +47,19 @@ export class PocketResponseConverter extends Converter<any, PocketMapper> {
                 resourceInfo.title = getValueOrDefault(resource, 'title', '');
                 resourceInfo.author_id = getValueOrDefault(resource, 'author_id', '');
                 resourceInfo.excerptIds = getValueOrDefault(resource, 'excerpt_ids', '');
+                resourceInfo.note_ids = getValueOrDefault(resource, 'note_ids', '');
 
-                if (source_id && resourcePublicationDates[source_id]) {
-                    // resourceInfo.publication_date = resourcePublicationDates[source_id];
+                if (source_id) {
+                    let sourceInfo = sourceInfos[source_id];
+
+                    if (sourceInfo) {
+                        resourceInfo.source_author = sourceInfo["source_author"];
+                        resourceInfo.source_id = sourceInfo["source_id"];
+                        resourceInfo.source_publication_date = sourceInfo["source_publication_date"];
+                        resourceInfo.source_title = sourceInfo["source_title"];
+                        resourceInfo.source_type = sourceInfo["source_type"];
+                        resourceInfo.source_version = sourceInfo["source_version"];
+                    }
                 }
 
                 resourceInfos[resourceId] = resourceInfo;
@@ -91,6 +106,7 @@ export class PocketResponseConverter extends Converter<any, PocketMapper> {
         pocketInfo.title = getValueOrDefault(item, 'title', '');
         pocketInfo.author_id = getValueOrDefault(item, 'author_id', '');
         pocketInfo.resource_ids = resourceIds;
+        pocketInfo.note_ids = getValueOrDefault(item, 'note_ids', '');
 
         const pocketMapper = new PocketMapper(pocketInfo);
 

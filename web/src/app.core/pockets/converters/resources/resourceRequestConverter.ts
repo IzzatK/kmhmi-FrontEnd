@@ -9,9 +9,9 @@ export class ResourceRequestConverter extends Converter<ResourceInfo, any> {
         const ResourceProperties: Partial<Record<keyof ResourceInfo, string>> = {
             id: "resource_id",
             title: "title",
-            // publication_date: "",
             author_id: "author_id",
             excerptIds: "excerpt_ids",
+            note_ids: "note_ids",
         }
 
         let serverResource: Record<string, string> = {};
