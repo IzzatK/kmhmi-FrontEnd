@@ -4,7 +4,6 @@ import {getDateWithoutTime} from "../../../../framework.core/extras/utils/timeUt
 import {ReferenceType} from "../../../../app.model";
 import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
 import {ReferenceInfo} from "../../../../app.model";
-import {repoService} from "../../../../serviceComposition";
 import {Converter} from "../../../common/converters/converter";
 import {AuthenticationStatus} from "../../../../app.core.api";
 
@@ -57,7 +56,7 @@ export class UpdateUserRequestConverter extends Converter<any, any> {
             tmpRoles.push(role);
         } else {
             //if no role set it to VIEWER
-            let references = repoService.getAll(ReferenceInfo.class);
+            let references = this.getRepoItems(ReferenceInfo.class);
             forEach(references, (referenceInfo: ReferenceInfo) => {
                 if (referenceInfo.type === ReferenceType.ROLE && referenceInfo.title.toUpperCase() === 'VIEWER') {
                     let role = parseInt(referenceInfo.id);

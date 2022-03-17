@@ -1,8 +1,7 @@
-import {RoleInfo} from "../../../../app.model";
+import {ReferenceInfo, RoleInfo} from "../../../../app.model";
 import {forEach, forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
 import {ReferenceType} from "../../../../app.model";
 import {Nullable} from "../../../../framework.core/extras/utils/typeUtils";
-import {referenceService} from "../../../../serviceComposition";
 import {Converter} from "../../../common/converters/converter";
 
 export class GetSingleRoleResponseConverter extends Converter<any, Nullable<RoleInfo>>{
@@ -14,7 +13,7 @@ export class GetSingleRoleResponseConverter extends Converter<any, Nullable<Role
 
         const { role_name:roleNames } = body[0];
 
-        let rolesInfos = referenceService.getAllReferences(ReferenceType.ROLE);
+        let rolesInfos = this.getRoles();
 
         let result: Nullable<RoleInfo> = null;
 
@@ -33,6 +32,22 @@ export class GetSingleRoleResponseConverter extends Converter<any, Nullable<Role
             })
         }
 
+
+        return result;
+    }
+
+    getRoles(): Record<string, RoleInfo> {
+        const references = this.getRepoItems(ReferenceInfo.class);
+        const referenceType = ReferenceType.ROLE;
+        let result: any = {};
+
+        if (references) {
+            forEach(references, (reference: { type: ReferenceType; id: string; }) => {
+                if (reference.type === referenceType) {
+                    result[reference.id] = reference;
+                }
+            });
+        }
 
         return result;
     }

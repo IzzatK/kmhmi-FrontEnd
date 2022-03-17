@@ -1,5 +1,4 @@
 import {ILogger, ILogService, IRepositoryService, IStorage} from "../../../framework.core.api";
-import {appDataStore} from "../../../serviceComposition";
 import {IHttpService} from "../../../framework.core.api";
 import {Nullable} from "../../../framework.core/extras/utils/typeUtils";
 import {BasePlugin} from "../../../framework.core/extras/basePlugin";
@@ -12,7 +11,6 @@ export type ErrorHandler = (error: string) => void;
 
 export abstract class EntityProvider<EntityType> extends BasePlugin implements IEntityProvider<EntityType> {
     abstract baseUrl: string;
-    protected store: IStorage = appDataStore;
     protected httpService: Nullable<IHttpService> = null;
     private repoService: Nullable<IRepositoryService> = null;
 
@@ -85,10 +83,6 @@ export abstract class EntityProvider<EntityType> extends BasePlugin implements I
     remove(id: string): Promise<Nullable<EntityType>> {
         this.error("remove method not implemented");
         throw new Error("Method not implemented.");
-    }
-
-    protected getState() {
-        return this.store.getState()
     }
 
     getHttpService(): Nullable<IHttpService> {
