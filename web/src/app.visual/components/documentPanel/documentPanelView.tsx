@@ -325,7 +325,7 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
         const { id:docId } = doc;
 
         if (onSaveExcerpt) {
-            onSaveExcerpt(docId || "", text, JSON.stringify(highlightArea), "", note || "", "");
+            onSaveExcerpt(pocket || "", docId || "", text, JSON.stringify(highlightArea), "", note || "", "");
         }
 
         let modifiedDocumentHighlightAreas = documentHighlightAreas?.concat([highlightArea])

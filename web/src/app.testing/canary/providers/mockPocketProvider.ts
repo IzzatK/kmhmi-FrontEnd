@@ -9,8 +9,9 @@ import {
     ResourceMapper
 } from "../../../app.model";
 import {Nullable} from "../../../framework.core/extras/utils/typeUtils";
-import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
+import {forEach, forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 import {makeGuid} from "../../../framework.core/extras/utils/uniqueIdUtils";
+import {PocketParamType} from "../../../app.core.api";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -59,32 +60,48 @@ export class MockPocketProvider extends EntityProvider<PocketMapper> {
         });
     }
 
-    create(uiRequestData: string, onUpdated?: (item: PocketMapper) => void): Promise<Nullable<PocketMapper>> {
+    create(uiRequestData: PocketParamType, onUpdated?: (item: PocketMapper) => void): Promise<Nullable<PocketMapper>> {
         const me = this;
         return new Promise((resolve, reject) => {
             let pocketMapper = me.generatePocketMapper(uiRequestData);
+
+            me.pocketMappers[pocketMapper.id] = pocketMapper;
 
             resolve(pocketMapper);
         });
     }
 
-    update(id: string, uiRequestData: any): Promise<Nullable<PocketMapper>> {
+    update(id: string, partialParams: PocketParamType): Promise<Nullable<PocketMapper>> {
         const me = this;
         return new Promise((resolve, reject) => {
-            let pocketMapper = me.pocketMappers[id];
+            const tmp = me.pocketMappers[id];
 
-            if (pocketMapper != null) {
-                return me.update(id, uiRequestData);
+            if (partialParams.id) {
+                delete partialParams.id;
+            }
+
+            if (tmp != null) {
+                const resultRecord: Record<string, any> = tmp;
+                const updateRecord: Record<string, any> = partialParams;
+
+                forEachKVP(updateRecord, (key:string, newValue: any) => {
+                    resultRecord[key] = newValue;
+                })
+
+                resolve(tmp);
+            }
+            else {
+                reject(null);
             }
         });
     }
 
-    generatePocketMapper(title: string): PocketMapper {
+    generatePocketMapper(params: PocketParamType): PocketMapper {
 
         const pocketId = makeGuid();
 
         const pocket: PocketInfo = new PocketInfo(pocketId);
-        pocket.title = `Pocket ${title} - ${pocketId}`;
+        pocket.title = `Pocket ${params.title} - ${pocketId}`;
 
         // const resource: ResourceInfo = new ResourceInfo(makeGuid());
         // resource.title = `resource ${resource.id}`;
@@ -105,6 +122,9 @@ export class MockPocketProvider extends EntityProvider<PocketMapper> {
 
             const resource = new ResourceInfo(makeGuid());
             resource.title = `resource ${resource.id}`;
+            resource.source_id = makeGuid();
+            resource.source_publication_date = `${new Date()}`;
+            resource.source_title = `source ${resource.source_id}`;
             const resourceMapper = new ResourceMapper(resource);
 
             for (let excerptIndex = 0; excerptIndex < 1; excerptIndex++) {

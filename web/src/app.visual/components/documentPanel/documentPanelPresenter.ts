@@ -27,14 +27,12 @@ import {
     NoteParamType,
     PERMISSION_ENTITY,
     PERMISSION_OPERATOR,
-    ResourceParamType
+    PocketParamType,
+    ResourceParamType,
 } from "../../../app.core.api";
-import {PermissionInfo} from "../../../app.model";
 import {StatusType} from "../../../app.model";
 import {forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 import {createComponentWrapper, Presenter} from "../../../framework.visual";
-import {Nullable} from "../../../framework.core/extras/utils/typeUtils";
-import {IRepoItem} from "../../../framework.core/services";
 
 class DocumentPanel extends Presenter {
 
@@ -72,8 +70,8 @@ class DocumentPanel extends Presenter {
             return {
                 onUpdateDocument: (document: DocumentInfoVM) => documentService.updateDocument(document),
                 onRemoveDocument: (id: string) => documentService.removeDocument(id),
-                onSaveExcerpt: (documentId: string, excerptText: string, excerptContent: string, location: string, noteText: string, noteContent: string) => {
-                    this._saveExcerpt(documentId, excerptText, excerptContent, location, noteText, noteContent);
+                onSaveExcerpt: (pocketId: string, documentId: string, excerptText: string, excerptContent: string, location: string, noteText: string, noteContent: string) => {
+                    this._saveExcerpt(pocketId, documentId, excerptText, excerptContent, location, noteText, noteContent);
                 },
             };
         }
@@ -82,86 +80,29 @@ class DocumentPanel extends Presenter {
         this.documentLookup = {};
     }
 
-    _saveExcerpt(documentId: string, excerptText: string, excerptContent: string, location: string, noteText: string, noteContent: string) {
+    _saveExcerpt(pocketId: string, documentId: string, excerptText: string, excerptContent: string, location: string, noteText: string, noteContent: string) {
         // console.log(documentId + " " + excerptText + " " + excerptContent + " " + location + " " + noteText + " " + noteContent);
-        const authorId = userService.getCurrentUserId()
 
         const excerptParams: ExcerptParamType = {
             text: excerptText,
             content: excerptContent,
             location: location,
-            authorId: authorId
         };
 
         const noteParams: NoteParamType = {
             text: noteText,
             content: noteContent,
-            author_id: authorId
         };
 
         const resourceParams: ResourceParamType = {
-            author_id: authorId,
-
+            source_id: documentId
         }
 
+        const pocketParams: PocketParamType = {
+            id: pocketId
+        }
 
-        Promise.all([
-            pocketService.addOrUpdateNote(noteParams),
-            pocketService.addOrUpdateExcerpt(excerptParams),
-            pocketService.addOrUpdateResource(resourceParams),
-            documentService.getDocument(documentId),
-            pocketService.getPocketInfos()]
-        )
-            .then((values) => {
-                const note: Nullable<NoteInfo> = values[0];
-                const excerpt: Nullable<ExcerptInfo> = values[1];
-                const resource: Nullable<ResourceInfo> = values[2];
-                const document: Nullable<DocumentInfo> = values[3];
-                const pocketInfos: Record<string, PocketInfo> = values[4];
-
-                if (note == null || excerpt == null || resource == null) {
-                    throw new Error('Cannot create excerpt due to null return value')
-                }
-                else {
-                    const updateItems: IRepoItem[] = [];
-
-                    debugger
-                    if (!resource.excerptIds.includes(excerpt.id)) {
-                        resource.excerptIds.push(excerpt.id);
-                        if (document != null) {
-                            resource.title = document.title;
-                            resource.publication_date = document.publication_date;
-                        }
-                        updateItems.push(resource);
-                    }
-
-                    if (!excerpt.noteIds.includes(note.id)) {
-                        excerpt.noteIds.push(note.id);
-                        updateItems.push(excerpt);
-                    }
-
-                    updateItems.push(note);
-
-                    const pocketInfoArray = Object.values(pocketInfos);
-                    if (pocketInfoArray && pocketInfoArray.length > 0) {
-                        const pocketInfo = Object.values(pocketInfos)[0];
-
-                        if (!pocketInfo.resource_ids.includes(resource.id)) {
-                            pocketInfo.resource_ids.push(resource.id)
-                            updateItems.push(pocketInfo);
-                        }
-                    }
-                    repoService.addOrUpdateAllRepoItems(updateItems);
-                }
-
-            })
-            .catch(error => {
-
-            })
-
-        // pocketService.addOrUpdateNote()
-        // pocketService.addOrUpdateResource()
-
+        pocketService.addNoteToExcerpt(noteParams, excerptParams, resourceParams, pocketParams);
     }
 
     _getEditProperties = () => {

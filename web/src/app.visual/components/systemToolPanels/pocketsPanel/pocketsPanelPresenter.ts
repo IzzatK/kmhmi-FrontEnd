@@ -111,7 +111,7 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
             return {
                 onPocketItemSelected: (id: string) => this.onPocketItemSelected(id),
                 onPocketItemToggle: (id: string, expanded: boolean) => this.onPocketItemToggle(id, expanded),
-                onCreatePocket: (title: string) => pocketService.createPocket(title),
+                onCreatePocket: (title: string) => pocketService.addOrUpdatePocket({title}),
             };
         }
     }
@@ -143,7 +143,7 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
                         id: resource.id,
                         type: PocketNodeType.DOCUMENT,
                         path: resourcePath,
-                        title: resource.title || '',
+                        title: resource.source_title || '',
                         content: '',
                         childNodes: []
                     }

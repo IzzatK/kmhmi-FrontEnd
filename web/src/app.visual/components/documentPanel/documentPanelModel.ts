@@ -16,7 +16,7 @@ export type DocumentPanelProps = {
     onUpdateDocument: (document: DocumentInfoVM) => void;
     onRemoveDocument: (id: string) => void;
 
-    onSaveExcerpt: (documentId: string, excerptText: string, excerptContent: string, location: string, noteText: string, noteContent: string) => void;
+    onSaveExcerpt: (pocketId: string, documentId: string, excerptText: string, excerptContent: string, location: string, noteText: string, noteContent: string) => void;
 
     onSaveNote?: (text: string) => void;
 
