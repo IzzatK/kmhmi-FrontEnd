@@ -4,11 +4,13 @@ import {ResponseStatusType} from "../../../common/converters/types";
 export class DeleteUserResponseConverter extends Converter<any,ResponseStatusType>{
     convert(fromData: any): any {
 
-        const { user_id:id, status } = fromData;
+        const { detail, status, title, type:id } = fromData;
 
         return {
-            id,
-            status
+            detail,
+            status,
+            title,
+            id
         };
     }
 }

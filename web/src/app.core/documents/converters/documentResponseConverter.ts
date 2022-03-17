@@ -5,11 +5,13 @@ import {Converter} from "../../common/converters/converter";
 export class DocumentResponseConverter extends Converter<any, ResponseStatusType>{
     convert(fromData: any, reject: ErrorHandler): ResponseStatusType {
 
-        const { id, message:status } = fromData;
+        const { detail, status, title, type:id } = fromData;
 
         return {
-            id,
-            status
+            detail,
+            status,
+            title,
+            id
         };
     }
 }

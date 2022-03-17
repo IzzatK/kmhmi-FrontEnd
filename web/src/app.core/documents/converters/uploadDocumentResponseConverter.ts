@@ -5,7 +5,7 @@ import {StatusType} from "../../../app.model";
 export class UploadDocumentResponseConverter extends Converter<any, ResponseStatusType>{
     convert(fromData: any): ResponseStatusType {
 
-        const { document_id:id, status: statusObject } = fromData;
+        const { detail, status: statusObject, title, type:id } = fromData;
         const { stage, status:upload_status, version } = statusObject;
 
         let status = StatusType.PROCESSING;
@@ -28,8 +28,10 @@ export class UploadDocumentResponseConverter extends Converter<any, ResponseStat
         }
 
         return {
-            id,
-            status: upload_status,
+            detail,
+            status,
+            title,
+            id
         };
     }
 }
