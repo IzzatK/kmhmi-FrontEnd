@@ -44,7 +44,7 @@ export class PocketResponseConverter extends Converter<any, PocketMapper> {
                 resourceInfo.excerptIds = getValueOrDefault(resource, 'excerpt_ids', '');
 
                 if (source_id && resourcePublicationDates[source_id]) {
-                    resourceInfo.publication_date = resourcePublicationDates[source_id];
+                    // resourceInfo.publication_date = resourcePublicationDates[source_id];
                 }
 
                 resourceInfos[resourceId] = resourceInfo;
