@@ -252,7 +252,6 @@ export class PocketService extends Plugin implements IPocketService {
     }
 
     addOrUpdatePocket(params: PocketParamType, updateLocal: boolean = true): Promise<Nullable<PocketMapper>> {
-        debugger
         return new Promise<PocketMapper>((resolve, reject) => {
                 let shortClassName = 'PocketMapper'
 
@@ -401,7 +400,6 @@ export class PocketService extends Plugin implements IPocketService {
     }
 
     addOrUpdateResource(resourceParamType: ResourceParamType, updateLocal: boolean = true): Promise<Nullable<ResourceInfo>> {
-        debugger
         return this.addOrUpdateRemoteItem(ResourceInfo.class, this.resourceProvider, resourceParamType, updateLocal);
     }
 
@@ -446,16 +444,13 @@ export class PocketService extends Plugin implements IPocketService {
         let resourceSupplier = () => this.addOrUpdateResource(resourceParams, false);
 
         if (pocketParams.id) {
-            debugger
             let pocketMapper = this.getPocketMapper(pocketParams.id);
 
             if (pocketMapper != null) {
                 // check if the source is already included in a resource for this pocket
                 forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
                     if (resourceMapper.resource.source_id == resourceParams.source_id) {
-                        debugger
                         resourceSupplier = () => new Promise<Nullable<ResourceInfo>>((resolve, reject) => {
-                            debugger
                             resolve(resourceMapper.resource);
                         });
                         return true;
@@ -476,7 +471,6 @@ export class PocketService extends Plugin implements IPocketService {
                 const resource: Nullable<ResourceInfo> = values[2];
                 const pocketMapper: Nullable<PocketMapper> = values[3];
 
-                debugger
                 if (note == null || excerpt == null || resource == null) {
                     throw new Error('Cannot create excerpt due to null return value')
                 }

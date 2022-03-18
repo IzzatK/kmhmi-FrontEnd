@@ -43,11 +43,11 @@ import {
     AuthenticationService,
     AuthorizationService,
     DocumentProvider,
-    DocumentService,
-    PermissionProvider,
+    DocumentService, ExcerptProvider, NoteProvider,
+    PermissionProvider, PocketProvider,
     PocketService,
     ReferenceProvider,
-    ReferenceService,
+    ReferenceService, ResourceProvider,
     RoleProvider,
     StatProvider,
     StatService,
@@ -83,9 +83,9 @@ const tagProvider: IEntityProvider<TagInfo> = new TagProvider();
 const roleProvider: IEntityProvider<RoleInfo> = new RoleProvider();
 const userProvider: IUserProvider = new UserProvider();
 const permissionProvider: IEntityProvider<PermissionInfo> = new PermissionProvider()
-const noteProvider: IEntityProvider<NoteInfo> = new MockNoteProvider();
-const excerptProvider: IEntityProvider<ExcerptInfo> = new MockExcerptProvider();
-const resourceProvider: IEntityProvider<ResourceInfo> = new MockResourceProvider();
+const noteProvider: IEntityProvider<NoteInfo> = new NoteProvider();
+const excerptProvider: IEntityProvider<ExcerptInfo> = new ExcerptProvider();
+const resourceProvider: IEntityProvider<ResourceInfo> = new ResourceProvider();
 const pocketProvider: IEntityProvider<PocketMapper> = new MockPocketProvider();
 
 

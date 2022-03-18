@@ -6,6 +6,7 @@ import {PocketResponseConverter} from "../converters/pockets/pocketResponseConve
 import {PocketStatusResponseConverter} from "../converters/pockets/pocketStatusResponseConverter";
 import {GetPocketArrayResponseConverter} from "../converters/pockets/getPocketArrayResponseConverter";
 import {GetPocketArrayRequestConverter} from "../converters/pockets/getPocketArrayRequestConverter";
+import {CreatePocketRequestConverter} from "../converters/pockets/creatPocketRequestConverter";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -16,6 +17,8 @@ export class PocketProvider extends EntityProvider<PocketMapper> {
     private pocketRequestConverter!: PocketRequestConverter;
     private pocketResponseConverter!: PocketResponseConverter;
     private pocketStatusResponseConverter!: PocketStatusResponseConverter;
+
+    private createPocketRequestConverter!: CreatePocketRequestConverter;
 
     private getPocketArrayRequestConverter!: GetPocketArrayRequestConverter;
     private getPocketArrayResponseConverter!: GetPocketArrayResponseConverter;
@@ -31,6 +34,8 @@ export class PocketProvider extends EntityProvider<PocketMapper> {
         this.pocketRequestConverter = this.addConverter(PocketRequestConverter);
         this.pocketResponseConverter = this.addConverter(PocketResponseConverter);
         this.pocketStatusResponseConverter = this.addConverter(PocketStatusResponseConverter);
+
+        this.createPocketRequestConverter = this.addConverter(CreatePocketRequestConverter);
 
         this.getPocketArrayRequestConverter = this.addConverter(GetPocketArrayRequestConverter);
         this.getPocketArrayResponseConverter = this.addConverter(GetPocketArrayResponseConverter);
@@ -98,7 +103,7 @@ export class PocketProvider extends EntityProvider<PocketMapper> {
 
     create(uiRequestData: PocketMapper, onUpdated?: (item: PocketMapper) => void): Promise<Nullable<PocketMapper>> {
         return new Promise((resolve, reject) => {
-            super.sendPost(() => this.pocketRequestConverter.convert(uiRequestData),
+            super.sendPost(() => this.createPocketRequestConverter.convert(uiRequestData),
                 (responseData, errorHandler) => this.pocketStatusResponseConverter.convert(responseData, errorHandler))
                 .then(data => {
                     const { id } = data;
