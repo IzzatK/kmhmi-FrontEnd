@@ -65,7 +65,7 @@
     "build:testing": "env-cmd -f .env.testing npm run-script build",
     "build:production": "env-cmd -f .env.production npm run-script build",
     "start": "npm run generate-barrels && react-scripts start",
-    "test": "jest --verbose",
+    "test": "jest --verbose --watch",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
