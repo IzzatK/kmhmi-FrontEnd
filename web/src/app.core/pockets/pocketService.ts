@@ -10,7 +10,6 @@ import {
 } from "../../app.core.api";
 import {Plugin} from "../../framework.core/extras/plugin";
 import {
-    DocumentInfo,
     ExcerptInfo,
     ExcerptMapper,
     NoteInfo,
@@ -24,8 +23,6 @@ import {IEntityProvider, ISelectionService} from "../../framework.core.api";
 import {forEach} from "../../framework.core/extras/utils/collectionUtils";
 import {IRepoItem} from "../../framework.core/services";
 import {createSelector, OutputSelector} from "@reduxjs/toolkit";
-import {documentService} from "../../serviceComposition";
-import {resolveObjectURL} from "buffer";
 
 
 type GetAllPocketMapperSelector = OutputSelector<any, Record<string, PocketMapper>,
@@ -428,12 +425,14 @@ export class PocketService extends Plugin implements IPocketService {
         }
 
         if (resourceParams.source_id) {
-            const document = documentService.getDocument(resourceParams.source_id);
-            if (document != null) {
-                resourceParams.source_title = document.title || '---';
-                resourceParams.source_author = document.author || '---';
-                resourceParams.source_publication_date = document.publication_date || '---';
-                resourceParams.source_version = '---';
+            if (this.documentService) {
+                const document = this.documentService.getDocument(resourceParams.source_id);
+                if (document != null) {
+                    resourceParams.source_title = document.title || '---';
+                    resourceParams.source_author = document.author || '---';
+                    resourceParams.source_publication_date = document.publication_date || '---';
+                    resourceParams.source_version = '---';
+                }
             }
         }
 

@@ -3,11 +3,15 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
   transform: {
-      // '^.+\\.(ts|tsx)?$': 'ts-jest',
-      // "^.+\\.(js|jsx)$": "babel-jest"
-      "^.+\\.[jt]sx?$": "babel-jest"
+    // '^.+\\.(ts|tsx)?$': 'ts-jest',
+    // "^.+\\.(js|jsx)$": "babel-jest"
+    "^.+\\.[jt]sx?$": "babel-jest"
   },
+  transformIgnorePatterns: [
+    // "/src/app.visual/",
+    // "/src/app.config/"
+  ],
   // moduleNameMapper: {
-  //     '\\.(css|scss)$': '<rootDir>/tests/__mocks__/styleMock.js'
+  //   '\\.(css|scss)$': '<rootDir>/tests/__mocks__/styleMock.js'
   // }
 };
