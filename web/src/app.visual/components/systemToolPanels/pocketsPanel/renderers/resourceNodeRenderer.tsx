@@ -33,7 +33,7 @@ export class ResourceNodeRenderer extends Component<ResourceNodeRendererProps> {
     render() {
         const {className, title } = this.props;
 
-        let cn = 'resource-node d-flex justify-content-between';
+        let cn = 'resource-node light d-flex justify-content-between';
         if (className) {
             cn += ` ${className}`;
         }

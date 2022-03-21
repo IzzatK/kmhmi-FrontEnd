@@ -54,10 +54,10 @@ body > * {
     /* Pockets Panel */
     --pocket-node-pocket-color: var(--app-whiteSmoke);
     --pocket-node-pocket-background: var(--app-black);
-    --pocket-node-pocket-border-color: transparent;
+    --pocket-node-pocket-border-color: var(--app-whiteSmoke);
     --pocket-node-pocket-hover-color: var(--app-whiteSmoke);
     --pocket-node-pocket-hover-background: var(--app-black);
-    --pocket-node-pocket-hover-border-color: transparent;
+    --pocket-node-pocket-hover-border-color: var(--app-white);
     --pocket-node-pocket-selected-color: var(--app-whiteSmoke);
     --pocket-node-pocket-selected-background: var(--app-blackRussian);
     --pocket-node-pocket-selected-border-color: var(--app-silver);

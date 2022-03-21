@@ -166,7 +166,7 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
 
                             nodeVMs[notePath] = {
                                 id: note.id,
-                                type: PocketNodeType.EXCERPT,
+                                type: PocketNodeType.NOTE,
                                 path: notePath,
                                 title: note.text,
                                 content: '',

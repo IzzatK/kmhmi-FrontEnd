@@ -12,7 +12,6 @@ import {NoteNodeRenderer} from "./renderers/noteNodeRenderer";
 import {ResourceNodeRenderer} from "./renderers/resourceNodeRenderer";
 import {TreeNodeVM} from "../../../theme/widgets/treeView/treeViewModel";
 import {PocketNodeType} from "../../../model/pocketNodeType";
-import exp from "constants";
 
 class PocketsPanelView extends Component<PocketsPanelProps> {
     constructor(props: any, context: any) {
@@ -137,6 +136,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                                       onSelected={this._onNodeSelected}
                                       onToggle={this._onNodeToggle}
                                       rootNodes={data}
+                                      showDisclosure={false}
                                       cellContentRenderer={this.getCellContentRenderer}/>
                         </ScrollBar>
                     </div>
