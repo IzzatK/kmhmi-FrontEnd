@@ -9,7 +9,7 @@ import {HttpService, LogService, RepositoryService} from "../src/framework.core/
 import {IEntityProvider, IHttpService, ILogService, IRepositoryService, IStorage} from "../src/framework.core.api";
 import {IAuthenticationService, IAuthorizationService, IUserProvider} from "../src/app.core.api";
 import {AppDataStore} from "../src/framework.core/redux/reduxStore";
-import {PermissionInfo, RoleInfo} from "../src/app.model";
+import {PermissionInfo, RoleInfo, UserInfo} from "../src/app.model";
 
 const userProvider: IUserProvider = new UserProvider();
 
@@ -86,9 +86,36 @@ describe("Test setup", () => {
 
 describe("getAll", () => {
     it("gets a list of all the users", () => {
-        expect(true).toBe(true);
-        // return userProvider.getAll().then(data => {
-        //     expect(data.length).not.toBe(0);
+        return userProvider.getAll("NULL").then(data => {
+            expect(data.length).not.toBe(0);
+        })
+    });
+
+    it("gets a specifid user \"Gwaltney\"", () => {
+        return userProvider.getAll("Gwaltney").then(data => {
+            expect(data.length).toBeGreaterThanOrEqual(1);
+            let user: UserInfo = data.at(0);
+            expect(user.dod_id.toString()).not.toBe("");
+            expect(user.first_name).not.toBe("");
+            expect(user.last_name).toMatch("Gwaltney");
+            expect(user.email_address).not.toBe("");
+            expect(user.phone_number).not.toBe("");
+            expect(user.department).not.toBe("");
+            expect(user.preferred_results_view).not.toBe("");
+            expect(user.account_status).not.toBe("");
+            expect(user.role).not.toBe("");
+            expect(user.approved_by).not.toBe("");
+            expect(user.date_approved).not.toBe("");
+            expect(user.isUpdating).not.toBe("");
+        })
+    });
+
+    it("gets an empty response for a user that doesn't exist", () => {
+        return userProvider.getAll("fdsafdsafdsa").then(data => {
+            // expect(true).toBe(true);
+            expect(data.length).toBe(0);
+        })//.catch(error => {
+            // expect(error).toBe("");
         // })
     });
 });
