@@ -31,13 +31,6 @@ export type PocketNodeRendererProps = NodeRendererProps &
         onSettings: (id: string) => void;
     }
 
-export enum PocketTabType {
-    NONE,
-    SHARE,
-    DOWNLOAD,
-    SETTINGS
-}
-
 export type ResourceNodeRendererProps = NodeRendererProps &
     {
         onDownload: (id: string) => void;
@@ -45,7 +38,7 @@ export type ResourceNodeRendererProps = NodeRendererProps &
     }
 
 export type PocketNodeRendererState = {
-    tab: PocketTabType
+
 }
 
 export type PocketNodeVM = {

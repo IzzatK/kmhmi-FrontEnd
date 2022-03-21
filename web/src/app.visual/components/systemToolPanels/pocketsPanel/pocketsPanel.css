@@ -6,14 +6,9 @@
     opacity: 0;
 }
 
-.pockets-panel .pocket-node > .pocket-header > .action-bar {
+.pockets-panel .pocket-node > .action-bar {
     animation: slideLeftIn 0.2s forwards ease-in;
     animation-delay: 100ms;
-}
-
-.pockets-panel .pocket-node > .pocket-header .button.selected {
-    fill: white;
-    background: black;
 }
 
 @keyframes slideLeftIn {
@@ -24,6 +19,7 @@
     100% {
         opacity: 1;
         transform: translateX(0%);
+
     }
 }
 
