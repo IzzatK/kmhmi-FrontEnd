@@ -6,7 +6,7 @@ import {
     IScenarioService,
     ISelectionService,
     IStorage,
-    IEntityProvider
+    IEntityProvider, IFetchAdapter
 } from "./framework.core.api";
 import {AppDataStore} from "./framework.core/redux/reduxStore";
 import {
@@ -16,6 +16,10 @@ import {
     RepositoryService,
     SelectionService
 } from "./framework.core/services";
+
+import {
+    BrowserFetchAdapter
+} from "./framework.core/networking/browserFetchAdapter";
 
 import {
     IAuthenticationService,
@@ -72,6 +76,7 @@ export const repoService: IRepositoryService = new RepositoryService();
 export const selectionService: ISelectionService = new SelectionService();
 export const displayService: IDisplayService = new DisplayService();
 const scenarioService: IScenarioService = new ScenarioService();
+const fetchAdapter: IFetchAdapter = new BrowserFetchAdapter();
 const httpService:IHttpService = new HttpService();
 
 
@@ -134,6 +139,7 @@ scenarioService.start();
 // http service
 httpService.setLogService(logService);
 httpService.setAuthenticationService(authenticationService);
+httpService.setFetchAdapter(fetchAdapter);
 httpService.start();
 
 

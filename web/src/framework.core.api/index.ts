@@ -9,6 +9,7 @@ export * from "./iEntityProvider";
 export * from "./iLoggablePlugin";
 export * from "./IPlugin";
 export * from "./display/iDisplayService";
+export * from "./http/iFetchAdapter";
 export * from "./http/iHttpService";
 export * from "./logging/iLogger";
 export * from "./logging/iLogService";
