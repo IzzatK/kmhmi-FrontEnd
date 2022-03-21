@@ -2,8 +2,8 @@ import {Nullable} from "../../extras/utils/typeUtils";
 import {BasePlugin} from "../../extras/basePlugin";
 import {IHttpService} from "../../../framework.core.api";
 import {IAuthenticationService} from "../../../app.core.api";
-import fetch, {RequestInit} from "node-fetch";
-import * as https from "https";
+// import fetch, {RequestInit} from "node-fetch";
+// import * as https from "https";
 
 export class HttpService extends BasePlugin implements IHttpService {
     private authenticationService: Nullable<IAuthenticationService> = null;
@@ -39,12 +39,12 @@ export class HttpService extends BasePlugin implements IHttpService {
 
     private createAPI(url: string, command?: string, body?: any, format?: string): Promise<any> {
 
-        const httpsAgent = new https.Agent({
-            rejectUnauthorized: false, // TODO: remove this when self signed certificate is fixed
-        });
+        // const httpsAgent = new https.Agent({
+        //     rejectUnauthorized: false, // TODO: remove this when self signed certificate is fixed
+        // });
         const options: RequestInit = {
             method: command ? command : 'GET',
-            agent: httpsAgent,
+            // agent: httpsAgent,
         }
 
         let userProfile = this.authenticationService?.getUserProfile();
