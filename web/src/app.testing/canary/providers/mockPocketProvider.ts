@@ -103,35 +103,35 @@ export class MockPocketProvider extends EntityProvider<PocketMapper> {
 
         const pocketMapper = new PocketMapper(pocket);
 
-        for (let resourceIndex = 0; resourceIndex < 5; resourceIndex++) {
-
-            const resource = new ResourceInfo(makeGuid());
-            resource.title = `Resource Example - ${resourceIndex}`;
-            resource.source_id = makeGuid();
-            resource.source_publication_date = `${new Date()}`;
-            resource.source_title = `source ${resource.source_id}`;
-            const resourceMapper = new ResourceMapper(resource);
-
-            for (let excerptIndex = 0; excerptIndex < 5; excerptIndex++) {
-                const excerpt = new ExcerptInfo(makeGuid());
-                excerpt.text = `Excerpt - Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`;
-                const excerptMapper = new ExcerptMapper(excerpt);
-
-                for (let noteIndex = 0; noteIndex < 5; noteIndex++) {
-                    const note = new NoteInfo(makeGuid());
-                    note.text = `Note - Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. `;
-
-                    excerpt.noteIds.push(note.id);
-                    excerptMapper.notes[note.id] = note;
-                }
-
-                resource.excerptIds.push(excerpt.id);
-                resourceMapper.excerptMappers[excerpt.id] = excerptMapper;
-            }
-
-            pocket.resource_ids.push(resource.id);
-            pocketMapper.resourceMappers[resource.id] = resourceMapper;
-        }
+        // for (let resourceIndex = 0; resourceIndex < 5; resourceIndex++) {
+        //
+        //     const resource = new ResourceInfo(makeGuid());
+        //     resource.title = `Resource Example - ${resourceIndex}`;
+        //     resource.source_id = makeGuid();
+        //     resource.source_publication_date = `${new Date()}`;
+        //     resource.source_title = `source ${resource.source_id}`;
+        //     const resourceMapper = new ResourceMapper(resource);
+        //
+        //     for (let excerptIndex = 0; excerptIndex < 5; excerptIndex++) {
+        //         const excerpt = new ExcerptInfo(makeGuid());
+        //         excerpt.text = `Excerpt - Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`;
+        //         const excerptMapper = new ExcerptMapper(excerpt);
+        //
+        //         for (let noteIndex = 0; noteIndex < 5; noteIndex++) {
+        //             const note = new NoteInfo(makeGuid());
+        //             note.text = `Note - Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. `;
+        //
+        //             excerpt.noteIds.push(note.id);
+        //             excerptMapper.notes[note.id] = note;
+        //         }
+        //
+        //         resource.excerptIds.push(excerpt.id);
+        //         resourceMapper.excerptMappers[excerpt.id] = excerptMapper;
+        //     }
+        //
+        //     pocket.resource_ids.push(resource.id);
+        //     pocketMapper.resourceMappers[resource.id] = resourceMapper;
+        // }
 
         return pocketMapper;
 

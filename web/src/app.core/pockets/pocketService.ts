@@ -450,7 +450,7 @@ export class PocketService extends Plugin implements IPocketService {
             if (this.documentService) {
                 const document = this.documentService.getDocument(resourceParams.source_id);
                 if (document != null) {
-                    resourceParams.source_title = document.title || '---';
+                    resourceParams.source_title = document.title || document.file_name || '---';
                     resourceParams.source_author = document.author || '---';
                     resourceParams.source_publication_date = document.publication_date || '---';
                     resourceParams.source_version = '---';

@@ -6,13 +6,14 @@ import {
     RenderHighlightTargetProps,
     Trigger
 } from "@react-pdf-viewer/highlight";
-import {DocumentPdfPreviewProps} from "./documentPanelModel";
+import {DocumentPdfPreviewProps, ExcerptVM} from "./documentPanelModel";
 import React, {useMemo} from "react";
 import Button from "../../theme/widgets/button/button";
 import {NoteSVG} from "../../theme/svgs/noteSVG";
 import {DeleteSVG} from "../../theme/svgs/deleteSVG";
 import ComboBox from "../../theme/widgets/comboBox/comboBox";
 import TextArea from "../../theme/widgets/textEdit/textArea";
+import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
 //
 // export const MyHighlightPlugin = (props: DocumentPdfPreviewProps): HighlightPlugin => {
 //     return useMemo(() => {
@@ -42,8 +43,8 @@ export function renderHighlightTarget(pluginProps: RenderHighlightTargetProps, p
 
 export function renderHighlightContent(pluginProps: RenderHighlightContentProps, props: DocumentPdfPreviewProps) {
     const addNote = () => {
-        if (props.tmpMethod) {
-            props.tmpMethod(pluginProps.selectedText, pluginProps.highlightAreas);
+        if (props.onSaveExcerpt) {
+            props.onSaveExcerpt(pluginProps.selectedText, pluginProps.highlightAreas);
         }
         pluginProps.cancel();
     };
@@ -114,9 +115,45 @@ export function renderHighlightContent(pluginProps: RenderHighlightContentProps,
 };
 
 export function renderHighlights(pluginProps: RenderHighlightsProps, props: DocumentPdfPreviewProps) {
+    const highlights: JSX.Element[] = [];
+
+    let documentHighlights: any[] = [];
+
+    forEach(props.excerpts, (excerpt: ExcerptVM) => {
+        let note = JSON.parse(excerpt.content);
+        documentHighlights.push(note);
+    })
+    //
+    // forEach(props.excerpts, (excerpt: ExcerptVM) => {
+    //     const note: any[] = excerpt.content;
+    //
+    //     let result = (
+    //         <React.Fragment key={JSON.stringify(note)}>
+    //             {note
+    //                 // Filter all highlights on the current page
+    //                 .filter((area: any) => area.pageIndex === pluginProps.pageIndex)
+    //                 .map((area: any, idx: any) => (
+    //                     <div
+    //                         key={idx}
+    //                         style={Object.assign(
+    //                             {},
+    //                             {
+    //                                 background: 'yellow',
+    //                                 opacity: 0.4,
+    //                             },
+    //                             pluginProps.getCssProperties(area, pluginProps.rotation)
+    //                         )}
+    //                     />
+    //                 ))}
+    //         </React.Fragment>
+    //     )
+    //     highlights.push(result);
+    // })
+
+    debugger
     return (
         <div>
-            {props.documentHighlightAreas?.map((note: any[]) => (
+            {documentHighlights?.map((note: any[]) => (
                 <React.Fragment key={JSON.stringify(note)}>
                     {note
                         // Filter all highlights on the current page

@@ -22,15 +22,11 @@ import {TextEditSVG} from "../../theme/svgs/textEditSVG";
 import {ArrowLeftSVG} from "../../theme/svgs/arrowLeftSVG";
 import {ArrowRightSVG} from "../../theme/svgs/arrowRightSVG";
 import Button from "../../theme/widgets/button/button";
-import {NoteSVG} from "../../theme/svgs/noteSVG";
-import ComboBox from "../../theme/widgets/comboBox/comboBox";
-import TextArea from "../../theme/widgets/textEdit/textArea";
-import {DeleteSVG} from "../../theme/svgs/deleteSVG";
 import {DocumentPdfPreviewProps} from "./documentPanelModel";
 import {renderHighlightContent, renderHighlights, renderHighlightTarget} from "./highlightPlugin";
 
 function DocumentPdfPreview(props: DocumentPdfPreviewProps) {
-    const {className, preview_url, original_url, userProfile, token, permissions, onSaveNote, tmpMethod, documentHighlightAreas, tmpExcerpt, pockets, onPocketSelectionChanged, ...rest} = props;
+    const {className, preview_url, original_url, userProfile, token, permissions, onSaveNote, onSaveExcerpt, tmpExcerpt, pockets, onPocketSelectionChanged, ...rest} = props;
 
     const toolbarPluginInstance = toolbarPlugin();
     const { Toolbar } = toolbarPluginInstance;

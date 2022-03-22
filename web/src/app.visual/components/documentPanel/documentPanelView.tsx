@@ -43,7 +43,6 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
             showTagEditor: false,
             renderTrigger: 0,
             tmpExcerpt: {},
-            documentHighlightAreas: [],
         }
 
         this.characterWidth = 8.15;//pixels
@@ -88,7 +87,6 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
 
     componentDidUpdate(prevProps: Readonly<DocumentPanelProps>, prevState: Readonly<DocumentPanelState>, snapshot?: any) {
         const { document } = this.props;
-        const { documentHighlightAreas } = this.state;
 
         if (document !== prevProps.document) {
             this.refreshDirtyFlag();
@@ -104,10 +102,6 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
             if (id !== prevId) {
                 this.setTmpDocument(tmpDocument);
             }
-        }
-
-        if (prevState.documentHighlightAreas !== documentHighlightAreas) {
-
         }
     }
 
@@ -320,7 +314,7 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
 
     _onSaveExcerpt(text: string, highlightArea: any) {
         const { onSaveExcerpt, document:doc } = this.props;
-        const { tmpExcerpt, documentHighlightAreas } = this.state;
+        const { tmpExcerpt } = this.state;
         const { pocket, note } = tmpExcerpt;
         const { id:docId } = doc;
 
@@ -328,12 +322,14 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
             onSaveExcerpt(pocket || "", docId || "", text, JSON.stringify(highlightArea), "", note || "", "");
         }
 
-        let modifiedDocumentHighlightAreas = documentHighlightAreas?.concat([highlightArea])
+        // let modifiedDocumentHighlightAreas = documentHighlightAreas?.concat([highlightArea])
 
         this.setState({
             ...this.state,
-            tmpExcerpt: {},
-            documentHighlightAreas: modifiedDocumentHighlightAreas,
+            tmpExcerpt: {
+
+            },
+            // documentHighlightAreas: modifiedDocumentHighlightAreas,
 
         })
 
@@ -350,7 +346,7 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
         this.setTmpExcerpt(nextExcerpt);
     }
 
-    setTmpExcerpt(excerpt: ExcerptVM) {
+    setTmpExcerpt(excerpt: Partial<ExcerptVM>) {
         this.setState({
             ...this.state,
             tmpExcerpt: excerpt,
@@ -680,14 +676,14 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
 
     render() {
         const {
-            document, onUpdateDocument, onRemoveDocument, onSaveExcerpt, editProperties, userProfile, token,
+            document, editProperties, userProfile, token,
             className, permissions, pockets
         } = this.props;
         const {id, preview_url = "", original_url, isUpdating=false, upload_date, publication_date, file_type, uploaded_by,
             primary_sme_name, primary_sme_phone, primary_sme_email, secondary_sme_name, secondary_sme_phone, secondary_sme_email,
             file_name, file_size, status, nlpComplete, nlpCompleteAnimation, showStatusBanner} = document || {};
 
-        const { tmpDocument, isDirty, isGlobal, isPrivate, tmpExcerpt, documentHighlightAreas } = this.state;
+        const { tmpDocument, isDirty, isGlobal, isPrivate, tmpExcerpt } = this.state;
 
         let cn = "document-panel d-flex";
         if (className) {
@@ -849,8 +845,8 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
                                         token={token}
                                         permissions={permissions}
                                         onSaveNote={(text: string) => this._onTmpExcerptChanged("note", text)}
-                                        tmpMethod={(text: string, highlightArea: any) => this._onSaveExcerpt(text, highlightArea)}
-                                        documentHighlightAreas={documentHighlightAreas}
+                                        onSaveExcerpt={(text: string, highlightArea: any) => this._onSaveExcerpt(text, highlightArea)}
+                                        excerpts={this.props.excerpts}
                                         tmpExcerpt={tmpExcerpt}
                                         pockets={pockets}
                                         onPocketSelectionChanged={(value: string) => this._onTmpExcerptChanged("pocket", value)}

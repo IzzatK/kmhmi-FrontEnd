@@ -2,12 +2,12 @@ import DocumentPanelView from "./documentPanelView";
 import {createSelector} from "@reduxjs/toolkit";
 import {
     DocumentInfo,
-    ExcerptInfo,
+    ExcerptInfo, ExcerptMapper,
     NoteInfo,
     ParamType,
-    PocketInfo,
+    PocketInfo, PocketMapper,
     ReferenceType,
-    ResourceInfo
+    ResourceInfo, ResourceMapper
 } from "../../../app.model";
 import {
     authenticationService,
@@ -18,7 +18,7 @@ import {
     userService,
 } from "../../../serviceComposition";
 import {
-    DocumentInfoVM,
+    DocumentInfoVM, ExcerptVM,
     PermissionsVM,
     PocketVM
 } from "./documentPanelModel";
@@ -31,7 +31,7 @@ import {
     ResourceParamType,
 } from "../../../app.core.api";
 import {StatusType} from "../../../app.model";
-import {forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
+import {forEach, forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 import {createComponentWrapper, Presenter} from "../../../framework.visual";
 
 class DocumentPanel extends Presenter {
@@ -63,6 +63,7 @@ class DocumentPanel extends Presenter {
                 token: authenticationService.getToken(),
                 permissions: this.getPermissions(state),
                 pockets: this.getPockets(state),
+                excerpts: this.getExcerpts(state)
             }
         }
 
@@ -363,6 +364,36 @@ class DocumentPanel extends Presenter {
         }
     )
 
+
+    getExcerpts = createSelector(
+        [() => pocketService.getPocketMappers(), (s) => this.getSelectedDocumentId(s)],
+        (pocketMappers, documentId) => {
+
+            let results: Record<string, ExcerptVM> = {};
+
+            forEach(pocketMappers, (pocketMapper: PocketMapper) => {
+                forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
+                    if (resourceMapper.resource.source_id == documentId) {
+                        forEach(resourceMapper.excerptMappers, (excerptMapper: ExcerptMapper) => {
+
+                            const itemVM:ExcerptVM = {
+                                content: excerptMapper.excerpt.content,
+                                id: excerptMapper.id,
+                                note: 'Not yet',
+                                pocket: pocketMapper.pocket.id
+                            }
+
+                            results[excerptMapper.id] = itemVM;
+                        })
+                        return true;
+                    }
+                })
+            })
+
+            return results;
+        }
+    )
+
     getPockets = createSelector(
         [() => pocketService.getPocketInfos()],
         (items) => {
@@ -377,41 +408,6 @@ class DocumentPanel extends Presenter {
             return itemVMs;
         }
     )
-
-    tmpMethod(documentId: string) {
-
-        const noteParams: NoteParamType = {
-            text: 'something',
-            content: 'maybe'
-        };
-
-        const excerptParams: ExcerptParamType = {
-            text: 'something',
-            location: 'hard-coded',
-            content: 'maybe'
-        }
-
-        const reportDocumentParams: ResourceParamType = {
-            id: documentId
-        }
-
-        // pocketService.addNoteToExcerpt(noteParams, excerptParams, reportDocumentParams);
-
-        // pocketService.getOrCreateNote(null, 'my text here', 'whatever blob')
-        //     .then(note => {
-        //         let excerptId = null;
-        //         if (note != null) {
-        //             pocketService.getOrCreateExcerpt(null, 'my test', 'some content', 'location', [note.id])
-        //                 .then(excerpt => {
-        //                     if (excerpt != null) {
-        //
-        //                     }
-        //                 })
-        //         }
-        //
-        //     })
-
-    }
 }
 
 export const {

@@ -22,6 +22,7 @@ export type DocumentPanelProps = {
 
     tmpMethod?: (text: string, highlightArea: any) => void;
     onPocketSelectionChanged?: (value: string) => void;
+    excerpts: Record<string, ExcerptVM>;
 }
 
 export type DocumentPanelState = {
@@ -31,8 +32,7 @@ export type DocumentPanelState = {
     isPrivate: boolean;
     showTagEditor: boolean;
     renderTrigger: number;
-    tmpExcerpt: ExcerptVM;
-    documentHighlightAreas?: any[];
+    tmpExcerpt: Partial<ExcerptVM>;
 }
 
 export type DocumentPdfPreviewProps = {
@@ -42,12 +42,12 @@ export type DocumentPdfPreviewProps = {
     userProfile: UserProfileVM;
     token: string;
     permissions: PermissionsVM
-    tmpMethod?: (text: string, highlightArea: any) => void;
-    documentHighlightAreas?: any[];
-    tmpExcerpt: ExcerptVM;
+    onSaveExcerpt?: (text: string, highlightArea: any) => void;
+    tmpExcerpt: Partial<ExcerptVM>;
     pockets: Record<string, PocketVM>;
     onPocketSelectionChanged?: (value: string) => void;
     onSaveNote?: (text: string) => void;
+    excerpts: Record<string, ExcerptVM>;
 }
 
 export type UserProfileVM = {
@@ -108,12 +108,13 @@ export type PermissionsVM = {
 }
 
 export type PocketVM = {
+    id: string;
     title: string;
 }
 
 export type ExcerptVM = {
-    [key: string]: any;
+    id?: string;
     pocket?: string;
     note?: string;
-    highlightArea?: any;
+    content: any;
 }
