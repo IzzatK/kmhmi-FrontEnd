@@ -1,6 +1,6 @@
 import ProfilePanelView from "./profilePanelView";
-import {Presenter} from "../../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../../framework.visual/wrappers/componentWrapper";
+import {Presenter} from "../../../../framework.visual";
+import {createComponentWrapper} from "../../../../framework.visual";
 import {forEach, forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
 import {createSelector} from "@reduxjs/toolkit";
 import {ReferenceType, UserInfo} from "../../../../app.model";
@@ -9,8 +9,7 @@ import {
     referenceService,
     userService
 } from "../../../../serviceComposition";
-import {AccountStatusVM, DepartmentVM, PermissionsVM, RoleVM, UserInfoVM} from "./profilePanelModel";
-import {PermissionInfo} from "../../../../app.model";
+import {AccountStatusVM, DepartmentVM, RoleVM, UserInfoVM} from "./profilePanelModel";
 import {AuthenticationStatus, PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../../app.core.api";
 import {RegistrationStatusType} from "../../../model/registrationStatusType";
 
@@ -253,43 +252,12 @@ class ProfilePanel extends Presenter {
     getUserRequestVMs = createSelector(
         [() => userService.getPendingUsers()],
         (items) => {
-            // let itemVMs: Record<string, UserRequestInfoVM> = {};
-            //
-            // forEach(items, (item: UserRequestInfo) => {
-            //     const {
-            //         id,
-            //         user_id,
-            //         role,
-            //         duration,
-            //         comment
-            //     } = item;
-            //
-            //     let name = "";
-            //     let user = userService.getUser(user_id);
-            //
-            //     if (user) {
-            //         name = user.first_name + user.last_name ? " " + user.last_name : "";
-            //     }
-            //
-            //     let itemVM: UserRequestInfoVM = {
-            //         id,
-            //         name,
-            //         role,
-            //         duration,
-            //         comment
-            //     }
-            //
-            //     itemVMs[id] = itemVM;
-            // });
-            //
-            // return Object.values(itemVMs);
-
             let itemVMs: Record<string, UserInfoVM> = {};
 
             forEach(items, (item: UserInfo) => {
 
                 const { id, dod_id, first_name, last_name, email_address, phone_number, department,
-                    account_status, role, approved_by, date_approved, isUpdating} = item;
+                    account_status, role, approved_by, date_approved, isUpdating, registration_reason} = item;
 
                 let registration_status: RegistrationStatusType = RegistrationStatusType.NONE;
 
@@ -320,6 +288,7 @@ class ProfilePanel extends Presenter {
                     approved_by: approved_by ? approved_by : "",
                     date_approved: date_approved ? date_approved : "",
                     isUpdating,
+                    registration_reason,
                 };
 
                 itemVMs[id] = itemVM;

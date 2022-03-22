@@ -2,7 +2,6 @@
 }
 
 .pockets-panel .tree-node .tree-node-graphic .tree-node-content .action-bar {
-    /*transform: translateX(100%);*/
     padding-left: 1rem;
     opacity: 0;
     display: flex;
@@ -27,7 +26,7 @@
 }
 
 .pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content {
-    padding: 0rem;
+    padding: 0;
 }
 
 .pockets-panel .tree-view {
@@ -47,93 +46,56 @@
     width: 0;
 }
 
-/*.pockets-panel .pocket-node.report {*/
-/*    color: var(--pocket-node-report-color);*/
-/*    background: var(--pocket-node-report-background);*/
-/*    border: none;*/
-/*    border-bottom: 6px solid var(--pocket-node-report-border-color);*/
-/*}*/
-
-/*.pockets-panel .pocket-node:hover.report {*/
-/*    color: var(--pocket-node-report-hover-color);*/
-/*    background: var(--pocket-node-report-hover-background);*/
-/*    border: none;*/
-/*    border-bottom: 6px solid var(--pocket-node-report-hover-border-color);*/
-/*}*/
-
-/*.pockets-panel .pocket-node.selected.report {*/
-/*    color: var(--pocket-node-report-selected-color);*/
-/*    background: var(--pocket-node-report-selected-background);*/
-/*    border: none;*/
-/*    border-bottom: 6px solid var(--pocket-node-report-selected-border-color);*/
-/*}*/
-
-/*.pockets-panel .tree-node-graphic > .tree-node-content {*/
-/*    padding: 1rem;*/
-/*}*/
-
-.pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .dark {
+.pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .dark .pocket-header {
     padding: 1rem;
-    background: black;
-    color: white;
-    fill: white;
-    --tree-view-primary-color: white;
+    background: var(--pocket-node-pocket-background);
+    border: 0.1rem solid var(--pocket-node-pocket-background);
+    --tree-view-primary-color: var(--pocket-node-pocket-color);
 }
 
-.pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .dark .button {
+.pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .dark .pocket-header:hover {
+    background: var(--pocket-node-pocket-hover-background);
+    border: 0.1rem solid var(--pocket-node-pocket-hover-border-color);
+    --tree-view-primary-color: var(--pocket-node-pocket-hover-color);
+}
+
+.pockets-panel .tree-view .tree-node.expanded  > .tree-node-graphic > .tree-node-content > .dark .pocket-header {
+    background: var(--pocket-node-pocket-selected-background);
+    border: 0.1rem solid var(--pocket-node-pocket-selected-border-color);
+    --tree-view-primary-color: var(--pocket-node-pocket-selected-color);
+    font-weight: 400 !important;
+}
+
+.pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content {
+    border: none;
     background: transparent;
 }
 
-.pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .dark .button.selected {
+.pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content:hover {
+    background: transparent;
+}
+
+.pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .dark .pocket-header .button {
+    background: transparent;
+}
+
+.pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .dark .pocket-header .button.selected {
     fill: cyan;
 }
 
 .pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .light {
     padding: 1rem;
-    background: white;
-    color: black;
-    fill: black;
-    --tree-view-primary-color: black;
+    background: var(--pocket-node-resource-background);
+    --tree-view-primary-color: var(--pocket-node-resource-color);
+}
+
+.pockets-panel .tree-view .tree-node.expanded > .tree-node-graphic > .tree-node-content > .light {
+    background: var(--pocket-node-resource-selected-background);
+    --tree-view-primary-color: var(--pocket-node-resource-selected-color);
+    font-weight: 700 !important;
 }
 
 .pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .light .button {
     background: transparent;
-    fill: black
+    fill: var(--pocket-node-resource-color);
 }
-
-.pockets-panel .tree-node-graphic > .tree-node-content .pocket-node {
-    color: var(--pocket-node-pocket-color);
-    background: var(--pocket-node-pocket-background) !important;
-    border: 0.1rem solid var(--pocket-node-pocket-border-color);
-}
-
-.pockets-panel .tree-node-graphic > .tree-node-content:hover .pocket-node {
-    color: var(--pocket-node-pocket-hover-color);
-    background: var(--pocket-node-pocket-hover-background);
-    border: 0.1rem solid var(--pocket-node-pocket-hover-border-color);
-}
-
-/*.pockets-panel .pocket-node.selected.pocket {*/
-/*    color: var(--pocket-node-pocket-selected-color);*/
-/*    background: var(--pocket-node-pocket-selected-background);*/
-/*    border: 1px solid var(--pocket-node-pocket-selected-border-color);*/
-/*}*/
-
-/*.pockets-panel .resource-node {*/
-/*    color: var(--pocket-node-document-color);*/
-/*    background: var(--pocket-node-document-background);*/
-/*}*/
-
-/*.pockets-panel .pocket-node:hover.document {*/
-/*    color: var(--pocket-node-document-hover-color);*/
-/*    background: var(--pocket-node-document-hover-background);*/
-/*}*/
-
-/*.pockets-panel .pocket-node.selected.document {*/
-/*    color: var(--pocket-node-document-selected-color);*/
-/*    background: var(--pocket-node-document-selected-background);*/
-/*}*/
-
-/*.pockets-panel .pocket-node .button {*/
-/*    background: transparent;*/
-/*}*/

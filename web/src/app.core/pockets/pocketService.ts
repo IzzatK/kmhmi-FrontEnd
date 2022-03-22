@@ -23,6 +23,7 @@ import {IEntityProvider, ISelectionService} from "../../framework.core.api";
 import {forEach} from "../../framework.core/extras/utils/collectionUtils";
 import {IRepoItem} from "../../framework.core/services";
 import {createSelector, OutputSelector} from "@reduxjs/toolkit";
+// import {authenticationService} from "../../serviceComposition";
 
 
 type GetAllPocketMapperSelector = OutputSelector<any, Record<string, PocketMapper>,
@@ -292,6 +293,7 @@ export class PocketService extends Plugin implements IPocketService {
                         reject(null);
                     }
                     else {
+                        // params.author_id = authenticationService.getUserId();
                         this.pocketProvider.create(params)
                             .then(result => {
                                 if (result != null) {

@@ -3,7 +3,7 @@ import './pocketsPanel.css';
 import '../../../theme/stylesheets/panel.css';
 import ScrollBar from "../../../theme/widgets/scrollBar/scrollBar";
 import TreeView from "../../../theme/widgets/treeView/treeView";
-import {bindInstanceMethods, Nullable} from "../../../../framework.core/extras/utils/typeUtils";
+import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
 import Button from "../../../theme/widgets/button/button";
 import {PocketNodeVM, PocketsPanelProps, PocketUpdateParams} from "./pocketsPanelModel";
 import {PocketNodeRenderer} from "./renderers/pocketNodeRenderer";
@@ -21,6 +21,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
     }
 
     getCellContentRenderer(node: PocketNodeVM): JSX.Element {
+        const { searchText } = this.props;
         const { id, path, title } = node;
 
         let renderer: JSX.Element;
@@ -29,8 +30,17 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
             case PocketNodeType.POCKET:
             {
                 renderer = (
-                    <PocketNodeRenderer id={id} path={path} title={title}
-                                        onShare={this._onSharePocket} onDownload={this._onDownloadPocket} onSave={this._onSavePocket} />
+                    <PocketNodeRenderer
+                        id={id}
+                        path={path}
+                        title={title}
+                        onShare={this._onSharePocket}
+                        onDownload={this._onDownloadPocket}
+                        onSave={this._onSavePocket}
+                        searchText={searchText}
+                        onSearch={this._onSearch}
+                        onSearchTextChanged={this._onSearchTextChanged}
+                    />
                 )
                 break;
             }
@@ -126,6 +136,22 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
     onCreatePocket() {
         if (this.props.onCreatePocket != null) {
             this.props.onCreatePocket('Sample')
+        }
+    }
+
+    _onSearch() {
+        const { onSearch } = this.props;
+
+        if (onSearch) {
+            onSearch();
+        }
+    }
+
+    _onSearchTextChanged(value: string) {
+        const { onSearchTextChanged } = this.props;
+
+        if (onSearchTextChanged) {
+            onSearchTextChanged(value);
         }
     }
 

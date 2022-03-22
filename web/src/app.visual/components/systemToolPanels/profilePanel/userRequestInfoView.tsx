@@ -128,6 +128,7 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
                               <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Email:</div>
                               <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Phone:</div>
                               <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end'}>Role:</div>
+                              <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end text-wrap text-right'}>Reason for Authentication:</div>
                               <div className={'header-1 font-weight-semi-bold align-self-center'}>{userRequest?.email_address}</div>
                               <div className={'header-1 font-weight-semi-bold align-self-center'}>{userRequest?.phone_number}</div>
                               <ComboBox
@@ -137,6 +138,10 @@ export class UserRequestInfoView extends Component<ProfilePanelProps, ProfilePan
                                   items={roles}
                                   disable={isUpdating}
                               />
+                              <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end text-wrap font-italic text-info'}>{userRequest?.registration_reason}</div>
+                          </div>
+                          <div className={"d-flex pt-2"}>
+
                           </div>
 
                           <div className={"d-flex flex-fill justify-content-between"}>

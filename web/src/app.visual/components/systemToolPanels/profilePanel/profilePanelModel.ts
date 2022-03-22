@@ -71,6 +71,7 @@ export type UserInfoVM = {
     approved_by?: string;
     date_approved?: string;
     isUpdating?: boolean;
+    registration_reason?: string;
 }
 
 export type RoleVM = {
@@ -90,13 +91,4 @@ export type EditPropertyVM = {
     id: string;
     placeholder?: string;
     readonly?: boolean;
-}
-
-export type UserRequestInfoVM = {
-    id: string;
-    name?: string;
-    role?: string;
-    duration?: string;
-    comment?: string;
-    isUpdating?: boolean;
 }

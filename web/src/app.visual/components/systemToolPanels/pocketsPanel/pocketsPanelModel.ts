@@ -6,6 +6,7 @@ export type PocketsPanelStateProps = {
     data: PocketNodeVM[];
     selectionPath: string;
     expandedPaths: string[];
+    searchText: string;
 }
 
 export type PocketsPanelDispatchProps = {
@@ -18,6 +19,8 @@ export type PocketsPanelDispatchProps = {
     onRemoveNote: (id: string) => void;
     onRemoveExcerpt: (id: string) => void;
     onRemoveResource: (id: string) => void;
+    onSearchTextChanged: (value: string) => void;
+    onSearch: () => void;
 }
 
 export type PocketsPanelProps = PocketsPanelStateProps & PocketsPanelDispatchProps;
@@ -37,6 +40,9 @@ export type PocketNodeRendererProps = NodeRendererProps &
         onShare: (id: string) => void;
         onDownload: (id: string) => void;
         onSave: (edits: PocketUpdateParams) => void;
+        onSearchTextChanged: (value: string) => void;
+        onSearch: () => void;
+        searchText: string;
     }
 
 export type ResourceNodeRendererProps = NodeRendererProps &
