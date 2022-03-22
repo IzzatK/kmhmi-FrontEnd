@@ -376,6 +376,7 @@ export class PocketService extends Plugin implements IPocketService {
     }
 
     removeExcerpt(id: string) {
+        // TODO might want to remove any notes that referenced this excerpt
         return this.deleteRemoteItem(ExcerptInfo.class, id, this.excerptProvider);
     }
 
@@ -388,6 +389,7 @@ export class PocketService extends Plugin implements IPocketService {
     }
 
     removeNote(id: string): Promise<Nullable<NoteInfo>> {
+        // TODO might want to remove any pockets/resources that referenced this note
         return this.deleteRemoteItem<NoteInfo>(NoteInfo.class, id, this.noteProvider, );
     }
 
@@ -400,6 +402,7 @@ export class PocketService extends Plugin implements IPocketService {
     }
 
     removeResource(id: string) {
+        // TODO might want to remove any excerpts that referenced this resource
         return this.deleteRemoteItem(ResourceInfo.class, id, this.resourceProvider);
     }
 

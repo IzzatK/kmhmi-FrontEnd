@@ -42,12 +42,12 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                 break;
             case PocketNodeType.EXCERPT:
                 renderer = (
-                    <ExcerptNodeRenderer id={id} path={path} title={title} />
+                    <ExcerptNodeRenderer id={id} path={path} title={title} onRemove={this._onRemoveExcerpt} />
                 )
                 break;
             case PocketNodeType.NOTE:
                 renderer = (
-                    <NoteNodeRenderer id={id} path={path} title={title} />
+                    <NoteNodeRenderer id={id} path={path} title={title} onRemove={this._onRemoveNote}/>
                 )
                 break;
             default:

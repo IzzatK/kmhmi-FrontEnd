@@ -45,6 +45,16 @@ export type ResourceNodeRendererProps = NodeRendererProps &
         onRemove: (id: string) => void;
     }
 
+export type ExcerptNodeRendererProps = NodeRendererProps &
+    {
+        onRemove: (id: string) => void;
+    }
+
+export type NoteNodeRendererProps = NodeRendererProps &
+    {
+        onRemove: (id: string) => void;
+    }
+
 export type PocketNodeRendererState = {
     tab: PocketTabType,
     edits: PocketUpdateParams
