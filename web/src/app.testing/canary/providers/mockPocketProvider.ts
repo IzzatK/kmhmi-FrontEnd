@@ -8,7 +8,7 @@ import {
     ResourceInfo,
     ResourceMapper
 } from "../../../app.model";
-import {Nullable} from "../../../framework.core/extras/utils/typeUtils";
+import {deepCopy, Nullable} from "../../../framework.core/extras/utils/typeUtils";
 import {forEach, forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 import {makeGuid} from "../../../framework.core/extras/utils/uniqueIdUtils";
 import {PocketParamType} from "../../../app.core.api";
@@ -74,25 +74,22 @@ export class MockPocketProvider extends EntityProvider<PocketMapper> {
     update(id: string, partialParams: PocketParamType): Promise<Nullable<PocketMapper>> {
         const me = this;
         return new Promise((resolve, reject) => {
-            const tmp = me.pocketMappers[id];
+            const tmpPocketMapper: PocketMapper = deepCopy(me.pocketMappers[id]);
 
             if (partialParams.id) {
                 delete partialParams.id;
             }
 
-            if (tmp != null) {
-                const resultRecord: Record<string, any> = tmp;
-                const updateRecord: Record<string, any> = partialParams;
+            const resultRecord: Record<string, any> = tmpPocketMapper.pocket;
+            const updateRecord: Record<string, any> = partialParams;
 
-                forEachKVP(updateRecord, (key:string, newValue: any) => {
-                    resultRecord[key] = newValue;
-                })
+            forEachKVP(updateRecord, (key:string, newValue: any) => {
+                resultRecord[key] = newValue;
+            })
 
-                resolve(tmp);
-            }
-            else {
-                reject(null);
-            }
+            me.pocketMappers[id] = tmpPocketMapper;
+
+            resolve(tmpPocketMapper);
         });
     }
 

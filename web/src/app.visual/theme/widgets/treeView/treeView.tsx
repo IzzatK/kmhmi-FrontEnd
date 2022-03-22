@@ -13,7 +13,6 @@ class TreeView extends Component<TreeViewProps> {
     _onSelected(node: TreeNodeVM) {
         const { onSelected } = this.props;
         if (onSelected) {
-            debugger
             onSelected(node);
         }
     }

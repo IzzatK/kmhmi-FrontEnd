@@ -9,6 +9,7 @@
     align-items: center;
 }
 
+.pockets-panel .tree-node > .tree-node-graphic > .tree-node-content .action-bar.open,
 .pockets-panel .tree-node.expanded > .tree-node-graphic > .tree-node-content .action-bar,
 .pockets-panel .tree-node.no-children > .tree-node-graphic > .tree-node-content .action-bar,
 .pockets-panel .tree-node .tree-node-graphic .tree-node-content:hover .action-bar {

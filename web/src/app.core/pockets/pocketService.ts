@@ -59,7 +59,6 @@ export class PocketService extends Plugin implements IPocketService {
                 (s) => this.getAll<NoteInfo>(NoteInfo.class)
             ],
             (pockets, resources, excerpts, notes) => {
-
                 const pocketMappers: Record<string, PocketMapper> = {};
 
                 forEach(pockets, (pocketInfo: PocketInfo) => {
@@ -500,7 +499,7 @@ export class PocketService extends Plugin implements IPocketService {
 
             })
             .catch(error => {
-                debugger
+
             })
     }
 }

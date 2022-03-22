@@ -6,8 +6,9 @@ import {appDataStore, displayService, pocketService, selectionService} from "../
 import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
 import {ExcerptMapper, NoteInfo, PocketMapper, ResourceMapper} from "../../../../app.model";
 import {PocketNodeType} from "../../../model/pocketNodeType";
-import {PocketNodeVM} from "./pocketsPanelModel";
+import {PocketNodeVM, PocketsPanelDispatchProps, PocketsPanelStateProps, PocketUpdateParams} from "./pocketsPanelModel";
 import {DocumentPanelId} from "../../documentPanel/documentPanelPresenter";
+import {PocketParamType} from "../../../../app.core.api";
 
 
 type PocketSliceState = {
@@ -99,7 +100,7 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
             },
         });
 
-        this.mapStateToProps = (state: any, props: any) => {
+        this.mapStateToProps = (state: any, props: any): PocketsPanelStateProps => {
             return {
                 data: this.getPocketTree(state),
                 selectionPath: this.getSelectedPocketNodePath(state),
@@ -107,18 +108,38 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
             }
         }
 
-        this.mapDispatchToProps = (dispatch: any) => {
+        this.mapDispatchToProps = (dispatch: any): PocketsPanelDispatchProps => {
             return {
                 onPocketItemSelected: (id: string) => this.onPocketItemSelected(id),
                 onPocketItemToggle: (id: string, expanded: boolean) => this.onPocketItemToggle(id, expanded),
                 onCreatePocket: (title: string) => pocketService.addOrUpdatePocket({title}),
+                onDownloadDocument(id: string): void {
+                },
+                onDownloadPocket(id: string): void {
+                },
+                onRemoveDocument(id: string): void {
+                },
+                onUpdatePocket: (edits: PocketUpdateParams) => this._onUpdatePocket(edits)
+
             };
         }
     }
 
+    private _onUpdatePocket(edits: PocketUpdateParams) {
+        const params: PocketParamType = {
+            id: edits.id
+        }
+
+        if (edits.title) {
+            params.title = edits.title
+        }
+
+        void pocketService.addOrUpdatePocket(params)
+    }
+
     getPocketNodeVMs = createSelector(
-        [() => pocketService.getPocketMappers(), this.getExpandedPaths],
-        (pocketMappers, expandedPaths) => {
+        [(s) => pocketService.getPocketMappers()],
+        (pocketMappers) => {
             let nodeVMs: Record<string, PocketNodeVM> = {};
 
             forEach(pocketMappers, (pocketMapper: PocketMapper) => {
@@ -200,7 +221,6 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
     getPocketTree = createSelector(
         [(s) => this.getPocketNodeVMs(s)],
         (nodeVMs) => {
-
             // build the visual data structure, using the hash map
             let dataTreeVM: PocketNodeVM[] = [];
 
@@ -223,7 +243,7 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
     )
 
     private getExpandedPaths (state: any) {
-        return this.getPersistentState(state)?.expandedPaths;
+        return this.getPersistentState(state)?.expandedPaths || [];
     }
 }
 

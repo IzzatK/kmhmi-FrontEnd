@@ -5,7 +5,7 @@ import ScrollBar from "../../../theme/widgets/scrollBar/scrollBar";
 import TreeView from "../../../theme/widgets/treeView/treeView";
 import {bindInstanceMethods, Nullable} from "../../../../framework.core/extras/utils/typeUtils";
 import Button from "../../../theme/widgets/button/button";
-import {PocketNodeVM, PocketsPanelProps} from "./pocketsPanelModel";
+import {PocketNodeVM, PocketsPanelProps, PocketUpdateParams} from "./pocketsPanelModel";
 import {PocketNodeRenderer} from "./renderers/pocketNodeRenderer";
 import {ExcerptNodeRenderer} from "./renderers/excerptNodeRenderer";
 import {NoteNodeRenderer} from "./renderers/noteNodeRenderer";
@@ -30,7 +30,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
             {
                 renderer = (
                     <PocketNodeRenderer id={id} path={path} title={title}
-                                        onShare={this._onSharePocket} onDownload={this._onDownloadPocket} onSettings={this._onToggleSettings} />
+                                        onShare={this._onSharePocket} onDownload={this._onDownloadPocket} onSave={this._onSavePocket} />
                 )
                 break;
             }
@@ -84,8 +84,10 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         }
     }
 
-    _onToggleSettings(id: string) {
-
+    _onSavePocket(edits: PocketUpdateParams) {
+        if (this.props.onUpdatePocket != null) {
+            this.props.onUpdatePocket(edits);
+        }
         //opens settings ui
     }
 

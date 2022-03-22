@@ -5,6 +5,7 @@ import {ShareSVG} from "../../../../theme/svgs/shareSVG";
 import {DownloadSVG} from "../../../../theme/svgs/downloadSVG";
 import {SettingsSVG} from "../../../../theme/svgs/settingsSVG";
 import {bindInstanceMethods} from "../../../../../framework.core/extras/utils/typeUtils";
+import TextEdit from "../../../../theme/widgets/textEdit/textEdit";
 
 export class PocketNodeRenderer extends Component<PocketNodeRendererProps, PocketNodeRendererState> {
     constructor(props: any) {
@@ -13,16 +14,27 @@ export class PocketNodeRenderer extends Component<PocketNodeRendererProps, Pocke
         bindInstanceMethods(this);
 
         this.state = {
-            tab: PocketTabType.NONE
+            tab: PocketTabType.NONE,
+            edits: {
+                id: this.props.id
+            }
+        }
+    }
+
+
+    componentDidUpdate(prevProps: Readonly<PocketNodeRendererProps>, prevState: Readonly<PocketNodeRendererState>, snapshot?: any) {
+        if (prevProps != this.props) {
+            this.setState({
+                ...this.state,
+                edits: {
+                    id: this.props.id
+                }
+            })
         }
     }
 
     _onShare(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
         event.stopPropagation();
-
-        if (this.props.onShare != null) {
-            this.props.onShare(this.props.id);
-        }
 
         this._onToggleTab(PocketTabType.SHARE);
     }
@@ -30,25 +42,42 @@ export class PocketNodeRenderer extends Component<PocketNodeRendererProps, Pocke
     _onDownload(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
         event.stopPropagation();
 
-        if (this.props.onDownload != null) {
-            this.props.onDownload(this.props.id);
-        }
-
-        if (this.state.tab == PocketTabType.DOWNLOAD) {
-
-        }
-
         this._onToggleTab(PocketTabType.DOWNLOAD);
     }
 
     _onSettings(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
         event.stopPropagation();
 
-        if (this.props.onSettings != null) {
-            this.props.onSettings(this.props.id);
-        }
-
         this._onToggleTab(PocketTabType.SETTINGS);
+    }
+
+    _onSave(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+        event.stopPropagation();
+
+        if (this.props.onSave != null) {
+            this.props.onSave(this.state.edits);
+        }
+    }
+
+    private _onPropertyUpdate(name: string, value: string) {
+        this.setState({
+            ...this.state,
+            edits: {
+                ...this.state.edits,
+                [name]: value
+            }
+        })
+    }
+
+    private _cancelUpdates(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+        event.stopPropagation();
+
+        this.setState({
+            ...this.state,
+            edits: {
+                id: this.props.id
+            }
+        })
     }
 
     _onToggleTab(tab: PocketTabType) {
@@ -72,8 +101,16 @@ export class PocketNodeRenderer extends Component<PocketNodeRendererProps, Pocke
 
     renderSettingsTab() {
         return (
-            <div className={'flex-fill d-flex align-items-center justify-content-center p-4'}>
-                <div className={'display-4 text-primary'}>Settings Screen</div>
+            <div className={'flex-fill d-flex flex-column v-gap-2 p-2'}>
+                <div className={'d-flex align-items-center justify-content-start h-gap-3 py-3'}>
+                    <div>Name</div>
+                    <TextEdit name={'title'} value={this.state.edits.title || this.props.title}
+                              onChange={(value: string) => this._onPropertyUpdate('title', value)} />
+                </div>
+                <div className={'d-flex h-gap-3 justify-content-end'}>
+                    <Button text={'Cancel'} onClick={this._cancelUpdates}/>
+                    <Button text={'Save'} onClick={this._onSave}/>
+                </div>
             </div>
         )
     }
@@ -101,7 +138,7 @@ export class PocketNodeRenderer extends Component<PocketNodeRendererProps, Pocke
                     <div className={"d-flex flex-row v-gap-2 justify-content-center align-items-center"}>
                         <div className={"title"}>{title ? title : ''}</div>
                     </div>
-                    <div className={'action-bar d-flex h-gap-3'}>
+                    <div className={`action-bar d-flex h-gap-3 ${this.state.tab != PocketTabType.NONE && 'open'}`}>
                         <Button onClick={this._onShare} selected={this.state.tab == PocketTabType.SHARE}>
                             <ShareSVG className={"small-image-container"}/>
                         </Button>
