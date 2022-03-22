@@ -96,15 +96,15 @@ describe("Test setup", () => {
 
 describe("getAll", () => {
     it("gets a list of all the users", () => {
-        return userProvider.getAll("NULL").then(data => {
-            expect(data.length).not.toBe(0);
+        return userProvider.getAll("NULL").then(users => {
+            expect(users.length).not.toBe(0);
         })
     });
 
     it("gets a specifid user \"Gwaltney\"", () => {
-        return userProvider.getAll("Gwaltney").then(data => {
-            expect(data.length).toBeGreaterThanOrEqual(1);
-            let user: UserInfo = data.at(0);
+        return userProvider.getAll("Gwaltney").then(users => {
+            expect(users.length).toBeGreaterThanOrEqual(1);
+            let user: UserInfo = users.at(0);
             expect(user.dod_id.toString()).not.toBe("");
             expect(user.first_name).not.toBe("");
             expect(user.last_name).toMatch("Gwaltney");
@@ -120,14 +120,13 @@ describe("getAll", () => {
         })
     });
 
-    it("gets an empty response for a user that doesn't exist", () => {
-        return userProvider.getAll("fdsafdsafdsa").then(data => {
-            // expect(true).toBe(true);
-            expect(data.length).toBe(0);
-        })//.catch(error => {
-            // expect(error).toBe("");
-        // })
-    });
+    // TODO: test users that don't exist
+    // it("gets an empty response for a user that doesn't exist", () => {
+    //     return userProvider.getAll("user_name_that_doesnt_exist").then(users => {
+    //         // expect(true).toBe(true);
+    //         expect(users.length).toBe(0);
+    //     })
+    // });
 });
 
 describe("getRole", () => {
@@ -135,7 +134,36 @@ describe("getRole", () => {
 })
 
 describe("getSingle", () => {
+    let users: UserInfo[];
 
+    beforeAll(() => {
+        return userProvider.getAll("NULL").then(data => {
+            users = data;
+        });
+    });
+
+    it("gets a single user with an ID", () => {
+        // test with the first user in the list
+        let testUser: UserInfo = users.at(0);
+        let userId: string = testUser.id;
+
+        return userProvider.getSingle(userId).then(user => {
+            expect(user.id).toBe(userId);
+
+            expect(user.dod_id).toBe(testUser.dod_id);
+            expect(user.first_name).toBe(testUser.first_name);
+            expect(user.last_name).toBe(testUser.last_name);
+            expect(user.email_address).toBe(testUser.email_address);
+            expect(user.phone_number).toBe(testUser.phone_number);
+            expect(user.department).toBe(testUser.department);
+            expect(user.preferred_results_view).toBe(testUser.preferred_results_view);
+            expect(user.account_status).toBe(testUser.account_status);
+            expect(user.role).toBe(testUser.role);
+            expect(user.approved_by).toBe(testUser.approved_by);
+            expect(user.date_approved).toBe(testUser.date_approved);
+            expect(user.isUpdating).toBe(testUser.isUpdating);
+        })
+    });
 })
 
 describe("create", () => {
