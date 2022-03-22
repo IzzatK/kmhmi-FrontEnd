@@ -260,7 +260,7 @@ class NoteRenderer extends Component<NoteRendererProps, NoteRendererState> {
                             </div>
                             :
                             <div className={'p-4 pb-1'}>
-                                <Button text={'Note Here'} onClick={this._editNote}/>
+                                <Button text={'Note'} onClick={this._editNote}/>
                             </div>
 
                     }
