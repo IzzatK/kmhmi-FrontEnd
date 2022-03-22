@@ -403,7 +403,27 @@ export class PocketService extends Plugin implements IPocketService {
 
     removeResource(id: string) {
         // TODO might want to remove any excerpts that referenced this resource
-        return this.deleteRemoteItem(ResourceInfo.class, id, this.resourceProvider);
+        this.deleteRemoteItem(ResourceInfo.class, id, this.resourceProvider, false)
+            .then(resource => {
+                if (resource != null) {
+                    forEach(this.getPocketMappers(), (pocketMapper: PocketMapper) => {
+                        if (pocketMapper.resourceMappers[id] != null) {
+                            const pocket = pocketMapper.pocket;
+                            const resourceIds:string[] = [];
+                            forEach(pocket.resource_ids, (resourceId: string) => {
+                                if (resourceId !== id) {
+                                    resourceIds.push(resourceId);
+                                }
+                            })
+                            pocket.resource_ids = resourceIds;
+                            this.removeRepoItem(resource)
+                            void this.addOrUpdatePocket(pocket);
+
+                            return true;
+                        }
+                    })
+                }
+            })
     }
 
     getResource(id: string): Nullable<ResourceInfo> {

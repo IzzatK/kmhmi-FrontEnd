@@ -247,15 +247,15 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
     }
 
     private _onRemoveExcerpt(id: string) {
-        pocketService.removeExcerpt(id);
+        void pocketService.removeExcerpt(id);
     }
 
     private _onRemoveNote(id: string) {
-        pocketService.removeNote(id);
+        void pocketService.removeNote(id);
     }
 
     private _onRemoveResource(id: string) {
-        pocketService.removeResource(id);
+        void pocketService.removeResource(id);
     }
 }
 
