@@ -2,7 +2,7 @@ import {
     AuthenticationService,
     AuthorizationService,
     PermissionProvider,
-    RoleProvider, StatProvider,
+    RoleProvider, StatProvider, TagProvider,
     UserProvider
 } from "../src/app.core";
 import {HttpService, LogService, RepositoryService} from "../src/framework.core/services";
@@ -16,11 +16,12 @@ import {
 } from "../src/framework.core.api";
 import {IAuthenticationService, IAuthorizationService, IUserProvider} from "../src/app.core.api";
 import {AppDataStore} from "../src/framework.core/redux/reduxStore";
-import {PermissionInfo, RoleInfo, StatInfo} from "../src/app.model";
+import {PermissionInfo, RoleInfo, StatInfo, TagInfo, TagType} from "../src/app.model";
 import {NodeFetchAdapter} from "../src/framework.core/networking/nodeFetchAdapter";
+import tag from "../src/app.visual/theme/widgets/tag/tag";
 
 
-const statProvider: IEntityProvider<StatInfo> = new StatProvider();
+const tagProvider: IEntityProvider<TagInfo> = new TagProvider();
 
 beforeAll(() => {
     const appDataStore: IStorage = new AppDataStore();
@@ -40,11 +41,11 @@ beforeAll(() => {
 
 
     // set references and start framework plugins
-    // stats
-    statProvider.setLogService(logService);
-    statProvider.setRepositoryService(repoService);
-    statProvider.setHttpService(httpService);
-    statProvider.start();
+    // tags
+    tagProvider.setLogService(logService);
+    tagProvider.setRepositoryService(repoService);
+    tagProvider.setHttpService(httpService);
+    tagProvider.start();
     // log service
     logService.configure();
     logService.start();
@@ -96,19 +97,19 @@ beforeAll(() => {
 
 describe("Test setup", () => {
     it("referenceProvider is not null", () => {
-        expect(statProvider).not.toBeNull();
+        expect(tagProvider).not.toBeNull();
     });
 })
 
 describe("getAll", () => {
-    it("gets all stats", () => {
-        return statProvider.getAll().then(statInfos => {
-            expect(statInfos.length).not.toBe(0);
-            statInfos.forEach(statInfo => {
-                expect(statInfo.id).not.toBe("");
-                expect(statInfo.type).not.toBe(-1);
-                expect(statInfo.item).not.toBe("");
-                expect(statInfo.count).not.toBe(0);
+    it("gets all tags", () => {
+        return tagProvider.getAll().then(tagInfos => {
+            expect(tagInfos.length).not.toBe(0);
+            tagInfos.forEach(tagInfo => {
+                expect(tagInfo.id).not.toBe("");
+                expect(tagInfo.title).not.toBe("");
+                expect(tagInfo.user_id).not.toBe("");
+                expect(tagInfo.type).not.toBe("")
             });
         });
     });
