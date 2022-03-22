@@ -104,6 +104,11 @@ describe("getAll DEPARTMENT", () => {
         let referenceOrdinal = ReferenceType[ReferenceType.DEPARTMENT];
         return referenceProvider.getAll({id: referenceOrdinal}).then(references => {
             expect(references.length).not.toBe(0);
+            references.forEach(reference => {
+                expect(reference.id).not.toBe("");
+                expect(reference.title).not.toBe("");
+                expect(reference.type).toBe(ReferenceType.DEPARTMENT);
+            });
         });
     });
 });
@@ -113,6 +118,11 @@ describe("getAll PURPOSE", () => {
         let referenceOrdinal = ReferenceType[ReferenceType.PURPOSE];
         return referenceProvider.getAll({id: referenceOrdinal}).then(references => {
             expect(references.length).not.toBe(0);
+            references.forEach(reference => {
+                expect(reference.id).not.toBe("");
+                expect(reference.title).not.toBe("");
+                expect(reference.type).toBe(ReferenceType.PURPOSE);
+            });
         });
     });
 });
@@ -122,6 +132,11 @@ describe("getAll ROLE", () => {
         let referenceOrdinal = ReferenceType[ReferenceType.ROLE];
         return referenceProvider.getAll({id: referenceOrdinal}).then(references => {
             expect(references.length).not.toBe(0);
+            references.forEach(reference => {
+                expect(reference.id).not.toBe("");
+                expect(reference.title).not.toBe("");
+                expect(reference.type).toBe(ReferenceType.ROLE);
+            });
         });
     });
 });
@@ -141,6 +156,11 @@ describe("getAll SHARED-TAGS", () => {
     //     let referenceOrdinal = ReferenceType[ReferenceType.SHARED_TAGS];
     //     return referenceProvider.getAll({id: referenceOrdinal}).then(references => {
     //         expect(references.length).not.toBe(0);
+    //         references.forEach(reference => {
+    //             expect(reference.id).not.toBe("");
+    //             expect(reference.title).not.toBe("");
+    //             expect(reference.type).toBe(ReferenceType.DEPARTMENT);
+    //         });
     //     });
     // });
 });
