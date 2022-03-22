@@ -26,7 +26,6 @@ import TextArea from "../../theme/widgets/textEdit/textArea";
 // };
 
 export function renderHighlightTarget(pluginProps: RenderHighlightTargetProps, props: DocumentPdfPreviewProps) {
-    console.log(JSON.stringify(pluginProps))
     return (
         <div className={"note position-absolute d-flex"}
              style={{
@@ -48,9 +47,6 @@ export function renderHighlightContent(pluginProps: RenderHighlightContentProps,
         }
         pluginProps.cancel();
     };
-
-
-    // console.log("pockets3=" + JSON.stringify(tmp.pockets));
 
     let pocketId = props.tmpExcerpt["pocket"] ? props.tmpExcerpt["pocket"] : "";
     let pocketTitle = "";
@@ -118,7 +114,6 @@ export function renderHighlightContent(pluginProps: RenderHighlightContentProps,
 };
 
 export function renderHighlights(pluginProps: RenderHighlightsProps, props: DocumentPdfPreviewProps) {
-    // console.log("renderHighlights " + JSON.stringify(tmp.documentHighlightAreas))
     return (
         <div>
             {props.documentHighlightAreas?.map((note: any[]) => (

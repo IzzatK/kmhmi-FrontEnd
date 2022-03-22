@@ -1,7 +1,7 @@
-import {Presenter} from "../../../framework.visual/extras/presenter";
+import {Presenter} from "../../../framework.visual";
 import LoginPanelView from "./loginPanelView";
 import {LoginPanelDispatchProps, LoginPanelStateProps, UserInfoVM} from "./loginPanelModel";
-import {createComponentWrapper} from "../../../framework.visual/wrappers/componentWrapper";
+import {createComponentWrapper} from "../../../framework.visual";
 import {authenticationService, authorizationService} from "../../../serviceComposition";
 import {UserInfo} from "../../../app.model";
 import {makeGuid} from "../../../framework.core/extras/utils/uniqueIdUtils";
@@ -51,6 +51,7 @@ class LoginPanel extends Presenter {
         user.last_name = userVM.last_name || '';
         user.email_address = userVM.email || '';
         user.phone_number = userVM.phone || '';
+        user.registration_reason = userVM.registration_reason || '';
 
         authenticationService.register(user);
     }

@@ -66,9 +66,7 @@ export class PocketRequestConverter extends Converter<PocketMapper, any> {
             let serverPocketKey = PocketProperties[itemKey]?.toString();
 
             if (serverPocketKey) {
-                let itemValueString = JSON.stringify(itemValue);
-
-                if (itemValueString !== "" && itemValueString !== "[]" && itemValueString !== "{}") {
+                if (itemValue !== "") {
                     serverPocket[serverPocketKey] = itemValue;
                 }
             }
@@ -84,15 +82,11 @@ export class PocketRequestConverter extends Converter<PocketMapper, any> {
                 let serverSourceKey = SourceProperties[itemKey]?.toString();
 
                 if (serverResourceKey) {
-                    let itemValueString = JSON.stringify(itemValue);
-
-                    if (itemValueString !== "" && itemValueString !== "[]" && itemValueString !== "{}") {
+                    if (itemValue !== "") {
                         serverResource[serverResourceKey] = itemValue;
                     }
                 } else if (serverSourceKey) {
-                    let itemValueString = JSON.stringify(itemValue);
-
-                    if (itemValueString !== "" && itemValueString !== "[]" && itemValueString !== "{}") {
+                    if (itemValue !== "") {
                         serverSource[serverSourceKey] = itemValue;
                     }
                 }
@@ -109,9 +103,7 @@ export class PocketRequestConverter extends Converter<PocketMapper, any> {
                     let serverExcerptKey = ExcerptProperties[itemKey]?.toString();
 
                     if (serverExcerptKey) {
-                        let itemValueString = JSON.stringify(itemValue);
-
-                        if (itemValueString !== "" && itemValueString !== "[]" && itemValueString !== "{}") {
+                        if (itemValue !== "") {
                             serverExcerpt[serverExcerptKey] = itemValue;
                         }
                     }
@@ -127,36 +119,30 @@ export class PocketRequestConverter extends Converter<PocketMapper, any> {
                         let serverNoteKey = NoteProperties[itemKey]?.toString();
 
                         if (serverNoteKey) {
-                            let itemValueString = JSON.stringify(itemValue);
-
-                            if (itemValueString !== "" && itemValueString !== "[]" && itemValueString !== "{}") {
+                            if (itemValue !== "") {
                                 serverNote[serverNoteKey] = itemValue;
                             }
                         }
                     });
 
                     serverNotes.push(serverNote);
-
                 });
-
             });
-
         });
 
-        if (JSON.stringify(serverResources) !== "[]") {
+        if (serverResources.length > 0) {
             serverPocket["resources"] = serverResources;
         }
 
-        if (JSON.stringify(serverSources) !== "[]") {
+        if (serverSources.length > 0) {
             serverPocket["sources"] = serverSources;
         }
 
-        if (JSON.stringify(serverExcerpts) !== "[]") {
+        if (serverExcerpts.length > 0) {
             serverPocket["excerpts"] = serverExcerpts;
         }
 
-
-        if (JSON.stringify(serverNotes) !== "[]") {
+        if (serverNotes.length > 0) {
             serverPocket["notes"] = serverNotes;
         }
 

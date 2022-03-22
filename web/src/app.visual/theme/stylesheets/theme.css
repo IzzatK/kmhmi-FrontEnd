@@ -400,6 +400,10 @@ body > * {
     --text-field-edit-bg-color: transparent;
     --text-field-edit-border-color: var(--app-silver);
 
+    --text-area-background: var(--app-vulcan);
+    --text-area-color: var(--app-suvaGrey);
+    --text-area-placeholder-color: var(--app-suvaGrey);
+
     /* Toggle Button */
     --toggle-button-color: var(--app-shuttleGrey);
     --toggle-button-bg-color: transparent;

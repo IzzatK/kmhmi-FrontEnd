@@ -105,25 +105,16 @@ export class ResourceProvider extends EntityProvider<ResourceInfo> {
 
     update(id: string, uiRequestData: any): Promise<Nullable<ResourceInfo>> {
         return new Promise((resolve, reject) => {
-            this.getSingle(id)
-                .then(latestResource => {
-                    if (latestResource != null) {
-                        this.sendPut(id,
-                            () => this.resourceRequestConverter.convert(latestResource),
-                            (responseData, errorHandler) => this.resourceResponseConverter.convert(responseData, errorHandler))
-                            .then(excerpt => {
-                                resolve(excerpt);
-                            })
-                            .catch(error => {
-                                console.log(error);
-                            });
-                    }
-                    else {
-                        reject(null);
-                    }
+            this.sendPut(id,
+                () => this.resourceRequestConverter.convert(uiRequestData),
+                (responseData, errorHandler) => this.resourceResponseConverter.convert(responseData, errorHandler))
+                .then(excerpt => {
+                    resolve(excerpt);
+                })
+                .catch(error => {
+                    console.log(error);
                 });
-            }
-        )
+        })
     }
 }
 

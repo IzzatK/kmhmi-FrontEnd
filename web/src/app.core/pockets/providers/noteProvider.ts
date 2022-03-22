@@ -105,22 +105,14 @@ export class NoteProvider extends EntityProvider<NoteInfo> {
 
     update(id: string, uiRequestData: any): Promise<Nullable<NoteInfo>> {
         return new Promise((resolve, reject) => {
-            this.getSingle(id)
-                .then(latestNote => {
-                    if (latestNote != null) {
-                        this.sendPut(id,
-                            () => this.noteRequestConverter.convert(latestNote),
-                            (responseData, errorHandler) => this.noteResponseConverter.convert(responseData, errorHandler))
-                            .then(note => {
-                                resolve(note);
-                            })
-                            .catch(error => {
-                                console.log(error);
-                            });
-                    }
-                    else {
-                        reject(null);
-                    }
+            this.sendPut(id,
+                () => this.noteRequestConverter.convert(uiRequestData),
+                (responseData, errorHandler) => this.noteResponseConverter.convert(responseData, errorHandler))
+                .then(note => {
+                    resolve(note);
+                })
+                .catch(error => {
+                    console.log(error);
                 });
             }
         )

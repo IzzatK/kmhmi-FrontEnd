@@ -19,9 +19,7 @@ export class NoteRequestConverter extends Converter<NoteInfo, any> {
             let serverNoteKey = NoteProperties[itemKey]?.toString();
 
             if (serverNoteKey) {
-                let itemValueString = JSON.stringify(itemValue);
-
-                if (itemValueString !== "" && itemValueString !== "[]" && itemValueString !== "{}") {
+                if (itemValue !== "") {
                     serverNote[serverNoteKey] = itemValue;
                 }
             }

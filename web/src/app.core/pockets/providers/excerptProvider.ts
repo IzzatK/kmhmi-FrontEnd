@@ -105,22 +105,14 @@ export class ExcerptProvider extends EntityProvider<ExcerptInfo> {
 
     update(id: string, uiRequestData: any): Promise<Nullable<ExcerptInfo>> {
         return new Promise((resolve, reject) => {
-            this.getSingle(id)
-                .then(latestExcerpt => {
-                    if (latestExcerpt != null) {
-                        this.sendPut(id,
-                            () => this.excerptRequestConverter.convert(latestExcerpt),
-                            (responseData, errorHandler) => this.excerptResponseConverter.convert(responseData, errorHandler))
-                            .then(excerpt => {
-                                resolve(excerpt);
-                            })
-                            .catch(error => {
-                                console.log(error);
-                            });
-                    }
-                    else {
-                        reject(null);
-                    }
+            this.sendPut(id,
+                () => this.excerptRequestConverter.convert(uiRequestData),
+                (responseData, errorHandler) => this.excerptResponseConverter.convert(responseData, errorHandler))
+                .then(excerpt => {
+                    resolve(excerpt);
+                })
+                .catch(error => {
+                    console.log(error);
                 });
             }
         )

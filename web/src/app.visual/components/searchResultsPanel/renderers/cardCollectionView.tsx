@@ -186,13 +186,13 @@ class CardCollectionView extends Component<SearchResultsProps, SearchResultsStat
                                       }>
                                           <div id={id} className={'d-flex justify-content-start align-items-center h-gap-2'}>
                                               {
-                                                  JSON.stringify(public_tag) !== "{}" &&
+                                                  Object.keys(public_tag).length > 0 &&
                                                   <div className={'d-flex align-items-center h-gap-2'}>
                                                       {displayPublicTagDivs}
                                                   </div>
                                               }
                                               {
-                                                  JSON.stringify(private_tag) !== "{}" &&
+                                                  Object.keys(private_tag).length > 0 &&
                                                   <div className={'d-flex align-items-center h-gap-2'}>
                                                       {displayPrivateTagDivs}
                                                   </div>
