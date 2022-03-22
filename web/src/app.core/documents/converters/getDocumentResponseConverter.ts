@@ -1,11 +1,10 @@
 import {KM_API_SERVER_URL} from "../../../app.config/config";
 import {getValueOrDefault} from "../../../framework.core/extras/utils/typeUtils";
-import {DocumentInfo} from "../../../app.model";
+import {DocumentInfo, StatusType} from "../../../app.model";
 import {ErrorHandler} from "../../common/providers/entityProvider";
 import {Converter} from "../../common/converters/converter";
 import {getFormattedSize} from "../../../framework.core/extras/utils/sizeUtils";
 import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
-import {StatusType} from "../../../app.model";
 
 export class GetDocumentResponseConverter extends Converter<any, DocumentInfo>{
     convert(fromData: any, reject: ErrorHandler): DocumentInfo {
@@ -68,7 +67,7 @@ export class GetDocumentResponseConverter extends Converter<any, DocumentInfo>{
         documentInfo.suggested_references = getValueOrDefault(item, 'tm_references', '');
         documentInfo.suggested_topics = getValueOrDefault(item, 'tm_topics', '');
 
-        let status = StatusType.PROCESSING;
+        let status = StatusType.PDF_AVAILABLE;
 
         let statusObject: any = {};
 
