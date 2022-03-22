@@ -5,14 +5,13 @@ import ScrollBar from "../../../theme/widgets/scrollBar/scrollBar";
 import TreeView from "../../../theme/widgets/treeView/treeView";
 import {bindInstanceMethods, Nullable} from "../../../../framework.core/extras/utils/typeUtils";
 import Button from "../../../theme/widgets/button/button";
-import {PocketNodeVM, PocketsPanelProps} from "./pocketsPanelModel";
+import {PocketNodeVM, PocketsPanelProps, PocketUpdateParams} from "./pocketsPanelModel";
 import {PocketNodeRenderer} from "./renderers/pocketNodeRenderer";
 import {ExcerptNodeRenderer} from "./renderers/excerptNodeRenderer";
 import {NoteNodeRenderer} from "./renderers/noteNodeRenderer";
 import {ResourceNodeRenderer} from "./renderers/resourceNodeRenderer";
 import {TreeNodeVM} from "../../../theme/widgets/treeView/treeViewModel";
 import {PocketNodeType} from "../../../model/pocketNodeType";
-import exp from "constants";
 
 class PocketsPanelView extends Component<PocketsPanelProps> {
     constructor(props: any, context: any) {
@@ -31,24 +30,24 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
             {
                 renderer = (
                     <PocketNodeRenderer id={id} path={path} title={title}
-                                        onShare={this._onSharePocket} onDownload={this._onDownloadPocket} onSettings={this._onToggleSettings} />
+                                        onShare={this._onSharePocket} onDownload={this._onDownloadPocket} onSave={this._onSavePocket} />
                 )
                 break;
             }
             case PocketNodeType.DOCUMENT:
                 renderer = (
                     <ResourceNodeRenderer id={id} path={path} title={title}
-                                          onDownload={this._onDownloadDocument} onRemove={this._onRemoveDocument}/>
+                                          onDownload={this._onDownloadDocument} onRemove={this._onRemoveResource}/>
                 )
                 break;
             case PocketNodeType.EXCERPT:
                 renderer = (
-                    <ExcerptNodeRenderer id={id} path={path} title={title} />
+                    <ExcerptNodeRenderer id={id} path={path} title={title} onRemove={this._onRemoveExcerpt} />
                 )
                 break;
             case PocketNodeType.NOTE:
                 renderer = (
-                    <NoteNodeRenderer id={id} path={path} title={title} />
+                    <NoteNodeRenderer id={id} path={path} title={title} onRemove={this._onRemoveNote}/>
                 )
                 break;
             default:
@@ -85,8 +84,10 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         }
     }
 
-    _onToggleSettings(id: string) {
-
+    _onSavePocket(edits: PocketUpdateParams) {
+        if (this.props.onUpdatePocket != null) {
+            this.props.onUpdatePocket(edits);
+        }
         //opens settings ui
     }
 
@@ -98,11 +99,27 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         }
     }
 
-    _onRemoveDocument(id: string) {
-        const { onRemoveDocument } = this.props;
+    _onRemoveResource(id: string) {
+        const { onRemoveResource } = this.props;
 
-        if (onRemoveDocument) {
-            onRemoveDocument(id);
+        if (onRemoveResource) {
+            onRemoveResource(id);
+        }
+    }
+
+    _onRemoveExcerpt(id: string) {
+        const { onRemoveExcerpt } = this.props;
+
+        if (onRemoveExcerpt) {
+            onRemoveExcerpt(id);
+        }
+    }
+
+    _onRemoveNote(id: string) {
+        const { onRemoveNote } = this.props;
+
+        if (onRemoveNote) {
+            onRemoveNote(id);
         }
     }
 
@@ -137,6 +154,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                                       onSelected={this._onNodeSelected}
                                       onToggle={this._onNodeToggle}
                                       rootNodes={data}
+                                      showDisclosure={false}
                                       cellContentRenderer={this.getCellContentRenderer}/>
                         </ScrollBar>
                     </div>

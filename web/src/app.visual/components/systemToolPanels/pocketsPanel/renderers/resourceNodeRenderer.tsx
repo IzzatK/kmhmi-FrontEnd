@@ -1,10 +1,8 @@
 import React, {Component} from "react";
-import {NodeRendererProps, PocketNodeRendererState, ResourceNodeRendererProps} from "../pocketsPanelModel";
+import {ResourceNodeRendererProps} from "../pocketsPanelModel";
 import Button from "../../../../theme/widgets/button/button";
 import {DownloadSVG} from "../../../../theme/svgs/downloadSVG";
 import {RemoveSVG} from "../../../../theme/svgs/removeSVG";
-import {ShareSVG} from "../../../../theme/svgs/shareSVG";
-import {SettingsSVG} from "../../../../theme/svgs/settingsSVG";
 import {bindInstanceMethods} from "../../../../../framework.core/extras/utils/typeUtils";
 
 export class ResourceNodeRenderer extends Component<ResourceNodeRendererProps> {
@@ -33,7 +31,7 @@ export class ResourceNodeRenderer extends Component<ResourceNodeRendererProps> {
     render() {
         const {className, title } = this.props;
 
-        let cn = 'resource-node d-flex justify-content-between';
+        let cn = 'resource-node light d-flex justify-content-between';
         if (className) {
             cn += ` ${className}`;
         }

@@ -23,4 +23,5 @@ export type UserInfoVM = {
     last_name: string;
     email: string;
     phone: string;
+    registration_reason: string;
 }

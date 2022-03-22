@@ -27,7 +27,7 @@ export * from "./pockets/converters/excerpts/excerptStatusResponseConverter";
 export * from "./pockets/converters/notes/noteRequestConverter";
 export * from "./pockets/converters/notes/noteResponseConverter";
 export * from "./pockets/converters/notes/noteStatusResponseConverter";
-export * from "./pockets/converters/pockets/creatPocketRequestConverter";
+export * from "./pockets/converters/pockets/createPocketRequestConverter";
 export * from "./pockets/converters/pockets/getPocketArrayRequestConverter";
 export * from "./pockets/converters/pockets/getPocketArrayResponseConverter";
 export * from "./pockets/converters/pockets/pocketRequestConverter";

@@ -1,4 +1,4 @@
-import React, {Component, createRef} from 'react';
+import React, {Component, createRef, MouseEventHandler} from 'react';
 import './textEdit.css';
 import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
 import {TextEditProps, TextEditState} from "./textEditModel";
@@ -120,6 +120,7 @@ class TextEdit extends Component<TextEditProps, TextEditState> {
 						ref={this.inputRef}
 						placeholder={placeholder}
 						value={tmpValue}
+						onClick={this.onClick}
 						onKeyUp={this.onKeyPress}
 						onChange={this.handleChange}
 						readOnly={!edit}
@@ -130,6 +131,10 @@ class TextEdit extends Component<TextEditProps, TextEditState> {
 				</input>
 			</div>
 		);
+	}
+
+	private onClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+		event.stopPropagation();
 	}
 }
 

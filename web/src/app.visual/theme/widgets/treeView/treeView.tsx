@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import './treeView.css';
 import TreeNode from "./treeNode";
 import {TreeNodeVM, TreeViewProps} from "./treeViewModel";
-import exp from "constants";
 import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
 
 class TreeView extends Component<TreeViewProps> {
@@ -26,7 +25,7 @@ class TreeView extends Component<TreeViewProps> {
     }
 
     render() {
-        const { className, rootNodes, selectionPath, expandedPaths, cellContentRenderer } = this.props;
+        const { className, rootNodes, selectionPath, expandedPaths, cellContentRenderer, showDisclosure=true } = this.props;
 
         let cn = `${className ? className : ''} tree-view`;
 
@@ -44,6 +43,7 @@ class TreeView extends Component<TreeViewProps> {
                               expandedPaths={expandedPaths}
                               cellContentRenderer={cellContentRenderer}
                               index={0}
+                              showDisclosure={showDisclosure}
                     />
                 )
             });

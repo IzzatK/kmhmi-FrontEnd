@@ -13,7 +13,7 @@ import {ReferenceType} from "../../../../app.model";
 import {LandingPanelPresenter} from "../../../components/landingPanel/landingPanelPresenter";
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
 import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
-import { ReportPanelPresenter } from "../../../components/reportPanel/reportPanelPresenter";
+import {ReportPanelPresenter} from "../../../components/reportPanel/reportPanelPresenter";
 
 export class AppView extends Component<Props, State> {
     private interval!: NodeJS.Timer;

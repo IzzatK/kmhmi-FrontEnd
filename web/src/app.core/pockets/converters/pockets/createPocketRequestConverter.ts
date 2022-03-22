@@ -21,9 +21,7 @@ export class CreatePocketRequestConverter extends Converter<PocketParamType, any
             let serverPocketKey = PocketProperties[itemKey]?.toString();
 
             if (serverPocketKey) {
-                let itemValueString = JSON.stringify(itemValue);
-
-                if (itemValueString !== "" && itemValueString !== "[]" && itemValueString !== "{}") {
+                if (itemValue !== "") {
                     serverPocket[serverPocketKey] = itemValue;
                 }
             }

@@ -13,6 +13,7 @@ export class UserInfo extends RepoItem  {
     preferred_results_view?: string = '';
     account_status: AuthenticationStatus = AuthenticationStatus.NONE;
     role: string = '';
+    registration_reason: string = '';
 
     approved_by?: string = '';
     date_approved?: string = '';

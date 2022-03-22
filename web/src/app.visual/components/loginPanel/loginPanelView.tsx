@@ -4,6 +4,7 @@ import {LoginPanelProps, LoginPanelState, UserInfoVM} from "./loginPanelModel";
 import {bindInstanceMethods, nameOf} from "../../../framework.core/extras/utils/typeUtils";
 import Button from "../../theme/widgets/button/button";
 import TextEdit from "../../theme/widgets/textEdit/textEdit";
+import TextArea from "../../theme/widgets/textEdit/textArea";
 
 class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
     constructor(props: any, context: any) {
@@ -17,7 +18,8 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
                 first_name: '',
                 last_name: '',
                 email: '',
-                phone: ''
+                phone: '',
+                registration_reason: '',
             },
             warning: "",
             errorMessages: {
@@ -26,6 +28,7 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
                 "last_name": "",
                 "email": "",
                 "phone": "",
+                "registration_reason": "",
             }
         }
     }
@@ -50,7 +53,7 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
         const { onRegister } = this.props;
         const { tmpUser } = this.state;
 
-        const { dod_id, first_name, last_name, email, phone } = tmpUser;
+        const { dod_id, first_name, last_name, email, phone, registration_reason } = tmpUser;
 
         let warning = "";
 
@@ -113,6 +116,15 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
                 this._setFocus("phone");
             }
             errorMessages["phone"] = "Phone must be a valid phone number";
+        }
+
+        if (registration_reason === "") {
+            pass = false;
+            failedFields += `${failedFields !== "" ? "," : ""} Registration Reason`;
+            if (!focus) {
+                this._setFocus("registration_reason");
+            }
+            errorMessages["registration_reason"] = "Must provide a registration reason";
         }
 
         if (pass) {
@@ -221,36 +233,69 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
                                         <div className={"v-gap-5"}>
                                             <div className={'register-grid px-5'}>
                                                 <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
-                                                    {/*<div className={"text-notification"}>*</div>*/}
                                                     <div>DoD ID:</div>
                                                 </div>
                                                 <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
-                                                    {/*<div className={"text-notification"}>*</div>*/}
                                                     <div>First Name:</div>
                                                 </div>
                                                 <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
-                                                    {/*<div className={"text-notification"}>*</div>*/}
                                                     <div>Last Name:</div>
                                                 </div>
                                                 <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
-                                                    {/*<div className={"text-notification"}>*</div>*/}
                                                     <div>Email:</div>
                                                 </div>
                                                 <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
-                                                    {/*<div className={"text-notification"}>*</div>*/}
                                                     <div>Phone:</div>
                                                 </div>
-                                                <TextEdit id={"dod_id"} value={tmpUser.dod_id} name={nameOf<UserInfoVM>("dod_id")} autoFocus={true} placeholder={""} onChange={(value) => this.onTmpUserChanged("dod_id", value)}/>
+                                                <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
+                                                    <div>Reason:</div>
+                                                </div>
+                                                <TextEdit
+                                                    id={"dod_id"}
+                                                    value={tmpUser.dod_id}
+                                                    name={nameOf<UserInfoVM>("dod_id")}
+                                                    autoFocus={true}
+                                                    placeholder={""}
+                                                    onChange={(value) => this.onTmpUserChanged("dod_id", value)}
+                                                />
                                                 {/*<div className={"align-self-center text-info font-weight-light display-4"}>{user?.name}</div>*/}
-                                                <TextEdit id={"first_name"} value={tmpUser.first_name} name={nameOf<UserInfoVM>("first_name")} placeholder={""} onChange={(value) => this.onTmpUserChanged("first_name", value)}/>
-                                                <TextEdit id={"last_name"} value={tmpUser.last_name} name={nameOf<UserInfoVM>("last_name")} placeholder={""} onChange={(value) => this.onTmpUserChanged("last_name", value)}/>
-                                                <TextEdit id={"email"} value={tmpUser.email} name={nameOf<UserInfoVM>("email")} placeholder={""} onChange={(value) => this.onTmpUserChanged("email", value)}/>
-                                                <TextEdit id={"phone"} value={tmpUser.phone} name={nameOf<UserInfoVM>("phone")} placeholder={""} onChange={(value) => this.onTmpUserChanged("phone", value)}/>
-                                                <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["dod_id"]}</div>
-                                                <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["first_name"]}</div>
-                                                <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["last_name"]}</div>
-                                                <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["email"]}</div>
-                                                <div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["phone"]}</div>
+                                                <TextEdit
+                                                    id={"first_name"}
+                                                    value={tmpUser.first_name}
+                                                    name={nameOf<UserInfoVM>("first_name")}
+                                                    placeholder={""}
+                                                    onChange={(value) => this.onTmpUserChanged("first_name", value)}/>
+                                                <TextEdit
+                                                    id={"last_name"}
+                                                    value={tmpUser.last_name}
+                                                    name={nameOf<UserInfoVM>("last_name")}
+                                                    placeholder={""}
+                                                    onChange={(value) => this.onTmpUserChanged("last_name", value)}/>
+                                                <TextEdit
+                                                    id={"email"}
+                                                    value={tmpUser.email}
+                                                    name={nameOf<UserInfoVM>("email")}
+                                                    placeholder={""}
+                                                    onChange={(value) => this.onTmpUserChanged("email", value)}/>
+                                                <TextEdit
+                                                    id={"phone"}
+                                                    value={tmpUser.phone}
+                                                    name={nameOf<UserInfoVM>("phone")}
+                                                    placeholder={""}
+                                                    onChange={(value) => this.onTmpUserChanged("phone", value)}/>
+                                                <TextArea
+                                                    id={"registration_reason"}
+                                                    value={tmpUser.registration_reason}
+                                                    name={nameOf<UserInfoVM>("registration_reason")}
+                                                    placeholder={"Please provide organizational affiliation and reason for accessing the CIC Knowledge Management System"}
+                                                    onChange={(value) => this.onTmpUserChanged("registration_reason", value)}
+                                                />
+                                                {/*<div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["dod_id"]}</div>*/}
+                                                {/*<div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["first_name"]}</div>*/}
+                                                {/*<div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["last_name"]}</div>*/}
+                                                {/*<div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["email"]}</div>*/}
+                                                {/*<div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["phone"]}</div>*/}
+                                                {/*<div className={"d-flex align-items-center display-3 text-notification"}>{errorMessages["registration_reason"]}</div>*/}
                                             </div>
                                         </div>
 

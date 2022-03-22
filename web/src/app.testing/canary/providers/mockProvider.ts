@@ -1,5 +1,5 @@
 import {EntityProvider} from "../../../app.core";
-import {Nullable} from "../../../framework.core/extras/utils/typeUtils";
+import {deepCopy, Nullable} from "../../../framework.core/extras/utils/typeUtils";
 import {forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 import {makeGuid} from "../../../framework.core/extras/utils/uniqueIdUtils";
 
@@ -56,7 +56,7 @@ export class MockProvider<EntityType> extends EntityProvider<EntityType> {
     update(id: string, partialParams: Omit<Partial<EntityType>, OmitParamsType>): Promise<Nullable<EntityType>> {
         const me = this;
         return new Promise<Nullable<EntityType>>((resolve, reject) => {
-            const tmp = me.items[id];
+            const tmp = deepCopy(me.items[id]);
 
             if (tmp != null) {
                 const resultRecord: Record<string, any> = tmp;
@@ -65,6 +65,8 @@ export class MockProvider<EntityType> extends EntityProvider<EntityType> {
                 forEachKVP(updateRecord, (key:string, newValue: any) => {
                     resultRecord[key] = newValue;
                 })
+
+                me.items[id] = tmp;
 
                 resolve(tmp);
             }
@@ -104,6 +106,8 @@ export class MockProvider<EntityType> extends EntityProvider<EntityType> {
         forEachKVP(updateRecord, (key:string, newValue: any) => {
             resultRecord[key] = newValue;
         })
+
+        this.items[tmpId] = result;
 
         return result;
     }

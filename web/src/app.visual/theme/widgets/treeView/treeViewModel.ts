@@ -10,6 +10,7 @@ export type TreeViewProps = {
     cellContentRenderer: (node: any) => JSX.Element;
     index?: number;
     selected?: boolean;
+    showDisclosure?: boolean;
 }
 
 export type TreeViewState = {
@@ -25,6 +26,7 @@ export type TreeNodeProps = {
     cellContentRenderer: (node: any) => JSX.Element;
     index?: number;
     node: TreeNodeVM;
+    showDisclosure?: boolean;
 }
 
 export type TreeNodeState = {

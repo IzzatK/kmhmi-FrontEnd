@@ -84,27 +84,32 @@
 }
 
 .text-area {
-    font-family: var(--primary-font-family);
-    padding: 1rem;
-    border: 0;
-    background: var(--text-field-selected-bg-color);
-    font-size: 1.6rem;
-    color: var(--text-field-color);
     min-width: 80rem;
     min-height: 21rem;
 }
 
-.text-area:focus {
+.text-area textarea {
+    top: 0;
+    left: 0;
+    font-family: var(--primary-font-family);
+    background: var(--text-area-background);
+    color: var(--text-area-color);
+    border: none;
+    font-size: 1.6rem;
+    padding-top: 1rem;
+}
+
+.text-area textarea:focus {
     color: var(--text-field-selected-color);
 }
 
-.text-area::placeholder {
+.text-area textarea::placeholder {
     font-weight: 300;
     font-style: italic;
-    color: var(--text-field-placeholder-color);
+    color: var(--text-area-placeholder-color);
 }
 
-.text-area.disabled {
+.text-area.disabled textarea {
     color: var(--text-field-disabled-color);
     font-style: normal;
     font-weight: 300 !important;

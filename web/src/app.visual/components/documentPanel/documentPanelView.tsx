@@ -139,7 +139,7 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
             };
 
             if (typeof value === 'object') {
-                if (JSON.stringify(document[name]) === JSON.stringify(value)) {
+                if (document[name] === value) {
                     delete nextDoc[name];
                 }
             } else if (document[name] === value) {
@@ -174,7 +174,7 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
                 }
             }
             else if (typeof tmpDocument[key] === 'object') {
-                if (JSON.stringify(tmpDocument[key]) === JSON.stringify(document[key])) {
+                if (tmpDocument[key] === document[key]) {
                     keysToDelete.push(key);
                 }
                 else {
@@ -689,14 +689,10 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
 
         const { tmpDocument, isDirty, isGlobal, isPrivate, tmpExcerpt, documentHighlightAreas } = this.state;
 
-        console.log(JSON.stringify(documentHighlightAreas))
-
         let cn = "document-panel d-flex";
         if (className) {
             cn += ` ${className}`;
         }
-
-        // console.log("pockets1=" + JSON.stringify(pockets))
 
         return (
             <div className={cn}>
@@ -894,7 +890,7 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
                         </div>
                     </CSSTransition>
                     {
-                        ((permissions.canModify || permissions.canDelete) && JSON.stringify(document) !== '{}') &&
+                        ((permissions.canModify || permissions.canDelete) && Object.keys(document).length > 0) &&
                         <div className={'d-flex align-items-end justify-content-between h-gap-2 bg-selected py-3 px-5'}>
                             <div className={'d-flex h-gap-2 align-items-center'}>
                                 {

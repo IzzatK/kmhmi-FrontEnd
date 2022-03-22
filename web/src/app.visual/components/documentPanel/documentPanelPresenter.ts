@@ -145,7 +145,7 @@ class DocumentPanel extends Presenter {
                 id: 'status',
                 title: 'Status',
                 type: ParamType.OPTIONS,
-                options: referenceService.getAllReferences(ReferenceType.STATUS)
+                // options: referenceService.getAllReferences(ReferenceType.STATUS)
             },
             ['private_tag']: {
                 id: 'private_tag',

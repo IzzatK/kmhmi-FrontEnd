@@ -59,7 +59,6 @@ export class PocketService extends Plugin implements IPocketService {
                 (s) => this.getAll<NoteInfo>(NoteInfo.class)
             ],
             (pockets, resources, excerpts, notes) => {
-
                 const pocketMappers: Record<string, PocketMapper> = {};
 
                 forEach(pockets, (pocketInfo: PocketInfo) => {
@@ -377,6 +376,7 @@ export class PocketService extends Plugin implements IPocketService {
     }
 
     removeExcerpt(id: string) {
+        // TODO might want to remove any notes that referenced this excerpt
         return this.deleteRemoteItem(ExcerptInfo.class, id, this.excerptProvider);
     }
 
@@ -389,6 +389,7 @@ export class PocketService extends Plugin implements IPocketService {
     }
 
     removeNote(id: string): Promise<Nullable<NoteInfo>> {
+        // TODO might want to remove any pockets/resources that referenced this note
         return this.deleteRemoteItem<NoteInfo>(NoteInfo.class, id, this.noteProvider, );
     }
 
@@ -401,7 +402,28 @@ export class PocketService extends Plugin implements IPocketService {
     }
 
     removeResource(id: string) {
-        return this.deleteRemoteItem(ResourceInfo.class, id, this.resourceProvider);
+        // TODO might want to remove any excerpts that referenced this resource
+        this.deleteRemoteItem(ResourceInfo.class, id, this.resourceProvider, false)
+            .then(resource => {
+                if (resource != null) {
+                    forEach(this.getPocketMappers(), (pocketMapper: PocketMapper) => {
+                        if (pocketMapper.resourceMappers[id] != null) {
+                            const pocket = pocketMapper.pocket;
+                            const resourceIds:string[] = [];
+                            forEach(pocket.resource_ids, (resourceId: string) => {
+                                if (resourceId !== id) {
+                                    resourceIds.push(resourceId);
+                                }
+                            })
+                            pocket.resource_ids = resourceIds;
+                            this.removeRepoItem(resource)
+                            void this.addOrUpdatePocket(pocket);
+
+                            return true;
+                        }
+                    })
+                }
+            })
     }
 
     getResource(id: string): Nullable<ResourceInfo> {
@@ -500,7 +522,7 @@ export class PocketService extends Plugin implements IPocketService {
 
             })
             .catch(error => {
-                debugger
+
             })
     }
 }

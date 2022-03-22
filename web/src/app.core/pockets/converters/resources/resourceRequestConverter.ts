@@ -20,9 +20,7 @@ export class ResourceRequestConverter extends Converter<ResourceInfo, any> {
             let serverResourceKey = ResourceProperties[itemKey]?.toString();
 
             if (serverResourceKey) {
-                let itemValueString = JSON.stringify(itemValue);
-
-                if (itemValueString !== "" && itemValueString !== "[]" && itemValueString !== "{}") {
+                if (itemValue !== "") {
                     serverResource[serverResourceKey] = itemValue;
                 }
             }

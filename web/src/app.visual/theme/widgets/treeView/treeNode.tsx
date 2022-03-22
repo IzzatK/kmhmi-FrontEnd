@@ -132,17 +132,22 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
     }
 
     _onSelected() {
-        if (this.props.onSelected != null) {
-            this.props.onSelected(this.props.node);
+        if (this.props.showDisclosure) {
+            if (this.props.onSelected != null) {
+                this.props.onSelected(this.props.node);
 
-            if (!this.state.expanded) {
-                this._toggleExpanded();
+                if (!this.state.expanded) {
+                    this._toggleExpanded();
+                }
             }
+        }
+        else {
+            this._toggleExpanded();
         }
     }
 
     render() {
-        const { node, className, selectionPath, expandedPaths, onSelected, onToggle, cellContentRenderer, index, ...rest } = this.props;
+        const { node, className, selectionPath, expandedPaths, onSelected, onToggle, cellContentRenderer, showDisclosure, index, ...rest } = this.props;
         const { childNodes } = node;
         const { expanded, selected } = this.state;
 
@@ -161,6 +166,7 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
                               expandedPaths={expandedPaths}
                               cellContentRenderer={cellContentRenderer}
                               index={childIndex + 1}
+                              showDisclosure={showDisclosure}
                     />
                 )
             });
@@ -179,16 +185,23 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
             cn += ` expanded`;
         }
 
+        if (!divs || divs.length == 0) {
+            cn += ` no-children`;
+        }
+
         return (
             <li className={cn} {...rest}>
                 <div className={"tree-node-graphic"}>
-                    <div className={"tree-node-disclosure"} onClick={this._toggleExpanded}>
-                        <div className={"nano-image-container"}>
-                            {(childNodes && childNodes.length > 0) ?
-                                <TriangleSVG/> : <CircleSVG/>
-                            }
+                    {
+                        showDisclosure &&
+                        <div className={"tree-node-disclosure"} onClick={this._toggleExpanded}>
+                            <div className={"nano-image-container"}>
+                                {(childNodes && childNodes.length > 0) ?
+                                    <TriangleSVG/> : <CircleSVG/>
+                                }
+                            </div>
                         </div>
-                    </div>
+                    }
                     <div className={`tree-node-content ${expanded || selected && index !== 0 ? "font-weight-semi-bold" : ""}`} onClick={this._onSelected}>
                         {
                             cellContentRenderer ? cellContentRenderer(node) :

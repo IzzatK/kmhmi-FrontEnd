@@ -1,12 +1,14 @@
 import {EntityProvider} from "../../common/providers/entityProvider";
-import {PocketMapper,} from "../../../app.model";
+import {PocketInfo, PocketMapper,} from "../../../app.model";
 import {Nullable} from "../../../framework.core/extras/utils/typeUtils";
 import {PocketRequestConverter} from "../converters/pockets/pocketRequestConverter";
 import {PocketResponseConverter} from "../converters/pockets/pocketResponseConverter";
 import {PocketStatusResponseConverter} from "../converters/pockets/pocketStatusResponseConverter";
 import {GetPocketArrayResponseConverter} from "../converters/pockets/getPocketArrayResponseConverter";
 import {GetPocketArrayRequestConverter} from "../converters/pockets/getPocketArrayRequestConverter";
-import {CreatePocketRequestConverter} from "../converters/pockets/creatPocketRequestConverter";
+import {CreatePocketRequestConverter} from "../converters/pockets/createPocketRequestConverter";
+import {PocketParamType} from "../../../app.core.api";
+import {forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -101,18 +103,12 @@ export class PocketProvider extends EntityProvider<PocketMapper> {
         )
     }
 
-    create(uiRequestData: PocketMapper, onUpdated?: (item: PocketMapper) => void): Promise<Nullable<PocketMapper>> {
+    create(uiRequestData: PocketParamType, onUpdated?: (item: PocketMapper) => void): Promise<Nullable<PocketMapper>> {
         return new Promise((resolve, reject) => {
             super.sendPost(() => this.createPocketRequestConverter.convert(uiRequestData),
                 (responseData, errorHandler) => this.pocketStatusResponseConverter.convert(responseData, errorHandler))
                 .then(data => {
                     const { id } = data;
-
-                    uiRequestData.pocket.id = id;
-
-                    if (onUpdated) {
-                        onUpdated(uiRequestData);
-                    }
 
                     // it's a single fetch to get the new user
                     setTimeout(() => {
@@ -133,22 +129,14 @@ export class PocketProvider extends EntityProvider<PocketMapper> {
 
     update(id: string, uiRequestData: any): Promise<Nullable<PocketMapper>> {
         return new Promise((resolve, reject) => {
-            this.getSingle(id)
-                .then(latestPocketMapper => {
-                    if (latestPocketMapper != null) {
-                        this.sendPut(id,
-                            () => this.pocketRequestConverter.convert(latestPocketMapper),
-                            (responseData, errorHandler) => this.pocketResponseConverter.convert(responseData, errorHandler))
-                            .then(excerpt => {
-                                resolve(excerpt);
-                            })
-                            .catch(error => {
-                                console.log(error);
-                            });
-                    }
-                    else {
-                        reject(null);
-                    }
+            this.sendPut(id,
+                () => this.pocketRequestConverter.convert(uiRequestData),
+                (responseData, errorHandler) => this.pocketResponseConverter.convert(responseData, errorHandler))
+                .then(excerpt => {
+                    resolve(excerpt);
+                })
+                .catch(error => {
+                    console.log(error);
                 });
             }
         )

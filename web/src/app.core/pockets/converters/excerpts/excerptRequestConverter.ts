@@ -21,9 +21,7 @@ export class ExcerptRequestConverter extends Converter<ExcerptInfo, any> {
             let serverExcerptKey = ExcerptProperties[itemKey]?.toString();
 
             if (serverExcerptKey) {
-                let itemValueString = JSON.stringify(itemValue);
-
-                if (itemValueString !== "" && itemValueString !== "[]" && itemValueString !== "{}") {
+                if (itemValue !== "") {
                     serverExcerpt[serverExcerptKey] = itemValue;
                 }
             }

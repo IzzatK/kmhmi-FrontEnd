@@ -32,10 +32,6 @@ import {renderHighlightContent, renderHighlights, renderHighlightTarget} from ".
 function DocumentPdfPreview(props: DocumentPdfPreviewProps) {
     const {className, preview_url, original_url, userProfile, token, permissions, onSaveNote, tmpMethod, documentHighlightAreas, tmpExcerpt, pockets, onPocketSelectionChanged, ...rest} = props;
 
-    // console.log("DocumentPdfPreview " + JSON.stringify(documentHighlightAreas))
-    // console.log("pockets2=" + JSON.stringify(pockets));
-
-
     const toolbarPluginInstance = toolbarPlugin();
     const { Toolbar } = toolbarPluginInstance;
 

@@ -7,7 +7,7 @@ import {GetTagResponseConverter} from "../converters/getTagResponseConverter";
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 export class TagProvider extends EntityProvider<TagInfo> {
-    baseUrl: string = `${serverUrl}/-custom-shared-tags`;
+    baseUrl: string = `${serverUrl}/`;
     public static class: string = 'TagProvider';
 
     private getTagResponseConverter!: GetTagResponseConverter;
