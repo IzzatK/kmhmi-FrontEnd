@@ -16,6 +16,7 @@ export type ButtonProps = {
     selected?: boolean;
     disabled?: boolean;
     className?: string;
+    style?: any;
     tooltip?: string;
     light?: boolean;
     highlight?: boolean;

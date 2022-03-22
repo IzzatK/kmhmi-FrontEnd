@@ -7,13 +7,14 @@ import {
     Trigger
 } from "@react-pdf-viewer/highlight";
 import {DocumentPdfPreviewProps, ExcerptVM} from "./documentPanelModel";
-import React, {useMemo} from "react";
+import React, {Component, useMemo} from "react";
 import Button from "../../theme/widgets/button/button";
 import {NoteSVG} from "../../theme/svgs/noteSVG";
 import {DeleteSVG} from "../../theme/svgs/deleteSVG";
 import ComboBox from "../../theme/widgets/comboBox/comboBox";
 import TextArea from "../../theme/widgets/textEdit/textArea";
 import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
+import {bindInstanceMethods} from "../../../framework.core/extras/utils/typeUtils";
 //
 // export const MyHighlightPlugin = (props: DocumentPdfPreviewProps): HighlightPlugin => {
 //     return useMemo(() => {
@@ -150,7 +151,6 @@ export function renderHighlights(pluginProps: RenderHighlightsProps, props: Docu
     //     highlights.push(result);
     // })
 
-    debugger
     return (
         <div>
             {documentHighlights?.map((note: any[]) => (
@@ -164,15 +164,76 @@ export function renderHighlights(pluginProps: RenderHighlightsProps, props: Docu
                                 style={Object.assign(
                                     {},
                                     {
-                                        background: 'yellow',
-                                        opacity: 0.4,
+                                        position: 'relative',
+                                        background: 'rgba(255, 255, 0, 0.4)',
+                                        opacity: 1.0
                                     },
                                     pluginProps.getCssProperties(area, pluginProps.rotation)
                                 )}
-                            />
+                            >
+                                {
+                                    idx == 0 &&
+                                    <NoteRenderer/>
+                                }
+                            </div>
                         ))}
                 </React.Fragment>
             ))}
         </div>
     );
+}
+
+type NoteRendererProps = {
+
+}
+
+type NoteRendererState = {
+    expanded: boolean
+}
+
+class NoteRenderer extends Component<NoteRendererProps, NoteRendererState> {
+
+
+    constructor(props: NoteRendererProps) {
+        super(props);
+
+        bindInstanceMethods(this);
+
+        this.state = {
+            expanded: false
+        }
+    }
+
+    _toggleExpanded() {
+        let nextExpanded = !this.state.expanded;
+
+        this.setState({
+            ...this.state,
+            expanded: nextExpanded
+        })
+    }
+
+    render() {
+        return (
+            <div className={'position-relative d-flex justify-content-center'} >
+                <div className={'position-absolute d-flex justify-content-center'} style={{bottom: 0, left: 0, right: 0}}>
+                    {
+                        this.state.expanded ?
+                            <div className={'p-4 pb-2 shadow-lg d-flex flex-column justify-content-center v-gap-3 bg-primary border-muted border'}>
+                                <div className={'text-secondary display-4'}>Hello World</div>
+                                <div className={'d-flex h-gap-3'}>
+                                    <Button text={'Cancel'} onClick={this._toggleExpanded}/>
+                                    <Button text={'Save'} onClick={this._toggleExpanded}/>
+                                </div>
+                            </div>
+                            :
+                            <div className={'p-4 pb-1'}>
+                                <Button text={'Note Here'} onClick={this._toggleExpanded}/>
+                            </div>
+
+                    }
+                </div>
+            </div>
+        )
+    }
 }

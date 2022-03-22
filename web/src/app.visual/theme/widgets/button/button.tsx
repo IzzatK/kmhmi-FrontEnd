@@ -9,6 +9,7 @@ class Button extends Component<ButtonProps, ButtonState> {
 
         const {
             className,
+            style,
             selected,
             disabled,
             text,
@@ -52,7 +53,7 @@ class Button extends Component<ButtonProps, ButtonState> {
         }
 
         const buttonDiv = (
-            <div className={cn} onClick={!disabled ? onClick : undefined}>
+            <div className={cn} style={style || {}} onClick={!disabled ? onClick : undefined}>
                 {children && children}
                 {text && <div>{text}</div>}
             </div>
