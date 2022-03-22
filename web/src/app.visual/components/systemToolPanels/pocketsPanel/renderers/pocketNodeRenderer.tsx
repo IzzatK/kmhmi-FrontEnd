@@ -6,6 +6,7 @@ import {DownloadSVG} from "../../../../theme/svgs/downloadSVG";
 import {SettingsSVG} from "../../../../theme/svgs/settingsSVG";
 import {bindInstanceMethods} from "../../../../../framework.core/extras/utils/typeUtils";
 import TextEdit from "../../../../theme/widgets/textEdit/textEdit";
+import SearchBox from "../../../../theme/widgets/searchBox/searchBox";
 
 export class PocketNodeRenderer extends Component<PocketNodeRendererProps, PocketNodeRendererState> {
     constructor(props: any) {
@@ -17,7 +18,7 @@ export class PocketNodeRenderer extends Component<PocketNodeRendererProps, Pocke
             tab: PocketTabType.NONE,
             edits: {
                 id: this.props.id
-            }
+            },
         }
     }
 
@@ -91,10 +92,34 @@ export class PocketNodeRenderer extends Component<PocketNodeRendererProps, Pocke
         })
     }
 
+    _onSearch() {
+        const { onSearch } = this.props;
+
+        if (onSearch) {
+            onSearch();
+        }
+    }
+
+    _onSearchTextChanged(value: string) {
+        const { onSearchTextChanged } = this.props;
+
+        if (onSearchTextChanged) {
+            onSearchTextChanged(value);
+        }
+    }
+
     renderShareTab() {
+        const { searchText } = this.props;
+
         return (
             <div className={'flex-fill d-flex align-items-center justify-content-center p-4'}>
-                <div className={'display-4 text-primary'}>Share Screen</div>
+                <SearchBox
+                    className={""}
+                    placeholder={"Search for User"}
+                    onSearch={this._onSearch}
+                    text={searchText}
+                    onTextChange={this._onSearchTextChanged}
+                />
             </div>
         )
     }
@@ -151,7 +176,7 @@ export class PocketNodeRenderer extends Component<PocketNodeRendererProps, Pocke
                     </div>
                 </div>
 
-                <div className={'d-flex align-items-stretch'}>
+                <div className={'pocket-body d-flex align-items-stretch cursor-auto'} onClick={(e) => e.stopPropagation()}>
                     {
                         this.state.tab == PocketTabType.SHARE &&
                         this.renderShareTab()

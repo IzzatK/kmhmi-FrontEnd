@@ -70,12 +70,12 @@ body > * {
     --pocket-node-report-selected-color: var(--app-white);
     --pocket-node-report-selected-background: var(--app-airForceBlue);
     --pocket-node-report-selected-border-color: var(--app-bleach);
-    --pocket-node-document-color: var(--app-bunker);
-    --pocket-node-document-background: var(--app-bleach);
-    --pocket-node-document-hover-color: var(--app-bunker);
-    --pocket-node-document-hover-background: var(--app-white);
-    --pocket-node-document-selected-color: var(--app-bunker);
-    --pocket-node-document-selected-background: var(--app-white);
+    --pocket-node-resource-color: var(--app-bunker);
+    --pocket-node-resource-background: var(--app-bleach);
+    --pocket-node-resource-hover-color: var(--app-bunker);
+    --pocket-node-resource-hover-background: var(--app-white);
+    --pocket-node-resource-selected-color: var(--app-bunker);
+    --pocket-node-resource-selected-background: var(--app-white);
 
     /* System Banner */
     --system-banner-background: var(--app-nero);

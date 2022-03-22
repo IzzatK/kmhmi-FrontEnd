@@ -1,13 +1,12 @@
 import PocketsPanelView from "./pocketsPanelView";
-import {Presenter} from "../../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../../framework.visual/wrappers/componentWrapper";
+import {Presenter} from "../../../../framework.visual";
+import {createComponentWrapper} from "../../../../framework.visual";
 import {createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {appDataStore, displayService, pocketService, selectionService} from "../../../../serviceComposition";
+import {pocketService, selectionService, userService} from "../../../../serviceComposition";
 import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
 import {ExcerptMapper, NoteInfo, PocketMapper, ResourceMapper} from "../../../../app.model";
 import {PocketNodeType} from "../../../model/pocketNodeType";
 import {PocketNodeVM, PocketsPanelDispatchProps, PocketsPanelStateProps, PocketUpdateParams} from "./pocketsPanelModel";
-import {DocumentPanelId} from "../../documentPanel/documentPanelPresenter";
 import {PocketParamType} from "../../../../app.core.api";
 
 
@@ -104,7 +103,8 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
             return {
                 data: this.getPocketTree(state),
                 selectionPath: this.getSelectedPocketNodePath(state),
-                expandedPaths: this.getExpandedPaths(state)
+                expandedPaths: this.getExpandedPaths(state),
+                searchText: userService.getSearchText(),
             }
         }
 
@@ -120,7 +120,9 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
                 onUpdatePocket: (edits: PocketUpdateParams) => this._onUpdatePocket(edits),
                 onRemoveExcerpt: id => this._onRemoveExcerpt(id),
                 onRemoveResource: id => this._onRemoveResource(id),
-                onRemoveNote: id => this._onRemoveNote(id)
+                onRemoveNote: id => this._onRemoveNote(id),
+                onSearch: () => userService.fetchUsers(),
+                onSearchTextChanged: (value: string) => userService.setSearchText(value),
             };
         }
     }
