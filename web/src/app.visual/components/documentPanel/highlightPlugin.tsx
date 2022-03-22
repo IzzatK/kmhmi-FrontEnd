@@ -6,7 +6,7 @@ import {
     RenderHighlightTargetProps,
     Trigger
 } from "@react-pdf-viewer/highlight";
-import {DocumentPdfPreviewProps, ExcerptVM} from "./documentPanelModel";
+import {DocumentPdfPreviewProps, CreateExcerptEventData, ExcerptVM, NoteVM} from "./documentPanelModel";
 import React, {Component, useMemo} from "react";
 import Button from "../../theme/widgets/button/button";
 import {NoteSVG} from "../../theme/svgs/noteSVG";
@@ -15,6 +15,7 @@ import ComboBox from "../../theme/widgets/comboBox/comboBox";
 import TextArea from "../../theme/widgets/textEdit/textArea";
 import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
 import {bindInstanceMethods} from "../../../framework.core/extras/utils/typeUtils";
+import TextEdit from "../../theme/widgets/textEdit/textEdit";
 //
 // export const MyHighlightPlugin = (props: DocumentPdfPreviewProps): HighlightPlugin => {
 //     return useMemo(() => {
@@ -43,14 +44,9 @@ export function renderHighlightTarget(pluginProps: RenderHighlightTargetProps, p
 };
 
 export function renderHighlightContent(pluginProps: RenderHighlightContentProps, props: DocumentPdfPreviewProps) {
-    const addNote = () => {
-        if (props.onSaveExcerpt) {
-            props.onSaveExcerpt(pluginProps.selectedText, pluginProps.highlightAreas);
-        }
-        pluginProps.cancel();
-    };
 
-    let pocketId = props.tmpExcerpt["pocket"] ? props.tmpExcerpt["pocket"] : "";
+
+    let pocketId = props.tmpExcerpt["pocketId"] ? props.tmpExcerpt["pocketId"] : "";
     let pocketTitle = "";
     if (props.pockets && props.pockets[pocketId]) {
         pocketTitle = props.pockets[pocketId].title;
@@ -58,16 +54,29 @@ export function renderHighlightContent(pluginProps: RenderHighlightContentProps,
         pocketTitle = pocketId;
     }
 
-    let note = props.tmpExcerpt["note"] ? props.tmpExcerpt["note"] : "";
+    let noteText = props.tmpExcerpt["note_text"] ? props.tmpExcerpt["note_text"] : "";
 
-    const _onSaveNote = (message: string) => {
-        if (props.onSaveNote) {
-            props.onSaveNote(message);
+
+    const addNote = () => {
+        if (props.onCreateExcerpt) {
+            debugger
+
+            let location = pluginProps.selectionData.startPageIndex + pluginProps.selectionData.startOffset;
+
+            props.onCreateExcerpt(pluginProps.selectedText, pluginProps.highlightAreas, `${location}`);
+        }
+        pluginProps.cancel();
+    };
+
+    const updateTmpNote = (message: string) => {
+        if (props.onUpdateTmpNote) {
+            props.onUpdateTmpNote(message);
         }
     }
 
     const _onPocketSelectionChanged = (id: string) => {
         if (props.onPocketSelectionChanged) {
+            debugger
             props.onPocketSelectionChanged(id);
         }
     }
@@ -77,8 +86,7 @@ export function renderHighlightContent(pluginProps: RenderHighlightContentProps,
             className={"popup d-flex flex-column bg-accent rounded position-absolute"}
             style={{
                 top: `${pluginProps.selectionRegion.top + pluginProps.selectionRegion.height}%`,
-            }}
-        >
+            }}>
             <div className={"d-flex flex-column v-gap-2 p-3 position-relative"}>
                 <div className={"position-absolute close"}>
                     <Button className={"btn-transparent"} onClick={pluginProps.cancel}>
@@ -95,8 +103,8 @@ export function renderHighlightContent(pluginProps: RenderHighlightContentProps,
                 <TextArea
                     className={"p-0"}
                     name={"note"}
-                    onChange={ _onSaveNote }
-                    value={note}
+                    onChange={ updateTmpNote }
+                    value={noteText}
                 />
             </div>
             <div className={"d-flex justify-content-end bg-selected p-3 h-gap-3"}>
@@ -115,101 +123,121 @@ export function renderHighlightContent(pluginProps: RenderHighlightContentProps,
     );
 };
 
-export function renderHighlights(pluginProps: RenderHighlightsProps, props: DocumentPdfPreviewProps) {
-    const highlights: JSX.Element[] = [];
+export type HighlightNotePair = {
+    highlight: any[]
+    note: NoteVM
+}
 
-    let documentHighlights: any[] = [];
+
+export function renderHighlights(pluginProps: RenderHighlightsProps, props: DocumentPdfPreviewProps) {
+    let highlights: HighlightNotePair[] = [];
 
     forEach(props.excerpts, (excerpt: ExcerptVM) => {
-        let note = JSON.parse(excerpt.content);
-        documentHighlights.push(note);
-    })
-    //
-    // forEach(props.excerpts, (excerpt: ExcerptVM) => {
-    //     const note: any[] = excerpt.content;
-    //
-    //     let result = (
-    //         <React.Fragment key={JSON.stringify(note)}>
-    //             {note
-    //                 // Filter all highlights on the current page
-    //                 .filter((area: any) => area.pageIndex === pluginProps.pageIndex)
-    //                 .map((area: any, idx: any) => (
-    //                     <div
-    //                         key={idx}
-    //                         style={Object.assign(
-    //                             {},
-    //                             {
-    //                                 background: 'yellow',
-    //                                 opacity: 0.4,
-    //                             },
-    //                             pluginProps.getCssProperties(area, pluginProps.rotation)
-    //                         )}
-    //                     />
-    //                 ))}
-    //         </React.Fragment>
-    //     )
-    //     highlights.push(result);
-    // })
+        let highlight = JSON.parse(excerpt.content);
+
+        const highlightNotePair: HighlightNotePair = {
+            highlight: highlight,
+            note: excerpt.noteVM
+        }
+
+        highlights.push(highlightNotePair);
+    });
 
     return (
         <div>
-            {documentHighlights?.map((note: any[]) => (
-                <React.Fragment key={JSON.stringify(note)}>
-                    {note
-                        // Filter all highlights on the current page
-                        .filter((area: any) => area.pageIndex === pluginProps.pageIndex)
-                        .map((area: any, idx: any) => (
-                            <div
-                                key={idx}
-                                style={Object.assign(
-                                    {},
-                                    {
-                                        position: 'relative',
-                                        background: 'rgba(255, 255, 0, 0.4)',
-                                        opacity: 1.0
-                                    },
-                                    pluginProps.getCssProperties(area, pluginProps.rotation)
-                                )}
-                            >
-                                {
-                                    idx == 0 &&
-                                    <NoteRenderer/>
-                                }
-                            </div>
-                        ))}
-                </React.Fragment>
-            ))}
+            {highlights?.map((highlightNotePair: HighlightNotePair) => {
+                    const highlight = highlightNotePair.highlight;
+                    const note = highlightNotePair.note;
+                    return (
+                        (
+                            <React.Fragment key={note.id}>
+                                {highlight
+                                    // Filter all highlights on the current page
+                                    .filter((area: any) => area.pageIndex === pluginProps.pageIndex)
+                                    .map((area: any, idx: any) => (
+                                        <div
+                                            key={idx}
+                                            style={Object.assign(
+                                                {},
+                                                {
+                                                    position: 'relative',
+                                                    background: 'rgba(255, 255, 0, 0.4)',
+                                                    opacity: 1.0
+                                                },
+                                                pluginProps.getCssProperties(area, pluginProps.rotation)
+                                            )}>
+                                            {
+                                                idx == 0 &&
+                                                <NoteRenderer onSaveNote={props.onSaveNote} note={note}/>
+                                            }
+                                        </div>
+                                    ))}
+                            </React.Fragment>
+                        )
+                    )
+                }
+            )}
         </div>
     );
 }
 
 type NoteRendererProps = {
-
+    note: NoteVM
+    onSaveNote: (nodeVM: NoteVM) => void;
 }
 
 type NoteRendererState = {
-    expanded: boolean
+    expanded: boolean;
+    text: string;
 }
 
 class NoteRenderer extends Component<NoteRendererProps, NoteRendererState> {
-
-
     constructor(props: NoteRendererProps) {
         super(props);
 
         bindInstanceMethods(this);
 
         this.state = {
-            expanded: false
+            expanded: false,
+            text: this.props.note.text
         }
     }
 
-    _toggleExpanded() {
-        let nextExpanded = !this.state.expanded;
-
+    _onSaveNote() {
         this.setState({
             ...this.state,
-            expanded: nextExpanded
+            expanded: false
+        })
+
+        if (this.props.onSaveNote != null) {
+            const noteVM: NoteVM = {
+                id: this.props.note.id,
+                text: this.state.text,
+                content: this.state.text
+            }
+
+            this.props.onSaveNote(noteVM);
+        }
+    }
+
+    _onCancelNote() {
+        this.setState({
+            text: this.props.note.text,
+            expanded: false
+        })
+    }
+
+    _onUpdateNote(value: string) {
+        this.setState({
+            ...this.state,
+            text: value
+        })
+    }
+
+    _editNote() {
+        this.setState({
+            ...this.state,
+            expanded: true
         })
     }
 
@@ -219,16 +247,20 @@ class NoteRenderer extends Component<NoteRendererProps, NoteRendererState> {
                 <div className={'position-absolute d-flex justify-content-center'} style={{bottom: 0, left: 0, right: 0}}>
                     {
                         this.state.expanded ?
-                            <div className={'p-4 pb-2 shadow-lg d-flex flex-column justify-content-center v-gap-3 bg-primary border-muted border'}>
-                                <div className={'text-secondary display-4'}>Hello World</div>
+                            <div className={'position-relative p-4 pb-2 shadow-lg d-flex flex-column justify-content-center v-gap-3 bg-primary border-muted border'}>
+                                <TextEdit
+                                    className={"p-0"}
+                                    name={"note"}
+                                    onChange={this._onUpdateNote}
+                                    value={this.state.text}/>
                                 <div className={'d-flex h-gap-3'}>
-                                    <Button text={'Cancel'} onClick={this._toggleExpanded}/>
-                                    <Button text={'Save'} onClick={this._toggleExpanded}/>
+                                    <Button text={'Cancel'} onClick={this._onCancelNote}/>
+                                    <Button text={'Save'} onClick={this._onSaveNote}/>
                                 </div>
                             </div>
                             :
                             <div className={'p-4 pb-1'}>
-                                <Button text={'Note Here'} onClick={this._toggleExpanded}/>
+                                <Button text={'Note Here'} onClick={this._editNote}/>
                             </div>
 
                     }

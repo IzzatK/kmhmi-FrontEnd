@@ -1,29 +1,30 @@
 import {ParamType} from "../../../app.model";
 
-export type DocumentPanelProps = {
+export type DocumentPanelStateProps = {
     className?: string;
     document: DocumentInfoVM;
     editProperties: Record<string, EditPropertyVM>;
-    pdfRenderer: any;
-    preview_url: string;
-    original_url: string;
     userProfile: UserProfileVM;
     token: string;
     permissions: PermissionsVM;
     pockets: Record<string, PocketVM>;
     documentHighlightAreas?: any[];
+    excerpts: Record<string, ExcerptVM>;
+}
 
+export type DocumentPanelDispatchProps = {
     onUpdateDocument: (document: DocumentInfoVM) => void;
     onRemoveDocument: (id: string) => void;
 
-    onSaveExcerpt: (pocketId: string, documentId: string, excerptText: string, excerptContent: string, location: string, noteText: string, noteContent: string) => void;
+    onCreateExcerpt: (params: CreateExcerptEventData) => void;
+    onSaveNote: (note: NoteVM) => void;
 
-    onSaveNote?: (text: string) => void;
-
+    onUpdateTmpNote?: (text: string) => void;
     tmpMethod?: (text: string, highlightArea: any) => void;
     onPocketSelectionChanged?: (value: string) => void;
-    excerpts: Record<string, ExcerptVM>;
 }
+
+export type DocumentPanelProps = DocumentPanelStateProps & DocumentPanelDispatchProps;
 
 export type DocumentPanelState = {
     tmpDocument: DocumentInfoVM;
@@ -32,7 +33,7 @@ export type DocumentPanelState = {
     isPrivate: boolean;
     showTagEditor: boolean;
     renderTrigger: number;
-    tmpExcerpt: Partial<ExcerptVM>;
+    tmpExcerpt: Partial<CreateExcerptEventData>;
 }
 
 export type DocumentPdfPreviewProps = {
@@ -42,12 +43,13 @@ export type DocumentPdfPreviewProps = {
     userProfile: UserProfileVM;
     token: string;
     permissions: PermissionsVM
-    onSaveExcerpt?: (text: string, highlightArea: any) => void;
-    tmpExcerpt: Partial<ExcerptVM>;
+    onCreateExcerpt: (text: string, content: any, location: string) => void;
+    tmpExcerpt: Partial<CreateExcerptEventData>;
     pockets: Record<string, PocketVM>;
     onPocketSelectionChanged?: (value: string) => void;
-    onSaveNote?: (text: string) => void;
+    onUpdateTmpNote?: (text: string) => void;
     excerpts: Record<string, ExcerptVM>;
+    onSaveNote: (note: NoteVM) => void;
 }
 
 export type UserProfileVM = {
@@ -112,9 +114,26 @@ export type PocketVM = {
     title: string;
 }
 
+export type CreateExcerptEventData = {
+    pocketId: string;
+    doc_id: string;
+    note_text: string;
+    note_content: string;
+    excerpt_location: string;
+    excerpt_text: string;
+    excerpt_content: any;
+}
+
 export type ExcerptVM = {
     id?: string;
-    pocket?: string;
-    note?: string;
+    pocketId?: string;
+    noteVM: NoteVM;
+    text: string;
     content: any;
+}
+
+export type NoteVM = {
+    id: string;
+    text: string;
+    content: string;
 }

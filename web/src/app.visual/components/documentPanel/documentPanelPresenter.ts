@@ -18,7 +18,8 @@ import {
     userService,
 } from "../../../serviceComposition";
 import {
-    DocumentInfoVM, ExcerptVM,
+    CreateExcerptEventData,
+    DocumentInfoVM, DocumentPanelDispatchProps, DocumentPanelStateProps, ExcerptVM, NoteVM,
     PermissionsVM,
     PocketVM
 } from "./documentPanelModel";
@@ -54,7 +55,7 @@ class DocumentPanel extends Presenter {
             exitClass: 'shrinkHorizontal-active',
         };
 
-        this.mapStateToProps = (state: any) => {
+        this.mapStateToProps = (state: any): DocumentPanelStateProps => {
             return {
                 document: this.getDocument(state),
                 // pdfRenderer: DocumentPdfPreview,
@@ -67,13 +68,12 @@ class DocumentPanel extends Presenter {
             }
         }
 
-        this.mapDispatchToProps = () => {
+        this.mapDispatchToProps = (): DocumentPanelDispatchProps => {
             return {
                 onUpdateDocument: (document: DocumentInfoVM) => documentService.updateDocument(document),
                 onRemoveDocument: (id: string) => documentService.removeDocument(id),
-                onSaveExcerpt: (pocketId: string, documentId: string, excerptText: string, excerptContent: string, location: string, noteText: string, noteContent: string) => {
-                    this._saveExcerpt(pocketId, documentId, excerptText, excerptContent, location, noteText, noteContent);
-                },
+                onCreateExcerpt: (params: CreateExcerptEventData) => this._createExcerpt(params),
+                onSaveNote: (note) => this._onSaveNote(note)
             };
         }
 
@@ -81,26 +81,34 @@ class DocumentPanel extends Presenter {
         this.documentLookup = {};
     }
 
-    _saveExcerpt(pocketId: string, documentId: string, excerptText: string, excerptContent: string, location: string, noteText: string, noteContent: string) {
+    _onSaveNote(note: NoteVM) {
+        pocketService.addOrUpdateNote({
+            id: note.id,
+            text: note.text,
+            content: note.content
+        })
+    }
+
+    _createExcerpt(params: CreateExcerptEventData) {
         // console.log(documentId + " " + excerptText + " " + excerptContent + " " + location + " " + noteText + " " + noteContent);
 
         const excerptParams: ExcerptParamType = {
-            text: excerptText,
-            content: excerptContent,
-            location: location,
+            text: params.excerpt_text,
+            content: JSON.stringify(params.excerpt_content),
+            location: '',
         };
 
         const noteParams: NoteParamType = {
-            text: noteText,
-            content: noteContent,
+            text: params.note_text,
+            content: params.note_content,
         };
 
         const resourceParams: ResourceParamType = {
-            source_id: documentId
+            source_id: params.doc_id
         }
 
         const pocketParams: PocketParamType = {
-            id: pocketId
+            id: params.pocketId
         }
 
         pocketService.addNoteToExcerpt(noteParams, excerptParams, resourceParams, pocketParams);
@@ -376,13 +384,32 @@ class DocumentPanel extends Presenter {
                     if (resourceMapper.resource.source_id == documentId) {
                         forEach(resourceMapper.excerptMappers, (excerptMapper: ExcerptMapper) => {
 
-                            const itemVM:ExcerptVM = {
-                                content: excerptMapper.excerpt.content,
-                                id: excerptMapper.id,
-                                note: 'Not yet',
-                                pocket: pocketMapper.pocket.id
+                            const noteVM: NoteVM = {
+                                id: 'null',
+                                content: "",
+                                text: ""
                             }
 
+                            if (excerptMapper.excerpt.noteIds.length > 0) {
+                                const keys = Object.keys(excerptMapper.notes);
+                                const note: NoteInfo = excerptMapper.notes[keys[0]];
+
+                                if (note != null) {
+                                    noteVM.id = note.id;
+                                    noteVM.content = note.content;
+                                    noteVM.text = note.text
+                                }
+                            }
+
+                            const itemVM:ExcerptVM = {
+                                id: excerptMapper.id,
+                                text: excerptMapper.excerpt.text,
+                                content: excerptMapper.excerpt.content,
+                                pocketId: pocketMapper.pocket.id,
+                                noteVM: noteVM
+                            }
+
+                            debugger
                             results[excerptMapper.id] = itemVM;
                         })
                         return true;

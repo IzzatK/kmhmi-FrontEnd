@@ -8,8 +8,14 @@ import {ParamType} from "../../../app.model";
 import ComboBox from "../../theme/widgets/comboBox/comboBox";
 import Tag from "../../theme/widgets/tag/tag";
 import GlobalSwitchButton from "../../theme/widgets/globalSwitchButton/globalSwitchButton";
-import {bindInstanceMethods} from "../../../framework.core/extras/utils/typeUtils";
-import {DocumentPanelProps, DocumentPanelState, DocumentInfoVM, EditPropertyVM, ExcerptVM} from "./documentPanelModel";
+import {bindInstanceMethods, nameOf} from "../../../framework.core/extras/utils/typeUtils";
+import {
+    DocumentPanelProps,
+    DocumentPanelState,
+    DocumentInfoVM,
+    EditPropertyVM,
+    CreateExcerptEventData
+} from "./documentPanelModel";
 import {InfoSVG} from "../../theme/svgs/infoSVG";
 import Card from "../../theme/widgets/card/card";
 import CheckBox from "../../theme/widgets/checkBox/checkBox";
@@ -312,25 +318,32 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
         })
     }
 
-    _onSaveExcerpt(text: string, highlightArea: any) {
-        const { onSaveExcerpt, document:doc } = this.props;
+    _onCreateExcerpt(excerpt_text: string, excerpt_content: any, excerpt_location: string) {
+        const { onCreateExcerpt, document:doc } = this.props;
         const { tmpExcerpt } = this.state;
-        const { pocket, note } = tmpExcerpt;
-        const { id:docId } = doc;
+        const { pocketId='', note_text='' } = tmpExcerpt;
+        const { id:docId='' } = doc;
 
-        if (onSaveExcerpt) {
-            onSaveExcerpt(pocket || "", docId || "", text, JSON.stringify(highlightArea), "", note || "", "");
+        if (onCreateExcerpt) {
+
+            const params: CreateExcerptEventData = {
+                excerpt_content: excerpt_content,
+                excerpt_text: excerpt_text,
+                note_text: note_text,
+                note_content: note_text,
+                pocketId: pocketId,
+                doc_id: docId,
+                excerpt_location: excerpt_location
+            }
+
+            onCreateExcerpt(params);
         }
-
-        // let modifiedDocumentHighlightAreas = documentHighlightAreas?.concat([highlightArea])
 
         this.setState({
             ...this.state,
             tmpExcerpt: {
 
             },
-            // documentHighlightAreas: modifiedDocumentHighlightAreas,
-
         })
 
     }
@@ -346,7 +359,18 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
         this.setTmpExcerpt(nextExcerpt);
     }
 
-    setTmpExcerpt(excerpt: Partial<ExcerptVM>) {
+    _onTmpNoteChanged(name: string, value: string) {
+        const { tmpExcerpt } = this.state;
+
+        let nextExcerpt = {
+            ...tmpExcerpt,
+            [name]: value
+        };
+
+        this.setTmpExcerpt(nextExcerpt);
+    }
+
+    setTmpExcerpt(excerpt: Partial<CreateExcerptEventData>) {
         this.setState({
             ...this.state,
             tmpExcerpt: excerpt,
@@ -844,12 +868,13 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
                                         userProfile={userProfile}
                                         token={token}
                                         permissions={permissions}
-                                        onSaveNote={(text: string) => this._onTmpExcerptChanged("note", text)}
-                                        onSaveExcerpt={(text: string, highlightArea: any) => this._onSaveExcerpt(text, highlightArea)}
+                                        onUpdateTmpNote={(text: string) => this._onTmpNoteChanged(nameOf<CreateExcerptEventData>("note_text"), text)}
+                                        onCreateExcerpt={this._onCreateExcerpt}
                                         excerpts={this.props.excerpts}
                                         tmpExcerpt={tmpExcerpt}
                                         pockets={pockets}
-                                        onPocketSelectionChanged={(value: string) => this._onTmpExcerptChanged("pocket", value)}
+                                        onSaveNote={this.props.onSaveNote}
+                                        onPocketSelectionChanged={(value: string) => this._onTmpExcerptChanged(nameOf<CreateExcerptEventData>("pocketId"), value)}
                                         />
                                     :
                                     <div className={"position-relative w-100 h-100"}>
