@@ -14,8 +14,10 @@ export type PocketsPanelDispatchProps = {
     onCreatePocket: (title: string) => void;
     onUpdatePocket: (edits: PocketUpdateParams) => void;
     onDownloadDocument: (id: string) => void;
-    onRemoveDocument: (id: string) => void;
     onDownloadPocket: (id: string) => void;
+    onRemoveNote: (id: string) => void;
+    onRemoveExcerpt: (id: string) => void;
+    onRemoveResource: (id: string) => void;
 }
 
 export type PocketsPanelProps = PocketsPanelStateProps & PocketsPanelDispatchProps;

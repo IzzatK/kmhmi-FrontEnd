@@ -117,10 +117,10 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
                 },
                 onDownloadPocket(id: string): void {
                 },
-                onRemoveDocument(id: string): void {
-                },
-                onUpdatePocket: (edits: PocketUpdateParams) => this._onUpdatePocket(edits)
-
+                onUpdatePocket: (edits: PocketUpdateParams) => this._onUpdatePocket(edits),
+                onRemoveExcerpt: id => this._onRemoveExcerpt(id),
+                onRemoveResource: id => this._onRemoveResource(id),
+                onRemoveNote: id => this._onRemoveNote(id)
             };
         }
     }
@@ -244,6 +244,18 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
 
     private getExpandedPaths (state: any) {
         return this.getPersistentState(state)?.expandedPaths || [];
+    }
+
+    private _onRemoveExcerpt(id: string) {
+        pocketService.removeExcerpt(id);
+    }
+
+    private _onRemoveNote(id: string) {
+        pocketService.removeNote(id);
+    }
+
+    private _onRemoveResource(id: string) {
+        pocketService.removeResource(id);
     }
 }
 

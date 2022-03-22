@@ -37,7 +37,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
             case PocketNodeType.DOCUMENT:
                 renderer = (
                     <ResourceNodeRenderer id={id} path={path} title={title}
-                                          onDownload={this._onDownloadDocument} onRemove={this._onRemoveDocument}/>
+                                          onDownload={this._onDownloadDocument} onRemove={this._onRemoveResource}/>
                 )
                 break;
             case PocketNodeType.EXCERPT:
@@ -99,11 +99,27 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         }
     }
 
-    _onRemoveDocument(id: string) {
-        const { onRemoveDocument } = this.props;
+    _onRemoveResource(id: string) {
+        const { onRemoveResource } = this.props;
 
-        if (onRemoveDocument) {
-            onRemoveDocument(id);
+        if (onRemoveResource) {
+            onRemoveResource(id);
+        }
+    }
+
+    _onRemoveExcerpt(id: string) {
+        const { onRemoveExcerpt } = this.props;
+
+        if (onRemoveExcerpt) {
+            onRemoveExcerpt(id);
+        }
+    }
+
+    _onRemoveNote(id: string) {
+        const { onRemoveNote } = this.props;
+
+        if (onRemoveNote) {
+            onRemoveNote(id);
         }
     }
 

@@ -111,8 +111,19 @@ export abstract class Plugin extends BasePlugin implements IBasePlugin {
                                 }
                             })
                             .catch(error => {
-                                this.error(`Error while deleting ${shortClassName} with id ${entity.id} + ${error}`);
-                                reject(null);
+                                if (entity != null) {
+                                    this.warn(`${shortClassName} with id ${entity.id} only existed locally - ${error}`);
+                                    if (updateLocal) {
+                                        this.removeRepoItem(entity);
+                                    }
+                                    resolve(entity);
+                                }
+                                else {
+                                    this.error(`Error while deleting ${shortClassName} with id ${id} + ${error}`);
+                                    reject(null);
+                                }
+
+
                             });
                     }
                 }
