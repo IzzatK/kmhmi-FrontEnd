@@ -1,7 +1,7 @@
 import {createSelector} from "@reduxjs/toolkit";
 import SearchResultsPanelView from "./searchResultsPanelView";
-import {Presenter} from "../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../framework.visual/wrappers/componentWrapper";
+import {Presenter} from "../../../framework.visual";
+import {createComponentWrapper} from "../../../framework.visual";
 import {forEach, forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 import {DocumentPanelId} from "../documentPanel/documentPanelPresenter";
 import {DocumentInfo, MetadataType, ReferenceInfo, ReferenceType, SortPropertyInfo} from "../../../app.model";
@@ -13,7 +13,7 @@ import {
     selectionService, userService
 } from "../../../serviceComposition";
 import {SearchResultsMenuItem} from "../../../app.model";
-import {MenuItemVM} from "../../../framework.visual/model/menuItemVM";
+import {MenuItemVM} from "../../../framework.visual";
 import {DocumentInfoVM, ReferenceInfoVM, SortPropertyInfoVM} from "./searchResultsModel";
 
 class SearchResultsPanel extends Presenter {
@@ -177,7 +177,7 @@ class SearchResultsPanel extends Presenter {
                     private_tag: displayPrivateTags,
                     project: project,
                     public_tag: public_tag,
-                    publication_date: publication_date ? new Date(publication_date).toLocaleString() : 'No Publication Date',
+                    publication_date: publication_date ? new Date(publication_date).toLocaleString().split(',')[0] : 'No Publication Date',
                     purpose: purposeVMs[purpose] ? purposeVMs[purpose].title : purpose,
                     secondary_sme_email: secondary_sme_email ? secondary_sme_email : "N/A",
                     secondary_sme_name: secondary_sme_name ? secondary_sme_name : "N/A",
@@ -185,7 +185,7 @@ class SearchResultsPanel extends Presenter {
                     status: statusVMs[status] ? statusVMs[status].title : status,
                     scope: scope,
                     title: title ? title : file_name,
-                    timestamp: upload_date ? new Date(upload_date).toLocaleString() : 'No Upload Date',
+                    upload_date: upload_date ? new Date(upload_date).toLocaleString().split(',')[0] : 'No Upload Date',
                     uploadedBy_id: uploadedBy_id,
                     selected: id === selectedId,
                     isUpdating: isUpdating,

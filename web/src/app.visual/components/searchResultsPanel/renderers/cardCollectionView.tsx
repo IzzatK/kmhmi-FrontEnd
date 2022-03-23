@@ -4,12 +4,16 @@ import ScrollBar from "../../../theme/widgets/scrollBar/scrollBar";
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
 import CheckBox from "../../../theme/widgets/checkBox/checkBox";
 import {TooltipPortal} from "../../../theme/widgets/tooltipPortal/tooltipPortal";
-import {DocumentInfoVM, SearchResultsProps, SearchResultsState} from "../searchResultsModel";
+import {
+    CardCollectionRendererProps,
+    CardCollectionRendererState,
+    DocumentInfoVM,
+} from "../searchResultsModel";
 import Tag from "../../../theme/widgets/tag/tag";
 import {EllipsisSVG} from "../../../theme/svgs/ellipsisSVG";
 import {forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
 
-class CardCollectionView extends Component<SearchResultsProps, SearchResultsState> {
+class CardCollectionView extends Component<CardCollectionRendererProps, CardCollectionRendererState> {
     private resizeObserver: ResizeObserver;
     private readonly characterWidth: number;
     private tagCharactersAllowed: number;
@@ -59,8 +63,8 @@ class CardCollectionView extends Component<SearchResultsProps, SearchResultsStat
         }
     }
 
-    componentDidUpdate() {
-        let element = document.getElementById(this.sampleId);
+    componentDidUpdate(prevProps: Readonly<CardCollectionRendererProps>, prevState: Readonly<CardCollectionRendererState>, snapshot?: any) {
+    let element = document.getElementById(this.sampleId);
         if (element) {
             this.resizeObserver.observe(element);
         }
@@ -78,10 +82,10 @@ class CardCollectionView extends Component<SearchResultsProps, SearchResultsStat
             cn += ` ${className}`;
         }
 
-        let itemDivs: {} | null | undefined = [];
+        let itemDivs: any[] = [];
         if (searchResults) {
             itemDivs = searchResults.map((item: DocumentInfoVM) => {
-                const {id, author, title, timestamp, private_tag=[], public_tag=[], selected, status, isUpdating=true, publication_date } = item;
+                const {id, author, title, upload_date, private_tag=[], public_tag=[], selected, status, isUpdating=true, publication_date } = item;
 
                 this.sampleId = id;
 
@@ -159,8 +163,7 @@ class CardCollectionView extends Component<SearchResultsProps, SearchResultsStat
                                                   </TooltipPortal>
                                               </div>
 
-                                              {/*<div className={"d-flex header-2 text datetime"}>{status === "" ? timestamp.split(",")[0] : status}</div>*/}
-                                              <div className={"text header-2 datetime"}>{publication_date !== "No Publication Date" ? publication_date?.split(',')[0] : timestamp?.split(',')[0]}</div>
+                                              <div className={"text header-2 datetime"}>{publication_date !== "No Publication Date" ? publication_date : upload_date}</div>
                                           </div>
                                           <CheckBox selected={selected} disabled={true}/>
                                       </div>
@@ -208,7 +211,7 @@ class CardCollectionView extends Component<SearchResultsProps, SearchResultsStat
                               }/>
                         {
                             isUpdating &&
-                            <div className={"position-absolute"} style={{top: '0', right: '0', bottom: '0', left:'0'}}>
+                            <div className={"loader position-absolute"}>
                                 <LoadingIndicator/>
                             </div>
                         }

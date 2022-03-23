@@ -1,13 +1,13 @@
 import './listItem.css';
-import {ListItemProps} from './listSystemModel';
-import React from "react";
+import {ListItemProps, ListItemState} from './listSystemModel';
+import React, {Component} from "react";
 
 
-class ListItem extends React.Component<ListItemProps> {
+class ListItem extends Component<ListItemProps, ListItemState> {
     render() {
         const {className, children, onClick, selected, ...rest} = this.props;
 
-        let cn = "listItem d-flex";
+        let cn = "list-item d-flex";
         if (className) {
             cn += ` ${className}`;
         }

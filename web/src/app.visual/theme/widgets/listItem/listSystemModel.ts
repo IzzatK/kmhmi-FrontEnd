@@ -3,3 +3,7 @@ export type ListItemProps = {
     onClick?: () => void,
     selected?: boolean,
 }
+
+export type ListItemState = {
+
+}

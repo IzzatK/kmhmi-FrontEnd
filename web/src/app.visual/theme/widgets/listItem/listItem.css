@@ -1,9 +1,9 @@
-.listItem {
+.list-item {
     background: var(--card-bg-color);
     cursor: pointer;
     padding: 1.5rem;
 }
 
-.listItem:hover {
+.list-item:hover {
     /*filter: brightness(1.05);*/
 }
