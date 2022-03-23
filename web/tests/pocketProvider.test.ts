@@ -6,10 +6,18 @@ import {
     UserProvider
 } from "../src/app.core";
 import {HttpService, LogService, RepositoryService} from "../src/framework.core/services";
-import {IEntityProvider, IHttpService, ILogService, IRepositoryService, IStorage} from "../src/framework.core.api";
+import {
+    IEntityProvider,
+    IFetchAdapter,
+    IHttpService,
+    ILogService,
+    IRepositoryService,
+    IStorage
+} from "../src/framework.core.api";
 import {IAuthenticationService, IAuthorizationService, IUserProvider} from "../src/app.core.api";
 import {AppDataStore} from "../src/framework.core/redux/reduxStore";
 import {PermissionInfo, PocketInfo, PocketMapper, RoleInfo} from "../src/app.model";
+import {NodeFetchAdapter} from "../src/framework.core/networking/nodeFetchAdapter";
 
 const pocketProvider: PocketProvider = new PocketProvider();
 let pocketId: string = "";
@@ -18,6 +26,7 @@ beforeAll(() => {
     const appDataStore: IStorage = new AppDataStore();
     const logService: ILogService = new LogService();
     const repoService: IRepositoryService = new RepositoryService();
+    const fetchAdapter: IFetchAdapter = new NodeFetchAdapter();
     const httpService: IHttpService = new HttpService();
     const userProvider: IUserProvider = new UserProvider();
 
@@ -41,6 +50,7 @@ beforeAll(() => {
     // http service
     httpService.setLogService(logService);
     httpService.setAuthenticationService(authenticationService);
+    httpService.setFetchAdapter(fetchAdapter)
     httpService.start();
 
     // set references and start entity providers
