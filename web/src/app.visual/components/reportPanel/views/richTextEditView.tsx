@@ -62,11 +62,19 @@ export function RichTextEditView() {
                                     spellCheck={false}
                                     autoFocus={true}
                                     onKeyDown={event => {
-                                        for (const hotkey in HOTKEYS) {
-                                            if (isHotkey(hotkey, event as any)) {
-                                                event.preventDefault()
-                                                const mark = HOTKEYS[hotkey]
-                                                toggleMark(editor, mark)
+                                        if (event.key.toUpperCase() === 'TAB') {
+                                            // Prevent the ampersand character from being inserted.
+                                            event.preventDefault()
+                                            // Execute the `insertText` method when the event occurs.
+                                            editor.insertText('    ')
+                                        }
+                                        else {
+                                            for (const hotkey in HOTKEYS) {
+                                                if (isHotkey(hotkey, event as any)) {
+                                                    event.preventDefault()
+                                                    const mark = HOTKEYS[hotkey]
+                                                    toggleMark(editor, mark)
+                                                }
                                             }
                                         }
                                     }}/>
