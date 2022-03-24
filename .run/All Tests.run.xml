@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="All Tests" type="JavaScriptTestRunnerJest" nameIsGenerated="true">
+    <node-interpreter value="project" />
+    <node-options value="" />
+    <jest-package value="$PROJECT_DIR$/web/node_modules/jest" />
+    <working-dir value="$PROJECT_DIR$/web" />
+    <jest-options value="--watch" />
+    <envs>
+      <env name="REACT_APP_SERVER_URL" value="https://dev.navyanalytics.com/api" />
+      <env name="REACT_APP_KEYCLOAK_REALM" value="km-test" />
+      <env name="SKIP_PREFLIGHT_CHECK" value="true" />
+      <env name="REACT_APP_USE_KEYCLOAK" value="true" />
+    </envs>
+    <scope-kind value="ALL" />
+    <method v="2" />
+  </configuration>
+</component>
