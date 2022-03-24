@@ -1,13 +1,13 @@
 import {SearchGraphsPanelView} from './searchGraphsPanelView'
-import {Presenter} from "../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../framework.visual/wrappers/componentWrapper";
+import {VisualWrapper} from "../../../framework.visual/extras/visualWrapper";
+import {createVisualConnector} from "../../../framework.visual/connectors/visualConnector";
 import {createSelector} from "@reduxjs/toolkit";
 import {ReferenceInfo, ReferenceType, StatType} from "../../../app.model";
 import {forEach, forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 import {documentService, referenceService, statService} from "../../../serviceComposition";
 import {ReferenceInfoVM, SearchGraphsDispatchProps, SearchGraphsStateProps, StatVM} from "./searchGraphsModel";
 
-class SearchGraphsPanel extends Presenter {
+class SearchGraphsPanel extends VisualWrapper {
     constructor() {
         super();
 
@@ -318,4 +318,4 @@ class SearchGraphsPanel extends Presenter {
 export const {
     connectedPresenter: SearchGraphsPanelPresenter,
     componentId: SearchGraphsPanelId
-} = createComponentWrapper(SearchGraphsPanel);
+} = createVisualConnector(SearchGraphsPanel);

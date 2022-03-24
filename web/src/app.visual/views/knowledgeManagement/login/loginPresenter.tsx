@@ -1,13 +1,13 @@
 import React from 'react';
 import './login.css';
 
-import {Presenter} from "../../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../../framework.visual/wrappers/componentWrapper";
+import {VisualWrapper} from "../../../../framework.visual/extras/visualWrapper";
+import {createVisualConnector} from "../../../../framework.visual/connectors/visualConnector";
 import {LoginDispatchProps, LoginStateProps} from "./loginModel";
 import {LoginView} from "./loginView";
 
 
-class Login extends Presenter {
+class Login extends VisualWrapper {
     constructor() {
         super();
 
@@ -41,5 +41,5 @@ class Login extends Presenter {
 export const {
     connectedPresenter: LoginPresenter,
     componentId: LoginId
-} = createComponentWrapper(Login);
+} = createVisualConnector(Login);
 

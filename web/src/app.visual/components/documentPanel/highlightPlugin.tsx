@@ -59,7 +59,6 @@ export function renderHighlightContent(pluginProps: RenderHighlightContentProps,
 
     const addNote = () => {
         if (props.onCreateExcerpt) {
-            debugger
 
             let location = pluginProps.selectionData.startPageIndex + pluginProps.selectionData.startOffset;
 
@@ -76,7 +75,6 @@ export function renderHighlightContent(pluginProps: RenderHighlightContentProps,
 
     const _onPocketSelectionChanged = (id: string) => {
         if (props.onPocketSelectionChanged) {
-            debugger
             props.onPocketSelectionChanged(id);
         }
     }

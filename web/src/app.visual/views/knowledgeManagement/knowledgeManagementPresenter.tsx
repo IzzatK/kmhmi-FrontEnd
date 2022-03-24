@@ -3,11 +3,11 @@ import './knowledgeManagement.css';
 
 import KnowledgeManagementView from "./knowledgeManagementView";
 import {KnowledgeManagementDispatchProps, KnowledgeManagementStateProps} from "./knowledgeManagementModel";
-import {Presenter} from "../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../framework.visual/wrappers/componentWrapper";
+import {VisualWrapper} from "../../../framework.visual/extras/visualWrapper";
+import {createVisualConnector} from "../../../framework.visual/connectors/visualConnector";
 import {authenticationService} from "../../../serviceComposition";
 
-class KnowledgeManagement extends Presenter {
+class KnowledgeManagement extends VisualWrapper {
     constructor() {
         super();
 
@@ -39,7 +39,7 @@ class KnowledgeManagement extends Presenter {
     }
 }
 
-const tmp:{connectedPresenter: any, componentId: string} = createComponentWrapper(KnowledgeManagement);
+const tmp:{connectedPresenter: any, componentId: string} = createVisualConnector(KnowledgeManagement);
 
 export const KnowledgeManagementPresenter = tmp.connectedPresenter;
 export const KnowledgeManagementId = tmp.componentId;

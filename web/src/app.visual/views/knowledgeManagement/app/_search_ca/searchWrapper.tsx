@@ -9,7 +9,7 @@ import {
 import {connect} from "react-redux";
 import {SearchPresenter} from "./searchPresenter";
 import {SearchController} from "./searchController";
-import {Wrapper} from "../../../../../framework.visual/ca/wrapper";
+import {Wrapper_CA} from "../../../../../framework.visual/ca/wrapper_ca";
 import {makeGuid} from "../../../../../framework.core/extras/utils/uniqueIdUtils";
 import {UserInfo} from "../../../../../app.model";
 import {userService} from "../../../../../serviceComposition";
@@ -21,7 +21,7 @@ import {userService} from "../../../../../serviceComposition";
 // responsible for
 // 1. setting up the presenter as a provider to the view
 // 2. selecting which view to use
-class _SearchWrapper extends Wrapper<SearchWrapperProps, SearchWrapperState, SearchViewModel, SearchViewController, SearchViewProps> {
+class _SearchWrapper extends Wrapper_CA<SearchWrapperProps, SearchWrapperState, SearchViewModel, SearchViewController, SearchViewProps> {
     presenterSupplier = SearchPresenter;
     controllerSupplier = SearchController;
 

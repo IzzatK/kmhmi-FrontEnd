@@ -33,9 +33,9 @@ import {
 } from "../../../app.core.api";
 import {StatusType} from "../../../app.model";
 import {forEach, forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
-import {createComponentWrapper, Presenter} from "../../../framework.visual";
+import {createVisualConnector, VisualWrapper} from "../../../framework.visual";
 
-class DocumentPanel extends Presenter {
+class DocumentPanel extends VisualWrapper {
 
     private pollingForNLPStatus: boolean;
     private readonly documentLookup: Record<string, boolean>;
@@ -409,7 +409,6 @@ class DocumentPanel extends Presenter {
                                 noteVM: noteVM
                             }
 
-                            debugger
                             results[excerptMapper.id] = itemVM;
                         })
                         return true;
@@ -440,4 +439,4 @@ class DocumentPanel extends Presenter {
 export const {
     connectedPresenter: DocumentPanelPresenter,
     componentId: DocumentPanelId
-} = createComponentWrapper(DocumentPanel);
+} = createVisualConnector(DocumentPanel);

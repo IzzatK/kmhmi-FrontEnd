@@ -1,7 +1,7 @@
 import {createSelector} from "@reduxjs/toolkit";
 import SearchBannerView from "./searchBannerView";
-import {Presenter} from "../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../framework.visual/wrappers/componentWrapper";
+import {VisualWrapper} from "../../../framework.visual/extras/visualWrapper";
+import {createVisualConnector} from "../../../framework.visual/connectors/visualConnector";
 import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
 import {
     displayService,
@@ -16,7 +16,7 @@ import {SearchParamItemVM} from "./searchBannerModel";
 
 const VIEW_ID = 'search-banner-tools';
 
-class SearchBanner extends Presenter {
+class SearchBanner extends VisualWrapper {
     constructor() {
         super();
 
@@ -156,4 +156,4 @@ class SearchBanner extends Presenter {
 export const {
     connectedPresenter: SearchBannerPresenter,
     componentId: SearchBannerId
-} = createComponentWrapper(SearchBanner);
+} = createVisualConnector(SearchBanner);

@@ -1,12 +1,12 @@
-import {Presenter} from "../../../framework.visual";
+import {VisualWrapper} from "../../../framework.visual";
 import LoginPanelView from "./loginPanelView";
 import {LoginPanelDispatchProps, LoginPanelStateProps, UserInfoVM} from "./loginPanelModel";
-import {createComponentWrapper} from "../../../framework.visual";
+import {createVisualConnector} from "../../../framework.visual";
 import {authenticationService, authorizationService} from "../../../serviceComposition";
 import {UserInfo} from "../../../app.model";
 import {makeGuid} from "../../../framework.core/extras/utils/uniqueIdUtils";
 
-class LoginPanel extends Presenter {
+class LoginPanel extends VisualWrapper {
     constructor() {
         super();
 
@@ -60,6 +60,6 @@ class LoginPanel extends Presenter {
 export const {
     connectedPresenter: LoginPanelPresenter,
     componentId: LoginPanelId,
-} = createComponentWrapper(LoginPanel)
+} = createVisualConnector(LoginPanel)
 
 

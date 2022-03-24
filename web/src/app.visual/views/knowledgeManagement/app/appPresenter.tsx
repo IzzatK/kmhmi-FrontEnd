@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
 import {DocumentPanelId} from "../../../components/documentPanel/documentPanelPresenter";
-import {Presenter} from "../../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../../framework.visual/wrappers/componentWrapper";
+import {VisualWrapper} from "../../../../framework.visual/extras/visualWrapper";
+import {createVisualConnector} from "../../../../framework.visual/connectors/visualConnector";
 import {
     authorizationService,
     displayService,
@@ -14,9 +14,9 @@ import {createSelector} from "@reduxjs/toolkit";
 import {PermissionInfo} from "../../../../app.model";
 import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../../app.core.api";
 import {NodeInfo} from "../../../../framework.core/services";
-import {ReportPanelId} from "../../../components/reportPanel/reportPanelPresenter";
+import {ReportPanelId} from "../../../components/reportPanel/reportPanelWrapper";
 
-class App extends Presenter {
+class App extends VisualWrapper {
     constructor() {
         super();
 
@@ -91,5 +91,5 @@ class App extends Presenter {
 export const {
     connectedPresenter: AppPresenter,
     componentId: AppPresenterId
-} = createComponentWrapper(App);
+} = createVisualConnector(App);
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import {displayService} from "../../../../../serviceComposition";
-import {Presenter} from '../../../../../framework.visual/extras/presenter';
+import {VisualWrapper} from '../../../../../framework.visual/extras/visualWrapper';
 import {SearchView} from "./searchView";
-import {createComponentWrapper} from "../../../../../framework.visual/wrappers/componentWrapper";
+import {createVisualConnector} from "../../../../../framework.visual/connectors/visualConnector";
 
-class Search extends Presenter {
+class Search extends VisualWrapper {
     constructor(props: any) {
         super();
 
@@ -38,5 +38,5 @@ class Search extends Presenter {
 export const {
     connectedPresenter: SearchPresenter,
     componentId: SearchPresenterId
-} = createComponentWrapper(Search);
+} = createVisualConnector(Search);
 
