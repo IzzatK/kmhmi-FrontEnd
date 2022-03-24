@@ -1,11 +1,11 @@
-export type ReportPanelProps = {
+export type ReportPanelPresenterProps = {
     className?: string;
     report: ReportInfoVM;
     citations: Record<string, CitationVM>;
     excerpts: Record<string, ExcerptVM>;
 }
 
-export type ReportPanelState = {
+export type ReportPanelPresenterState = {
     tmpReport: ReportInfoVM;
 }
 

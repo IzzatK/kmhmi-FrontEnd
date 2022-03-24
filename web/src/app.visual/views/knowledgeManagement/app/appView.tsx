@@ -13,7 +13,7 @@ import {ReferenceType} from "../../../../app.model";
 import {LandingPanelPresenter} from "../../../components/landingPanel/landingPanelPresenter";
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
 import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
-import {ReportPanelPresenter} from "../../../components/reportPanel/reportPanelPresenter";
+import {ReportPanelWrapper} from "../../../components/reportPanel/reportPanelWrapper";
 
 export class AppView extends Component<Props, State> {
     private interval!: NodeJS.Timer;
@@ -28,7 +28,6 @@ export class AppView extends Component<Props, State> {
         }, 300000); // 5 minutes
         this.fetchData();
     }
-
 
     componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) {
         if (!prevProps.permissions.canSearch && this.props.permissions.canSearch) {
@@ -90,7 +89,7 @@ export class AppView extends Component<Props, State> {
                                                             style={{zIndex: '9999'}}/>
                                 </div>
                                 <div className={isReportVisible ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
-                                    <ReportPanelPresenter className={isReportVisible ? 'flex-fill flex-basis-0' : ''}
+                                    <ReportPanelWrapper className={isReportVisible ? 'flex-fill flex-basis-0' : ''}
                                                             style={{zIndex: '9999'}}/>
                                 </div>
                                 <div className={currentSystemTool ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>

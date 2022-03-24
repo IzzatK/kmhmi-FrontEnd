@@ -15,7 +15,7 @@ import {SystemToolMenuItem} from "../../../app.model";
 import {SystemToolVM} from "./systemToolbarModel";
 import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../app.core.api";
 import {UploadPanelId} from "../uploadPanel/uploadPanelPresenter";
-import {ReportPanelId} from "../reportPanel/reportPanelPresenter";
+import {ReportPanelId} from "../reportPanel/reportPanelWrapper";
 
 
 export const SYSTEM_TOOLBAR_VIEW_ID = 'system-tool-panel';

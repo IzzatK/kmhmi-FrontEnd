@@ -1,12 +1,12 @@
 import React, {Component} from "react";
 import './reportPanel.css';
-import {ReportPanelProps, ReportPanelState} from "./reportPanelModel";
-import {bindInstanceMethods} from "../../../framework.core/extras/utils/typeUtils";
-import Button from "../../theme/widgets/button/button";
-import ComboBox from "../../theme/widgets/comboBox/comboBox";
-import TextEdit from "../../theme/widgets/textEdit/textEdit";
+import {ReportPanelPresenterProps, ReportPanelPresenterState} from "../reportPanelModel";
+import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
+import Button from "../../../theme/widgets/button/button";
+import ComboBox from "../../../theme/widgets/comboBox/comboBox";
+import TextEdit from "../../../theme/widgets/textEdit/textEdit";
 
-class ReportPanelView extends Component<ReportPanelProps, ReportPanelState> {
+class ReportPanelView extends Component<ReportPanelPresenterProps, ReportPanelPresenterState> {
 
     constructor(props: any) {
         super(props);
@@ -22,7 +22,7 @@ class ReportPanelView extends Component<ReportPanelProps, ReportPanelState> {
 
     }
 
-    componentDidUpdate(prevProps: Readonly<ReportPanelProps>, prevState: Readonly<ReportPanelState>, snapshot?: any) {
+    componentDidUpdate(prevProps: Readonly<ReportPanelPresenterProps>, prevState: Readonly<ReportPanelPresenterState>, snapshot?: any) {
 
     }
 

@@ -14,7 +14,7 @@ import {createSelector} from "@reduxjs/toolkit";
 import {PermissionInfo} from "../../../../app.model";
 import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../../app.core.api";
 import {NodeInfo} from "../../../../framework.core/services";
-import {ReportPanelId} from "../../../components/reportPanel/reportPanelPresenter";
+import {ReportPanelId} from "../../../components/reportPanel/reportPanelWrapper";
 
 class App extends VisualWrapper {
     constructor() {
