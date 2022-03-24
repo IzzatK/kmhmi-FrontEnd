@@ -36,44 +36,48 @@ export function RichTextEditView() {
         editorRef.current = withHistory(withReact(createEditor()))
     }
     const editor = editorRef.current
-
-    // const [ editor ] = useState(() => withHistory(withReact(createEditor())))
     const [value, setValue] = useState<Descendant[]>(initialValue)
     const renderElement = useCallback(props => <Element {...props} />, [])
     const renderLeaf = useCallback(props => <Leaf {...props} />, [])
 
     return (
-        <Slate
-            editor={editor}
-            value={value}
-            onChange={setValue}>
-            <div className={'rte-container flex-fill d-flex flex-column align-items-stretch bg-primary text-secondary bg-muted'}>
-                <div className={'d-flex h-gap-3 p-3 bg-accent'}>
-                    <Button text={'Bold'} onClick={() => toggleMark(editor, 'bold')}/>
-                    <Button text={'Italic'} onClick={() => toggleMark(editor, 'italic')}/>
-                    <Button text={'Underline'} onClick={() => toggleMark(editor, 'underline')}/>
-                </div>
-                <div className={'p-4 flex-fill d-flex'}>
-                    <div className={'flex-fill bg-primary'}>
-                        <Editable
-                            className={'unreset'}
-                            renderElement={renderElement}
-                            renderLeaf={renderLeaf}
-                            onKeyDown={event => {
-                                for (const hotkey in HOTKEYS) {
-                                    if (isHotkey(hotkey, event as any)) {
-                                        event.preventDefault()
-                                        const mark = HOTKEYS[hotkey]
-                                        toggleMark(editor, mark)
-                                    }
-                                }
-                            }}/>
-                    </div>
-                </div>
-
-
+        <div className={'flex-fill d-flex flex-column'}>
+            <div className={'d-flex h-gap-3 py-4 px-5'}>
+                <Button text={'Bold'} onClick={() => toggleMark(editor, 'bold')}/>
+                <Button text={'Italic'} onClick={() => toggleMark(editor, 'italic')}/>
+                <Button text={'Underline'} onClick={() => toggleMark(editor, 'underline')}/>
             </div>
-        </Slate>
+            <div className={'flex-fill d-flex position-relative'}>
+                <div className={'position-absolute w-100 h-100 overflow-auto px-5 py-5'}>
+                    <div className={'bg-primary'}>
+                        <div className={'text-secondary p-4'}>
+                            <Slate
+                                editor={editor}
+                                value={value}
+                                onChange={setValue}>
+                                <Editable
+                                    className={'unreset'}
+                                    renderElement={renderElement}
+                                    renderLeaf={renderLeaf}
+                                    spellCheck={false}
+                                    autoFocus={true}
+                                    onKeyDown={event => {
+                                        for (const hotkey in HOTKEYS) {
+                                            if (isHotkey(hotkey, event as any)) {
+                                                event.preventDefault()
+                                                const mark = HOTKEYS[hotkey]
+                                                toggleMark(editor, mark)
+                                            }
+                                        }
+                                    }}/>
+                            </Slate>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
     )
 }
 
