@@ -14,7 +14,7 @@ import {
 import {SystemToolMenuItem} from "../../../app.model";
 import {SystemToolVM} from "./systemToolbarModel";
 import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../app.core.api";
-import {UploadPanelId} from "../systemToolPanels/uploadPanel/uploadPanelPresenter";
+import {UploadPanelId} from "../uploadPanel/uploadPanelPresenter";
 import {ReportPanelId} from "../reportPanel/reportPanelPresenter";
 
 
