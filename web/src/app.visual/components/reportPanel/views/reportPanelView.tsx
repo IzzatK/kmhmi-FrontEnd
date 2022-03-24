@@ -5,6 +5,7 @@ import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeU
 import Button from "../../../theme/widgets/button/button";
 import ComboBox from "../../../theme/widgets/comboBox/comboBox";
 import TextEdit from "../../../theme/widgets/textEdit/textEdit";
+import {RichTextEditView} from "./richTextEditView";
 
 class ReportPanelView extends Component<ReportPanelPresenterProps, ReportPanelPresenterState> {
 
@@ -122,17 +123,15 @@ class ReportPanelView extends Component<ReportPanelPresenterProps, ReportPanelPr
                     </div>
                     <div className={"body flex-fill d-flex align-self-stretch position-relative"}>
                         {
-                            id ?
-                                <div>
-                                    {/*report builder goes here*/}
-                                </div>
-                                :
-                                <div
-                                    className={'flex-fill d-flex flex-column align-items-center justify-content-center v-gap-5 bg-tertiary'}>
-                                    <div className={'display-4 text-accent font-weight-semi-bold'}>No Report Available
-                                    </div>
-                                    <div className={'header-2 text-info font-weight-light'}>(Select a report to edit)</div>
-                                </div>
+                            // id ?
+                                <RichTextEditView/>
+                                // :
+                                // <div
+                                //     className={'flex-fill d-flex flex-column align-items-center justify-content-center v-gap-5 bg-tertiary'}>
+                                //     <div className={'display-4 text-accent font-weight-semi-bold'}>No Report Available
+                                //     </div>
+                                //     <div className={'header-2 text-info font-weight-light'}>(Select a report to edit)</div>
+                                // </div>
                         }
                     </div>
                     {
