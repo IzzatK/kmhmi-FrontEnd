@@ -1,12 +1,12 @@
 import {connect} from "react-redux";
-import {createViewModelConnector} from "./viewModelWrapper";
-import {createDisplayConnector} from "./displayWrapper";
-import {createMetadataConnector} from "./metadataWrapper";
+import {createViewModelConnector} from "./viewModelConnector";
+import {createDisplayConnector} from "./displayConnector";
+import {createMetadataConnector} from "./metadataConnector";
 import {MetadataInfo} from "../../app.model";
 import {displayService, repoService} from "../../serviceComposition";
 
-export const createComponentWrapper = (presenterTemplate: any) => {
-    const presenter = new presenterTemplate();
+export const createVisualConnector = (wrapperTemplate: any) => {
+    const presenter = new wrapperTemplate();
     const {id, metadataId, view: View, model, mapStateToProps, mapDispatchToProps, displayOptions } = presenter;
 
     // class ComponentWrapper extends Component {

@@ -1,7 +1,7 @@
 import {createSelector} from "@reduxjs/toolkit";
 import SearchResultsPanelView from "./searchResultsPanelView";
-import {Presenter} from "../../../framework.visual";
-import {createComponentWrapper} from "../../../framework.visual";
+import {VisualWrapper} from "../../../framework.visual/extras/visualWrapper";
+import {createVisualConnector} from "../../../framework.visual/connectors/visualConnector";
 import {forEach, forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 import {DocumentPanelId} from "../documentPanel/documentPanelPresenter";
 import {DocumentInfo, MetadataType, ReferenceInfo, ReferenceType, SortPropertyInfo} from "../../../app.model";
@@ -16,7 +16,7 @@ import {SearchResultsMenuItem} from "../../../app.model";
 import {MenuItemVM} from "../../../framework.visual";
 import {DocumentInfoVM, ReferenceInfoVM, SortPropertyInfoVM} from "./searchResultsModel";
 
-class SearchResultsPanel extends Presenter {
+class SearchResultsPanel extends VisualWrapper {
     constructor() {
         super();
 
@@ -277,4 +277,4 @@ class SearchResultsPanel extends Presenter {
 export const {
     connectedPresenter: SearchResultsPanelPresenter,
     componentId: SearchResultsPanelId
-} = createComponentWrapper(SearchResultsPanel);
+} = createVisualConnector(SearchResultsPanel);

@@ -1,6 +1,6 @@
 import PocketsPanelView from "./pocketsPanelView";
-import {Presenter} from "../../../../framework.visual";
-import {createComponentWrapper} from "../../../../framework.visual";
+import {VisualWrapper} from "../../../../framework.visual";
+import {createVisualConnector} from "../../../../framework.visual";
 import {createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {pocketService, selectionService, userService} from "../../../../serviceComposition";
 import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
@@ -20,7 +20,7 @@ type PocketCaseReducers =  {
 };
 
 
-class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReducers> {
+class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseReducers> {
 
     constructor() {
         super();
@@ -264,4 +264,4 @@ class _PocketsPanelPresenter extends Presenter<PocketSliceState, PocketCaseReduc
 export const {
     connectedPresenter: PocketsPanelPresenter,
     componentId: PocketsPanelId
-} = createComponentWrapper(_PocketsPanelPresenter);
+} = createVisualConnector(_PocketsPanelPresenter);

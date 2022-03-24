@@ -1,8 +1,8 @@
 import StatsPanelView from "./statsPanelView";
-import {Presenter} from "../../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../../framework.visual/wrappers/componentWrapper";
+import {VisualWrapper} from "../../../../framework.visual/extras/visualWrapper";
+import {createVisualConnector} from "../../../../framework.visual/connectors/visualConnector";
 
-class StatsPanel extends Presenter {
+class StatsPanel extends VisualWrapper {
     constructor() {
         super();
 
@@ -33,4 +33,4 @@ class StatsPanel extends Presenter {
 export const {
     connectedPresenter: StatsPanelPresenter,
     componentId: StatsPanelId
-} = createComponentWrapper(StatsPanel);
+} = createVisualConnector(StatsPanel);

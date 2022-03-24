@@ -1,5 +1,5 @@
 import SearchAdvancedPanelView from './searchAdvancedPanelView'
-import {Presenter} from "../../../framework.visual/extras/presenter";
+import {Presenter} from "../../../framework.visual/extras/wrapper";
 import {createComponentWrapper} from "../../../framework/wrappers/componentWrapper";
 import {createSelector} from "@reduxjs/toolkit";
 

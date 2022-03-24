@@ -1,19 +1,19 @@
-import TagsPanelView from "./tagsPanelView";
-import {Presenter} from "../../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../../framework.visual/wrappers/componentWrapper";
+import {VisualWrapper} from "../../../../framework.visual";
+import {createVisualConnector} from "../../../../framework.visual";
 import {createSelector} from "@reduxjs/toolkit";
 import {selectionService, tagService} from "../../../../serviceComposition";
-import {TagInfoVM} from "./tagsPanelModel";
+import {TagInfoVM, TagsPanelAppDispatchProps, TagsPanelAppStateProps} from "./tagsPanelModel";
 import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
 import {TagInfo} from "../../../../app.model";
+import TagsPanelPresenter from "./presenters/tagsPanelPresenter";
 
-class TagsPanel extends Presenter {
+class _TagsPanelWrapper extends VisualWrapper {
     constructor() {
         super();
 
         this.id ='app.visual/components/tagsPanel';
 
-        this.view = TagsPanelView;
+        this.view = TagsPanelPresenter;
 
         this.displayOptions = {
             containerId: 'system-tool-panel',
@@ -22,13 +22,14 @@ class TagsPanel extends Presenter {
             enterClass: 'fadeIn',
         };
 
-        this.mapStateToProps = (state: any, props: any) => {
+        this.mapStateToProps = (state: any, props: any): TagsPanelAppStateProps => {
             return {
                 tags: this.getTagVMs(state),
+                nominatedTags: {}
             }
         }
 
-        this.mapDispatchToProps = (dispatch: any) => {
+        this.mapDispatchToProps = (dispatch: any): TagsPanelAppDispatchProps => {
             return {
                 onTagSelected: (id: string) => this.onTagSelected(id),
             };
@@ -80,6 +81,6 @@ class TagsPanel extends Presenter {
 }
 
 export const {
-    connectedPresenter: TagsPanelPresenter,
+    connectedPresenter: TagsPanelWrapper,
     componentId: TagsPanelId
-} = createComponentWrapper(TagsPanel);
+} = createVisualConnector(_TagsPanelWrapper);

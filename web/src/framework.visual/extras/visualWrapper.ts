@@ -6,7 +6,7 @@ import {Slice} from "@reduxjs/toolkit";
 import {appDataStore} from "../../serviceComposition";
 
 
-export class Presenter<SliceState=null, CaseReducers extends SliceCaseReducers<SliceState> = {}> {
+export class VisualWrapper<SliceState=null, CaseReducers extends SliceCaseReducers<SliceState> = {}> {
     _mapStateToProps?: (state: any, props: any) => any;
     _mapDispatchToProps?: (state: any, props: any) => any;
     _view: any = null;

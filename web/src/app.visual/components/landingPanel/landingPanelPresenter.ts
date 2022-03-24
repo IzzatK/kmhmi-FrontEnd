@@ -1,13 +1,13 @@
-import {Presenter} from "../../../framework.visual/extras/presenter";
+import {VisualWrapper} from "../../../framework.visual/extras/visualWrapper";
 import LandingPanelView from "./landingPanelView";
 import {LandingPanelDispatchProps, LandingPanelStateProps, UserInfoVM} from "./landingPanelModel";
-import {createComponentWrapper} from "../../../framework.visual/wrappers/componentWrapper";
+import {createVisualConnector} from "../../../framework.visual/connectors/visualConnector";
 import {createSelector} from "@reduxjs/toolkit";
 import {authenticationService, authorizationService} from "../../../serviceComposition";
 import {AuthenticationProfile, AuthenticationStatus} from "../../../app.core.api";
 import {RegistrationStatusType} from "../../model/registrationStatusType";
 
-class LandingPanel extends Presenter {
+class LandingPanel extends VisualWrapper {
     constructor() {
         super();
 
@@ -86,6 +86,6 @@ class LandingPanel extends Presenter {
 export const {
     connectedPresenter: LandingPanelPresenter,
     componentId: LandingPanelId,
-} = createComponentWrapper(LandingPanel)
+} = createVisualConnector(LandingPanel)
 
 

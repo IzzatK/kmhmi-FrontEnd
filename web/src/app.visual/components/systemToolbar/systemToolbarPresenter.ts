@@ -1,7 +1,7 @@
 import SystemToolbarView from "./systemToolbarView";
 import {createSelector} from "@reduxjs/toolkit";
-import {Presenter} from "../../../framework.visual/extras/presenter";
-import {createComponentWrapper} from "../../../framework.visual/wrappers/componentWrapper";
+import {VisualWrapper} from "../../../framework.visual/extras/visualWrapper";
+import {createVisualConnector} from "../../../framework.visual/connectors/visualConnector";
 import {DocumentPanelId} from "../documentPanel/documentPanelPresenter";
 import {DocPreviewSVG} from "../../theme/svgs/docPreviewSVG";
 import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
@@ -21,7 +21,7 @@ import {ReportPanelId} from "../reportPanel/reportPanelPresenter";
 export const SYSTEM_TOOLBAR_VIEW_ID = 'system-tool-panel';
 export const DOCUMENT_PREVIEW_VIEW_ID = 'document-preview-panel';
 
-class SystemToolbar extends Presenter {
+class SystemToolbar extends VisualWrapper {
     constructor() {
         super();
 
@@ -159,4 +159,4 @@ class SystemToolbar extends Presenter {
 export const {
     connectedPresenter: SystemToolbarPresenter,
     componentId: SystemToolbarId
-} = createComponentWrapper(SystemToolbar);
+} = createVisualConnector(SystemToolbar);

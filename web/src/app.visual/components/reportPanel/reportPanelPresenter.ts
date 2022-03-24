@@ -1,10 +1,10 @@
-import {Presenter} from "../../../framework.visual/extras/presenter";
+import {VisualWrapper} from "../../../framework.visual/extras/visualWrapper";
 import ReportPanelView from "./reportPanelView";
-import {createComponentWrapper} from "../../../framework.visual/wrappers/componentWrapper";
+import {createVisualConnector} from "../../../framework.visual/connectors/visualConnector";
 import {CitationType} from "../../../app.model";
 import {selectionService} from "../../../serviceComposition";
 
-class ReportPanel extends Presenter {
+class ReportPanel extends VisualWrapper {
     constructor() {
         super();
 
@@ -151,4 +151,4 @@ class ReportPanel extends Presenter {
 export const {
     connectedPresenter: ReportPanelPresenter,
     componentId: ReportPanelId
-} = createComponentWrapper(ReportPanel)
+} = createVisualConnector(ReportPanel)

@@ -4,7 +4,7 @@ import {IWrapper} from "../../framework.visual.api";
 import {IPresenter} from "../../framework.visual.api";
 import {IController} from "../../framework.visual.api";
 
-export abstract class Wrapper<WrapperProps, WrapperState extends {viewModel?: ViewModel, viewController?: ViewController}, ViewModel, ViewController, ViewProps>
+export abstract class Wrapper_CA<WrapperProps, WrapperState extends {viewModel?: ViewModel, viewController?: ViewController}, ViewModel, ViewController, ViewProps>
     extends Component<WrapperProps, WrapperState> implements IWrapper<WrapperProps, WrapperState, ViewProps> {
 
     private presenter!: IPresenter<WrapperProps, WrapperState, ViewModel>;

@@ -4,7 +4,7 @@ import {SearchPresenter} from "./search/searchPresenter";
 import {DocumentPanelPresenter} from "../../../components/documentPanel/documentPanelPresenter";
 import {UploadPanelPresenter} from "../../../components/systemToolPanels/uploadPanel/uploadPanelPresenter";
 import {ProfilePanelPresenter} from "../../../components/systemToolPanels/profilePanel/profilePanelPresenter";
-import {TagsPanelPresenter} from "../../../components/systemToolPanels/tagsPanel/tagsPanelPresenter";
+import {TagsPanelWrapper} from "../../../components/systemToolPanels/tagsPanel/tagsPanelWrapper";
 import {StatsPanelPresenter} from "../../../components/systemToolPanels/statsPanel/statsPanelPresenter";
 import {PocketsPanelPresenter} from "../../../components/systemToolPanels/pocketsPanel/pocketsPanelPresenter";
 import {SystemToolbarPresenter} from "../../../components/systemToolbar/systemToolbarPresenter";
@@ -96,7 +96,7 @@ export class AppView extends Component<Props, State> {
                                 <div className={currentSystemTool ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
                                     <UploadPanelPresenter/>
                                     <ProfilePanelPresenter/>
-                                    <TagsPanelPresenter/>
+                                    <TagsPanelWrapper/>
                                     <StatsPanelPresenter/>
                                     <PocketsPanelPresenter/>
                                 </div>

@@ -1,6 +1,6 @@
 import ProfilePanelView from "./profilePanelView";
-import {Presenter} from "../../../../framework.visual";
-import {createComponentWrapper} from "../../../../framework.visual";
+import {VisualWrapper} from "../../../../framework.visual";
+import {createVisualConnector} from "../../../../framework.visual";
 import {forEach, forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
 import {createSelector} from "@reduxjs/toolkit";
 import {ReferenceType, UserInfo} from "../../../../app.model";
@@ -13,7 +13,7 @@ import {AccountStatusVM, DepartmentVM, RoleVM, UserInfoVM} from "./profilePanelM
 import {AuthenticationStatus, PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../../app.core.api";
 import {RegistrationStatusType} from "../../../model/registrationStatusType";
 
-class ProfilePanel extends Presenter {
+class ProfilePanel extends VisualWrapper {
     private readonly accountStatuses: AccountStatusVM[];
     constructor() {
         super();
@@ -301,4 +301,4 @@ class ProfilePanel extends Presenter {
 export const {
     connectedPresenter: ProfilePanelPresenter,
     componentId: ProfilePanelId
-} = createComponentWrapper(ProfilePanel);
+} = createVisualConnector(ProfilePanel);
