@@ -1,16 +1,15 @@
-import {MenuItemVM} from "../../../framework.visual/model/menuItemVM";
-import {MetaDataVM} from "../../../framework.visual/model/metaDataVM";
+import {MenuItemVM} from "../../../framework.visual";
+import {MetaDataVM} from "../../../framework.visual";
 import {Nullable} from "../../../framework.core/extras/utils/typeUtils";
 import {ReferenceType, UserInfo} from "../../../app.model";
 
 export type SearchResultsStateProps = {
-    className: string;
+    className?: string;
     searchResults: DocumentInfoVM[];
     resultViews: Record<string, MenuItemVM>;
     selectedResultView: string;
     sortTypes: SortPropertyInfoVM[];
     selectedSort: SortPropertyInfoVM;
-    pageWidth?: PageWidth;
     userLookup?: Record<string, UserInfo>;
 }
 
@@ -22,16 +21,55 @@ export type SearchResultsDispatchProps = {
 
 export type SearchResultsProps = SearchResultsStateProps & SearchResultsDispatchProps & MetaDataVM;
 
+export type SearchResultsState = {
+    pageWidth: PageWidth;
+}
+
+export type ResultsRendererProps = {
+    className?: string;
+    pageWidth: PageWidth;
+    searchResults: DocumentInfoVM[];
+    onDocumentSelected: (id: Nullable<string>) => void;
+}
+
+export type CardCollectionRendererProps = ResultsRendererProps &
+    {
+
+    }
+
+export type ListCollectionRendererProps = ResultsRendererProps &
+    {
+        userLookup?: Record<string, UserInfo>;
+    }
+
+export type TableCollectionRendererProps = ResultsRendererProps &
+    {
+
+    }
+
+export type ResultsRendererState = {
+    renderTrigger: number;
+}
+
+export type CardCollectionRendererState = ResultsRendererState &
+    {
+
+    }
+
+export type ListCollectionRendererState = ResultsRendererState &
+    {
+
+    }
+
+export type TableCollectionRendererState = ResultsRendererState &
+    {
+        columnWidths: string[];
+    }
+
 export enum PageWidth {
     FULL='FULL',
     ONE_HALF='ONE_HALF',
     ONE_THIRD='ONE_THIRD',
-}
-
-export type SearchResultsState = {
-    pageWidth?: PageWidth;
-    columns?: any[];
-    renderTrigger: number;
 }
 
 export type ReferenceInfoVM = {
@@ -63,7 +101,7 @@ export type DocumentInfoVM = {
     secondary_sme_phone?: string;
     status?: string;
     title?: string;
-    timestamp?: string;
+    upload_date?: string;
     uploadedBy_id?: string;
     preview_url?: string;
     original_url?: string

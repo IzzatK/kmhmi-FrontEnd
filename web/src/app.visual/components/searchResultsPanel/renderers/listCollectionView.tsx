@@ -5,13 +5,16 @@ import CheckBox from "../../../theme/widgets/checkBox/checkBox";
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
 import {TooltipPortal} from "../../../theme/widgets/tooltipPortal/tooltipPortal";
 import {InfoSVG} from "../../../theme/svgs/infoSVG";
-import {DocumentInfoVM, SearchResultsProps, SearchResultsState} from "../searchResultsModel";
+import {
+    DocumentInfoVM, ListCollectionRendererProps,
+    ListCollectionRendererState,
+} from "../searchResultsModel";
 import Tag from "../../../theme/widgets/tag/tag";
 import Card from "../../../theme/widgets/card/card";
 import {forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
 import {EllipsisSVG} from "../../../theme/svgs/ellipsisSVG";
 
-class ListCollectionView extends Component<SearchResultsProps, SearchResultsState> {
+class ListCollectionView extends Component<ListCollectionRendererProps, ListCollectionRendererState> {
     private resizeObserver: ResizeObserver;
     private readonly characterWidth: number;
     private tagCharactersAllowed: number;
@@ -61,8 +64,8 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
         }
     }
 
-    componentDidUpdate() {
-        let element = document.getElementById(this.sampleId);
+    componentDidUpdate(prevProps: Readonly<ListCollectionRendererProps>, prevState: Readonly<ListCollectionRendererState>, snapshot?: any) {
+    let element = document.getElementById(this.sampleId);
         if (element) {
             this.resizeObserver.observe(element);
         }
@@ -80,10 +83,10 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
             cn += ` ${className}`;
         }
 
-        let itemDivs: {} | null | undefined = [];
+        let itemDivs: any[] = [];
         if (searchResults) {
             itemDivs = searchResults.map((item: DocumentInfoVM) => {
-                const {id, author, title, timestamp, selected, scope, publication_date, public_tag, private_tag, type,
+                const {id, author, title, upload_date, selected, scope, publication_date, public_tag, private_tag, type,
                     department, purpose, project, page_count, isUpdating, file_name, uploadedBy_id, primary_sme_email,
                     primary_sme_name, primary_sme_phone, secondary_sme_email, secondary_sme_name, secondary_sme_phone} = item;
 
@@ -245,14 +248,14 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
                                     {
                                         publication_date &&
                                         <div className={'d-flex h-gap-2 pt-2'}>
-                                            <div>Publication: {publication_date.split(",")[0]}</div>
+                                            <div>Publication: {publication_date}</div>
                                             <div>|</div>
                                         </div>
                                     }
                                     {
-                                        timestamp &&
+                                        upload_date &&
                                         <div className={'d-flex h-gap-2 pt-2'}>
-                                            <div>Upload: {timestamp.split(",")[0]}</div>
+                                            <div>Upload: {upload_date}</div>
                                             <div>|</div>
                                         </div>
                                     }
@@ -370,7 +373,7 @@ class ListCollectionView extends Component<SearchResultsProps, SearchResultsStat
                         </ListItem>
                         {
                             isUpdating &&
-                            <div className={"position-absolute mr-4"} style={{top: '0', right: '0', bottom: '0', left:'0'}}>
+                            <div className={"loader position-absolute"}>
                                 <LoadingIndicator/>
                             </div>
                         }

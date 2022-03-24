@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './searchResultsPanel.css';
 import Button from "../../theme/widgets/button/button";
 import {CSSTransition} from "react-transition-group";
-import {getClassNames} from "../../../framework.visual/extras/utils/animationUtils";
+import {getClassNames} from "../../../framework.visual";
 import ComboBox from "../../theme/widgets/comboBox/comboBox";
 import {SortSVG} from "../../theme/svgs/sortSVG";
 import {LoadingIndicator} from "../../theme/widgets/loadingIndicator/loadingIndicator";
@@ -18,14 +18,13 @@ class SearchResultsPanelView extends Component<SearchResultsProps, SearchResults
 
         this.state = {
             pageWidth: PageWidth.FULL,
-            renderTrigger: 0,
         }
 
         this.resizeObserver = new ResizeObserver(entries => {
             for (let entry of entries) {
                 if (entry.contentRect) {
                     const width = entry.contentRect.width;
-                    if (width > 1850) {
+                    if (width > 1800) {
                         this.setState({
                             ...this.state,
                             pageWidth: PageWidth.FULL,
