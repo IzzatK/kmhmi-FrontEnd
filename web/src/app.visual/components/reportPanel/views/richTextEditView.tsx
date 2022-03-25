@@ -1,6 +1,6 @@
 import {useCallback, useMemo, useRef, useState} from "react";
 import {Slate, Editable, withReact, ReactEditor} from "slate-react";
-import {BaseEditor, createEditor, Descendant, Editor} from "slate";
+import {BaseEditor, createEditor, Descendant, Editor, Element as SlateElement, Transforms,} from "slate";
 import {HistoryEditor, withHistory} from "slate-history";
 import Button from "../../../theme/widgets/button/button";
 import isHotkey from 'is-hotkey';
@@ -16,12 +16,6 @@ import {TextAlignRightSVG} from "../../../theme/svgs/textAlignRightSVG";
 import {TextAlignJustifySVG} from "../../../theme/svgs/textAlignJustifySVG";
 import {TextListNumber} from "../../../theme/svgs/textListNumber";
 import {TextListBulletSVG} from "../../../theme/svgs/textListBulletSVG";
-
-declare module 'slate' {
-    interface CustomTypes {
-        Editor: BaseEditor & ReactEditor & HistoryEditor
-    }
-}
 
 const initialValue: Descendant[] = [
     {
@@ -107,43 +101,43 @@ export function RichTextEditView() {
                         <ComboBox className={'font-size'} items={sizes} />
                     </div>
                     <div className={'d-flex h-gap-2'}>
-                        <Button className={'btn-transparent'} onClick={() => toggleMark(editor, 'text-align-left')}>
+                        <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'text-align-left')}>
                             <TextAlignLeftSVG className={'small-image-container'}/>
                         </Button>
-                        <Button className={'btn-transparent'} onClick={() => toggleMark(editor, 'text-align-left')}>
+                        <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'text-align-left')}>
                             <TextAlignCenterSVG className={'small-image-container'}/>
                         </Button>
-                        <Button className={'btn-transparent'} onClick={() => toggleMark(editor, 'text-align-left')}>
+                        <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'text-align-left')}>
                             <TextAlignRightSVG className={'small-image-container'}/>
                         </Button>
-                        <Button className={'btn-transparent'} onClick={() => toggleMark(editor, 'text-align-left')}>
+                        <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'text-align-left')}>
                             <TextAlignJustifySVG className={'small-image-container'}/>
                         </Button>
                     </div>
                     <div className={'d-flex h-gap-2'}>
-                        <Button className={'btn-transparent'} onClick={() => toggleMark(editor, 'bold')}>
+                        <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'bold')}>
                             <TextListNumber className={'small-image-container'}/>
                         </Button>
-                        <Button className={'btn-transparent'} onClick={() => toggleMark(editor, 'bold')}>
+                        <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'bold')}>
                             <TextListBulletSVG className={'small-image-container'}/>
                         </Button>
                     </div>
                 </div>
                 <div className={'align-self-stretch d-flex justify-content-between'}>
                     <div className={'d-flex h-gap-3'}>
-                        <Button className={'btn-transparent'} onClick={() => toggleMark(editor, 'bold')}>
+                        <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'bold')} selected={isMarkActive(editor, 'bold')}>
                             <TextFormatBoldSVGD className={'small-image-container'}/>
                         </Button>
-                        <Button className={'btn-transparent'} onClick={() => toggleMark(editor, 'italic')}>
+                        <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'italic')} selected={isMarkActive(editor, 'italic')}>
                             <TextFormatItalicSVG className={'small-image-container'}/>
                         </Button>
-                        <Button className={'btn-transparent'} onClick={() => toggleMark(editor, 'underline')}>
+                        <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'underline')} selected={isMarkActive(editor, 'underline')}>
                             <TextFormatUnderlineSVG className={'small-image-container'}/>
                         </Button>
-                        <Button className={'btn-transparent border-bottom border-accent rounded-0'} onClick={() => toggleMark(editor, 'highlight')}>
+                        <Button className={'btn-transparent border-bottom border-accent rounded-0'} onClick={() => toggleMarkFormat(editor, 'highlight')}>
                             <TextFormatHighlightSVG className={'small-image-container'}/>
                         </Button>
-                        <Button className={'btn-transparent'} onClick={() => toggleMark(editor, 'color')}>
+                        <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'color')}>
                             <TextFormatColorSVG className={'small-image-container'}/>
                         </Button>
                     </div>
@@ -179,7 +173,7 @@ export function RichTextEditView() {
                                                 if (isHotkey(hotkey, event as any)) {
                                                     event.preventDefault()
                                                     const mark = HOTKEYS[hotkey]
-                                                    toggleMark(editor, mark)
+                                                    toggleMarkFormat(editor, mark)
                                                 }
                                             }
                                         }
@@ -193,7 +187,7 @@ export function RichTextEditView() {
     )
 }
 
-function toggleMark (editor: Editor, format: string) {
+function toggleMarkFormat (editor: Editor, format: string) {
     const isActive = isMarkActive(editor, format)
 
     if (isActive) {
@@ -203,9 +197,69 @@ function toggleMark (editor: Editor, format: string) {
     }
 }
 
+// function toggleNodeFormat(editor: Editor, format: string) {
+//     const isActive = isBlockActive(
+//         editor,
+//         format,
+//         TEXT_ALIGN_TYPES.includes(format) ? 'align' : 'type'
+//     )
+//     const isList = LIST_TYPES.includes(format)
+//
+//     Transforms.unwrapNodes(editor, {
+//         match: (n) =>
+//             !Editor.isEditor(n) &&
+//             SlateElement.isElement(n) &&
+//             LIST_TYPES.includes(n.type) &&
+//             !TEXT_ALIGN_TYPES.includes(format),
+//         split: true,
+//     })
+//     let newProperties: Partial<SlateElement>
+//     if (TEXT_ALIGN_TYPES.includes(format)) {
+//         newProperties = {
+//             align: isActive ? undefined : format,
+//         }
+//     } else {
+//         newProperties = {
+//             type: isActive ? 'paragraph' : isList ? 'list-item' : format,
+//         }
+//     }
+//     Transforms.setNodes<SlateElement>(editor, newProperties)
+//
+//     if (!isActive && isList) {
+//         const block = { type: format, children: [] }
+//         Transforms.wrapNodes(editor, block)
+//     }
+// }
+
+function setAlignment (editor: Editor, key: string, value: string) {
+    Editor.addMark(editor, key, value);
+}
+
 function isMarkActive (editor: Editor, format:string) {
     const marks = Editor.marks(editor) as Record<string, boolean>
     return marks ? marks[format] : false
+}
+
+function isBlockActive (editor: Editor, format: any, blockType = 'type') {
+    const { selection } = editor
+    if (!selection) return false
+
+    const [match] = Array.from(
+        Editor.nodes(editor, {
+            at: Editor.unhangRange(editor, selection),
+            match: (n: any) => {
+
+                const lookup: Record<string, string> = n;
+
+                return !Editor.isEditor(n) &&
+                    SlateElement.isElement(n) &&
+                    lookup[blockType] === format;
+            }
+
+        })
+    )
+
+    return !!match
 }
 
 type ElementProps = {

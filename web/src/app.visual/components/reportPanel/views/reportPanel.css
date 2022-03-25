@@ -46,6 +46,10 @@
 /*    min-width: 8.7rem;*/
 /*}*/
 
+.report-panel .toolbar .button.selected {
+    fill: var(--primary-color);
+}
+
 .report-panel .toolbar .combo-box {
     min-width: 14rem;
 }
