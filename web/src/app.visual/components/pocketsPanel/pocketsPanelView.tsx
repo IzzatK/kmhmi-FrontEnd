@@ -27,7 +27,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
 
     getCellContentRenderer(node: PocketNodeVM): JSX.Element {
         const { searchText } = this.props;
-        const { id, path, title } = node;
+        const { id, path, title, pocket_id } = node;
 
         let renderer: JSX.Element;
 
@@ -52,18 +52,33 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
             }
             case PocketNodeType.DOCUMENT:
                 renderer = (
-                    <ResourceNodeRenderer id={id} path={path} title={title}
-                                          onDownload={this._onDownloadDocument} onRemove={this._onRemoveResource}/>
+                    <ResourceNodeRenderer
+                        id={id}
+                        path={path}
+                        title={title}
+                        onDownload={this._onDownloadDocument}
+                        onRemove={(id: string) => this._onRemoveResource(id, pocket_id)}
+                    />
                 )
                 break;
             case PocketNodeType.EXCERPT:
                 renderer = (
-                    <ExcerptNodeRenderer id={id} path={path} title={title} onRemove={this._onRemoveExcerpt} />
+                    <ExcerptNodeRenderer
+                        id={id}
+                        path={path}
+                        title={title}
+                        onRemove={(id: string) => this._onRemoveExcerpt(id, pocket_id)}
+                    />
                 )
                 break;
             case PocketNodeType.NOTE:
                 renderer = (
-                    <NoteNodeRenderer id={id} path={path} title={title} onRemove={this._onRemoveNote}/>
+                    <NoteNodeRenderer
+                        id={id}
+                        path={path}
+                        title={title}
+                        onRemove={(id: string) => this._onRemoveNote(id, pocket_id)}
+                    />
                 )
                 break;
             default:
@@ -123,27 +138,27 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         }
     }
 
-    _onRemoveResource(id: string) {
+    _onRemoveResource(id: string, pocket_id: string) {
         const { onRemoveResource } = this.props;
 
         if (onRemoveResource) {
-            onRemoveResource(id);
+            onRemoveResource(id, pocket_id);
         }
     }
 
-    _onRemoveExcerpt(id: string) {
+    _onRemoveExcerpt(id: string, pocket_id: string) {
         const { onRemoveExcerpt } = this.props;
 
         if (onRemoveExcerpt) {
-            onRemoveExcerpt(id);
+            onRemoveExcerpt(id, pocket_id);
         }
     }
 
-    _onRemoveNote(id: string) {
+    _onRemoveNote(id: string, pocket_id: string) {
         const { onRemoveNote } = this.props;
 
         if (onRemoveNote) {
-            onRemoveNote(id);
+            onRemoveNote(id, pocket_id);
         }
     }
 

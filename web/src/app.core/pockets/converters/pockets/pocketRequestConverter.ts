@@ -135,21 +135,10 @@ export class PocketRequestConverter extends Converter<any, any> {
             });
         }
 
-        if (serverResources.length > 0) {
-            serverPocket["resources"] = serverResources;
-        }
-
-        if (serverSources.length > 0) {
-            serverPocket["sources"] = serverSources;
-        }
-
-        if (serverExcerpts.length > 0) {
-            serverPocket["excerpts"] = serverExcerpts;
-        }
-
-        if (serverNotes.length > 0) {
-            serverPocket["notes"] = serverNotes;
-        }
+        serverPocket["resources"] = serverResources;
+        serverPocket["sources"] = serverSources;
+        serverPocket["excerpts"] = serverExcerpts;
+        serverPocket["notes"] = serverNotes;
 
         return serverPocket;
     }

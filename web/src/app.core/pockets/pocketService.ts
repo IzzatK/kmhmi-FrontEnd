@@ -20,7 +20,7 @@ import {
     ResourceMapper
 } from "../../app.model";
 import {IEntityProvider, ISelectionService} from "../../framework.core.api";
-import {forEach} from "../../framework.core/extras/utils/collectionUtils";
+import {forEach, forEachKVP} from "../../framework.core/extras/utils/collectionUtils";
 import {IRepoItem} from "../../framework.core/services";
 import {createSelector, OutputSelector} from "@reduxjs/toolkit";
 
@@ -257,6 +257,7 @@ export class PocketService extends Plugin implements IPocketService {
                         const modifiedPocketMapper: any = {};
                         modifiedPocketMapper.id = existingItem.id;
                         modifiedPocketMapper.pocket = params;
+                        modifiedPocketMapper.resourceMappers = existingItem.resourceMappers;
 
                         // check if params other than id exist on params
                         if (this.pocketProvider != null) {
@@ -376,7 +377,9 @@ export class PocketService extends Plugin implements IPocketService {
                 result.push(excerptMapper.excerpt);
 
                 forEach(excerptMapper.notes, (note: NoteInfo) => {
-                    result.push(note);
+                    if (note) {
+                        result.push(note);
+                    }
                 });
             });
         });
@@ -654,5 +657,138 @@ export class PocketService extends Plugin implements IPocketService {
             .catch(error => {
                 console.log(error);
             });
+    }
+
+    removeExcerptFromResource(excerpt_id: string, pocket_id: string): void {
+        const pocketMapper = this.getPocketMapper(pocket_id);
+
+        if (pocketMapper) {
+            const modifiedPocketMapper: PocketMapper = new PocketMapper(pocketMapper.pocket);
+
+            forEachKVP(pocketMapper.resourceMappers, (itemKey: string, resourceMapper: ResourceMapper) => {
+
+                const modifiedResourceMapper: ResourceMapper = new ResourceMapper(resourceMapper.resource);
+                modifiedResourceMapper.resource.excerptIds = [];
+
+                forEachKVP(resourceMapper.excerptMappers, (itemKey: string, excerptMapper: ExcerptMapper) => {
+
+                    if (itemKey !== excerpt_id) {
+                        modifiedResourceMapper.excerptMappers[itemKey] = excerptMapper;
+                        modifiedResourceMapper.resource.excerptIds.push(itemKey);
+                    }
+                });
+
+                modifiedPocketMapper.resourceMappers[itemKey] = modifiedResourceMapper;
+
+                this.pocketProvider?.update(pocket_id, modifiedPocketMapper)
+                    .then(pocketMapper => {
+                        if (pocketMapper) {
+                            const excerptInfo = this.getExcerpt(excerpt_id);
+
+                            if (excerptInfo) {
+                                forEach(excerptInfo.noteIds, (note_id: string) => {
+                                    this.removeAllById(NoteInfo.class, note_id);
+                                });
+
+                                this.removeAllById(ExcerptInfo.class, excerpt_id);
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            })
+        }
+    }
+
+    removeNoteFromExcerpt(note_id: string, pocket_id: string): void {
+        const pocketMapper = this.getPocketMapper(pocket_id);
+
+        if (pocketMapper) {
+            const modifiedPocketMapper: PocketMapper = new PocketMapper(pocketMapper.pocket);
+
+            forEachKVP(pocketMapper.resourceMappers, (itemKey: string, resourceMapper: ResourceMapper) => {
+                const modifiedResourceMapper: ResourceMapper = new ResourceMapper(resourceMapper.resource);
+
+                forEachKVP(resourceMapper.excerptMappers, (itemKey: string, excerptMapper: ExcerptMapper) => {
+                    const modifiedExcerptMapper: ExcerptMapper = new ExcerptMapper(excerptMapper.excerpt);
+
+                    modifiedExcerptMapper.excerpt.noteIds = [];
+
+                    forEachKVP(excerptMapper.notes, (itemKey: string, noteInfo: NoteInfo) => {
+
+                        if (itemKey !== note_id) {
+                            modifiedExcerptMapper.notes[itemKey] = noteInfo;
+                            modifiedExcerptMapper.excerpt.noteIds.push(itemKey);
+                        } else {
+                            delete modifiedExcerptMapper.notes[itemKey];
+                        }
+                    });
+
+                    modifiedResourceMapper.excerptMappers[itemKey] = modifiedExcerptMapper;
+                });
+
+                modifiedPocketMapper.resourceMappers[itemKey] = modifiedResourceMapper;
+
+                this.pocketProvider?.update(pocket_id, modifiedPocketMapper)
+                    .then(pocketMapper => {
+                        if (pocketMapper) {
+                            const noteInfo = this.getNote(note_id);
+
+                            if (noteInfo) {
+                                this.removeAllById(NoteInfo.class, note_id);
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            })
+        }
+    }
+
+    removeResourceFromPocket(resource_id: string, pocket_id: string): void {
+        const pocketMapper = this.getPocketMapper(pocket_id);
+
+        if (pocketMapper) {
+            const modifiedPocketMapper: PocketMapper = new PocketMapper(pocketMapper.pocket);
+
+            forEachKVP(pocketMapper.resourceMappers, (itemKey: string, resourceMapper: ResourceMapper) => {
+
+                if (itemKey !== resource_id) {
+                    modifiedPocketMapper.resourceMappers[itemKey] = resourceMapper;
+                }
+
+                this.pocketProvider?.update(pocket_id, modifiedPocketMapper)
+                    .then(pocketMapper => {
+                        if (pocketMapper) {
+                            const resourceInfo = this.getResource(resource_id);
+
+                            if (resourceInfo) {
+                                forEach(resourceInfo.excerptIds, (excerpt_id: string) => {
+                                    const excerptInfo = this.getExcerpt(excerpt_id);
+
+                                    if (excerptInfo) {
+                                        forEach(excerptInfo.noteIds, (note_id: string) => {
+                                            this.removeAllById(NoteInfo.class, note_id);
+                                        });
+
+                                        this.removeAllById(ExcerptInfo.class, excerpt_id);
+                                    }
+                                });
+
+                                forEach(resourceInfo.note_ids, (note_id: string) => {
+                                    this.removeAllById(NoteInfo.class, note_id);
+                                });
+
+                                this.removeAllById(ResourceInfo.class, resource_id);
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            })
+        }
     }
 }
