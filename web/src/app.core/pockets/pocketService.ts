@@ -680,24 +680,26 @@ export class PocketService extends Plugin implements IPocketService {
 
                 modifiedPocketMapper.resourceMappers[itemKey] = modifiedResourceMapper;
 
-                this.pocketProvider?.update(pocket_id, modifiedPocketMapper)
-                    .then(pocketMapper => {
-                        if (pocketMapper) {
-                            const excerptInfo = this.getExcerpt(excerpt_id);
 
-                            if (excerptInfo) {
-                                forEach(excerptInfo.noteIds, (note_id: string) => {
-                                    this.removeAllById(NoteInfo.class, note_id);
-                                });
+            });
 
-                                this.removeAllById(ExcerptInfo.class, excerpt_id);
-                            }
+            this.pocketProvider?.update(pocket_id, modifiedPocketMapper)
+                .then(pocketMapper => {
+                    if (pocketMapper) {
+                        const excerptInfo = this.getExcerpt(excerpt_id);
+
+                        if (excerptInfo) {
+                            forEach(excerptInfo.noteIds, (note_id: string) => {
+                                this.removeAllById(NoteInfo.class, note_id);
+                            });
+
+                            this.removeAllById(ExcerptInfo.class, excerpt_id);
                         }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            })
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         }
     }
 
@@ -729,21 +731,21 @@ export class PocketService extends Plugin implements IPocketService {
                 });
 
                 modifiedPocketMapper.resourceMappers[itemKey] = modifiedResourceMapper;
+            });
 
-                this.pocketProvider?.update(pocket_id, modifiedPocketMapper)
-                    .then(pocketMapper => {
-                        if (pocketMapper) {
-                            const noteInfo = this.getNote(note_id);
+            this.pocketProvider?.update(pocket_id, modifiedPocketMapper)
+                .then(pocketMapper => {
+                    if (pocketMapper) {
+                        const noteInfo = this.getNote(note_id);
 
-                            if (noteInfo) {
-                                this.removeAllById(NoteInfo.class, note_id);
-                            }
+                        if (noteInfo) {
+                            this.removeAllById(NoteInfo.class, note_id);
                         }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            })
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         }
     }
 
@@ -758,37 +760,37 @@ export class PocketService extends Plugin implements IPocketService {
                 if (itemKey !== resource_id) {
                     modifiedPocketMapper.resourceMappers[itemKey] = resourceMapper;
                 }
+            });
 
-                this.pocketProvider?.update(pocket_id, modifiedPocketMapper)
-                    .then(pocketMapper => {
-                        if (pocketMapper) {
-                            const resourceInfo = this.getResource(resource_id);
+            this.pocketProvider?.update(pocket_id, modifiedPocketMapper)
+                .then(pocketMapper => {
+                    if (pocketMapper) {
+                        const resourceInfo = this.getResource(resource_id);
 
-                            if (resourceInfo) {
-                                forEach(resourceInfo.excerptIds, (excerpt_id: string) => {
-                                    const excerptInfo = this.getExcerpt(excerpt_id);
+                        if (resourceInfo) {
+                            forEach(resourceInfo.excerptIds, (excerpt_id: string) => {
+                                const excerptInfo = this.getExcerpt(excerpt_id);
 
-                                    if (excerptInfo) {
-                                        forEach(excerptInfo.noteIds, (note_id: string) => {
-                                            this.removeAllById(NoteInfo.class, note_id);
-                                        });
+                                if (excerptInfo) {
+                                    forEach(excerptInfo.noteIds, (note_id: string) => {
+                                        this.removeAllById(NoteInfo.class, note_id);
+                                    });
 
-                                        this.removeAllById(ExcerptInfo.class, excerpt_id);
-                                    }
-                                });
+                                    this.removeAllById(ExcerptInfo.class, excerpt_id);
+                                }
+                            });
 
-                                forEach(resourceInfo.note_ids, (note_id: string) => {
-                                    this.removeAllById(NoteInfo.class, note_id);
-                                });
+                            forEach(resourceInfo.note_ids, (note_id: string) => {
+                                this.removeAllById(NoteInfo.class, note_id);
+                            });
 
-                                this.removeAllById(ResourceInfo.class, resource_id);
-                            }
+                            this.removeAllById(ResourceInfo.class, resource_id);
                         }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            })
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         }
     }
 }
