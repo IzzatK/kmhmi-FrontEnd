@@ -164,7 +164,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
 
     onCreatePocket() {
         if (this.props.onCreatePocket != null) {
-            this.props.onCreatePocket('Sample')
+            this.props.onCreatePocket('New Pocket')
         }
     }
 

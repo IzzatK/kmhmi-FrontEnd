@@ -103,15 +103,35 @@ class DocumentPanel extends VisualWrapper {
             source_id: params.doc_id
         }
 
-        const pocketParams: PocketParamType = {
-            id: params.pocketId
+        if (params.pocketId === "") {
+            pocketService.addOrUpdatePocket({title: "New Pocket"})
+                .then(pocketMapper => {
+                    if (pocketMapper) {
+                        const pocketParams: PocketParamType = {
+                            id: pocketMapper.id
+                        }
+                        if (params.note_text === "") {
+                            pocketService.addExcerptToPocket(excerptParams, resourceParams, pocketParams);
+                        } else {
+                            pocketService.addNoteAndExcerptToPocket(noteParams, excerptParams, resourceParams, pocketParams);
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        } else {
+            const pocketParams: PocketParamType = {
+                id: params.pocketId
+            }
+
+            if (params.note_text === "") {
+                pocketService.addExcerptToPocket(excerptParams, resourceParams, pocketParams);
+            } else {
+                pocketService.addNoteAndExcerptToPocket(noteParams, excerptParams, resourceParams, pocketParams);
+            }
         }
 
-        if (params.note_text === "") {
-            pocketService.addExcerptToPocket(excerptParams, resourceParams, pocketParams);
-        } else {
-            pocketService.addNoteAndExcerptToPocket(noteParams, excerptParams, resourceParams, pocketParams);
-        }
     }
 
     _getEditProperties = () => {
