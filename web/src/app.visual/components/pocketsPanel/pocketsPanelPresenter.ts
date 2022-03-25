@@ -118,11 +118,12 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                 onDownloadPocket(id: string): void {
                 },
                 onUpdatePocket: (edits: PocketUpdateParams) => this._onUpdatePocket(edits),
-                onRemoveExcerpt: id => this._onRemoveExcerpt(id),
-                onRemoveResource: id => this._onRemoveResource(id),
-                onRemoveNote: id => this._onRemoveNote(id),
+                onRemoveExcerpt: (id: string, pocket_id: string) => this._onRemoveExcerpt(id, pocket_id),
+                onRemoveResource: (id: string, pocket_id: string) => this._onRemoveResource(id, pocket_id),
+                onRemoveNote: (id: string, pocket_id: string) => this._onRemoveNote(id, pocket_id),
                 onSearch: () => userService.fetchUsers(),
                 onSearchTextChanged: (value: string) => userService.setSearchText(value),
+                onDelete: (id: string) => pocketService.removePocket(id),
             };
         }
     }
@@ -155,7 +156,8 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                     path: `/${pocket.id}`,
                     title: pocket.title || '',
                     content: '',
-                    childNodes: []
+                    childNodes: [],
+                    pocket_id: pocket.id,
                 }
 
                 forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
@@ -168,7 +170,8 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                         path: resourcePath,
                         title: resource.source_title || '',
                         content: '',
-                        childNodes: []
+                        childNodes: [],
+                        pocket_id: pocket.id,
                     }
 
                     forEach(resourceMapper.excerptMappers, (excerptMapper: ExcerptMapper) => {
@@ -181,7 +184,8 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                             path: excerptPath,
                             title: excerpt.text || '',
                             content: '',
-                            childNodes: []
+                            childNodes: [],
+                            pocket_id: pocket.id,
                         }
 
                         forEach(excerptMapper.notes, (note: NoteInfo) => {
@@ -193,7 +197,8 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                                 path: notePath,
                                 title: note.text,
                                 content: '',
-                                childNodes: []
+                                childNodes: [],
+                                pocket_id: pocket.id,
                             }
                         })
 
@@ -248,16 +253,16 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
         return this.getPersistentState(state)?.expandedPaths || [];
     }
 
-    private _onRemoveExcerpt(id: string) {
-        void pocketService.removeExcerpt(id);
+    private _onRemoveExcerpt(id: string, pocket_id: string) {
+        void pocketService.removeExcerptFromResource(id, pocket_id);
     }
 
-    private _onRemoveNote(id: string) {
-        void pocketService.removeNote(id);
+    private _onRemoveNote(id: string, pocket_id: string) {
+        void pocketService.removeNoteFromExcerpt(id, pocket_id);
     }
 
-    private _onRemoveResource(id: string) {
-        void pocketService.removeResource(id);
+    private _onRemoveResource(id: string, pocket_id: string) {
+        void pocketService.removeResourceFromPocket(id, pocket_id);
     }
 }
 

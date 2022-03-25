@@ -6,7 +6,7 @@ import {
     RenderHighlightTargetProps,
     Trigger
 } from "@react-pdf-viewer/highlight";
-import {DocumentPdfPreviewProps, CreateExcerptEventData, ExcerptVM, NoteVM} from "./documentPanelModel";
+import {DocumentPdfPreviewProps, CreateExcerptEventData, ExcerptVM, NoteVM, PocketVM} from "./documentPanelModel";
 import React, {Component, useMemo} from "react";
 import Button from "../../theme/widgets/button/button";
 import {NoteSVG} from "../../theme/svgs/noteSVG";
@@ -79,6 +79,12 @@ export function renderHighlightContent(pluginProps: RenderHighlightContentProps,
         }
     }
 
+    const pockets: Record<string, PocketVM> = props.pockets;
+    pockets[""] = {
+        id: "",
+        title: "Create New Pocket",
+    }
+
     return (
         <div
             className={"popup d-flex flex-column bg-accent rounded position-absolute"}
@@ -94,7 +100,7 @@ export function renderHighlightContent(pluginProps: RenderHighlightContentProps,
                 </div>
                 <div className={"header-3"}>Excerpt</div>
                 <ComboBox
-                    items={props.pockets}
+                    items={pockets}
                     title={pocketTitle}
                     onSelect={ _onPocketSelectionChanged }
                 />

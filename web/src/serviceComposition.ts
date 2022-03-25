@@ -91,8 +91,7 @@ const permissionProvider: IEntityProvider<PermissionInfo> = new PermissionProvid
 const noteProvider: IEntityProvider<NoteInfo> = new MockNoteProvider();
 const excerptProvider: IEntityProvider<ExcerptInfo> = new MockExcerptProvider();
 const resourceProvider: IEntityProvider<ResourceInfo> = new MockResourceProvider();
-const pocketProvider: IEntityProvider<PocketMapper> = new MockPocketProvider();
-
+const pocketProvider: IEntityProvider<PocketMapper> = new PocketProvider();
 
 // create the application services
 export const authenticationService: IAuthenticationService = new AuthenticationService();
@@ -258,6 +257,7 @@ pocketService.setLogService(logService);
 pocketService.setRepositoryService(repoService);
 pocketService.setSelectionService(selectionService);
 pocketService.setDocumentService(documentService);
+pocketService.setUserService(userService);
 pocketService.setResourceProvider(resourceProvider);
 pocketService.setExcerptProvider(excerptProvider);
 pocketService.setNoteProvider(noteProvider);

@@ -12,6 +12,7 @@ import {NoteNodeRenderer} from "./renderers/noteNodeRenderer";
 import {ResourceNodeRenderer} from "./renderers/resourceNodeRenderer";
 import {TreeNodeVM} from "../../theme/widgets/treeView/treeViewModel";
 import {PocketNodeType} from "../../model/pocketNodeType";
+import {pocketService} from "../../../serviceComposition";
 
 class PocketsPanelView extends Component<PocketsPanelProps> {
     constructor(props: any, context: any) {
@@ -20,9 +21,13 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         bindInstanceMethods(this);
     }
 
+    componentDidMount() {
+        pocketService.fetchPockets();
+    }
+
     getCellContentRenderer(node: PocketNodeVM): JSX.Element {
         const { searchText } = this.props;
-        const { id, path, title } = node;
+        const { id, path, title, pocket_id } = node;
 
         let renderer: JSX.Element;
 
@@ -40,24 +45,40 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                         searchText={searchText}
                         onSearch={this._onSearch}
                         onSearchTextChanged={this._onSearchTextChanged}
+                        onDelete={(id: string) => this._deletePocket(id)}
                     />
                 )
                 break;
             }
             case PocketNodeType.DOCUMENT:
                 renderer = (
-                    <ResourceNodeRenderer id={id} path={path} title={title}
-                                          onDownload={this._onDownloadDocument} onRemove={this._onRemoveResource}/>
+                    <ResourceNodeRenderer
+                        id={id}
+                        path={path}
+                        title={title}
+                        onDownload={this._onDownloadDocument}
+                        onRemove={(id: string) => this._onRemoveResource(id, pocket_id)}
+                    />
                 )
                 break;
             case PocketNodeType.EXCERPT:
                 renderer = (
-                    <ExcerptNodeRenderer id={id} path={path} title={title} onRemove={this._onRemoveExcerpt} />
+                    <ExcerptNodeRenderer
+                        id={id}
+                        path={path}
+                        title={title}
+                        onRemove={(id: string) => this._onRemoveExcerpt(id, pocket_id)}
+                    />
                 )
                 break;
             case PocketNodeType.NOTE:
                 renderer = (
-                    <NoteNodeRenderer id={id} path={path} title={title} onRemove={this._onRemoveNote}/>
+                    <NoteNodeRenderer
+                        id={id}
+                        path={path}
+                        title={title}
+                        onRemove={(id: string) => this._onRemoveNote(id, pocket_id)}
+                    />
                 )
                 break;
             default:
@@ -101,6 +122,14 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         //opens settings ui
     }
 
+    private _deletePocket(id: string) {
+        const { onDelete } = this.props;
+
+        if (onDelete) {
+            onDelete(id);
+        }
+    }
+
     _onDownloadDocument(id: string) {
         const { onDownloadDocument } = this.props;
 
@@ -109,33 +138,33 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         }
     }
 
-    _onRemoveResource(id: string) {
+    _onRemoveResource(id: string, pocket_id: string) {
         const { onRemoveResource } = this.props;
 
         if (onRemoveResource) {
-            onRemoveResource(id);
+            onRemoveResource(id, pocket_id);
         }
     }
 
-    _onRemoveExcerpt(id: string) {
+    _onRemoveExcerpt(id: string, pocket_id: string) {
         const { onRemoveExcerpt } = this.props;
 
         if (onRemoveExcerpt) {
-            onRemoveExcerpt(id);
+            onRemoveExcerpt(id, pocket_id);
         }
     }
 
-    _onRemoveNote(id: string) {
+    _onRemoveNote(id: string, pocket_id: string) {
         const { onRemoveNote } = this.props;
 
         if (onRemoveNote) {
-            onRemoveNote(id);
+            onRemoveNote(id, pocket_id);
         }
     }
 
     onCreatePocket() {
         if (this.props.onCreatePocket != null) {
-            this.props.onCreatePocket('Sample')
+            this.props.onCreatePocket('New Pocket')
         }
     }
 

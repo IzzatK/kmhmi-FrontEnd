@@ -81,6 +81,14 @@ export class PocketNodeRenderer extends Component<PocketNodeRendererProps, Pocke
         })
     }
 
+    private _deletePocket(id: string) {
+        const { onDelete } = this.props;
+
+        if (onDelete) {
+            onDelete(id);
+        }
+    }
+
     _onToggleTab(tab: PocketTabType) {
         let nextTab: PocketTabType = PocketTabType.NONE;
         if (this.state.tab != tab) {
@@ -125,14 +133,17 @@ export class PocketNodeRenderer extends Component<PocketNodeRendererProps, Pocke
     }
 
     renderSettingsTab() {
+        const { title, id } = this.props;
+
         return (
             <div className={'flex-fill d-flex flex-column v-gap-2 p-2'}>
                 <div className={'d-flex align-items-center justify-content-start h-gap-3 py-3'}>
                     <div>Name</div>
-                    <TextEdit name={'title'} value={this.state.edits.title || this.props.title}
+                    <TextEdit name={'title'} value={this.state.edits.title || title}
                               onChange={(value: string) => this._onPropertyUpdate('title', value)} />
                 </div>
                 <div className={'d-flex h-gap-3 justify-content-end'}>
+                    <Button text={'Delete Pocket'} onClick={() => this._deletePocket((id))}/>
                     <Button text={'Cancel'} onClick={this._cancelUpdates}/>
                     <Button text={'Save'} onClick={this._onSave}/>
                 </div>

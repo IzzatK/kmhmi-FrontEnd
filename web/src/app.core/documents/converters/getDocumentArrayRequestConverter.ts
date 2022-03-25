@@ -38,6 +38,8 @@ export class GetDocumentArrayRequestConverter extends Converter<any, any>{
                     }
                 }
             }
+
+            result["kp_type"] = ['Document'];
         });
 
         const { limit, offset, sort, ...rest } = result;
