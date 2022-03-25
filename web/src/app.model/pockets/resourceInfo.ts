@@ -11,7 +11,7 @@ export class ResourceInfo extends WocketInfo {
 
   source_id: string = '';
   source_author: string = '';
-  source_publication_date: string = 'string';
+  source_publication_date: string = '';
   source_title: string = '';
   source_type: string = '';
   source_version: string = '';

@@ -20,7 +20,6 @@ import {
 import {
     CreateExcerptEventData,
     DocumentInfoVM, DocumentPanelDispatchProps, DocumentPanelStateProps, ExcerptVM, NoteVM,
-    PermissionsVM,
     PocketVM
 } from "./documentPanelModel";
 import {
@@ -58,7 +57,6 @@ class DocumentPanel extends VisualWrapper {
         this.mapStateToProps = (state: any): DocumentPanelStateProps => {
             return {
                 document: this.getDocument(state),
-                // pdfRenderer: DocumentPdfPreview,
                 editProperties: this._getEditProperties(),
                 userProfile: authenticationService.getUserProfile(),
                 token: authenticationService.getToken(),
@@ -90,8 +88,6 @@ class DocumentPanel extends VisualWrapper {
     }
 
     _createExcerpt(params: CreateExcerptEventData) {
-        // console.log(documentId + " " + excerptText + " " + excerptContent + " " + location + " " + noteText + " " + noteContent);
-
         const excerptParams: ExcerptParamType = {
             text: params.excerpt_text,
             content: JSON.stringify(params.excerpt_content),
@@ -111,7 +107,11 @@ class DocumentPanel extends VisualWrapper {
             id: params.pocketId
         }
 
-        pocketService.addNoteToExcerpt(noteParams, excerptParams, resourceParams, pocketParams);
+        if (params.note_text === "") {
+            pocketService.addExcerptToPocket(excerptParams, resourceParams, pocketParams);
+        } else {
+            pocketService.addNoteAndExcerptToPocket(noteParams, excerptParams, resourceParams, pocketParams);
+        }
     }
 
     _getEditProperties = () => {
@@ -154,7 +154,7 @@ class DocumentPanel extends VisualWrapper {
                 id: 'status',
                 title: 'Status',
                 type: ParamType.OPTIONS,
-                // options: referenceService.getAllReferences(ReferenceType.STATUS)
+                options: referenceService.getAllReferences(ReferenceType.STATUS)
             },
             ['private_tag']: {
                 id: 'private_tag',

@@ -16,14 +16,14 @@ export class PocketProvider extends EntityProvider<PocketMapper> {
     baseUrl: string = `${serverUrl}/pockets`;
     public static class: string = 'PocketProvider';
 
+    private getPocketArrayRequestConverter!: GetPocketArrayRequestConverter;
+    private getPocketArrayResponseConverter!: GetPocketArrayResponseConverter;
+
     private pocketRequestConverter!: PocketRequestConverter;
     private pocketResponseConverter!: PocketResponseConverter;
     private pocketStatusResponseConverter!: PocketStatusResponseConverter;
 
     private createPocketRequestConverter!: CreatePocketRequestConverter;
-
-    private getPocketArrayRequestConverter!: GetPocketArrayRequestConverter;
-    private getPocketArrayResponseConverter!: GetPocketArrayResponseConverter;
 
     constructor() {
         super();
@@ -42,20 +42,6 @@ export class PocketProvider extends EntityProvider<PocketMapper> {
         this.getPocketArrayRequestConverter = this.addConverter(GetPocketArrayRequestConverter);
         this.getPocketArrayResponseConverter = this.addConverter(GetPocketArrayResponseConverter);
         this.getPocketArrayResponseConverter.singleConverter = this.pocketResponseConverter;
-    }
-
-    getAll(uiRequestData?: any): Promise<PocketMapper[]> {
-        return new Promise((resolve, reject) => {
-            super.sendGetAll(
-                () => this.getPocketArrayRequestConverter.convert(uiRequestData),
-                (responseData, reject) => this.getPocketArrayResponseConverter.convert(responseData, reject))
-                .then(pocketMappers => {
-                    resolve(pocketMappers);
-                })
-                .catch(error => {
-                    reject(error);
-                });
-        });
     }
 
     getSingle(id: string): Promise<Nullable<PocketMapper>> {
@@ -132,14 +118,28 @@ export class PocketProvider extends EntityProvider<PocketMapper> {
             this.sendPut(id,
                 () => this.pocketRequestConverter.convert(uiRequestData),
                 (responseData, errorHandler) => this.pocketResponseConverter.convert(responseData, errorHandler))
-                .then(excerpt => {
-                    resolve(excerpt);
+                .then(pocket => {
+                    resolve(pocket);
                 })
                 .catch(error => {
                     console.log(error);
                 });
             }
         )
+    }
+
+    getAll(uiRequestData?: any): Promise<PocketMapper[]> {
+        return new Promise((resolve, reject) => {
+            let requestData: any = this.getPocketArrayRequestConverter.convert(uiRequestData);
+
+            this.httpService?.createPOST(`${serverUrl}/documents/search`, requestData)
+                .then((data: any) => {
+                    resolve(this.getPocketArrayResponseConverter.convert(data, reject));
+                })
+                .catch((error: any) => {
+                    reject(requestData);
+                })
+        });
     }
 }
 

@@ -21,6 +21,7 @@ export type PocketsPanelDispatchProps = {
     onRemoveResource: (id: string) => void;
     onSearchTextChanged: (value: string) => void;
     onSearch: () => void;
+    onDelete: (id: string) => void;
 }
 
 export type PocketsPanelProps = PocketsPanelStateProps & PocketsPanelDispatchProps;
@@ -43,6 +44,7 @@ export type PocketNodeRendererProps = NodeRendererProps &
         onSearchTextChanged: (value: string) => void;
         onSearch: () => void;
         searchText: string;
+        onDelete: (id: string) => void;
     }
 
 export type ResourceNodeRendererProps = NodeRendererProps &

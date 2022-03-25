@@ -253,11 +253,14 @@ export class PocketService extends Plugin implements IPocketService {
                 if (params.id != null) {
                     const existingItem = this.getPocketMapper(params.id);
 
-                    if (existingItem != null) {
+                    if (existingItem) {
+                        const modifiedPocketMapper: any = {};
+                        modifiedPocketMapper.id = existingItem.id;
+                        modifiedPocketMapper.pocket = params;
 
                         // check if params other than id exist on params
                         if (this.pocketProvider != null) {
-                            this.pocketProvider.update(params.id, params)
+                            this.pocketProvider.update(params.id, modifiedPocketMapper)
                                 .then(result => {
                                     if (result != null) {
                                         if (updateLocal) {
@@ -323,6 +326,9 @@ export class PocketService extends Plugin implements IPocketService {
                     this.removeRepoItems(items);
                 }
             })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     fetchPocket(id: string): void {
@@ -333,11 +339,15 @@ export class PocketService extends Plugin implements IPocketService {
                     const items = this.flattenPocketMapper(pocketMapper);
                     this.addOrUpdateAllRepoItems(items);
                 }
+            })
+            .catch(error => {
+                console.log(error);
             });
     }
 
     fetchPockets(): void {
-        this.pocketProvider?.getAll()
+        const user_id = this.userService?.getCurrentUserId();
+        this.pocketProvider?.getAll(user_id)
             .then((pocketMappers: PocketMapper[]) => {
                 // get the items out of pocketMapper
                 const items:IRepoItem[] = [];
@@ -348,6 +358,9 @@ export class PocketService extends Plugin implements IPocketService {
                 })
 
                 this.addOrUpdateAllRepoItems(items);
+            })
+            .catch(error => {
+                console.log(error);
             });
     }
 
@@ -424,105 +437,222 @@ export class PocketService extends Plugin implements IPocketService {
                     })
                 }
             })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     getResource(id: string): Nullable<ResourceInfo> {
         return this.getRepoItem(ResourceInfo.class, id);
     }
 
-    addNoteToExcerpt(noteParams: NoteParamType, excerptParams: ExcerptParamType, resourceParams: ResourceParamType, pocketParams: PocketParamType): void {
+    addNoteAndExcerptToPocket(noteParams: NoteParamType, excerptParams: ExcerptParamType, resourceParams: ResourceParamType, pocketParams: PocketParamType): void {
 
-        const authorId = this.userService?.getCurrentUserId();
+        const authorId = this.userService?.getCurrentUserId() || "";
 
-        if (!noteParams.id) {
-            noteParams.author_id = authorId || '';
-        }
+        noteParams.author_id = authorId;
+        pocketParams.author_id = authorId;
 
-        if (!excerptParams.id) {
-            excerptParams.authorId = authorId || '';
-        }
+        this.addOrUpdateNote(noteParams)
+            .then(note => {
+                if (note) {
+                    excerptParams.authorId = authorId;
+                    excerptParams.noteIds = [];
+                    excerptParams.noteIds.push(note.id);
 
-        if (!resourceParams.id) {
-            resourceParams.author_id = authorId || '';
-        }
+                    this.addOrUpdateExcerpt(excerptParams)
+                        .then(excerpt => {
+                            if (excerpt) {
+                                if (pocketParams.id) {
+                                    let pocketMapper = this.getPocketMapper(pocketParams.id);
 
-        if (resourceParams.source_id) {
-            if (this.documentService) {
-                const document = this.documentService.getDocument(resourceParams.source_id);
-                if (document != null) {
-                    resourceParams.source_title = document.title || document.file_name || '---';
-                    resourceParams.source_author = document.author || '---';
-                    resourceParams.source_publication_date = document.publication_date || '---';
-                    resourceParams.source_version = '---';
-                }
-            }
-        }
+                                    if (pocketMapper) {
+                                        let resource: any = null;
 
-        if (!pocketParams.id) {
-            pocketParams.author_id = authorId || '';
-        }
+                                        // check if the source is already included in a resource for this pocket
+                                        forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
+                                            if (resourceMapper.resource.source_id === resourceParams.source_id) {
+                                                resource = this.getResource(resourceMapper.resource.id);
+                                            }
+                                        });
 
-        let resourceSupplier = () => this.addOrUpdateResource(resourceParams, false);
+                                        if (resource !== null) {
+                                            resource.excerptIds.push(excerpt.id);
 
-        if (pocketParams.id) {
-            let pocketMapper = this.getPocketMapper(pocketParams.id);
+                                            this.pocketProvider?.update(pocketParams.id, pocketMapper)
+                                                .then(pocketMapper => {
+                                                    if (pocketMapper) {
+                                                        const items:IRepoItem[] = [];
 
-            if (pocketMapper != null) {
-                // check if the source is already included in a resource for this pocket
-                forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
-                    if (resourceMapper.resource.source_id == resourceParams.source_id) {
-                        resourceSupplier = () => new Promise<Nullable<ResourceInfo>>((resolve, reject) => {
-                            resolve(resourceMapper.resource);
+                                                        const flattenedItems = this.flattenPocketMapper(pocketMapper);
+                                                        items.push(...flattenedItems);
+
+                                                        this.addOrUpdateAllRepoItems(items);
+                                                    }
+                                                })
+                                        } else {
+                                            if (resourceParams.source_id) {
+                                                if (this.documentService) {
+                                                    const document = this.documentService.getDocument(resourceParams.source_id);
+                                                    if (document !== null) {
+                                                        resourceParams.source_title = document.title || document.file_name || '';
+                                                        resourceParams.source_author = JSON.stringify(document.author) || '';
+                                                        resourceParams.source_publication_date = document.publication_date || '';
+                                                        resourceParams.source_version = '';
+                                                        resourceParams.title = document.title || document.file_name || '';
+                                                    }
+                                                }
+                                            }
+
+                                            resourceParams.excerptIds = [];
+                                            resourceParams.excerptIds.push(excerpt.id);
+                                            resourceParams.author_id = authorId;
+
+                                            resource = this.addOrUpdateResource(resourceParams)
+                                                .then(resource => {
+                                                    if (resource) {
+
+                                                        if (pocketMapper) {
+
+                                                            let excerptMapper: ExcerptMapper = new ExcerptMapper(excerpt);
+                                                            excerptMapper.notes[note.id] = note;
+
+                                                            let resourceMapper: ResourceMapper = new ResourceMapper(resource);
+                                                            resourceMapper.excerptMappers[excerpt.id] = excerptMapper;
+
+                                                            pocketMapper.resourceMappers[resource.id] = resourceMapper;
+
+                                                            this.pocketProvider?.update(pocketMapper.id, pocketMapper)
+                                                                .then(pocketMapper => {
+                                                                    if (pocketMapper) {
+                                                                        const items:IRepoItem[] = [];
+
+                                                                        const flattenedItems = this.flattenPocketMapper(pocketMapper);
+                                                                        items.push(...flattenedItems);
+
+                                                                        this.addOrUpdateAllRepoItems(items);
+                                                                    }
+                                                                })
+                                                                .catch(error => {
+                                                                    console.log(error);
+                                                                });
+                                                        }
+                                                    }
+                                                })
+                                                .catch(error => {
+                                                    console.log(error);
+                                                });
+                                        }
+                                    }
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
                         });
-                        return true;
-                    }
-                })
-            }
-        }
-
-        Promise.all([
-            this.addOrUpdateNote(noteParams, false),
-            this.addOrUpdateExcerpt(excerptParams, false),
-            resourceSupplier(),
-            this.addOrUpdatePocket(pocketParams, false)]
-        )
-            .then((values) => {
-                const note: Nullable<NoteInfo> = values[0];
-                const excerpt: Nullable<ExcerptInfo> = values[1];
-                const resource: Nullable<ResourceInfo> = values[2];
-                const pocketMapper: Nullable<PocketMapper> = values[3];
-
-                if (note == null || excerpt == null || resource == null) {
-                    throw new Error('Cannot create excerpt due to null return value')
                 }
-                else {
-                    const updateItems: IRepoItem[] = [];
-
-                    if (!resource.excerptIds.includes(excerpt.id)) {
-                        resource.excerptIds.push(excerpt.id);
-
-                        updateItems.push(resource);
-                    }
-
-                    if (!excerpt.noteIds.includes(note.id)) {
-                        excerpt.noteIds.push(note.id);
-                        updateItems.push(excerpt);
-                    }
-
-                    updateItems.push(note);
-
-                    const pocketInfo = pocketMapper?.pocket;
-                    if (pocketInfo != null && !pocketInfo.resource_ids.includes(resource.id)) {
-                        pocketInfo.resource_ids.push(resource.id)
-                        updateItems.push(pocketInfo);
-                    }
-
-                    this.addOrUpdateAllRepoItems(updateItems);
-                }
-
             })
             .catch(error => {
+                console.log(error);
+            });
+    }
 
+    addExcerptToPocket(excerptParams: ExcerptParamType, resourceParams: ResourceParamType, pocketParams: PocketParamType): void {
+
+        const authorId = this.userService?.getCurrentUserId() || "";
+
+        pocketParams.author_id = authorId;
+
+        excerptParams.authorId = authorId;
+
+        this.addOrUpdateExcerpt(excerptParams)
+            .then(excerpt => {
+                if (excerpt) {
+                    if (pocketParams.id) {
+                        let pocketMapper = this.getPocketMapper(pocketParams.id);
+
+                        if (pocketMapper) {
+                            let resource: any = null;
+
+                            // check if the source is already included in a resource for this pocket
+                            forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
+                                if (resourceMapper.resource.source_id === resourceParams.source_id) {
+                                    resource = this.getResource(resourceMapper.resource.id);
+                                }
+                            });
+
+                            if (resource !== null) {
+                                resource.excerptIds.push(excerpt.id);
+
+                                this.pocketProvider?.update(pocketParams.id, pocketMapper)
+                                    .then(pocketMapper => {
+                                        if (pocketMapper) {
+                                            const items:IRepoItem[] = [];
+
+                                            const flattenedItems = this.flattenPocketMapper(pocketMapper);
+                                            items.push(...flattenedItems);
+
+                                            this.addOrUpdateAllRepoItems(items);
+                                        }
+                                    })
+                            } else {
+                                if (resourceParams.source_id) {
+                                    if (this.documentService) {
+                                        const document = this.documentService.getDocument(resourceParams.source_id);
+                                        if (document !== null) {
+                                            resourceParams.source_title = document.title || document.file_name || '';
+                                            resourceParams.source_author = JSON.stringify(document.author) || '';
+                                            resourceParams.source_publication_date = document.publication_date || '';
+                                            resourceParams.source_version = '';
+                                            resourceParams.title = document.title || document.file_name || '';
+                                        }
+                                    }
+                                }
+
+                                resourceParams.excerptIds = [];
+                                resourceParams.excerptIds.push(excerpt.id);
+                                resourceParams.author_id = authorId;
+
+                                resource = this.addOrUpdateResource(resourceParams)
+                                    .then(resource => {
+                                        if (resource) {
+
+                                            if (pocketMapper) {
+
+                                                let excerptMapper: ExcerptMapper = new ExcerptMapper(excerpt);
+
+                                                let resourceMapper: ResourceMapper = new ResourceMapper(resource);
+                                                resourceMapper.excerptMappers[excerpt.id] = excerptMapper;
+
+                                                pocketMapper.resourceMappers[resource.id] = resourceMapper;
+
+                                                this.pocketProvider?.update(pocketMapper.id, pocketMapper)
+                                                    .then(pocketMapper => {
+                                                        if (pocketMapper) {
+                                                            const items:IRepoItem[] = [];
+
+                                                            const flattenedItems = this.flattenPocketMapper(pocketMapper);
+                                                            items.push(...flattenedItems);
+
+                                                            this.addOrUpdateAllRepoItems(items);
+                                                        }
+                                                    })
+                                                    .catch(error => {
+                                                        console.log(error);
+                                                    });
+                                            }
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.log(error);
+                                    });
+                            }
+                        }
+                    }
+                }
             })
+            .catch(error => {
+                console.log(error);
+            });
     }
 }

@@ -10,9 +10,9 @@ import {
 } from "../../../../app.model";
 import {forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
 
-export class PocketRequestConverter extends Converter<PocketMapper, any> {
+export class PocketRequestConverter extends Converter<any, any> {
 
-    convert(fromData: PocketMapper): any {
+    convert(fromData: any): any {
         const pocketMapper = fromData;
 
         const PocketProperties: Partial<Record<keyof PocketInfo, any>> = {
@@ -28,6 +28,7 @@ export class PocketRequestConverter extends Converter<PocketMapper, any> {
             author_id: "author_id",
             excerptIds: "excerpt_ids",
             note_ids: "note_ids",
+            source_id: "source_id",
         }
 
         const SourceProperties: Partial<Record<keyof ResourceInfo, string>> = {
@@ -72,63 +73,67 @@ export class PocketRequestConverter extends Converter<PocketMapper, any> {
             }
         });
 
-        forEachKVP(pocketMapper.resourceMappers, (itemKey: string, resourceMapper: ResourceMapper) => {
+        if (pocketMapper.resourceMappers) {
+            forEachKVP(pocketMapper.resourceMappers, (itemKey: string, resourceMapper: any) => {
+                let serverResource: Record<string, string> = {};
+                let serverSource: Record<string, string> = {};
 
-            let serverResource: Record<string, string> = {};
-            let serverSource: Record<string, string> = {};
+                forEachKVP(resourceMapper.resource, (itemKey: keyof ResourceInfo, itemValue: any) => {
+                    let serverResourceKey = ResourceProperties[itemKey]?.toString();
+                    let serverSourceKey = SourceProperties[itemKey]?.toString();
 
-            forEachKVP(resourceMapper.resource, (itemKey: keyof ResourceInfo, itemValue: any) => {
-                let serverResourceKey = ResourceProperties[itemKey]?.toString();
-                let serverSourceKey = SourceProperties[itemKey]?.toString();
-
-                if (serverResourceKey) {
-                    if (itemValue !== "") {
-                        serverResource[serverResourceKey] = itemValue;
+                    if (serverResourceKey) {
+                        if (itemValue !== "") {
+                            serverResource[serverResourceKey] = itemValue;
+                        }
                     }
-                } else if (serverSourceKey) {
-                    if (itemValue !== "") {
-                        serverSource[serverSourceKey] = itemValue;
+                    if (serverSourceKey) {
+                        if (itemValue !== "") {
+                            serverSource[serverSourceKey] = itemValue;
+                        }
                     }
+                });
+
+                serverResources.push(serverResource);
+                serverSources.push(serverSource);
+
+                if (resourceMapper.excerptMappers) {
+                    forEachKVP(resourceMapper.excerptMappers, (itemKey: string, excerptMapper: any) => {
+
+                        let serverExcerpt: Record<string, string> = {};
+
+                        forEachKVP(excerptMapper.excerpt, (itemKey: keyof ExcerptInfo, itemValue: any) => {
+                            let serverExcerptKey = ExcerptProperties[itemKey]?.toString();
+
+                            if (serverExcerptKey) {
+                                if (itemValue !== "") {
+                                    serverExcerpt[serverExcerptKey] = itemValue;
+                                }
+                            }
+                        });
+
+                        serverExcerpts.push(serverExcerpt);
+
+                        forEachKVP(excerptMapper.notes, (itemKey: string, note: any) => {
+
+                            let serverNote: Record<string, string> = {};
+
+                            forEachKVP(note, (itemKey: keyof NoteInfo, itemValue: any) => {
+                                let serverNoteKey = NoteProperties[itemKey]?.toString();
+
+                                if (serverNoteKey) {
+                                    if (itemValue !== "") {
+                                        serverNote[serverNoteKey] = itemValue;
+                                    }
+                                }
+                            });
+
+                            serverNotes.push(serverNote);
+                        });
+                    });
                 }
             });
-
-            serverResources.push(serverResource);
-            serverSources.push(serverSource);
-
-            forEachKVP(resourceMapper.excerptMappers, (itemKey: string, excerptMapper: ExcerptMapper) => {
-
-                let serverExcerpt: Record<string, string> = {};
-
-                forEachKVP(excerptMapper.excerpt, (itemKey: keyof ExcerptInfo, itemValue: any) => {
-                    let serverExcerptKey = ExcerptProperties[itemKey]?.toString();
-
-                    if (serverExcerptKey) {
-                        if (itemValue !== "") {
-                            serverExcerpt[serverExcerptKey] = itemValue;
-                        }
-                    }
-                });
-
-                serverExcerpts.push(serverExcerpt);
-
-                forEachKVP(excerptMapper.notes, (itemKey: string, note: NoteInfo) => {
-
-                    let serverNote: Record<string, string> = {};
-
-                    forEachKVP(note, (itemKey: keyof NoteInfo, itemValue: any) => {
-                        let serverNoteKey = NoteProperties[itemKey]?.toString();
-
-                        if (serverNoteKey) {
-                            if (itemValue !== "") {
-                                serverNote[serverNoteKey] = itemValue;
-                            }
-                        }
-                    });
-
-                    serverNotes.push(serverNote);
-                });
-            });
-        });
+        }
 
         if (serverResources.length > 0) {
             serverPocket["resources"] = serverResources;

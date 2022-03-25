@@ -28,7 +28,7 @@ export class PocketResponseConverter extends Converter<any, PocketMapper> {
 
                 sourceInfo["source_id"] = getValueOrDefault(source, 'source_id', '');
                 sourceInfo["source_author"] = getValueOrDefault(source, 'author', '');
-                sourceInfo["source_publication_date"] = getValueOrDefault(source, 'publication_data', '');
+                sourceInfo["source_publication_date"] = getValueOrDefault(source, 'publication_date', '');
                 sourceInfo["source_title"] = getValueOrDefault(source, 'title', '');
                 sourceInfo["source_type"] = getValueOrDefault(source, 'type', '');
                 sourceInfo["source_version"] = getValueOrDefault(source, 'version', '');
@@ -93,15 +93,15 @@ export class PocketResponseConverter extends Converter<any, PocketMapper> {
 
                 const noteInfo = new NoteInfo(noteId);
 
-                noteInfo.text = getValueOrDefault(note, 'author_id', '');
+                noteInfo.text = getValueOrDefault(note, 'plain_text', '');
                 noteInfo.content = getValueOrDefault(note, 'rte_text', '');
-                noteInfo.author_id = getValueOrDefault(note, 'note_id', '');
+                noteInfo.author_id = getValueOrDefault(note, 'author_id', '');
 
                 noteInfos[noteId] = noteInfo;
             })
         }
 
-        const pocketInfo: PocketInfo = new PocketInfo(getValueOrDefault(item, 'pocket_id', ''));
+        const pocketInfo: PocketInfo = new PocketInfo(getValueOrDefault(item, 'pocket_id', getValueOrDefault(item, 'id', '')));
 
         pocketInfo.title = getValueOrDefault(item, 'title', '');
         pocketInfo.author_id = getValueOrDefault(item, 'author_id', '');
@@ -116,16 +116,24 @@ export class PocketResponseConverter extends Converter<any, PocketMapper> {
 
             forEach(resource.excerptIds, (excerptId: string) => {
                 const excerpt: ExcerptInfo = excerptInfos[excerptId];
-                const excerptMapper = new ExcerptMapper(excerpt);
 
-                forEach(excerpt.noteIds, (noteId: string) => {
-                    excerptMapper.notes[noteId] = noteInfos[noteId];
-                });
+                if (excerpt) {
+                    const excerptMapper = new ExcerptMapper(excerpt);
 
-                resourceMapper.excerptMappers[excerptId] = excerptMapper;
+                    forEach(excerpt.noteIds, (noteId: string) => {
+                        excerptMapper.notes[noteId] = noteInfos[noteId];
+                    });
+
+
+                    if (resourceMapper.excerptMappers) {
+                        resourceMapper.excerptMappers[excerptId] = excerptMapper;
+                    }
+                }
             });
 
-            pocketMapper.resourceMappers[resourceId] = resourceMapper;
+            if (pocketMapper.resourceMappers) {
+                pocketMapper.resourceMappers[resourceId] = resourceMapper;
+            }
         });
 
         return pocketMapper;

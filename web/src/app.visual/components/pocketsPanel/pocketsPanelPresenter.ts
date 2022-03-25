@@ -123,6 +123,7 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                 onRemoveNote: id => this._onRemoveNote(id),
                 onSearch: () => userService.fetchUsers(),
                 onSearchTextChanged: (value: string) => userService.setSearchText(value),
+                onDelete: (id: string) => pocketService.removePocket(id),
             };
         }
     }

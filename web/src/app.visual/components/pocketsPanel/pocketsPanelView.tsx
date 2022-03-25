@@ -12,12 +12,17 @@ import {NoteNodeRenderer} from "./renderers/noteNodeRenderer";
 import {ResourceNodeRenderer} from "./renderers/resourceNodeRenderer";
 import {TreeNodeVM} from "../../theme/widgets/treeView/treeViewModel";
 import {PocketNodeType} from "../../model/pocketNodeType";
+import {pocketService} from "../../../serviceComposition";
 
 class PocketsPanelView extends Component<PocketsPanelProps> {
     constructor(props: any, context: any) {
         super(props, context);
 
         bindInstanceMethods(this);
+    }
+
+    componentDidMount() {
+        pocketService.fetchPockets();
     }
 
     getCellContentRenderer(node: PocketNodeVM): JSX.Element {
@@ -40,6 +45,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                         searchText={searchText}
                         onSearch={this._onSearch}
                         onSearchTextChanged={this._onSearchTextChanged}
+                        onDelete={(id: string) => this._deletePocket(id)}
                     />
                 )
                 break;
@@ -99,6 +105,14 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
             this.props.onUpdatePocket(edits);
         }
         //opens settings ui
+    }
+
+    private _deletePocket(id: string) {
+        const { onDelete } = this.props;
+
+        if (onDelete) {
+            onDelete(id);
+        }
     }
 
     _onDownloadDocument(id: string) {
