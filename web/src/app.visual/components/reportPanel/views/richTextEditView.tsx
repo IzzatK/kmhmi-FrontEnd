@@ -4,6 +4,18 @@ import {BaseEditor, createEditor, Descendant, Editor} from "slate";
 import {HistoryEditor, withHistory} from "slate-history";
 import Button from "../../../theme/widgets/button/button";
 import isHotkey from 'is-hotkey';
+import {TextFormatBoldSVGD} from "../../../theme/svgs/textFormatBoldSVG";
+import {TextFormatItalicSVG} from "../../../theme/svgs/textFormatItalicSVG";
+import {TextFormatUnderlineSVG} from "../../../theme/svgs/textFormatUnderlineSVG";
+import {TextFormatHighlightSVG} from "../../../theme/svgs/textFormatHighlightSVG";
+import {TextFormatColorSVG} from "../../../theme/svgs/textFormatColorSVG";
+import ComboBox from "../../../theme/widgets/comboBox/comboBox";
+import {TextAlignLeftSVG} from "../../../theme/svgs/textAlignLeftSVG";
+import {TextAlignCenterSVG} from "../../../theme/svgs/textAlignCenterSVG";
+import {TextAlignRightSVG} from "../../../theme/svgs/textAlignRightSVG";
+import {TextAlignJustifySVG} from "../../../theme/svgs/textAlignJustifySVG";
+import {TextListNumber} from "../../../theme/svgs/textListNumber";
+import {TextListBulletSVG} from "../../../theme/svgs/textListBulletSVG";
 
 declare module 'slate' {
     interface CustomTypes {
@@ -29,6 +41,52 @@ const HOTKEYS:Record<string, string> = {
 const LIST_TYPES:string[] = ['numbered-list', 'bulleted-list']
 const TEXT_ALIGN_TYPES:string[] = ['left', 'center', 'right', 'justify']
 
+const citation = [
+    {
+        id: 'mla',
+        title: 'MLA',
+    },
+    {
+        id: 'chicago',
+        title: 'Chicago'
+    }
+]
+
+
+const fonts = [
+    {
+        id: 'open-sans',
+        title: 'Open Sans',
+    },
+    {
+        id: 'roboto',
+        title: 'Roboto'
+    }
+]
+
+const sizes = [
+    {
+        id: 'font-12',
+        title: '12',
+    },
+    {
+        id: 'font-14',
+        title: '14'
+    },
+    {
+        id: 'font-16',
+        title: '16'
+    },
+    {
+        id: 'font-18',
+        title: '18'
+    },
+    {
+        id: 'font-20',
+        title: '20'
+    }
+]
+
 export function RichTextEditView() {
 
     const editorRef = useRef<Editor>()
@@ -41,22 +99,70 @@ export function RichTextEditView() {
     const renderLeaf = useCallback(props => <Leaf {...props} />, [])
 
     return (
-        <div className={'flex-fill d-flex flex-column'}>
-            <div className={'d-flex h-gap-3 py-4 px-5'}>
-                <Button text={'Bold'} onClick={() => toggleMark(editor, 'bold')}/>
-                <Button text={'Italic'} onClick={() => toggleMark(editor, 'italic')}/>
-                <Button text={'Underline'} onClick={() => toggleMark(editor, 'underline')}/>
+        <div className={'flex-fill d-flex flex-column v-gap-3 p-5'}>
+            <div className={'toolbar d-flex flex-column v-gap-3'}>
+                <div className={'toolbar flex-fill d-flex h-gap-5'}>
+                    <div className={'d-flex h-gap-3'}>
+                        <ComboBox items={fonts} />
+                        <ComboBox className={'font-size'} items={sizes} />
+                    </div>
+                    <div className={'d-flex h-gap-2'}>
+                        <Button className={'btn-transparent'} onClick={() => toggleMark(editor, 'text-align-left')}>
+                            <TextAlignLeftSVG className={'small-image-container'}/>
+                        </Button>
+                        <Button className={'btn-transparent'} onClick={() => toggleMark(editor, 'text-align-left')}>
+                            <TextAlignCenterSVG className={'small-image-container'}/>
+                        </Button>
+                        <Button className={'btn-transparent'} onClick={() => toggleMark(editor, 'text-align-left')}>
+                            <TextAlignRightSVG className={'small-image-container'}/>
+                        </Button>
+                        <Button className={'btn-transparent'} onClick={() => toggleMark(editor, 'text-align-left')}>
+                            <TextAlignJustifySVG className={'small-image-container'}/>
+                        </Button>
+                    </div>
+                    <div className={'d-flex h-gap-2'}>
+                        <Button className={'btn-transparent'} onClick={() => toggleMark(editor, 'bold')}>
+                            <TextListNumber className={'small-image-container'}/>
+                        </Button>
+                        <Button className={'btn-transparent'} onClick={() => toggleMark(editor, 'bold')}>
+                            <TextListBulletSVG className={'small-image-container'}/>
+                        </Button>
+                    </div>
+                </div>
+                <div className={'align-self-stretch d-flex justify-content-between'}>
+                    <div className={'d-flex h-gap-3'}>
+                        <Button className={'btn-transparent'} onClick={() => toggleMark(editor, 'bold')}>
+                            <TextFormatBoldSVGD className={'small-image-container'}/>
+                        </Button>
+                        <Button className={'btn-transparent'} onClick={() => toggleMark(editor, 'italic')}>
+                            <TextFormatItalicSVG className={'small-image-container'}/>
+                        </Button>
+                        <Button className={'btn-transparent'} onClick={() => toggleMark(editor, 'underline')}>
+                            <TextFormatUnderlineSVG className={'small-image-container'}/>
+                        </Button>
+                        <Button className={'btn-transparent border-bottom border-accent rounded-0'} onClick={() => toggleMark(editor, 'highlight')}>
+                            <TextFormatHighlightSVG className={'small-image-container'}/>
+                        </Button>
+                        <Button className={'btn-transparent'} onClick={() => toggleMark(editor, 'color')}>
+                            <TextFormatColorSVG className={'small-image-container'}/>
+                        </Button>
+                    </div>
+                    <div className={'d-flex'}>
+                        <ComboBox items={citation} />
+                    </div>
+                </div>
             </div>
-            <div className={'flex-fill d-flex position-relative'}>
-                <div className={'position-absolute w-100 h-100 overflow-auto px-5 py-5'}>
-                    <div className={'bg-primary'}>
-                        <div className={'text-secondary p-4'}>
+
+            <div className={'flex-fill d-flex position-relative h-100'}>
+                <div className={'position-absolute w-100 h-100 overflow-auto pr-4 pt-4'}>
+                    <div className={'bg-primary h-100'}>
+                        <div className={'text-secondary h-100'}>
                             <Slate
                                 editor={editor}
                                 value={value}
                                 onChange={setValue}>
                                 <Editable
-                                    className={'unreset'}
+                                    className={'unreset h-100'}
                                     renderElement={renderElement}
                                     renderLeaf={renderLeaf}
                                     spellCheck={false}
@@ -81,8 +187,6 @@ export function RichTextEditView() {
                             </Slate>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>

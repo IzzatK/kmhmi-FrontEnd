@@ -32,7 +32,7 @@ class ComboBoxItem extends Component<ComboBoxItemProps, ComboBoxItemState> {
                     multiSelect && !readonly &&
                     <CheckBox selected={selected}/>
                 }
-                <div className={'text-wrap title'}>{title}</div>
+                <div className={`text-wrap title ${selected && "font-weight-bold"}`}>{title}</div>
             </div>
         );
     }

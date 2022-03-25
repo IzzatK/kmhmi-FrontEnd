@@ -61,55 +61,45 @@ class ReportPanelView extends Component<ReportPanelPresenterProps, ReportPanelPr
             citationTitle = 'Select Style';
         }
 
+        //${!id && 'disabled'}
+
         return (
             <div className={cn}>
                 <div className={'d-flex flex-fill flex-column align-items-stretch'}>
-                    {/*<div className={'header-1 title py-4 pl-5'}>REPORT INFORMATION</div>*/}
-                    <div className={`header position-relative`}>
-                        <div className={`d-flex flex-column p-4 v-gap-5 position-relative ${!id && 'disabled'} `}>
-                            <div className={"d-flex flex-column v-gap-1 header-1"}>
-                                <div className={'property-grid'}>
-                                    <div className={'d-flex align-items-center h-gap-4'}>
-                                        <div className={'header-1 font-weight-semi-bold text-right label'}>Title:</div>
-                                        <TextEdit
-                                            className={'text-field'}
-                                            placeholder={'Title goes here'}
-                                            name={'title'}
-                                            value={titleValue}
-                                            disable={id === undefined}
-                                            edit={id !== undefined}
-                                            onSubmit={this._onTmpReportChanged}
-                                        />
-                                    </div>
+                    <div className={`d-flex flex-column v-gap-3 header position-relative px-5 py-4`}>
+                        <div className={'d-flex justify-content-between'}>
+                            <div className={'header-1 title'}>REPORT INFORMATION</div>
+                            <div className={'d-flex h-gap-3'}>
+                                <Button text={'Cancel'}/>
+                                <Button text={'Save'}/>
+                            </div>
+                        </div>
+                        <div className={`d-flex h-gap-5`}>
+                            <div className={'flex-fill d-flex align-items-center h-gap-3'}>
+                                <div className={'header-1 font-weight-semi-bold text-right label'}>Title:</div>
+                                <TextEdit
+                                    className={'flex-fill text-field'}
+                                    placeholder={'Title goes here'}
+                                    name={'title'}
+                                    value={titleValue}
+                                    // disable={id === undefined}
+                                    // edit={id !== undefined}
+                                    onSubmit={this._onTmpReportChanged}
+                                />
+                            </div>
 
-                                    <div className={'d-flex align-items-center h-gap-4'}>
-                                        <div className={'header-1 font-weight-semi-bold text-right label'}>Date:</div>
-                                        <TextEdit
-                                            className={'text-field'}
-                                            type={'date'}
-                                            placeholder={'Date goes here'}
-                                            name={'date'}
-                                            value={dateValue}
-                                            disable={id === undefined}
-                                            edit={id !== undefined}
-                                            onSubmit={(name, value) => this._onTmpReportChanged(name, value)}
-                                        />
-                                    </div>
-
-                                    <div className={'d-flex align-items-center h-gap-4'}>
-                                        <div/>
-                                        <div/>
-                                    </div>
-
-                                    <div className={'d-flex align-items-center h-gap-4'}>
-                                        <div className={'header-1 font-weight-semi-bold text-right label'}>Style:</div>
-                                        <ComboBox
-                                            title={citationTitle}
-                                            items={Object.values(citations)}
-                                            onSelect={(value: string) => this._onTmpReportChanged('citation', value)}
-                                        />
-                                    </div>
-                                </div>
+                            <div className={'d-flex align-items-center h-gap-3'}>
+                                <div className={'header-1 font-weight-semi-bold text-right label'}>Date:</div>
+                                <TextEdit
+                                    className={'text-field'}
+                                    type={'date'}
+                                    placeholder={'Date goes here'}
+                                    name={'date'}
+                                    value={dateValue}
+                                    // disable={id === undefined}
+                                    // edit={id !== undefined}
+                                    onSubmit={(name, value) => this._onTmpReportChanged(name, value)}
+                                />
                             </div>
 
                         </div>

@@ -164,6 +164,9 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
                 let value = false;
                 if (selectedItemIds && selectedItemIds.includes(itemId) || title === itemTitle) {
                     value = true;
+                    if (!cbTitle) {
+                        cbTitle = itemTitle;
+                    }
                 }
 
                 comboBoxItems.push(
