@@ -5,7 +5,7 @@ import FileInput from "../../theme/widgets/fileInput/fileInput";
 import Card from "../../theme/widgets/card/card";
 import Button from "../../theme/widgets/button/button";
 import {CSSTransition, TransitionGroup} from "react-transition-group";
-import {getClassNames} from "../../../framework.visual/extras/utils/animationUtils";
+import {getClassNames} from "../../../framework.visual";
 import ScrollBar from "../../theme/widgets/scrollBar/scrollBar";
 import {LoadingIndicator} from "../../theme/widgets/loadingIndicator/loadingIndicator";
 import {PendingDocumentVM, UploadPanelProps, UploadPanelState} from "./uploadPanelModel";
@@ -29,6 +29,11 @@ class UploadPanelView extends Component<UploadPanelProps, UploadPanelState> {
     }
 
     componentDidMount() {
+        const { onFetchUploadedDocuments } = this.props;
+
+        if (onFetchUploadedDocuments) {
+            onFetchUploadedDocuments();
+        }
     }
 
     componentDidUpdate(prevProps: Readonly<UploadPanelProps>, prevState: Readonly<UploadPanelState>, snapshot?: any) {

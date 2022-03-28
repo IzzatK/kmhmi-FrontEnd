@@ -6,6 +6,7 @@ export type UploadPanelProps = {
     onDocumentSelected: (id: string) => void;
     onPendingDocumentApproved: (id: string) => void;
     onCancelUpload: (id: string) => void;
+    onFetchUploadedDocuments: () => void;
 }
 
 export type UploadPanelState = {

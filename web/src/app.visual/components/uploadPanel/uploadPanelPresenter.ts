@@ -1,6 +1,6 @@
 import UploadPanelView from "./uploadPanelView";
-import {VisualWrapper} from "../../../framework.visual/extras/visualWrapper";
-import {createVisualConnector} from "../../../framework.visual/connectors/visualConnector";
+import {VisualWrapper} from "../../../framework.visual";
+import {createVisualConnector} from "../../../framework.visual";
 import {createSelector} from "@reduxjs/toolkit";
 import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
 import {DocumentPanelId} from "../documentPanel/documentPanelPresenter";
@@ -41,6 +41,7 @@ class UploadPanel extends VisualWrapper {
                 onDocumentSelected: (id: string) => this._onDocumentSelected(id),
                 onPendingDocumentApproved: (id: string) => this._approvePendingDocument(id),
                 onCancelUpload: (id: string) => this._cancelUpload(id),
+                onFetchUploadedDocuments: () => this._fetchUploadedDocuments(),
             };
         }
     }
@@ -60,6 +61,10 @@ class UploadPanel extends VisualWrapper {
 
     _cancelUpload(id: string) {
         documentService.cancelUpload(id);
+    }
+
+    _fetchUploadedDocuments() {
+        documentService.fetchUploadedDocuments();
     }
 
     getSelectedDocumentId = selectionService.makeGetContext("selected-document");

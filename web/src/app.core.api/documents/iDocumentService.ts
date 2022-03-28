@@ -2,7 +2,7 @@ import {Nullable} from "../../framework.core/extras/utils/typeUtils";
 import {DocumentInfo, SearchParamInfo, SortPropertyInfo} from "../../app.model";
 import {IPlugin} from "../../framework.core.api";
 import {IUserService} from "../users/iUserService";
-import {IEntityProvider} from "../../framework.core.api/iEntityProvider";
+import {IEntityProvider} from "../../framework.core.api";
 
 export interface IDocumentService extends IPlugin {
 
@@ -11,6 +11,8 @@ export interface IDocumentService extends IPlugin {
     clearSearch(): void;
 
     fetchDocuments(): void;
+
+    fetchUploadedDocuments(): void;
 
     updateDocument(modifiedDocument: Record<string, any>): void;
 

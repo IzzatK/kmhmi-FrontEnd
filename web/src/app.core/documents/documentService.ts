@@ -16,8 +16,6 @@ export class DocumentService extends Plugin implements IDocumentService {
 
     private readonly pendingFilesRaw: Record<string, any>;
 
-    private pendingFilesQueue: any[];
-
     getAllDocumentsSelector: OutputSelector<any, Record<string, DocumentInfo>, (res1: Record<string, DocumentInfo>, res2: any) => Record<string, DocumentInfo>>;
     getSearchDocumentsSelector: OutputSelector<any, Record<string, DocumentInfo>, (res: Record<string, DocumentInfo>) => Record<string, DocumentInfo>>;
     getPendingDocumentsSelector: OutputSelector<any, Record<string, DocumentInfo>, (res: Record<string, DocumentInfo>) => Record<string, DocumentInfo>>;
@@ -27,8 +25,6 @@ export class DocumentService extends Plugin implements IDocumentService {
         this.appendClassName(DocumentService.class);
 
         this.pendingFilesRaw = {};
-
-        this.pendingFilesQueue = [];
 
         this.getAllDocumentsSelector = createSelector(
             [(s) => this.getAll<DocumentInfo>(DocumentInfo.class), (s) => this.userService?.getCurrentUserId()],
@@ -188,6 +184,30 @@ export class DocumentService extends Plugin implements IDocumentService {
             });
     }
 
+    fetchUploadedDocuments() {
+        const user_id = this.userService?.getCurrentUserId();
+
+        if (user_id) {
+            const searchParams = {
+                uploaded_documents_only: true,
+                user_id
+            }
+
+            this.documentProvider?.getAll(searchParams)
+                .then(responseData => {
+                    let documents: Record<string, DocumentInfo> = Object.assign({}, this.getSearchDocuments(), responseData);
+
+                    let values: DocumentInfo[] = Object.values(documents) as unknown as DocumentInfo[];
+
+                    this.removeAllByType(DocumentInfo.class);
+                    this.addOrUpdateAllRepoItems(values);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    }
+
     updateDocument(modifiedDocument: any) {
         const {id} = modifiedDocument;
 
@@ -265,114 +285,78 @@ export class DocumentService extends Plugin implements IDocumentService {
             });
     }
 
-    private enqueueFile(file: any) {
-        const {name} = file;
-
-        // since we are posting and don't have an id yet, use a placeholder
-        let tmpId = name;
-
-        this.pendingFilesQueue.push(file);
-
-        // redux raw file
-        this.pendingFilesRaw[tmpId] = file;
-
-        // put the file in the pending documents list
-        // id will be auto generated client side
-        let tmpFileInfo = new DocumentInfo(tmpId);
-        tmpFileInfo.file_name = name;
-        tmpFileInfo.isPending = true;
-
-        this.addOrUpdateRepoItem(tmpFileInfo)
-    }
-
-    dequeueFile() {
-        const file = this.pendingFilesQueue.shift();
-
-        if (file) {
-            const {name} = file;
-
-            // since we are posting and don't have an id yet, use a placeholder
-            let tmpId = name;
-
-            // redux raw file
-            this.pendingFilesRaw[tmpId] = file;
-
-            let requestData = {
-                id: tmpId,
-                pendingFilesRaw: this.pendingFilesRaw,
-                file
-            };
-
-            let document = this.getDocument(tmpId);
-            if (document) {
-                document.status = StatusType.PROCESSING;
-                this.addOrUpdateRepoItem(document);
-            }
-
-            this.documentProvider?.create(requestData,
-                (updatedDocument) => {
-                    const {id, status} = updatedDocument;
-
-                    updatedDocument.file_name = name;
-                    updatedDocument.isPending = true;
-
-                    if (this.pendingFilesRaw[tmpId]) {
-                        delete this.pendingFilesRaw[tmpId];
-
-                        // put the document back in with the new id
-                        this.pendingFilesRaw[id] = file;
-                    } else if (status === StatusType.FAILED) {
-                        setTimeout(() => {
-                            this.removeAllById(DocumentInfo.class, id);
-                            this.removeAllById(DocumentInfo.class, name);
-                        }, 5000);
-                    }
-
-                    this.addOrUpdateRepoItem(updatedDocument);
-                })
-                .then(document => {
-                    if (document != null) {
-                        const { id, file_name } = document;
-
-                        let localFile = this.getDocument(file_name);
-
-                        if (localFile) {
-                            if (localFile.isDeleted) {
-                                this.removeDocument(id);
-                            } else {
-                                this.addOrUpdateRepoItem(document);
-                            }
-                        } else {
-                            this.removeDocument(id);
-                        }
-                    }
-
-                    this.processQueue();
-
-                })
-                .catch(error => {
-                    console.log(error);
-                    this.processQueue();
-                })
-        }
-    }
-
-    processQueue() {
-        if (this.pendingFilesQueue.length !== 0) {
-            this.dequeueFile();
-        }
-    }
-
     startUpload(fileList: any) {
-        let length = this.pendingFilesQueue.length;
+        const user_id = this.userService?.getCurrentUserId();
 
         forEach(fileList, (file: any) => {
-            this.enqueueFile(file)
-        });
+            if (file) {
+                const {name} = file;
 
-        if (length === 0) {
-            this.processQueue();
-        }
+                // since we are posting and don't have an id yet, use a placeholder
+                let tmpId = name;
+
+                // redux raw file
+                this.pendingFilesRaw[tmpId] = file;
+
+                // put the file in the pending documents list
+                // id will be auto generated client side
+                let tmpFileInfo = new DocumentInfo(tmpId);
+                tmpFileInfo.file_name = name;
+                tmpFileInfo.isPending = true;
+                tmpFileInfo.status = StatusType.PROCESSING;
+                this.addOrUpdateRepoItem(tmpFileInfo);
+
+                let requestData = {
+                    id: tmpId,
+                    pendingFilesRaw: this.pendingFilesRaw,
+                    file,
+                    user_id,
+                };
+
+
+                this.documentProvider?.create(requestData,
+                    (updatedDocument) => {
+                        const {id, status} = updatedDocument;
+
+                        updatedDocument.file_name = name;
+                        updatedDocument.isPending = true;
+
+                        if (this.pendingFilesRaw[tmpId]) {
+                            delete this.pendingFilesRaw[tmpId];
+
+                            // put the document back in with the new id
+                            this.pendingFilesRaw[id] = file;
+                        } else if (status === StatusType.FAILED) {
+                            setTimeout(() => {
+                                this.removeAllById(DocumentInfo.class, id);
+                                this.removeAllById(DocumentInfo.class, name);
+                            }, 5000);
+                        }
+
+                        this.addOrUpdateRepoItem(updatedDocument);
+                    })
+                    .then(document => {
+                        if (document != null) {
+                            const { id, file_name } = document;
+
+                            let localFile = this.getDocument(file_name);
+
+                            if (localFile) {
+                                if (localFile.isDeleted) {
+                                    this.removeDocument(id);
+                                } else {
+                                    this.addOrUpdateRepoItem(document);
+                                }
+                            } else {
+                                this.removeDocument(id);
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+            }
+        });
     }
 
     cancelUpload(id: string) {
@@ -391,11 +375,6 @@ export class DocumentService extends Plugin implements IDocumentService {
                 rawFile = this.pendingFilesRaw[file_name];
                 delete this.pendingFilesRaw[file_name];
             }
-
-            this.pendingFilesQueue = this.pendingFilesQueue.filter(file => {
-                const {name} = file;
-                return name !== file_name;
-            });
 
             if (rawFile) {
                 let cancelledFile = {
@@ -435,8 +414,6 @@ export class DocumentService extends Plugin implements IDocumentService {
                     .catch(error => {
                         this.error(error);
                     });
-
-                this.processQueue();
             }
         }
     }
