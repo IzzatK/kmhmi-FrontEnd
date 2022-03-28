@@ -10,6 +10,6 @@ export type TagProps = {
 }
 
 export type TagState = {
-    isSelected: boolean;
+    selected: boolean;
     tmpText: string;
 }

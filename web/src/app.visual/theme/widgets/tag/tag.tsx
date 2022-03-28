@@ -10,42 +10,44 @@ class Tag extends React.Component<TagProps, TagState> {
         super(props);
 
         this.state = {
-            isSelected: false,
+            selected: false,
             tmpText: "",
         }
 
         bindInstanceMethods(this);
     }
 
-    delete() {
-        const { onDelete, name, text } = this.props
+    _onDelete() {
+        const { onDelete, name, text } = this.props;
+
         if (onDelete) {
             onDelete(name, text);
         }
     }
 
-    submit(name:string, tmpValue:string) {
+    _onSubmit(name: string, tmpValue: string) {
         const { onSubmit, text } = this.props;
+
         if (onSubmit) {
             onSubmit(name, text, tmpValue);
         }
     }
 
-    toggleSelected() {
-        const { isSelected } = this.state;
+    _toggleSelected() {
+        const { selected } = this.state;
 
         this.setState({
             ...this.state,
-            isSelected: !isSelected,
+            selected: !selected,
         })
     };
 
 
     render() {
-        const {className, onDelete, text, name, isEdit=false, onSubmit, isGlobal=false, readonly=true} = this.props;
-        const {tmpText, isSelected} = this.state;
+        const { className, text, name, isEdit=false, isGlobal=false, readonly=true } = this.props;
+        const { tmpText, selected } = this.state;
 
-        let cn = 'tag d-flex rounded-pill h-gap-2 cursor-pointer';
+        let cn = 'tag d-flex rounded-pill cursor-pointer';
 
         if (className) {
             cn += ` ${className}`;
@@ -66,33 +68,31 @@ class Tag extends React.Component<TagProps, TagState> {
 
         return (
             <div className={cn}>
-                <div className={"d-grid"} onClick={this.toggleSelected}>
+                <div className={"d-grid"} onClick={this._toggleSelected}>
                     {
-                        !isEdit &&
-                        <div className={`tag-text display-4 text-nowrap align-self-center ${readonly ? 'px-4' : 'pl-4'}`}>
-                            {text}
-                        </div>
-                    }
-                    {
-                        isEdit &&
+                        isEdit ?
                         <TextEdit
                             className={"pl-4 mr-4 align-self-center"}
                             placeholder={'Enter New Tag'}
                             name={name}
                             dirty={dirty}
                             value={value}
-                            onSubmit={this.submit}
+                            onSubmit={this._onSubmit}
                             edit={true}
-                            autoFocus={true}/>
+                            autoFocus={true}
+                        />
+                        :
+                        <div className={`tag-text display-4 text-nowrap align-self-center pr-4 ${readonly ? 'px-4' : 'pl-4'}`}>
+                            {text}
+                        </div>
                     }
                 </div>
                 {
-                    !readonly &&
-                    <div className={'delete-btn align-self-center pr-2'} onClick={this.delete}>
+                    (!readonly && (selected || isEdit)) &&
+                    <div className={'delete-btn align-self-center pr-2'} onClick={this._onDelete}>
                         <DeleteSVG className={"tiny-image-container"}/>
                     </div>
                 }
-
             </div>
         );
     }
