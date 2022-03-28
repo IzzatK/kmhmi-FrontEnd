@@ -21,7 +21,9 @@ export type LeafType = {
     italic: boolean,
     underline: boolean
     fontSize: string,
-    fontFamily: string
+    fontFamily: string,
+    fontColor: string,
+    highlightColor: string
 }
 
 export type ElementProps = RenderElementProps & {
@@ -53,7 +55,19 @@ export enum TEXT_ALIGN_TYPE {
     'justify'='justify'
 }
 
-export type FontSizeInputProps = ButtonProps & {
+export type FontSizeInputProps = {
+
+}
+
+export type FontFamilyInputProps = {
+
+}
+
+export type HighlightColorInputProps = {
+
+}
+
+export type FontColorInputProps = {
 
 }
 

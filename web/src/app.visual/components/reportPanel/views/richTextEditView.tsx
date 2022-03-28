@@ -1,4 +1,4 @@
-import {useCallback, useRef, useState} from "react";
+import React, {useCallback, useRef, useState} from "react";
 import {Editable, RenderElementProps, Slate, useSlate, withReact,} from "slate-react";
 import {createEditor, Descendant, Editor, Element as SlateElement, Transforms} from "slate";
 import {withHistory} from "slate-history";
@@ -19,12 +19,13 @@ import {TextListBulletSVG} from "../../../theme/svgs/textListBulletSVG";
 import {
     BlockButtonProps,
     ElementProps,
-    ElementType,
-    FontSizeInputProps,
+    ElementType, FontColorInputProps, FontFamilyInputProps,
+    FontSizeInputProps, HighlightColorInputProps,
     LeafProps,
     LIST_TYPE,
     TEXT_ALIGN_TYPE
 } from "./slate/slateModel";
+import Portal from "../../../theme/widgets/portal/portal";
 
 const initialValue: Descendant[] = [
     {
@@ -104,6 +105,15 @@ const FONT_SIZES = [
     },
     {
         id: '18',
+    },
+    {
+        id: '20',
+    },
+    {
+        id: '22',
+    },
+    {
+        id: '24',
     }
 ]
 
@@ -166,12 +176,11 @@ export function RichTextEditView() {
                             <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'underline')} selected={isMarkActive(editor, 'underline')}>
                                 <TextFormatUnderlineSVG className={'small-image-container'}/>
                             </Button>
-                            <Button className={'btn-transparent border-bottom border-accent rounded-0'} onClick={() => toggleMarkFormat(editor, 'highlight')}>
-                                <TextFormatHighlightSVG className={'small-image-container'}/>
-                            </Button>
-                            <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'color')}>
-                                <TextFormatColorSVG className={'small-image-container'}/>
-                            </Button>
+                            <HighlightColorInput/>
+                            {/*<Button className={'btn-transparent border-bottom border-accent rounded-0'} onClick={() => toggleMarkFormat(editor, 'highlight')}>*/}
+                            {/*    <TextFormatHighlightSVG className={'small-image-container'}/>*/}
+                            {/*</Button>*/}
+                            <FontColorInput/>
                         </div>
                         <div className={'d-flex'}>
                             <ComboBox items={citation} />
@@ -288,7 +297,7 @@ function isMarkActive (editor: Editor, format:string) {
     return marks ? marks[format] : false
 }
 
-function FontFamilyInput(props: FontSizeInputProps) {
+function FontFamilyInput(props: FontFamilyInputProps) {
     const editor = useSlate();
 
     function _onSelect(id: string) {
@@ -296,7 +305,7 @@ function FontFamilyInput(props: FontSizeInputProps) {
         editor.addMark('fontFamily', id);
     }
 
-    return <ComboBox className={'font-family'} items={FONT_FAMILIES} onSelect={_onSelect}/>
+    return <ComboBox title={'Open Sans'} className={'font-family'} items={FONT_FAMILIES} onSelect={_onSelect}/>
 }
 
 function FontSizeInput(props: FontSizeInputProps) {
@@ -311,7 +320,121 @@ function FontSizeInput(props: FontSizeInputProps) {
         // })
     }
 
-    return <ComboBox className={'font-size'} items={FONT_SIZES} onSelect={_onSelect}/>
+    return <ComboBox title={'16'} className={'font-size'} items={FONT_SIZES} onSelect={_onSelect}/>
+}
+
+function HighlightColorInput(props: HighlightColorInputProps) {
+    const [isOpen, setIsOpen] = useState(false);
+    const [color, setColor] = useState('yellow');
+    const editor = useSlate();
+
+    function _onSelect(id: string) {
+        editor.removeMark('highlightColor')
+
+        const nextColor: string = id === color ? 'transparent': id;
+
+        setColor(nextColor);
+        editor.addMark('highlightColor', nextColor);
+
+        setIsOpen(false);
+    }
+
+    function _onClickHandler() {
+        if (isOpen) {
+            setIsOpen(false);
+        }
+        else {
+            setIsOpen(true);
+        }
+    }
+
+    return (
+        <div>
+            <Portal
+                isOpen={isOpen}
+                zIndex={9999}
+                enterClass={'growVertical'}
+                exitClass={'shrinkVertical'}
+                timeout={200}
+                autoLayout={false}
+                onShouldClose={_onClickHandler}
+                portalContent={(relatedWidth: any) => {
+                    return (
+                            <div className={`shadow d-flex h-gap-3 p-3 bg-muted mt-2`}>
+                                <div className={'p-4'} style={{backgroundColor: 'yellow'}} onClick={() => _onSelect('yellow')}/>
+                                <div className={'p-4'} style={{backgroundColor: 'green'}} onClick={() => _onSelect('green')}/>
+                                <div className={'p-4'} style={{backgroundColor: 'blue'}} onClick={() => _onSelect('blue')}/>
+                                <div className={'p-4'} style={{backgroundColor: 'pink'}} onClick={() => _onSelect('pink')}/>
+                            </div>
+                        )
+                }}>
+                <div tabIndex={0}>
+                    <Button className={'btn-transparent rounded-0'} style={{borderBottom: `0.1rem solid ${color}`}} onClick={() => _onClickHandler()}>
+                        <TextFormatHighlightSVG className={'small-image-container'}/>
+                    </Button>
+                </div>
+            </Portal>
+        </div>
+    )
+}
+
+function FontColorInput(props: FontColorInputProps) {
+    const [isOpen, setIsOpen] = useState(false);
+    const [color, setColor] = useState('black');
+    const editor = useSlate();
+
+    function _onSelect(id: string) {
+        editor.removeMark('fontColor')
+
+        const nextColor: string = id === color ? 'black': id;
+
+        setColor(nextColor);
+        editor.addMark('fontColor', nextColor);
+
+        setIsOpen(false);
+    }
+
+    function _onClickHandler() {
+        if (isOpen) {
+            setIsOpen(false);
+        }
+        else {
+            setIsOpen(true);
+        }
+    }
+
+    return (
+        <div>
+            <Portal
+                isOpen={isOpen}
+                zIndex={9999}
+                enterClass={'growVertical'}
+                exitClass={'shrinkVertical'}
+                timeout={200}
+                autoLayout={false}
+                onShouldClose={_onClickHandler}
+                portalContent={(relatedWidth: any) => {
+                    return (
+                        <div className={`shadow d-flex h-gap-3 p-3 bg-muted mt-2`}>
+                            <div className={'p-4'} style={{backgroundColor: 'yellow'}} onClick={() => _onSelect('yellow')}/>
+                            <div className={'p-4'} style={{backgroundColor: 'red'}} onClick={() => _onSelect('red')}/>
+                            <div className={'p-4'} style={{backgroundColor: 'darkgray'}} onClick={() => _onSelect('darkgray')}/>
+                            <div className={'p-4'} style={{backgroundColor: 'gray'}} onClick={() => _onSelect('gray')}/>
+                            <div className={'p-4'} style={{backgroundColor: 'orange'}} onClick={() => _onSelect('orange')}/>
+                            <div className={'p-4'} style={{backgroundColor: 'lightblue'}} onClick={() => _onSelect('lightblue')}/>
+                            <div className={'p-4'} style={{backgroundColor: 'black'}} onClick={() => _onSelect('black')}/>
+                            <div className={'p-4'} style={{backgroundColor: 'darkmagenta'}} onClick={() => _onSelect('darkmagenta')}/>
+                        </div>
+                    )
+                }}>
+                <div tabIndex={0}>
+                    <Button className={'btn-transparent rounded-0'} style={{borderBottom: `0.1rem solid ${color}`}} onClick={() => _onClickHandler()}>
+                        <TextFormatColorSVG className={'small-image-container'}/>
+                    </Button>
+                </div>
+            </Portal>
+        </div>
+    )
 }
 
 function BlockButton(props: BlockButtonProps) {
@@ -417,7 +540,9 @@ function Leaf( props: LeafProps) {
 
     const style = {
         fontSize: parseInt(leaf.fontSize) || 12,
-        fontFamily: leaf.fontFamily || ''
+        fontFamily: leaf.fontFamily || '',
+        backgroundColor: leaf.highlightColor || '',
+        color: leaf.fontColor || 'black'
     }
 
 
