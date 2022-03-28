@@ -170,7 +170,7 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
                 }
 
                 comboBoxItems.push(
-                    <ComboBoxItem className={'d-flex'} key={itemId} title={itemTitle} multiSelect={multiSelect}
+                    <ComboBoxItem className={'d-flex'} key={itemId} title={itemTitle || itemId} multiSelect={multiSelect}
                                   onClick={() => this._onSelectHandler(itemId || "")} selected={value} readonly={readonly}/>
                 )
             });
