@@ -153,6 +153,7 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
                                 })
                                 .catch(error => {
                                     console.log(error);
+                                    reject(error);
                                 });
                         }
                         else {

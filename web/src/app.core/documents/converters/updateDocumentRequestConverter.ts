@@ -11,7 +11,7 @@ export class UpdateDocumentRequestConverter extends Converter<any, any>{
 
         const dictionary: Record<string, any> = latestDocument;
 
-        let numValues = ["dept_id", "department", "purpose"];
+        let numValues = ["dept_id", "department"];
 
         const getTextValueOrDefault = (propertyName: string, defaultValue: any) => {
             let result = defaultValue;
@@ -115,7 +115,7 @@ export class UpdateDocumentRequestConverter extends Converter<any, any>{
             primary_sme_phone: getTextValueOrDefault(nameOf<DocumentInfo>('primary_sme_phone'), ''),
             project: getTextValueOrDefault(nameOf<DocumentInfo>('project'), ''),
             publication_date: getTextValueOrDefault(nameOf<DocumentInfo>('publication_date'), ''),
-            purpose: getTextValueOrDefault(nameOf<DocumentInfo>('purpose'), null),
+            purpose: getTextValueOrDefault(nameOf<DocumentInfo>('purpose'), null).toString(),
 
             tm_title: getTextValueOrDefault(nameOf<DocumentInfo>('suggested_title'), ''),
             tm_authors: getTextValueOrDefault(nameOf<DocumentInfo>('suggested_author'), ''),

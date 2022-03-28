@@ -10,7 +10,11 @@ export class GetDocumentResponseConverter extends Converter<any, DocumentInfo>{
     convert(fromData: any, reject: ErrorHandler): DocumentInfo {
         const item = fromData;
 
-        const documentInfo: DocumentInfo = new DocumentInfo(getValueOrDefault(item, 'document_id', ''));
+        let idPropertyName: string = 'document_id';
+        if (!item.hasOwnProperty('document_id')) {
+            idPropertyName = 'id';
+        }
+        const documentInfo: DocumentInfo = new DocumentInfo(getValueOrDefault(item, idPropertyName, ''));
 
         documentInfo.author = getValueOrDefault(item, 'author', '');
 
