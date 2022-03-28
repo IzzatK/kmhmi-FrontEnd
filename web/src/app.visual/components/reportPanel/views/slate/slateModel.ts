@@ -1,7 +1,8 @@
-import {BaseEditor} from "slate";
-import {ReactEditor} from "slate-react";
+import {BaseEditor, BaseElement} from "slate";
+import {ReactEditor, RenderLeafProps} from "slate-react";
 import {HistoryEditor} from "slate-history";
 import {ButtonProps} from "../../../../theme/widgets/button/buttonModel";
+import {RenderElementProps} from "slate-react/dist/components/editable";
 
 declare module 'slate' {
     interface CustomTypes {
@@ -9,25 +10,28 @@ declare module 'slate' {
     }
 }
 
-export type ElementProps = {
-    attributes: any[],
-    children: JSX.Element,
-    element: {
-        type: string
-        align: 'left' | 'center' | 'right' | 'justify'
-    }
+export type ElementType = BaseElement & {
+    type: string
+    align: TEXT_ALIGN_TYPE | undefined
 }
 
-export type LeafProps = {
+export type LeafType = {
+    bold: boolean,
+    code: boolean,
+    italic: boolean,
+    underline: boolean
+    fontSize: string,
+    fontFamily: string
+}
+
+export type ElementProps = RenderElementProps & {
+    children: ElementType[],
+    element: ElementType
+}
+
+export type LeafProps = RenderLeafProps & {
     attributes: any[],
-    children: JSX.Element,
-    leaf: {
-        bold: boolean,
-        code: boolean,
-        italic: boolean,
-        underline: boolean
-        fontSize: string
-    }
+    leaf: LeafType
 }
 
 export type SlateEditorProps = {
