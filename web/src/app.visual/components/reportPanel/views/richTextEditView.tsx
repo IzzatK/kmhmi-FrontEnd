@@ -1,7 +1,7 @@
-import {useCallback, useMemo, useRef, useState} from "react";
-import {Slate, Editable, withReact, ReactEditor, useSlate, } from "slate-react";
-import {BaseEditor, BaseElement, createEditor, Descendant, Editor, Element as SlateElement, Transforms} from "slate";
-import {HistoryEditor, withHistory} from "slate-history";
+import {useCallback, useRef, useState} from "react";
+import {Editable, RenderElementProps, Slate, useSlate, withReact,} from "slate-react";
+import {createEditor, Descendant, Editor, Element as SlateElement, Transforms} from "slate";
+import {withHistory} from "slate-history";
 import Button from "../../../theme/widgets/button/button";
 import isHotkey from 'is-hotkey';
 import {TextFormatBoldSVGD} from "../../../theme/svgs/textFormatBoldSVG";
@@ -16,7 +16,15 @@ import {TextAlignRightSVG} from "../../../theme/svgs/textAlignRightSVG";
 import {TextAlignJustifySVG} from "../../../theme/svgs/textAlignJustifySVG";
 import {TextListNumber} from "../../../theme/svgs/textListNumber";
 import {TextListBulletSVG} from "../../../theme/svgs/textListBulletSVG";
-import {BlockButtonProps, FontSizeInputProps, LeafProps, LIST_TYPE, TEXT_ALIGN_TYPE} from "./slate/slateModel";
+import {
+    BlockButtonProps,
+    ElementProps,
+    ElementType,
+    FontSizeInputProps,
+    LeafProps,
+    LIST_TYPE,
+    TEXT_ALIGN_TYPE
+} from "./slate/slateModel";
 
 const initialValue: Descendant[] = [
     {
@@ -47,28 +55,40 @@ const citation = [
 
 const FONT_FAMILIES = [
     {
-        id: 'open-sans',
-        title: 'Open Sans',
+        id: 'Open Sans',
+        style: {
+            fontFamily: 'Open Sans'
+        }
     },
     {
-        id: 'bookman-old-style',
-        title: 'Bookman Old Style',
+        id: 'Bookman Old Style',
+        style: {
+            fontFamily: 'Bookman Old Style'
+        }
     },
     {
-        id: 'franklin-gothic',
-        title: 'Franklin Gothic',
+        id: 'Franklin Gothic',
+        style: {
+            fontFamily: 'Franklin Gothic'
+        }
     },
     {
-        id: 'gadugi',
-        title: 'Gadugi',
+        id: 'Gadugi',
+        style: {
+            fontFamily: 'Gadugi'
+        }
     },
     {
-        id: 'lucida-console',
-        title: 'Lucida Console',
+        id: 'Lucida Console',
+        style: {
+            fontFamily: 'Lucida Console'
+        }
     },
     {
-        id: 'platina-linotype',
-        title: 'Platino Linotype'
+        id: 'Platino Linotype',
+        style: {
+            fontFamily: 'Platino Linotype'
+        }
     }
 ]
 
@@ -109,7 +129,7 @@ export function RichTextEditView() {
                 <div className={'toolbar d-flex flex-column v-gap-3'}>
                     <div className={'toolbar flex-fill d-flex h-gap-5'}>
                         <div className={'d-flex h-gap-3'}>
-                            <ComboBox items={FONT_FAMILIES} />
+                            <FontFamilyInput/>
                             <FontSizeInput />
                         </div>
                         <div className={'d-flex h-gap-2'}>
@@ -268,6 +288,17 @@ function isMarkActive (editor: Editor, format:string) {
     return marks ? marks[format] : false
 }
 
+function FontFamilyInput(props: FontSizeInputProps) {
+    const editor = useSlate();
+
+    function _onSelect(id: string) {
+        editor.removeMark('fontFamily')
+        editor.addMark('fontFamily', id);
+    }
+
+    return <ComboBox className={'font-family'} items={FONT_FAMILIES} onSelect={_onSelect}/>
+}
+
 function FontSizeInput(props: FontSizeInputProps) {
     const editor = useSlate();
 
@@ -325,24 +356,12 @@ function isBlockActive (editor: Editor, format: any, blockType = 'type') {
     return !!match
 }
 
-type ElementProps = {
-    attributes: any,
-    children: JSX.Element,
-    element: ElementType
-}
-
-type ElementType = BaseElement & {
-    type: string
-    align: TEXT_ALIGN_TYPE | undefined
-    fontSize: string
-}
-
 function Element (props: ElementProps) {
 
     const {attributes, children, element } = props;
 
     const style = {
-        textAlign: element.align || 'left',
+        textAlign: element.align || TEXT_ALIGN_TYPE.left,
     }
 
     switch (element.type) {
@@ -397,7 +416,8 @@ function Leaf( props: LeafProps) {
     let children = props.children;
 
     const style = {
-        fontSize: parseInt(leaf.fontSize) || 12
+        fontSize: parseInt(leaf.fontSize) || 12,
+        fontFamily: leaf.fontFamily || ''
     }
 
 
