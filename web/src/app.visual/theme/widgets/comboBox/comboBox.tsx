@@ -162,13 +162,14 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
                 const { id:itemId, title:itemTitle, selected:itemSelected } = itemValue;
 
                 let value = false;
-                if (selectedItemIds && selectedItemIds.includes(itemId) || title === itemTitle) {
+                if (selectedItemIds && selectedItemIds.includes(itemId) || (title && title === itemTitle)) {
                     value = true;
                     if (!cbTitle) {
                         cbTitle = itemTitle;
                     }
                 }
 
+                debugger
                 comboBoxItems.push(
                     <ComboBoxItem className={'d-flex'} key={itemId} title={itemTitle || itemId} multiSelect={multiSelect}
                                   onClick={() => this._onSelectHandler(itemId || "")} selected={value} readonly={readonly}/>

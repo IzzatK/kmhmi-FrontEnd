@@ -1,6 +1,6 @@
 import {useCallback, useMemo, useRef, useState} from "react";
-import {Slate, Editable, withReact, ReactEditor, useSlate} from "slate-react";
-import {BaseEditor, BaseElement, createEditor, Descendant, Editor, Element as SlateElement, Transforms,} from "slate";
+import {Slate, Editable, withReact, ReactEditor, useSlate, } from "slate-react";
+import {BaseEditor, BaseElement, createEditor, Descendant, Editor, Element as SlateElement, Transforms} from "slate";
 import {HistoryEditor, withHistory} from "slate-history";
 import Button from "../../../theme/widgets/button/button";
 import isHotkey from 'is-hotkey';
@@ -51,8 +51,24 @@ const FONT_FAMILIES = [
         title: 'Open Sans',
     },
     {
-        id: 'roboto',
-        title: 'Roboto'
+        id: 'bookman-old-style',
+        title: 'Bookman Old Style',
+    },
+    {
+        id: 'franklin-gothic',
+        title: 'Franklin Gothic',
+    },
+    {
+        id: 'gadugi',
+        title: 'Gadugi',
+    },
+    {
+        id: 'lucida-console',
+        title: 'Lucida Console',
+    },
+    {
+        id: 'platina-linotype',
+        title: 'Platino Linotype'
     }
 ]
 
@@ -384,21 +400,22 @@ function Leaf( props: LeafProps) {
         fontSize: parseInt(leaf.fontSize) || 12
     }
 
+
     if (leaf.bold) {
-        children = <strong style={style}>{children}</strong>
+        children = <strong>{children}</strong>
     }
 
     if (leaf.code) {
-        children = <code style={style}>{children}</code>
+        children = <code>{children}</code>
     }
 
     if (leaf.italic) {
-        children = <em style={style}>{children}</em>
+        children = <em>{children}</em>
     }
 
     if (leaf.underline) {
-        children = <u style={style}>{children}</u>
+        children = <u>{children}</u>
     }
 
-    return <span  style={style} {...attributes}>{children}</span>
+    return <span style={style} {...attributes}>{children}</span>
 }
