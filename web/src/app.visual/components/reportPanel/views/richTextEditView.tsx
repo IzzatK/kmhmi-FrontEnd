@@ -538,13 +538,37 @@ function Leaf( props: LeafProps) {
     const { attributes, leaf } = props;
     let children = props.children;
 
-    const style = {
-        fontSize: parseInt(leaf.fontSize) || 12,
-        fontFamily: leaf.fontFamily || '',
-        backgroundColor: leaf.highlightColor || '',
-        color: leaf.fontColor || 'black'
+    if (leaf.fontSize) {
+        const style = {
+            fontSize: parseInt(leaf.fontSize) || 12,
+        }
+
+        children = <span style={style}>{children}</span>
     }
 
+    if (leaf.fontFamily) {
+        const style = {
+            fontFamily: leaf.fontFamily || ''
+        }
+
+        children = <span style={style}>{children}</span>
+    }
+
+    if (leaf.fontColor) {
+        const style = {
+            color: leaf.fontColor || 'black'
+        }
+
+        children = <span style={style}>{children}</span>
+    }
+
+    if (leaf.highlightColor) {
+        const style = {
+            backgroundColor: leaf.highlightColor || '',
+        }
+
+        children = <span style={style}>{children}</span>
+    }
 
     if (leaf.bold) {
         children = <strong>{children}</strong>
@@ -555,12 +579,12 @@ function Leaf( props: LeafProps) {
     }
 
     if (leaf.italic) {
-        children = <em>{children}</em>
+        children = <i>{children}</i>
     }
 
     if (leaf.underline) {
         children = <u>{children}</u>
     }
 
-    return <span style={style} {...attributes}>{children}</span>
+    return <span {...attributes}>{children}</span>
 }
