@@ -415,7 +415,7 @@ function FontColorInput(props: FontColorInputProps) {
                 onShouldClose={_onClickHandler}
                 portalContent={(relatedWidth: any) => {
                     return (
-                        <div className={`shadow d-flex h-gap-3 p-3 bg-muted mt-2`}>
+                        <div className={`shadow p-3 bg-muted mt-2 d-grid`} style={{gridTemplateColumns: 'repeat(4, 1fr)', gridAutoRows: '1fr'}}>
                             <div className={'p-4'} style={{backgroundColor: 'yellow'}} onClick={() => _onSelect('yellow')}/>
                             <div className={'p-4'} style={{backgroundColor: 'red'}} onClick={() => _onSelect('red')}/>
                             <div className={'p-4'} style={{backgroundColor: 'darkgray'}} onClick={() => _onSelect('darkgray')}/>
