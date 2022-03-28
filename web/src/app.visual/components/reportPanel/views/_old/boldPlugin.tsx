@@ -2,7 +2,7 @@ import Button from "../../../../theme/widgets/button/button";
 import {ButtonProps} from "../../../../theme/widgets/button/buttonModel";
 import React from "react";
 import {Editor} from "slate";
-import {MarkProps} from "./slateModel";
+import {LeafProps} from "../slate/slateModel";
 import {isMod} from "./slate-utils";
 
 
@@ -18,14 +18,19 @@ function hasMark (editor: Editor) {
     return marks ? marks['bold'] : false
 }
 
-function boldMarkStrategy (change: any) {
-    debugger
-    return change
-      .toggleMark('bold')
-      .focus()
+function boldMarkStrategy (editor: Editor) {
+
+    if (hasMark(editor)) {
+        editor.removeMark('bold')
+    }
+    else {
+        editor.addMark('bold', true);
+    }
+
+    return editor;
 }
 
-type BoldMarkProps = MarkProps & {
+type BoldMarkProps = LeafProps & {
 
 }
 
@@ -37,10 +42,11 @@ function BoldMark (props: BoldMarkProps) {
     )
 }
 
-// function BoldKeyboardShortcut(event: React.KeyboardEvent<HTMLDivElement>, change: any) {
-//     if (isMod(event) && event.key === 'b') return boldMarkStrategy(change)
-//     return
-// }
+function BoldKeyboardShortcut(event: React.KeyboardEvent<HTMLDivElement>, change: any) {
+    if (isMod(event) && event.key === 'b') return boldMarkStrategy(change)
+    return
+}
+
 //
 // const BoldPlugin = (options:any) => ({
 //     onKeyDown(...args: any[]) {

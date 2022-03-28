@@ -23,6 +23,7 @@ export type ComboBoxState = {
 
 export type ComboBoxItemProps = {
     className?: string;
+    style?: object;
     id?: string;
     title?: string;
     onClick?: (() => void) | undefined;

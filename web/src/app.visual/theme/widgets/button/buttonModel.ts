@@ -10,6 +10,7 @@ export enum Justify_Content {
 
 export type ButtonProps = {
     text?: string;
+    children?: any;
     justifyContent?: Justify_Content;
     orientation?: 'vertical' | 'horizontal';
     onClick?: React.MouseEventHandler<HTMLDivElement>;

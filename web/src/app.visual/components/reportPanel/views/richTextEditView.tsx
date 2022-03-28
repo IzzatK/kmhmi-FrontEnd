@@ -1,7 +1,7 @@
-import {useCallback, useMemo, useRef, useState} from "react";
-import {Slate, Editable, withReact, ReactEditor} from "slate-react";
-import {BaseEditor, createEditor, Descendant, Editor, Element as SlateElement, Transforms,} from "slate";
-import {HistoryEditor, withHistory} from "slate-history";
+import React, {useCallback, useRef, useState} from "react";
+import {Editable, RenderElementProps, Slate, useSlate, withReact,} from "slate-react";
+import {createEditor, Descendant, Editor, Element as SlateElement, Transforms} from "slate";
+import {withHistory} from "slate-history";
 import Button from "../../../theme/widgets/button/button";
 import isHotkey from 'is-hotkey';
 import {TextFormatBoldSVGD} from "../../../theme/svgs/textFormatBoldSVG";
@@ -16,6 +16,16 @@ import {TextAlignRightSVG} from "../../../theme/svgs/textAlignRightSVG";
 import {TextAlignJustifySVG} from "../../../theme/svgs/textAlignJustifySVG";
 import {TextListNumber} from "../../../theme/svgs/textListNumber";
 import {TextListBulletSVG} from "../../../theme/svgs/textListBulletSVG";
+import {
+    BlockButtonProps,
+    ElementProps,
+    ElementType, FontColorInputProps, FontFamilyInputProps,
+    FontSizeInputProps, HighlightColorInputProps,
+    LeafProps,
+    LIST_TYPE,
+    TEXT_ALIGN_TYPE
+} from "./slate/slateModel";
+import Portal from "../../../theme/widgets/portal/portal";
 
 const initialValue: Descendant[] = [
     {
@@ -32,9 +42,6 @@ const HOTKEYS:Record<string, string> = {
     'mod+`': 'code',
 }
 
-const LIST_TYPES:string[] = ['numbered-list', 'bulleted-list']
-const TEXT_ALIGN_TYPES:string[] = ['left', 'center', 'right', 'justify']
-
 const citation = [
     {
         id: 'mla',
@@ -47,37 +54,66 @@ const citation = [
 ]
 
 
-const fonts = [
+const FONT_FAMILIES = [
     {
-        id: 'open-sans',
-        title: 'Open Sans',
+        id: 'Open Sans',
+        style: {
+            fontFamily: 'Open Sans'
+        }
     },
     {
-        id: 'roboto',
-        title: 'Roboto'
+        id: 'Bookman Old Style',
+        style: {
+            fontFamily: 'Bookman Old Style'
+        }
+    },
+    {
+        id: 'Franklin Gothic',
+        style: {
+            fontFamily: 'Franklin Gothic'
+        }
+    },
+    {
+        id: 'Gadugi',
+        style: {
+            fontFamily: 'Gadugi'
+        }
+    },
+    {
+        id: 'Lucida Console',
+        style: {
+            fontFamily: 'Lucida Console'
+        }
+    },
+    {
+        id: 'Platino Linotype',
+        style: {
+            fontFamily: 'Platino Linotype'
+        }
     }
 ]
 
-const sizes = [
+const FONT_SIZES = [
     {
-        id: 'font-12',
-        title: '12',
+        id: '12',
     },
     {
-        id: 'font-14',
-        title: '14'
+        id: '14',
     },
     {
-        id: 'font-16',
-        title: '16'
+        id: '16',
     },
     {
-        id: 'font-18',
-        title: '18'
+        id: '18',
     },
     {
-        id: 'font-20',
-        title: '20'
+        id: '20',
+    },
+    {
+        id: '22',
+    },
+    {
+        id: '24',
     }
 ]
 
@@ -85,7 +121,9 @@ export function RichTextEditView() {
 
     const editorRef = useRef<Editor>()
     if (!editorRef.current) {
-        editorRef.current = withHistory(withReact(createEditor()))
+        editorRef.current =
+            withHistory(
+            withReact(createEditor()))
     }
     const editor = editorRef.current
     const [value, setValue] = useState<Descendant[]>(initialValue)
@@ -93,97 +131,96 @@ export function RichTextEditView() {
     const renderLeaf = useCallback(props => <Leaf {...props} />, [])
 
     return (
-        <div className={'flex-fill d-flex flex-column v-gap-3 p-5'}>
-            <div className={'toolbar d-flex flex-column v-gap-3'}>
-                <div className={'toolbar flex-fill d-flex h-gap-5'}>
-                    <div className={'d-flex h-gap-3'}>
-                        <ComboBox items={fonts} />
-                        <ComboBox className={'font-size'} items={sizes} />
+        <Slate
+            editor={editor}
+            value={value}
+            onChange={setValue}>
+            <div className={'flex-fill d-flex flex-column v-gap-3 p-5'}>
+                <div className={'toolbar d-flex flex-column v-gap-3'}>
+                    <div className={'toolbar flex-fill d-flex h-gap-5'}>
+                        <div className={'d-flex h-gap-3'}>
+                            <FontFamilyInput/>
+                            <FontSizeInput />
+                        </div>
+                        <div className={'d-flex h-gap-2'}>
+                            <BlockButton format={'left'}>
+                                <TextAlignLeftSVG className={'small-image-container'}/>
+                            </BlockButton>
+                            <BlockButton format={'center'}>
+                                <TextAlignCenterSVG className={'small-image-container'}/>
+                            </BlockButton>
+                            <BlockButton format={'right'}>
+                                <TextAlignRightSVG className={'small-image-container'}/>
+                            </BlockButton>
+                            <BlockButton format={'justify'}>
+                                <TextAlignJustifySVG className={'small-image-container'}/>
+                            </BlockButton>
+                        </div>
+                        <div className={'d-flex h-gap-2'}>
+                            <BlockButton format={'numbered-list'}>
+                                <TextListNumber className={'small-image-container'}/>
+                            </BlockButton>
+                            <BlockButton format={'bulleted-list'}>
+                                <TextListBulletSVG className={'small-image-container'}/>
+                            </BlockButton>
+                        </div>
                     </div>
-                    <div className={'d-flex h-gap-2'}>
-                        <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'text-align-left')}>
-                            <TextAlignLeftSVG className={'small-image-container'}/>
-                        </Button>
-                        <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'text-align-left')}>
-                            <TextAlignCenterSVG className={'small-image-container'}/>
-                        </Button>
-                        <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'text-align-left')}>
-                            <TextAlignRightSVG className={'small-image-container'}/>
-                        </Button>
-                        <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'text-align-left')}>
-                            <TextAlignJustifySVG className={'small-image-container'}/>
-                        </Button>
-                    </div>
-                    <div className={'d-flex h-gap-2'}>
-                        <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'bold')}>
-                            <TextListNumber className={'small-image-container'}/>
-                        </Button>
-                        <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'bold')}>
-                            <TextListBulletSVG className={'small-image-container'}/>
-                        </Button>
+                    <div className={'align-self-stretch d-flex justify-content-between'}>
+                        <div className={'d-flex h-gap-3'}>
+                            <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'bold')} selected={isMarkActive(editor, 'bold')}>
+                                <TextFormatBoldSVGD className={'small-image-container'}/>
+                            </Button>
+                            <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'italic')} selected={isMarkActive(editor, 'italic')}>
+                                <TextFormatItalicSVG className={'small-image-container'}/>
+                            </Button>
+                            <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'underline')} selected={isMarkActive(editor, 'underline')}>
+                                <TextFormatUnderlineSVG className={'small-image-container'}/>
+                            </Button>
+                            <HighlightColorInput/>
+                            {/*<Button className={'btn-transparent border-bottom border-accent rounded-0'} onClick={() => toggleMarkFormat(editor, 'highlight')}>*/}
+                            {/*    <TextFormatHighlightSVG className={'small-image-container'}/>*/}
+                            {/*</Button>*/}
+                            <FontColorInput/>
+                        </div>
+                        <div className={'d-flex'}>
+                            <ComboBox items={citation} />
+                        </div>
                     </div>
                 </div>
-                <div className={'align-self-stretch d-flex justify-content-between'}>
-                    <div className={'d-flex h-gap-3'}>
-                        <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'bold')} selected={isMarkActive(editor, 'bold')}>
-                            <TextFormatBoldSVGD className={'small-image-container'}/>
-                        </Button>
-                        <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'italic')} selected={isMarkActive(editor, 'italic')}>
-                            <TextFormatItalicSVG className={'small-image-container'}/>
-                        </Button>
-                        <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'underline')} selected={isMarkActive(editor, 'underline')}>
-                            <TextFormatUnderlineSVG className={'small-image-container'}/>
-                        </Button>
-                        <Button className={'btn-transparent border-bottom border-accent rounded-0'} onClick={() => toggleMarkFormat(editor, 'highlight')}>
-                            <TextFormatHighlightSVG className={'small-image-container'}/>
-                        </Button>
-                        <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'color')}>
-                            <TextFormatColorSVG className={'small-image-container'}/>
-                        </Button>
-                    </div>
-                    <div className={'d-flex'}>
-                        <ComboBox items={citation} />
-                    </div>
-                </div>
-            </div>
 
-            <div className={'flex-fill d-flex position-relative h-100'}>
-                <div className={'position-absolute w-100 h-100 overflow-auto pr-4 pt-4'}>
-                    <div className={'bg-primary h-100'}>
-                        <div className={'text-secondary h-100'}>
-                            <Slate
-                                editor={editor}
-                                value={value}
-                                onChange={setValue}>
-                                <Editable
-                                    className={'unreset h-100'}
-                                    renderElement={renderElement}
-                                    renderLeaf={renderLeaf}
-                                    spellCheck={false}
-                                    autoFocus={true}
-                                    onKeyDown={event => {
-                                        if (event.key.toUpperCase() === 'TAB') {
-                                            // Prevent the ampersand character from being inserted.
-                                            event.preventDefault()
-                                            // Execute the `insertText` method when the event occurs.
-                                            editor.insertText('    ')
-                                        }
-                                        else {
-                                            for (const hotkey in HOTKEYS) {
-                                                if (isHotkey(hotkey, event as any)) {
-                                                    event.preventDefault()
-                                                    const mark = HOTKEYS[hotkey]
-                                                    toggleMarkFormat(editor, mark)
+                <div className={'flex-fill d-flex position-relative h-100'}>
+                    <div className={'position-absolute w-100 h-100 overflow-auto pr-4 pt-4'}>
+                        <div className={'bg-primary h-100'}>
+                            <div className={'text-secondary h-100'}>
+                                    <Editable
+                                        className={'unreset h-100'}
+                                        renderElement={renderElement}
+                                        renderLeaf={renderLeaf}
+                                        spellCheck={false}
+                                        autoFocus={true}
+                                        onKeyDown={event => {
+                                            if (event.key.toUpperCase() === 'TAB') {
+                                                // Prevent the ampersand character from being inserted.
+                                                event.preventDefault()
+                                                // Execute the `insertText` method when the event occurs.
+                                                editor.insertText('    ')
+                                            }
+                                            else {
+                                                for (const hotkey in HOTKEYS) {
+                                                    if (isHotkey(hotkey, event)) {
+                                                        event.preventDefault()
+                                                        const mark = HOTKEYS[hotkey]
+                                                        toggleMarkFormat(editor, mark)
+                                                    }
                                                 }
                                             }
-                                        }
-                                    }}/>
-                            </Slate>
+                                        }}/>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </Slate>
     )
 }
 
@@ -197,47 +234,227 @@ function toggleMarkFormat (editor: Editor, format: string) {
     }
 }
 
-// function toggleNodeFormat(editor: Editor, format: string) {
-//     const isActive = isBlockActive(
-//         editor,
-//         format,
-//         TEXT_ALIGN_TYPES.includes(format) ? 'align' : 'type'
-//     )
-//     const isList = LIST_TYPES.includes(format)
-//
-//     Transforms.unwrapNodes(editor, {
-//         match: (n) =>
-//             !Editor.isEditor(n) &&
-//             SlateElement.isElement(n) &&
-//             LIST_TYPES.includes(n.type) &&
-//             !TEXT_ALIGN_TYPES.includes(format),
-//         split: true,
-//     })
-//     let newProperties: Partial<SlateElement>
-//     if (TEXT_ALIGN_TYPES.includes(format)) {
-//         newProperties = {
-//             align: isActive ? undefined : format,
-//         }
-//     } else {
-//         newProperties = {
-//             type: isActive ? 'paragraph' : isList ? 'list-item' : format,
-//         }
-//     }
-//     Transforms.setNodes<SlateElement>(editor, newProperties)
-//
-//     if (!isActive && isList) {
-//         const block = { type: format, children: [] }
-//         Transforms.wrapNodes(editor, block)
-//     }
-// }
+function isListType(format: string): boolean {
+    let result = false;
 
-function setAlignment (editor: Editor, key: string, value: string) {
-    Editor.addMark(editor, key, value);
+    if (format in LIST_TYPE) {
+        result = true;
+    }
+
+    // result = Object.values(LIST_TYPE)?.includes(format as LIST_TYPE);
+
+    return result;
+}
+
+function isTextAlignType(format: string): boolean {
+    let result = false;
+
+    if (format in TEXT_ALIGN_TYPE) {
+        result = true;
+    }
+
+    // result = Object.values(TEXT_ALIGN_TYPE)?.includes(format as TEXT_ALIGN_TYPE);
+
+    return result;
+}
+
+const toggleBlock = (editor: Editor, format: string) => {
+    const isActive = isBlockActive(
+        editor,
+        format,
+        isTextAlignType(format) ? 'align' : 'type'
+    )
+    const isList = isListType(format)
+
+    Transforms.unwrapNodes(editor, {
+        match: (n) =>
+            !Editor.isEditor(n) &&
+            SlateElement.isElement(n) &&
+            isListType((n as ElementType).type) &&
+            !isTextAlignType(format),
+        split: true,
+    })
+    let element: Partial<ElementType>;
+    if (isTextAlignType(format)) {
+        element = {
+            align: isActive ? undefined : format as TEXT_ALIGN_TYPE,
+        }
+    } else {
+        element = {
+            type: isActive ? 'paragraph' : isList ? 'list-item' : format,
+        }
+    }
+    Transforms.setNodes<ElementType>(editor, element)
+
+    if (!isActive && isList) {
+        const block = { type: format, children: [] }
+        Transforms.wrapNodes(editor, block)
+    }
 }
 
 function isMarkActive (editor: Editor, format:string) {
     const marks = Editor.marks(editor) as Record<string, boolean>
     return marks ? marks[format] : false
+}
+
+function FontFamilyInput(props: FontFamilyInputProps) {
+    const editor = useSlate();
+
+    function _onSelect(id: string) {
+        editor.removeMark('fontFamily')
+        editor.addMark('fontFamily', id);
+    }
+
+    return <ComboBox title={'Open Sans'} className={'font-family'} items={FONT_FAMILIES} onSelect={_onSelect}/>
+}
+
+function FontSizeInput(props: FontSizeInputProps) {
+    const editor = useSlate();
+
+    function _onSelect(id: string) {
+        editor.removeMark('fontSize')
+        editor.addMark('fontSize', id);
+
+        // Transforms.setNodes<ElementType>(editor, {
+        //     fontSize: id
+        // })
+    }
+
+    return <ComboBox title={'16'} className={'font-size'} items={FONT_SIZES} onSelect={_onSelect}/>
+}
+
+function HighlightColorInput(props: HighlightColorInputProps) {
+    const [isOpen, setIsOpen] = useState(false);
+    const [color, setColor] = useState('yellow');
+    const editor = useSlate();
+
+    function _onSelect(id: string) {
+        editor.removeMark('highlightColor')
+
+        const nextColor: string = id === color ? 'transparent': id;
+
+        setColor(nextColor);
+        editor.addMark('highlightColor', nextColor);
+
+        setIsOpen(false);
+    }
+
+    function _onClickHandler() {
+        if (isOpen) {
+            setIsOpen(false);
+        }
+        else {
+            setIsOpen(true);
+        }
+    }
+
+    return (
+        <div>
+            <Portal
+                isOpen={isOpen}
+                zIndex={9999}
+                enterClass={'growVertical'}
+                exitClass={'shrinkVertical'}
+                timeout={200}
+                autoLayout={false}
+                onShouldClose={_onClickHandler}
+                portalContent={(relatedWidth: any) => {
+                    return (
+                            <div className={`shadow d-flex h-gap-3 p-3 bg-muted mt-2`}>
+                                <div className={'p-4'} style={{backgroundColor: 'yellow'}} onClick={() => _onSelect('yellow')}/>
+                                <div className={'p-4'} style={{backgroundColor: 'green'}} onClick={() => _onSelect('green')}/>
+                                <div className={'p-4'} style={{backgroundColor: 'blue'}} onClick={() => _onSelect('blue')}/>
+                                <div className={'p-4'} style={{backgroundColor: 'pink'}} onClick={() => _onSelect('pink')}/>
+                            </div>
+                        )
+                }}>
+                <div tabIndex={0}>
+                    <Button className={'btn-transparent rounded-0'} style={{borderBottom: `0.1rem solid ${color}`}} onClick={() => _onClickHandler()}>
+                        <TextFormatHighlightSVG className={'small-image-container'}/>
+                    </Button>
+                </div>
+            </Portal>
+        </div>
+    )
+}
+
+function FontColorInput(props: FontColorInputProps) {
+    const [isOpen, setIsOpen] = useState(false);
+    const [color, setColor] = useState('black');
+    const editor = useSlate();
+
+    function _onSelect(id: string) {
+        editor.removeMark('fontColor')
+
+        const nextColor: string = id === color ? 'black': id;
+
+        setColor(nextColor);
+        editor.addMark('fontColor', nextColor);
+
+        setIsOpen(false);
+    }
+
+    function _onClickHandler() {
+        if (isOpen) {
+            setIsOpen(false);
+        }
+        else {
+            setIsOpen(true);
+        }
+    }
+
+    return (
+        <div>
+            <Portal
+                isOpen={isOpen}
+                zIndex={9999}
+                enterClass={'growVertical'}
+                exitClass={'shrinkVertical'}
+                timeout={200}
+                autoLayout={false}
+                onShouldClose={_onClickHandler}
+                portalContent={(relatedWidth: any) => {
+                    return (
+                        <div className={`shadow p-3 bg-muted mt-2 d-grid`} style={{gridTemplateColumns: 'repeat(4, 1fr)', gridAutoRows: '1fr'}}>
+                            <div className={'p-4'} style={{backgroundColor: 'yellow'}} onClick={() => _onSelect('yellow')}/>
+                            <div className={'p-4'} style={{backgroundColor: 'red'}} onClick={() => _onSelect('red')}/>
+                            <div className={'p-4'} style={{backgroundColor: 'darkgray'}} onClick={() => _onSelect('darkgray')}/>
+                            <div className={'p-4'} style={{backgroundColor: 'gray'}} onClick={() => _onSelect('gray')}/>
+                            <div className={'p-4'} style={{backgroundColor: 'orange'}} onClick={() => _onSelect('orange')}/>
+                            <div className={'p-4'} style={{backgroundColor: 'lightblue'}} onClick={() => _onSelect('lightblue')}/>
+                            <div className={'p-4'} style={{backgroundColor: 'black'}} onClick={() => _onSelect('black')}/>
+                            <div className={'p-4'} style={{backgroundColor: 'darkmagenta'}} onClick={() => _onSelect('darkmagenta')}/>
+                        </div>
+                    )
+                }}>
+                <div tabIndex={0}>
+                    <Button className={'btn-transparent rounded-0'} style={{borderBottom: `0.1rem solid ${color}`}} onClick={() => _onClickHandler()}>
+                        <TextFormatColorSVG className={'small-image-container'}/>
+                    </Button>
+                </div>
+            </Portal>
+        </div>
+    )
+}
+
+function BlockButton(props: BlockButtonProps) {
+    const editor = useSlate();
+
+    const {format, onClick, ...rest} = props;
+
+    const selected = isBlockActive(
+            editor,
+            props.format,
+            isTextAlignType(props.format) ? 'align' : 'type');
+
+    return <Button className={'btn-transparent'} {...rest} selected={selected} onClick={
+        event => {
+            event.preventDefault()
+            toggleBlock(editor, format)
+        }
+    }>
+        {props.children}
+    </Button>
 }
 
 function isBlockActive (editor: Editor, format: any, blockType = 'type') {
@@ -262,20 +479,14 @@ function isBlockActive (editor: Editor, format: any, blockType = 'type') {
     return !!match
 }
 
-type ElementProps = {
-    attributes: any,
-    children: JSX.Element,
-    element: {
-        type: string
-        align: 'left' | 'center' | 'right' | 'justify'
-    }
-}
-
 function Element (props: ElementProps) {
 
     const {attributes, children, element } = props;
 
-    const style = { textAlign: element.align }
+    const style = {
+        textAlign: element.align || TEXT_ALIGN_TYPE.left,
+    }
+
     switch (element.type) {
         case 'block-quote':
             return (
@@ -322,21 +533,42 @@ function Element (props: ElementProps) {
     }
 }
 
-type LeafProps = {
-    attributes: any[],
-    children: JSX.Element,
-    leaf: {
-        bold: boolean,
-        code: boolean,
-        italic: boolean,
-        underline: boolean
-    }
-}
-
 function Leaf( props: LeafProps) {
 
     const { attributes, leaf } = props;
     let children = props.children;
+
+    if (leaf.fontSize) {
+        const style = {
+            fontSize: parseInt(leaf.fontSize) || 12,
+        }
+
+        children = <span style={style}>{children}</span>
+    }
+
+    if (leaf.fontFamily) {
+        const style = {
+            fontFamily: leaf.fontFamily || ''
+        }
+
+        children = <span style={style}>{children}</span>
+    }
+
+    if (leaf.fontColor) {
+        const style = {
+            color: leaf.fontColor || 'black'
+        }
+
+        children = <span style={style}>{children}</span>
+    }
+
+    if (leaf.highlightColor) {
+        const style = {
+            backgroundColor: leaf.highlightColor || '',
+        }
+
+        children = <span style={style}>{children}</span>
+    }
 
     if (leaf.bold) {
         children = <strong>{children}</strong>
@@ -347,7 +579,7 @@ function Leaf( props: LeafProps) {
     }
 
     if (leaf.italic) {
-        children = <em>{children}</em>
+        children = <i>{children}</i>
     }
 
     if (leaf.underline) {

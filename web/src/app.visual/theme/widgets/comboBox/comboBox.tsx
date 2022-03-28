@@ -6,7 +6,7 @@ import ComboBoxItem from "./comboBoxItem";
 import Portal from "../portal/portal";
 import {forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
 import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
-import {ComboBoxProps, ComboBoxState} from './comboBoxModel';
+import {ComboBoxItemProps, ComboBoxProps, ComboBoxState} from './comboBoxModel';
 import Button from "../button/button";
 
 class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
@@ -158,11 +158,11 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
         if (items) {
             const { selectedItemIds } = this.state;
 
-            forEachKVP(items, (itemKey: string, itemValue: { id: string; title: string; selected: boolean; }) => {
-                const { id:itemId, title:itemTitle, selected:itemSelected } = itemValue;
+            forEachKVP(items, (itemKey: string, itemValue: ComboBoxItemProps) => {
+                const { id:itemId, title:itemTitle, selected:itemSelected, style:itemStyle={} } = itemValue;
 
                 let value = false;
-                if (selectedItemIds && selectedItemIds.includes(itemId) || title === itemTitle) {
+                if ((itemId && selectedItemIds && selectedItemIds.includes(itemId)) || (title && title === itemTitle)) {
                     value = true;
                     if (!cbTitle) {
                         cbTitle = itemTitle;
@@ -170,7 +170,7 @@ class ComboBox extends Component<ComboBoxProps, ComboBoxState> {
                 }
 
                 comboBoxItems.push(
-                    <ComboBoxItem className={'d-flex'} key={itemId} title={itemTitle} multiSelect={multiSelect}
+                    <ComboBoxItem style={itemStyle} className={'d-flex'} key={itemId} title={itemTitle || itemId} multiSelect={multiSelect}
                                   onClick={() => this._onSelectHandler(itemId || "")} selected={value} readonly={readonly}/>
                 )
             });

@@ -230,7 +230,7 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
     getSearchParamValue(searchParam: SearchParamInfo) {
         const {id, value, type} = searchParam;
 
-        let result = null;
+        let result;
 
         switch (type) {
             case ParamType.OPTIONS: {
@@ -239,19 +239,6 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
                     let sortType: any = sortTypes[value];
                     result = {
                         [id]: sortType ? sortType.value : null
-                    }
-                } else if (id === 'tags') {
-                    let title: string[] = [];
-                    value.forEach((id: string) => {
-                        let repoItem: any = super.getRepoItem(TagInfo.class, id);
-
-                        if (repoItem != null) {
-                            title.push(repoItem.title);
-                        }
-                    })
-
-                    result = {
-                        ['custom_shared_tag']: title
                     }
                 } else {
                     let repoIdArray: string[] = [];
@@ -262,7 +249,6 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
                             repoIdArray.push(repoItem.id);
                         }
                     })
-
 
                     result = {
                         [id]: repoIdArray
@@ -285,16 +271,8 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
 
                 break;
             }
-            case ParamType.STRING:
-                if (id === 'author') {
-                    let title = [];
-                    title.push(value);
-                    result = {
-                        [id]: title
-                    }
-                    break;
-                }
-                else if (id === 'tags') {
+            case ParamType.STRING: {
+                if (id === 'tags') {
                     let title: string[] = [];
                     value.forEach((id: string) => {
                         let repoItem: any = super.getRepoItem(TagInfo.class, id);
@@ -307,13 +285,13 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
                     result = {
                         ['custom_shared_tag']: title
                     }
-                }
-                else {
+                } else {
                     result = {
                         [id]: value
                     }
                 }
                 break;
+            }
             case ParamType.NUMBER:
             default: {
                 result = {

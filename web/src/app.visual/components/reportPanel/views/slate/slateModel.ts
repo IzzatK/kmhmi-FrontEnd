@@ -1,6 +1,8 @@
-import {BaseEditor} from "slate";
-import {ReactEditor} from "slate-react";
+import {BaseEditor, BaseElement} from "slate";
+import {ReactEditor, RenderLeafProps} from "slate-react";
 import {HistoryEditor} from "slate-history";
+import {ButtonProps} from "../../../../theme/widgets/button/buttonModel";
+import {RenderElementProps} from "slate-react/dist/components/editable";
 
 declare module 'slate' {
     interface CustomTypes {
@@ -8,22 +10,67 @@ declare module 'slate' {
     }
 }
 
-export type NodeProps = {
-    attributes: any[],
-    children: JSX.Element,
-    element: {
-        type: string
-        align: 'left' | 'center' | 'right' | 'justify'
-    }
+export type ElementType = BaseElement & {
+    type: string
+    align: TEXT_ALIGN_TYPE | undefined
 }
 
-export type MarkProps = {
+export type LeafType = {
+    bold: boolean,
+    code: boolean,
+    italic: boolean,
+    underline: boolean
+    fontSize: string,
+    fontFamily: string,
+    fontColor: string,
+    highlightColor: string
+}
+
+export type ElementProps = RenderElementProps & {
+    children: ElementType[],
+    element: ElementType
+}
+
+export type LeafProps = RenderLeafProps & {
     attributes: any[],
-    children: JSX.Element,
-    leaf: {
-        bold: boolean,
-        code: boolean,
-        italic: boolean,
-        underline: boolean
-    }
+    leaf: LeafType
+}
+
+export type SlateEditorProps = {
+    onChange: (value: any) => void;
+}
+
+export type SlateEditorState = {
+
+}
+
+export enum LIST_TYPE {
+    'numbered-list'='numbered-list',
+    'bulleted-list'='bulleted-list'
+}
+export enum TEXT_ALIGN_TYPE {
+    'left'='left',
+    'center'='center',
+    'right'='right',
+    'justify'='justify'
+}
+
+export type FontSizeInputProps = {
+
+}
+
+export type FontFamilyInputProps = {
+
+}
+
+export type HighlightColorInputProps = {
+
+}
+
+export type FontColorInputProps = {
+
+}
+
+export type BlockButtonProps = ButtonProps & {
+    format: string
 }
