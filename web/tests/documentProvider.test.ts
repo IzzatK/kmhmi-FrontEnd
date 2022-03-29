@@ -246,12 +246,23 @@ describe("update", () => {
         });
     });
 
-    it("updates document file name", () => {
-        documentToUpdate.file_name = "test_document_api_file";
-        documentToUpdate.author = "Bill Nye the Science Guy";
-        documentToUpdate.publication_date = "2022-03-28";
-        documentToUpdate.primary_sme_email = "user@example.com";
-        documentToUpdate.secondary_sme_email = "user@example.com";
+    it("updates document title", () => {
+        // documentToUpdate.author = "Bill Nye the Science Guy";
+        // documentToUpdate.private_tag = {"bb025c46-c259-4543-99e2-eab6b819fbee" : {"Private Tag" : "Private Tag"}};
+        // documentToUpdate.public_tag = {"Public Tag" : "Public Tag"};
+        documentToUpdate.department = "1004";
+        // documentToUpdate.primary_sme_email = "user@example.com";
+        // documentToUpdate.primary_sme_name = "Joe";
+        // documentToUpdate.primary_sme_phone = "111-867-5309";
+        // documentToUpdate.project = "TESTING";
+        // documentToUpdate.publication_date = "2022-03-28";
+        // documentToUpdate.purpose = "1013";
+        // documentToUpdate.secondary_sme_email = "user@example.com";
+        // documentToUpdate.secondary_sme_name = "Joe";
+        // documentToUpdate.secondary_sme_phone = "111-867-5309";
+        documentToUpdate.scope = "Public";
+        documentToUpdate.title = "Test Document Update API File";
+
         return documentProvider.update(documentToUpdate.id, {id: documentToUpdate.id, modifiedDocument: documentToUpdate}).then(document => {
             expect(document).toEqual(documentToUpdate);
         })

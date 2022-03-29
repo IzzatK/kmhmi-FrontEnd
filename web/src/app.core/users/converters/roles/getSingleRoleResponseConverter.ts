@@ -10,6 +10,7 @@ export class GetSingleRoleResponseConverter extends Converter<any, Nullable<Role
         let body = fromData;
 
         if (body === undefined) return null;
+        if (body[0] === undefined) return null;
 
         const { role_name:roleNames } = body[0];
 
