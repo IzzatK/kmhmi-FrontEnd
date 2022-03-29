@@ -13,6 +13,7 @@ export type Props = StateProps & DispatchProps;
 
 export type PermissionsVM = {
     canSearch: boolean;
+    isAuthorizing: boolean;
 }
 
 export type UserInfoVM = {

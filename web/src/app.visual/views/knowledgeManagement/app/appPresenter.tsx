@@ -81,7 +81,8 @@ class App extends VisualWrapper {
         [() => userService.getCurrentUserId(), authorizationService.getPermissions],
         (currentUserId, permissionInfoLookup) => {
             let result: PermissionsVM = {
-                canSearch: authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.GET, currentUserId, currentUserId)
+                canSearch: authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.GET, currentUserId, currentUserId),
+                isAuthorizing: authorizationService.isAuthorizing()
             }
             return result;
         }
