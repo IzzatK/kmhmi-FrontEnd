@@ -23,7 +23,7 @@ export type LeafType = {
     fontSize: string,
     fontFamily: string,
     fontColor: string,
-    highlightColor: string
+    fontHighlight: string
 }
 
 export type ElementProps = RenderElementProps & {
@@ -68,6 +68,18 @@ export type HighlightColorInputProps = {
 }
 
 export type FontColorInputProps = {
+
+}
+
+export type BoldInputProps = {
+
+}
+
+export type ItalicInputProps = {
+
+}
+
+export type UnderlineInputProps = {
 
 }
 

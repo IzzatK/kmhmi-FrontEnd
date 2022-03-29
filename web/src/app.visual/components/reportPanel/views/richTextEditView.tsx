@@ -26,6 +26,13 @@ import {
     TEXT_ALIGN_TYPE
 } from "./slate/slateModel";
 import Portal from "../../../theme/widgets/portal/portal";
+import {FontFamilyInput, renderFontFamilyLeaf} from "./slate/fontFamilyPlugin";
+import {FontHighlightInput, renderFontHighlightLeaf} from "./slate/fontHighlightPlugin";
+import {FontColorInput, renderFontColorLeaf} from "./slate/fontColorPlugin";
+import {BoldInput, renderBoldLeaf} from "./slate/boldPlugin";
+import {ItalicInput, renderItalicLeaf} from "./slate/italicPlugin";
+import {renderUnderlineLeaf, UnderlineInput} from "./slate/underlinePlugin";
+import {FontSizeInput, renderFontSizeLeaf} from "./slate/fontSizePlugin";
 
 const initialValue: Descendant[] = [
     {
@@ -50,70 +57,6 @@ const citation = [
     {
         id: 'chicago',
         title: 'Chicago'
-    }
-]
-
-
-const FONT_FAMILIES = [
-    {
-        id: 'Open Sans',
-        style: {
-            fontFamily: 'Open Sans'
-        }
-    },
-    {
-        id: 'Bookman Old Style',
-        style: {
-            fontFamily: 'Bookman Old Style'
-        }
-    },
-    {
-        id: 'Franklin Gothic',
-        style: {
-            fontFamily: 'Franklin Gothic'
-        }
-    },
-    {
-        id: 'Gadugi',
-        style: {
-            fontFamily: 'Gadugi'
-        }
-    },
-    {
-        id: 'Lucida Console',
-        style: {
-            fontFamily: 'Lucida Console'
-        }
-    },
-    {
-        id: 'Platino Linotype',
-        style: {
-            fontFamily: 'Platino Linotype'
-        }
-    }
-]
-
-const FONT_SIZES = [
-    {
-        id: '12',
-    },
-    {
-        id: '14',
-    },
-    {
-        id: '16',
-    },
-    {
-        id: '18',
-    },
-    {
-        id: '20',
-    },
-    {
-        id: '22',
-    },
-    {
-        id: '24',
     }
 ]
 
@@ -167,19 +110,10 @@ export function RichTextEditView() {
                     </div>
                     <div className={'align-self-stretch d-flex justify-content-between'}>
                         <div className={'d-flex h-gap-3'}>
-                            <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'bold')} selected={isMarkActive(editor, 'bold')}>
-                                <TextFormatBoldSVGD className={'small-image-container'}/>
-                            </Button>
-                            <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'italic')} selected={isMarkActive(editor, 'italic')}>
-                                <TextFormatItalicSVG className={'small-image-container'}/>
-                            </Button>
-                            <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'underline')} selected={isMarkActive(editor, 'underline')}>
-                                <TextFormatUnderlineSVG className={'small-image-container'}/>
-                            </Button>
-                            <HighlightColorInput/>
-                            {/*<Button className={'btn-transparent border-bottom border-accent rounded-0'} onClick={() => toggleMarkFormat(editor, 'highlight')}>*/}
-                            {/*    <TextFormatHighlightSVG className={'small-image-container'}/>*/}
-                            {/*</Button>*/}
+                            <BoldInput/>
+                            <ItalicInput/>
+                            <UnderlineInput/>
+                            <FontHighlightInput/>
                             <FontColorInput/>
                         </div>
                         <div className={'d-flex'}>
@@ -297,146 +231,6 @@ function isMarkActive (editor: Editor, format:string) {
     return marks ? marks[format] : false
 }
 
-function FontFamilyInput(props: FontFamilyInputProps) {
-    const editor = useSlate();
-
-    function _onSelect(id: string) {
-        editor.removeMark('fontFamily')
-        editor.addMark('fontFamily', id);
-    }
-
-    return <ComboBox title={'Open Sans'} className={'font-family'} items={FONT_FAMILIES} onSelect={_onSelect}/>
-}
-
-function FontSizeInput(props: FontSizeInputProps) {
-    const editor = useSlate();
-
-    function _onSelect(id: string) {
-        editor.removeMark('fontSize')
-        editor.addMark('fontSize', id);
-
-        // Transforms.setNodes<ElementType>(editor, {
-        //     fontSize: id
-        // })
-    }
-
-    return <ComboBox title={'16'} className={'font-size'} items={FONT_SIZES} onSelect={_onSelect}/>
-}
-
-function HighlightColorInput(props: HighlightColorInputProps) {
-    const [isOpen, setIsOpen] = useState(false);
-    const [color, setColor] = useState('yellow');
-    const editor = useSlate();
-
-    function _onSelect(id: string) {
-        editor.removeMark('highlightColor')
-
-        const nextColor: string = id === color ? 'transparent': id;
-
-        setColor(nextColor);
-        editor.addMark('highlightColor', nextColor);
-
-        setIsOpen(false);
-    }
-
-    function _onClickHandler() {
-        if (isOpen) {
-            setIsOpen(false);
-        }
-        else {
-            setIsOpen(true);
-        }
-    }
-
-    return (
-        <div>
-            <Portal
-                isOpen={isOpen}
-                zIndex={9999}
-                enterClass={'growVertical'}
-                exitClass={'shrinkVertical'}
-                timeout={200}
-                autoLayout={false}
-                onShouldClose={_onClickHandler}
-                portalContent={(relatedWidth: any) => {
-                    return (
-                            <div className={`shadow d-flex h-gap-3 p-3 bg-muted mt-2`}>
-                                <div className={'p-4'} style={{backgroundColor: 'yellow'}} onClick={() => _onSelect('yellow')}/>
-                                <div className={'p-4'} style={{backgroundColor: 'green'}} onClick={() => _onSelect('green')}/>
-                                <div className={'p-4'} style={{backgroundColor: 'blue'}} onClick={() => _onSelect('blue')}/>
-                                <div className={'p-4'} style={{backgroundColor: 'pink'}} onClick={() => _onSelect('pink')}/>
-                            </div>
-                        )
-                }}>
-                <div tabIndex={0}>
-                    <Button className={'btn-transparent rounded-0'} style={{borderBottom: `0.1rem solid ${color}`}} onClick={() => _onClickHandler()}>
-                        <TextFormatHighlightSVG className={'small-image-container'}/>
-                    </Button>
-                </div>
-            </Portal>
-        </div>
-    )
-}
-
-function FontColorInput(props: FontColorInputProps) {
-    const [isOpen, setIsOpen] = useState(false);
-    const [color, setColor] = useState('black');
-    const editor = useSlate();
-
-    function _onSelect(id: string) {
-        editor.removeMark('fontColor')
-
-        const nextColor: string = id === color ? 'black': id;
-
-        setColor(nextColor);
-        editor.addMark('fontColor', nextColor);
-
-        setIsOpen(false);
-    }
-
-    function _onClickHandler() {
-        if (isOpen) {
-            setIsOpen(false);
-        }
-        else {
-            setIsOpen(true);
-        }
-    }
-
-    return (
-        <div>
-            <Portal
-                isOpen={isOpen}
-                zIndex={9999}
-                enterClass={'growVertical'}
-                exitClass={'shrinkVertical'}
-                timeout={200}
-                autoLayout={false}
-                onShouldClose={_onClickHandler}
-                portalContent={(relatedWidth: any) => {
-                    return (
-                        <div className={`shadow p-3 bg-muted mt-2 d-grid`} style={{gridTemplateColumns: 'repeat(4, 1fr)', gridAutoRows: '1fr'}}>
-                            <div className={'p-4'} style={{backgroundColor: 'yellow'}} onClick={() => _onSelect('yellow')}/>
-                            <div className={'p-4'} style={{backgroundColor: 'red'}} onClick={() => _onSelect('red')}/>
-                            <div className={'p-4'} style={{backgroundColor: 'darkgray'}} onClick={() => _onSelect('darkgray')}/>
-                            <div className={'p-4'} style={{backgroundColor: 'gray'}} onClick={() => _onSelect('gray')}/>
-                            <div className={'p-4'} style={{backgroundColor: 'orange'}} onClick={() => _onSelect('orange')}/>
-                            <div className={'p-4'} style={{backgroundColor: 'lightblue'}} onClick={() => _onSelect('lightblue')}/>
-                            <div className={'p-4'} style={{backgroundColor: 'black'}} onClick={() => _onSelect('black')}/>
-                            <div className={'p-4'} style={{backgroundColor: 'darkmagenta'}} onClick={() => _onSelect('darkmagenta')}/>
-                        </div>
-                    )
-                }}>
-                <div tabIndex={0}>
-                    <Button className={'btn-transparent rounded-0'} style={{borderBottom: `0.1rem solid ${color}`}} onClick={() => _onClickHandler()}>
-                        <TextFormatColorSVG className={'small-image-container'}/>
-                    </Button>
-                </div>
-            </Portal>
-        </div>
-    )
-}
-
 function BlockButton(props: BlockButtonProps) {
     const editor = useSlate();
 
@@ -534,57 +328,17 @@ function Element (props: ElementProps) {
 }
 
 function Leaf( props: LeafProps) {
-
     const { attributes, leaf } = props;
+
     let children = props.children;
 
-    if (leaf.fontSize) {
-        const style = {
-            fontSize: parseInt(leaf.fontSize) || 12,
-        }
+    children = renderFontSizeLeaf(leaf, children);
+    children = renderFontFamilyLeaf(leaf, children);
+    children = renderFontColorLeaf(leaf, children);
+    children = renderFontHighlightLeaf(leaf, children);
+    children = renderBoldLeaf(leaf, children);
+    children = renderItalicLeaf(leaf, children);
+    children = renderUnderlineLeaf(leaf, children);
 
-        children = <span style={style}>{children}</span>
-    }
-
-    if (leaf.fontFamily) {
-        const style = {
-            fontFamily: leaf.fontFamily || ''
-        }
-
-        children = <span style={style}>{children}</span>
-    }
-
-    if (leaf.fontColor) {
-        const style = {
-            color: leaf.fontColor || 'black'
-        }
-
-        children = <span style={style}>{children}</span>
-    }
-
-    if (leaf.highlightColor) {
-        const style = {
-            backgroundColor: leaf.highlightColor || '',
-        }
-
-        children = <span style={style}>{children}</span>
-    }
-
-    if (leaf.bold) {
-        children = <strong>{children}</strong>
-    }
-
-    if (leaf.code) {
-        children = <code>{children}</code>
-    }
-
-    if (leaf.italic) {
-        children = <i>{children}</i>
-    }
-
-    if (leaf.underline) {
-        children = <u>{children}</u>
-    }
-
-    return <span {...attributes}>{children}</span>
+    return <span {...attributes}>{children}</span>;
 }
