@@ -75,6 +75,14 @@ export type BoldInputProps = {
 
 }
 
+export type ItalicInputProps = {
+
+}
+
+export type UnderlineInputProps = {
+
+}
+
 export type BlockButtonProps = ButtonProps & {
     format: string
 }

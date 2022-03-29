@@ -9,13 +9,14 @@ import {TextFormatColorSVG} from "../../../../theme/svgs/textFormatColorSVG";
 
 
 const markKey = 'fontColor';
+const defaultMarkValue = 'black';
 
 export function renderFontColorLeaf(leaf: LeafType, children: any) {
     let result = children;
 
     if (leaf.fontColor) {
         const style = {
-            color: leaf.fontColor || 'black'
+            color: leaf.fontColor || defaultMarkValue
         }
 
         result = <span style={style}>{result}</span>
@@ -30,7 +31,7 @@ export function FontColorInput(props: HighlightColorInputProps) {
     const editor = useSlate();
 
     function _onSelect(id: string) {
-        const nextColor: string = id === getFontColorMark(editor) ? 'black': id;
+        const nextColor: string = id === getFontColorMark(editor) ? defaultMarkValue: id;
 
         fontColorStrategy(editor, nextColor);
 
@@ -93,7 +94,7 @@ function hasFontColorMark (editor: Editor) {
 
 function getFontColorMark (editor: Editor) {
     const marks = Editor.marks(editor) as Record<string, string>
-    return marks[markKey] ? marks[markKey] : 'black'
+    return marks[markKey] ? marks[markKey] : defaultMarkValue;
 }
 
 

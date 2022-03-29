@@ -4,12 +4,15 @@ import {useSlate} from "slate-react";
 import ComboBox from "../../../../theme/widgets/comboBox/comboBox";
 import {Editor} from "slate";
 
+const markKey = 'fontFamily';
+const defaultMarkValue = 'Open Sans';
+
 export function renderFontFamilyLeaf(leaf: LeafType, children: any) {
     let result = children;
 
     if (leaf.fontFamily) {
         const style = {
-            fontFamily: leaf.fontFamily || ''
+            fontFamily: leaf.fontFamily || defaultMarkValue
         }
 
         result = <span style={style}>{result}</span>
@@ -25,7 +28,7 @@ export function FontFamilyInput(props: FontFamilyInputProps) {
         fontFamilyStrategy(editor, id);
     }
 
-    return <ComboBox title={'Open Sans'} className={'font-family'} items={options} onSelect={_onSelect}/>
+    return <ComboBox title={getFontFamilyMark(editor)} className={'font-family'} items={options} onSelect={_onSelect}/>
 }
 
 function fontFamilyStrategy(editor: Editor, value: string) {
@@ -36,6 +39,11 @@ function fontFamilyStrategy(editor: Editor, value: string) {
 function hasFontFamilyMark (editor: Editor) {
     const marks = Editor.marks(editor) as Record<string, boolean>
     return marks ? marks['fontFamily'] : false
+}
+
+function getFontFamilyMark (editor: Editor) {
+    const marks = Editor.marks(editor) as Record<string, string>
+    return marks[markKey] ? marks[markKey] : defaultMarkValue;
 }
 
 const options = [

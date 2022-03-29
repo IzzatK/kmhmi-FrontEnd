@@ -30,6 +30,9 @@ import {FontFamilyInput, renderFontFamilyLeaf} from "./slate/fontFamilyPlugin";
 import {FontHighlightInput, renderFontHighlightLeaf} from "./slate/fontHighlightPlugin";
 import {FontColorInput, renderFontColorLeaf} from "./slate/fontColorPlugin";
 import {BoldInput, renderBoldLeaf} from "./slate/boldPlugin";
+import {ItalicInput, renderItalicLeaf} from "./slate/italicPlugin";
+import {renderUnderlineLeaf, UnderlineInput} from "./slate/underlinePlugin";
+import {FontSizeInput, renderFontSizeLeaf} from "./slate/fontSizePlugin";
 
 const initialValue: Descendant[] = [
     {
@@ -54,30 +57,6 @@ const citation = [
     {
         id: 'chicago',
         title: 'Chicago'
-    }
-]
-
-const FONT_SIZES = [
-    {
-        id: '12',
-    },
-    {
-        id: '14',
-    },
-    {
-        id: '16',
-    },
-    {
-        id: '18',
-    },
-    {
-        id: '20',
-    },
-    {
-        id: '22',
-    },
-    {
-        id: '24',
     }
 ]
 
@@ -132,12 +111,8 @@ export function RichTextEditView() {
                     <div className={'align-self-stretch d-flex justify-content-between'}>
                         <div className={'d-flex h-gap-3'}>
                             <BoldInput/>
-                            <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'italic')} selected={isMarkActive(editor, 'italic')}>
-                                <TextFormatItalicSVG className={'small-image-container'}/>
-                            </Button>
-                            <Button className={'btn-transparent'} onClick={() => toggleMarkFormat(editor, 'underline')} selected={isMarkActive(editor, 'underline')}>
-                                <TextFormatUnderlineSVG className={'small-image-container'}/>
-                            </Button>
+                            <ItalicInput/>
+                            <UnderlineInput/>
                             <FontHighlightInput/>
                             <FontColorInput/>
                         </div>
@@ -256,21 +231,6 @@ function isMarkActive (editor: Editor, format:string) {
     return marks ? marks[format] : false
 }
 
-function FontSizeInput(props: FontSizeInputProps) {
-    const editor = useSlate();
-
-    function _onSelect(id: string) {
-        editor.removeMark('fontSize')
-        editor.addMark('fontSize', id);
-
-        // Transforms.setNodes<ElementType>(editor, {
-        //     fontSize: id
-        // })
-    }
-
-    return <ComboBox title={'16'} className={'font-size'} items={FONT_SIZES} onSelect={_onSelect}/>
-}
-
 function BlockButton(props: BlockButtonProps) {
     const editor = useSlate();
 
@@ -372,33 +332,13 @@ function Leaf( props: LeafProps) {
 
     let children = props.children;
 
-    if (leaf.fontSize) {
-        const style = {
-            fontSize: parseInt(leaf.fontSize) || 12,
-        }
-
-        children = <span style={style}>{children}</span>
-    }
-
+    children = renderFontSizeLeaf(leaf, children);
     children = renderFontFamilyLeaf(leaf, children);
-
     children = renderFontColorLeaf(leaf, children);
-
     children = renderFontHighlightLeaf(leaf, children);
-
     children = renderBoldLeaf(leaf, children);
-
-    if (leaf.code) {
-        children = <code>{children}</code>
-    }
-
-    if (leaf.italic) {
-        children = <i>{children}</i>
-    }
-
-    if (leaf.underline) {
-        children = <u>{children}</u>
-    }
+    children = renderItalicLeaf(leaf, children);
+    children = renderUnderlineLeaf(leaf, children);
 
     return <span {...attributes}>{children}</span>;
 }

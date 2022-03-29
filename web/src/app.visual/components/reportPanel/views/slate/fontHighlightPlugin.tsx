@@ -8,6 +8,7 @@ import {TextFormatHighlightSVG} from "../../../../theme/svgs/textFormatHighlight
 
 
 const markKey = 'fontHighlight';
+const defaultMarkValue = 'transparent';
 
 export function renderFontHighlightLeaf(leaf: LeafType, children: any) {
     let result = children;
@@ -25,15 +26,13 @@ export function renderFontHighlightLeaf(leaf: LeafType, children: any) {
 
 export function FontHighlightInput(props: HighlightColorInputProps) {
     const [isOpen, setIsOpen] = useState(false);
-    const [color, setColor] = useState('yellow');
     const editor = useSlate();
 
     function _onSelect(id: string) {
-        const nextColor: string = id === color ? 'transparent': id;
+        const nextColor: string = id === getFontHighlightMark(editor) ? defaultMarkValue: id;
 
-        fontHighlightStrategy(editor, id)
+        fontHighlightStrategy(editor, nextColor)
 
-        setColor(nextColor);
         setIsOpen(false);
     }
 
@@ -67,7 +66,7 @@ export function FontHighlightInput(props: HighlightColorInputProps) {
                     )
                 }}>
                 <div tabIndex={0}>
-                    <Button className={'btn-transparent rounded-0'} style={{borderBottom: `0.1rem solid ${color}`}} onClick={() => _onClickHandler()}>
+                    <Button className={'btn-transparent rounded-0'} style={{borderBottom: `0.1rem solid ${getFontHighlightMark(editor)}`}} onClick={() => _onClickHandler()}>
                         <TextFormatHighlightSVG className={'small-image-container'}/>
                     </Button>
                 </div>
@@ -78,12 +77,16 @@ export function FontHighlightInput(props: HighlightColorInputProps) {
 
 function fontHighlightStrategy(editor: Editor, value: string) {
     editor.removeMark(markKey)
-
     editor.addMark(markKey, value);
 }
 
 function hasFontHighlightMark (editor: Editor) {
     const marks = Editor.marks(editor) as Record<string, boolean>
     return marks ? marks[markKey] : false
+}
+
+function getFontHighlightMark (editor: Editor) {
+    const marks = Editor.marks(editor) as Record<string, string>
+    return marks[markKey] ? marks[markKey] : defaultMarkValue;
 }
 
