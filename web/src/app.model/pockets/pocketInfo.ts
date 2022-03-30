@@ -10,6 +10,8 @@ export class PocketInfo extends WocketInfo {
   resource_ids: string[] = [];
   note_ids: string[] = [];
 
+  isUpdating: boolean = false;
+
   constructor(id: string)
   {
     super(id);

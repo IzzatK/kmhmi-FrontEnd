@@ -1,4 +1,4 @@
-import React, {Component, ElementType, ReactElement} from 'react';
+import React, {Component} from 'react';
 import './pocketsPanel.css';
 import '../../theme/stylesheets/panel.css';
 import ScrollBar from "../../theme/widgets/scrollBar/scrollBar";
@@ -12,7 +12,6 @@ import {NoteNodeRenderer} from "./renderers/noteNodeRenderer";
 import {ResourceNodeRenderer} from "./renderers/resourceNodeRenderer";
 import {TreeNodeVM} from "../../theme/widgets/treeView/treeViewModel";
 import {PocketNodeType} from "../../model/pocketNodeType";
-import {pocketService} from "../../../serviceComposition";
 
 class PocketsPanelView extends Component<PocketsPanelProps> {
     constructor(props: any, context: any) {
@@ -21,13 +20,9 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         bindInstanceMethods(this);
     }
 
-    componentDidMount() {
-        pocketService.fetchPockets();
-    }
-
     getCellContentRenderer(node: PocketNodeVM): JSX.Element {
         const { searchText } = this.props;
-        const { id, path, title, pocket_id } = node;
+        const { id, path, title, pocket_id, isUpdating } = node;
 
         let renderer: JSX.Element;
 
@@ -46,6 +41,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                         onSearch={this._onSearch}
                         onSearchTextChanged={this._onSearchTextChanged}
                         onDelete={(id: string) => this._deletePocket(id)}
+                        isUpdating={isUpdating}
                     />
                 )
                 break;
@@ -58,6 +54,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                         title={title}
                         onDownload={this._onDownloadDocument}
                         onRemove={(id: string) => this._onRemoveResource(id, pocket_id)}
+                        isUpdating={isUpdating}
                     />
                 )
                 break;
@@ -68,6 +65,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                         path={path}
                         title={title}
                         onRemove={(id: string) => this._onRemoveExcerpt(id, pocket_id)}
+                        isUpdating={isUpdating}
                     />
                 )
                 break;
@@ -78,6 +76,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                         path={path}
                         title={title}
                         onRemove={(id: string) => this._onRemoveNote(id, pocket_id)}
+                        isUpdating={isUpdating}
                     />
                 )
                 break;

@@ -38,7 +38,6 @@ body > * {
     --app-background: var(--app-whiteSmoke);
 
     /* Login Panel */
-
     --login-panel-background: var(--app-vulcan);
     --login-panel-popup-background: var(--app-vulcan);
     --login-panel-light-popup-background: var(--app-bleach);
@@ -52,30 +51,33 @@ body > * {
     /* Logout Panel */
 
     /* Pockets Panel */
-    --pocket-node-pocket-color: var(--app-whiteSmoke);
-    --pocket-node-pocket-background: var(--app-black);
-    --pocket-node-pocket-border-color: var(--app-whiteSmoke);
-    --pocket-node-pocket-hover-color: var(--app-whiteSmoke);
-    --pocket-node-pocket-hover-background: var(--app-black);
-    --pocket-node-pocket-hover-border-color: var(--app-white);
-    --pocket-node-pocket-selected-color: var(--app-whiteSmoke);
-    --pocket-node-pocket-selected-background: var(--app-blackRussian);
-    --pocket-node-pocket-selected-border-color: var(--app-silver);
-    --pocket-node-report-color: var(--app-white);
-    --pocket-node-report-background: var(--app-airForceBlue);
-    --pocket-node-report-border-color: var(--app-bleach);
-    --pocket-node-report-hover-color: var(--app-white);
-    --pocket-node-report-hover-background: var(--app-airForceBlue);
-    --pocket-node-report-hover-border-color: var(--app-bleach);
-    --pocket-node-report-selected-color: var(--app-white);
-    --pocket-node-report-selected-background: var(--app-airForceBlue);
-    --pocket-node-report-selected-border-color: var(--app-bleach);
-    --pocket-node-resource-color: var(--app-bunker);
-    --pocket-node-resource-background: var(--app-bleach);
-    --pocket-node-resource-hover-color: var(--app-bunker);
-    --pocket-node-resource-hover-background: var(--app-white);
-    --pocket-node-resource-selected-color: var(--app-bunker);
-    --pocket-node-resource-selected-background: var(--app-white);
+    --pocket-node-dark-color: var(--app-whiteSmoke);
+    --pocket-node-dark-background: var(--app-black);
+    --pocket-node-dark-border-color: transparent;
+    --pocket-node-dark-hover-color: var(--app-whiteSmoke);
+    --pocket-node-dark-hover-background: var(--app-black);
+    --pocket-node-dark-hover-border-color: var(--app-whiteSmoke);
+    --pocket-node-dark-selected-color: var(--app-whiteSmoke);
+    --pocket-node-dark-selected-background: var(--app-black);
+    --pocket-node-dark-selected-border-color: var(--app-whiteSmoke);
+
+    --pocket-node-dark-button-fill: var(--app-suvaGrey);
+    --pocket-node-dark-button-hover-fill: var(--app-white);
+    --pocket-node-dark-button-selected-fill: var(--app-bleach);
+
+    --pocket-node-light-color: var(--app-bunker);
+    --pocket-node-light-background: var(--app-bleach);
+    --pocket-node-light-hover-color: var(--app-bunker);
+    --pocket-node-light-hover-background: var(--app-white);
+    --pocket-node-light-selected-color: var(--app-bunker);
+    --pocket-node-light-selected-background: var(--app-white);
+
+    --pocket-node-light-button-fill: var(--app-blackRussian);
+    --pocket-node-light-button-hover-fill: var(--app-blackRussian);
+
+    --pocket-node-report-color: var(--app-airForceBlue);
+    --pocket-node-report-background: var(--app-white);
+    --pocket-node-report-border-color: var(--app-airForceBlue);
 
     /* System Banner */
     --system-banner-background: var(--app-nero);

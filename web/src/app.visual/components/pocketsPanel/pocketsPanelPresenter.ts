@@ -158,6 +158,7 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                     content: '',
                     childNodes: [],
                     pocket_id: pocket.id,
+                    isUpdating: pocket.isUpdating,
                 }
 
                 forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
@@ -172,6 +173,7 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                         content: '',
                         childNodes: [],
                         pocket_id: pocket.id,
+                        isUpdating: pocket.isUpdating,
                     }
 
                     forEach(resourceMapper.excerptMappers, (excerptMapper: ExcerptMapper) => {
@@ -186,6 +188,7 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                             content: '',
                             childNodes: [],
                             pocket_id: pocket.id,
+                            isUpdating: pocket.isUpdating,
                         }
 
                         forEach(excerptMapper.notes, (note: NoteInfo) => {
@@ -199,6 +202,7 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                                 content: '',
                                 childNodes: [],
                                 pocket_id: pocket.id,
+                                isUpdating: pocket.isUpdating,
                             }
                         })
 

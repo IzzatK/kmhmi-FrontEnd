@@ -96,16 +96,13 @@ export class PocketProvider extends EntityProvider<PocketMapper> {
                 .then(data => {
                     const { id } = data;
 
-                    // it's a single fetch to get the new user
-                    setTimeout(() => {
-                        this.getSingle(id)
-                            .then(pocketMapper => {
-                                resolve(pocketMapper);
-                            })
-                            .catch(error => {
-                                reject(error);
-                            });
-                    }, 3000)
+                    const pocket = new PocketInfo(id);
+                    pocket.title = uiRequestData.title || "";
+                    pocket.author_id = uiRequestData.author_id || "";
+                    pocket.isUpdating = false;
+
+                    const pocketMapper = new PocketMapper(pocket)
+                    resolve(pocketMapper);
                 })
                 .catch(error => {
                     reject(error);

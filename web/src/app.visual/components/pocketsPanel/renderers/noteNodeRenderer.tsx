@@ -1,17 +1,10 @@
 import React, {Component} from "react";
-import {
-    NodeRendererProps,
-    NoteNodeRendererProps,
-    PocketNodeRendererState,
-    ResourceNodeRendererProps
-} from "../pocketsPanelModel";
+import {NoteNodeRendererProps} from "../pocketsPanelModel";
 import Button from "../../../theme/widgets/button/button";
-import {DownloadSVG} from "../../../theme/svgs/downloadSVG";
 import {RemoveSVG} from "../../../theme/svgs/removeSVG";
-import {ShareSVG} from "../../../theme/svgs/shareSVG";
-import {SettingsSVG} from "../../../theme/svgs/settingsSVG";
 import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
 import {CopySVG} from "../../../theme/svgs/copySVG";
+import {NoteSVG} from "../../../theme/svgs/noteSVG";
 
 export class NoteNodeRenderer extends Component<NoteNodeRendererProps> {
     constructor(props: any) {
@@ -21,10 +14,12 @@ export class NoteNodeRenderer extends Component<NoteNodeRendererProps> {
     }
 
     _onRemove(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+        const { onRemove, id } = this.props;
+
         event.stopPropagation();
 
-        if (this.props.onRemove != null) {
-            this.props.onRemove(this.props.id);
+        if (onRemove) {
+            onRemove(id);
         }
     }
 
@@ -38,16 +33,21 @@ export class NoteNodeRenderer extends Component<NoteNodeRendererProps> {
 
         return (
             <div className={cn}>
-                <Button>
-                    <CopySVG className={"small-image-container"}/>
+                <Button className={"btn-transparent"} disabled={true}>
+                    <NoteSVG className={"small-image-container"}/>
                 </Button>
-                <div className={"d-flex flex-row v-gap-2 justify-content-center align-items-center"}>
-                    <div className={"title"}>{title ? title : ''}</div>
-                </div>
-                <div className={'action-bar d-flex h-gap-3'}>
-                    <Button onClick={this._onRemove}>
-                        <RemoveSVG className={"small-image-container"}/>
-                    </Button>
+                <div className={"d-flex flex-fill justify-content-between"}>
+                    <div className={"d-flex flex-row v-gap-2 justify-content-center align-items-center"}>
+                        <div className={"title font-italic"}>{title}</div>
+                    </div>
+                    <div className={'action-bar d-flex h-gap-3'}>
+                        <Button className={"btn-transparent"} onClick={(e) => {e.stopPropagation()}} tooltip={"Copy to Clipboard"}>
+                            <CopySVG className={"small-image-container"}/>
+                        </Button>
+                        <Button className={"btn-transparent"} onClick={this._onRemove} tooltip={"Remove"}>
+                            <RemoveSVG className={"small-image-container"}/>
+                        </Button>
+                    </div>
                 </div>
             </div>
         )
