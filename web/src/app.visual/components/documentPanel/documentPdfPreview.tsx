@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React from 'react';
 import './documentPanel.css';
 import {Viewer, Worker} from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
@@ -13,7 +13,7 @@ import {
     highlightPlugin,
     RenderHighlightContentProps,
     RenderHighlightsProps,
-    RenderHighlightTargetProps, Trigger
+    RenderHighlightTargetProps
 } from '@react-pdf-viewer/highlight';
 import {ZoomInSVG} from "../../theme/svgs/zoomInSVG";
 import {ZoomOutSVG} from "../../theme/svgs/zoomOutSVG";
@@ -31,27 +31,11 @@ function DocumentPdfPreview(props: DocumentPdfPreviewProps) {
     const toolbarPluginInstance = toolbarPlugin();
     const { Toolbar } = toolbarPluginInstance;
 
-
-
-    // const highlightPluginInstance = useMemo(() => {
-    //     return highlightPlugin({
-    //         renderHighlightTarget: (pluginProps: RenderHighlightTargetProps) => renderHighlightTarget(pluginProps, props),
-    //         renderHighlightContent: (pluginProps: RenderHighlightContentProps) => renderHighlightContent(pluginProps, props),
-    //         renderHighlights: (pluginProps: RenderHighlightsProps) => renderHighlights(pluginProps, props),
-    //     });
-    // }, [ props ]);
-
     const highlightPluginInstance = highlightPlugin({
         renderHighlightTarget: (pluginProps: RenderHighlightTargetProps) => renderHighlightTarget(pluginProps, props),
         renderHighlightContent: (pluginProps: RenderHighlightContentProps) => renderHighlightContent(pluginProps, props),
         renderHighlights: (pluginProps: RenderHighlightsProps) => renderHighlights(pluginProps, props),
     });
-
-    // const highlightPluginInstance =  highlightPlugin({
-    //     renderHighlightTarget: (pluginProps: RenderHighlightTargetProps) => renderHighlightTarget(pluginProps, props),
-    //     renderHighlightContent: (pluginProps: RenderHighlightContentProps) => renderHighlightContent(pluginProps, props),
-    //     renderHighlights: (pluginProps: RenderHighlightsProps) => renderHighlights(pluginProps, props),
-    // });
 
     const _download = () => {
         let username = userProfile.username;

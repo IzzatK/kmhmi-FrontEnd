@@ -1,13 +1,10 @@
 import {
-    highlightPlugin,
-    HighlightPlugin,
     RenderHighlightContentProps,
     RenderHighlightsProps,
     RenderHighlightTargetProps,
-    Trigger
 } from "@react-pdf-viewer/highlight";
-import {DocumentPdfPreviewProps, CreateExcerptEventData, ExcerptVM, NoteVM, PocketVM} from "./documentPanelModel";
-import React, {Component, useMemo} from "react";
+import {DocumentPdfPreviewProps, ExcerptVM, NoteVM, PocketVM} from "./documentPanelModel";
+import React, {Component} from "react";
 import Button from "../../theme/widgets/button/button";
 import {NoteSVG} from "../../theme/svgs/noteSVG";
 import {DeleteSVG} from "../../theme/svgs/deleteSVG";
@@ -16,17 +13,6 @@ import TextArea from "../../theme/widgets/textEdit/textArea";
 import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
 import {bindInstanceMethods} from "../../../framework.core/extras/utils/typeUtils";
 import TextEdit from "../../theme/widgets/textEdit/textEdit";
-//
-// export const MyHighlightPlugin = (props: DocumentPdfPreviewProps): HighlightPlugin => {
-//     return useMemo(() => {
-//         return highlightPlugin(
-//             {
-//                 renderHighlightTarget: (pluginProps: RenderHighlightTargetProps) => renderHighlightTarget(pluginProps, props),
-//                 renderHighlightContent: (pluginProps: RenderHighlightContentProps) => renderHighlightContent(pluginProps, props),
-//                 renderHighlights: (pluginProps: RenderHighlightsProps) => renderHighlights(pluginProps, props),
-//             })
-//     }, [props]);
-// };
 
 export function renderHighlightTarget(pluginProps: RenderHighlightTargetProps, props: DocumentPdfPreviewProps) {
     return (
@@ -41,10 +27,9 @@ export function renderHighlightTarget(pluginProps: RenderHighlightTargetProps, p
             </Button>
         </div>
     );
-};
+}
 
 export function renderHighlightContent(pluginProps: RenderHighlightContentProps, props: DocumentPdfPreviewProps) {
-
 
     let pocketId = props.tmpExcerpt["pocketId"] ? props.tmpExcerpt["pocketId"] : "";
     let pocketTitle = "";
@@ -85,11 +70,16 @@ export function renderHighlightContent(pluginProps: RenderHighlightContentProps,
         title: "Create New Pocket",
     }
 
+    let top = pluginProps.selectionRegion.top + pluginProps.selectionRegion.height;
+    if (top > 81) {
+        top = 81;
+    }
+
     return (
         <div
             className={"popup d-flex flex-column bg-accent rounded position-absolute"}
             style={{
-                top: `${pluginProps.selectionRegion.top + pluginProps.selectionRegion.height}%`,
+                top: `${top}%`,
             }}>
             <div className={"d-flex flex-column v-gap-2 p-3 position-relative"}>
                 <div className={"position-absolute close"}>
@@ -125,7 +115,7 @@ export function renderHighlightContent(pluginProps: RenderHighlightContentProps,
             </div>
         </div>
     );
-};
+}
 
 export type HighlightNotePair = {
     highlight: any[]
@@ -246,17 +236,19 @@ class NoteRenderer extends Component<NoteRendererProps, NoteRendererState> {
     }
 
     render() {
+        const { expanded, text } = this.state;
+
         return (
-            <div className={'position-relative d-flex justify-content-center'} >
+            <div className={'position-relative d-block justify-content-center'} >
                 <div className={'position-absolute d-flex justify-content-center'} style={{bottom: 0, left: 0, right: 0}}>
                     {
-                        this.state.expanded ?
+                        expanded ?
                             <div className={'position-relative p-4 pb-2 shadow-lg d-flex flex-column justify-content-center v-gap-3 bg-primary border-muted border'}>
                                 <TextEdit
                                     className={"p-0"}
                                     name={"note"}
                                     onChange={this._onUpdateNote}
-                                    value={this.state.text}/>
+                                    value={text}/>
                                 <div className={'d-flex h-gap-3'}>
                                     <Button text={'Cancel'} onClick={this._onCancelNote}/>
                                     <Button text={'Save'} onClick={this._onSaveNote}/>
@@ -266,7 +258,6 @@ class NoteRenderer extends Component<NoteRendererProps, NoteRendererState> {
                             <div className={'p-4 pb-1'}>
                                 <Button text={'Note'} onClick={this._editNote}/>
                             </div>
-
                     }
                 </div>
             </div>
