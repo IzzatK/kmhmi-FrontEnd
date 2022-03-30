@@ -4,6 +4,7 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import {CirclePieChartProps, CirclePieChartState} from "./circlePieChartModel";
+import {Container, ISpriteAdapters, ISpriteProperties, Optional, Sprite, SpriteState} from "@amcharts/amcharts4/core";
 
 am4core.useTheme(am4themes_animated);
 
@@ -50,6 +51,10 @@ export class CirclePieChart extends Component<CirclePieChartProps, CirclePieChar
         chart.legend.itemContainers.template.paddingBottom = 5;
         chart.legend.labels.template.truncate = false;
         chart.legend.labels.template.wrap = true;
+
+        chart.events.on("sizechanged", () => {
+            chart.legend.invalidate();
+        });
 
         chart.data = data;
 
