@@ -1,14 +1,14 @@
-import {KeyEventHandler, LeafType, UnderlineInputProps} from "./slateModel";
+import {ISlateLeafPlugin, KeyEventHandler, LeafType, UnderlineInputProps} from "./slateModel";
 import React from "react";
 import {ReactEditor, useSlate} from "slate-react";
 import {Editor} from "slate";
 import Button from "../../../../theme/widgets/button/button";
 import {TextFormatUnderlineSVG} from "../../../../theme/svgs/textFormatUnderlineSVG";
-import {isKeyMod} from "./slate-utils";
+import {hasMark, isKeyMod, toggleMark} from "./slate-utils";
 
 const markKey = 'underline';
 
-export function renderUnderlineLeaf(leaf: LeafType, children: any) {
+function renderUnderlineLeaf(leaf: LeafType, children: any) {
     let result = children;
 
     if (leaf.underline) {
@@ -33,22 +33,14 @@ export function UnderlineInput(props: UnderlineInputProps) {
 }
 
 function underlineStrategy(editor: Editor) {
-    if (hasUnderlineMark(editor)) {
-        editor.removeMark(markKey);
-    }
-    else {
-        editor.addMark(markKey, true);
-    }
-
-    ReactEditor.focus(editor);
+    toggleMark(editor, markKey);
 }
 
 function hasUnderlineMark (editor: Editor) {
-    const marks = Editor.marks(editor) as Record<string, boolean>
-    return marks ? marks[markKey] : false
+    return hasMark(editor, markKey);
 }
 
-export function handleUnderlineKeyEvent(event: React.KeyboardEvent, editor: Editor): KeyEventHandler {
+function handleUnderlineKeyEvent(event: React.KeyboardEvent, editor: Editor): KeyEventHandler {
     let handler = null;
 
     if (isKeyMod(event) && event.key === 'u') {
@@ -56,4 +48,9 @@ export function handleUnderlineKeyEvent(event: React.KeyboardEvent, editor: Edit
     }
 
     return handler;
+}
+
+export const underlinePlugin: ISlateLeafPlugin = {
+    handleKeyEvent: handleUnderlineKeyEvent,
+    render: renderUnderlineLeaf,
 }

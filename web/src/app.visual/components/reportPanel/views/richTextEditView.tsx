@@ -1,40 +1,24 @@
 import React, {useCallback, useRef, useState} from "react";
-import {Editable, RenderElementProps, Slate, useSlate, withReact,} from "slate-react";
-import {createEditor, Descendant, Editor, Element as SlateElement, Transforms} from "slate";
+import {Editable, Slate, withReact,} from "slate-react";
+import {createEditor, Descendant, Editor } from "slate";
 import {withHistory} from "slate-history";
-import Button from "../../../theme/widgets/button/button";
-import isHotkey from 'is-hotkey';
-import {TextFormatBoldSVGD} from "../../../theme/svgs/textFormatBoldSVG";
-import {TextFormatItalicSVG} from "../../../theme/svgs/textFormatItalicSVG";
-import {TextFormatUnderlineSVG} from "../../../theme/svgs/textFormatUnderlineSVG";
-import {TextFormatHighlightSVG} from "../../../theme/svgs/textFormatHighlightSVG";
-import {TextFormatColorSVG} from "../../../theme/svgs/textFormatColorSVG";
 import ComboBox from "../../../theme/widgets/comboBox/comboBox";
-import {TextAlignLeftSVG} from "../../../theme/svgs/textAlignLeftSVG";
-import {TextAlignCenterSVG} from "../../../theme/svgs/textAlignCenterSVG";
-import {TextAlignRightSVG} from "../../../theme/svgs/textAlignRightSVG";
-import {TextAlignJustifySVG} from "../../../theme/svgs/textAlignJustifySVG";
-import {TextListNumber} from "../../../theme/svgs/textListNumber";
-import {TextListBulletSVG} from "../../../theme/svgs/textListBulletSVG";
 import {
-    BlockButtonProps,
     ElementProps,
-    ElementType, FontColorInputProps, FontFamilyInputProps,
-    FontSizeInputProps, HighlightColorInputProps,
+    ISlateElementPlugin,
+    ISlateLeafPlugin,
     LeafProps,
-    LIST_TYPE,
-    TEXT_ALIGN_TYPE
 } from "./slate/slateModel";
-import Portal from "../../../theme/widgets/portal/portal";
-import {FontFamilyInput, renderFontFamilyLeaf} from "./slate/fontFamilyPlugin";
-import {FontHighlightInput, renderFontHighlightLeaf} from "./slate/fontHighlightPlugin";
-import {FontColorInput, renderFontColorLeaf} from "./slate/fontColorPlugin";
-import {BoldInput, handleBoldKeyEvent, renderBoldLeaf} from "./slate/boldPlugin";
-import {handleItalicKeyEvent, ItalicInput, renderItalicLeaf} from "./slate/italicPlugin";
-import {handleUnderlineKeyEvent, renderUnderlineLeaf, UnderlineInput} from "./slate/underlinePlugin";
-import {FontSizeInput, renderFontSizeLeaf} from "./slate/fontSizePlugin";
-import {renderTextAlignElement, TextAlignInputToolbar} from "./slate/textAlignPlugin";
-import {ListInputToolbar, renderListElement} from "./slate/listPlugin";
+import {FontFamilyInput, fontFamilyPlugin } from "./slate/fontFamilyPlugin";
+import {FontHighlightInput, fontHighlightPlugin } from "./slate/fontHighlightPlugin";
+import {FontColorInput, fontColorPlugin } from "./slate/fontColorPlugin";
+import {BoldInput, boldPlugin } from "./slate/boldPlugin";
+import {ItalicInput, italicPlugin } from "./slate/italicPlugin";
+import {UnderlineInput, underlinePlugin } from "./slate/underlinePlugin";
+import {FontSizeInput, fontSizePlugin } from "./slate/fontSizePlugin";
+import {TextAlignInputToolbar, textAlignPlugin } from "./slate/textAlignPlugin";
+import {ListInputToolbar, listPlugin } from "./slate/listPlugin";
+import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
 
 const initialValue: Descendant[] = [
     {
@@ -43,13 +27,6 @@ const initialValue: Descendant[] = [
         ],
     },
 ]
-
-const HOTKEYS:Record<string, string> = {
-    'mod+b': 'bold',
-    'mod+i': 'italic',
-    'mod+u': 'underline',
-    'mod+`': 'code',
-}
 
 const citation = [
     {
@@ -60,6 +37,21 @@ const citation = [
         id: 'chicago',
         title: 'Chicago'
     }
+]
+
+const slateLeafPlugins: ISlateLeafPlugin[] = [
+    boldPlugin,
+    fontColorPlugin,
+    fontFamilyPlugin,
+    fontHighlightPlugin,
+    fontSizePlugin,
+    italicPlugin,
+    underlinePlugin
+]
+
+const slateElementPlugins: ISlateElementPlugin[] = [
+    listPlugin,
+    textAlignPlugin
 ]
 
 export function RichTextEditView() {
@@ -122,14 +114,21 @@ export function RichTextEditView() {
                                                 editor.insertText('    ')
                                             }
                                             else {
-                                                let handler =            handleBoldKeyEvent(event, editor);
-                                                    handler = handler ?? handleItalicKeyEvent(event, editor);
-                                                    handler = handler ?? handleUnderlineKeyEvent(event, editor);
+
+                                                let handler: any = null;
+                                                forEach(slateLeafPlugins, (plugin: ISlateLeafPlugin) => {
+                                                    if (plugin.handleKeyEvent) {
+                                                        handler = handler ?? plugin.handleKeyEvent(event, editor);
+                                                        if (handler) {
+                                                            return true;
+                                                        }
+                                                    }
+                                                })
+
 
                                                 if (handler != null) {
-                                                    event.preventDefault()
+                                                    event.preventDefault();
                                                     handler();
-                                                    
                                                 }
                                             }
                                         }}/>
@@ -152,8 +151,11 @@ function Element (props: ElementProps) {
 
     let children = props.children;
 
-    children = renderTextAlignElement(element, children, attributes);
-    children = renderListElement(element, children, attributes);
+    forEach(slateElementPlugins, (plugin: ISlateElementPlugin) => {
+        if (plugin.render) {
+            children = plugin.render(element, children, attributes);
+        }
+    })
 
     // default to rendering with a paragraph
     if (children == props.children) {
@@ -172,13 +174,11 @@ function Leaf( props: LeafProps) {
 
     let children = props.children;
 
-    children = renderFontSizeLeaf(leaf, children);
-    children = renderFontFamilyLeaf(leaf, children);
-    children = renderFontColorLeaf(leaf, children);
-    children = renderFontHighlightLeaf(leaf, children);
-    children = renderBoldLeaf(leaf, children);
-    children = renderItalicLeaf(leaf, children);
-    children = renderUnderlineLeaf(leaf, children);
+    forEach(slateLeafPlugins, (plugin: ISlateLeafPlugin) => {
+        if (plugin.render) {
+            children = plugin.render(leaf, children);
+        }
+    })
 
     return <span {...attributes}>{children}</span>;
 }
