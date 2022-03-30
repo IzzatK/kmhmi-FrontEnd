@@ -75,10 +75,10 @@ function textAlignStrategy(editor: Editor, value: any) {
         value
     )
 
-    let element: Partial<ElementType>;
-    element = {
+    const element: Partial<ElementType> = {
         align: isActive ? defaultValue : value as TEXT_ALIGN_TYPE,
     }
+
     Transforms.setNodes<ElementType>(editor, element)
 }
 

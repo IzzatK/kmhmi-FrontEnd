@@ -13,6 +13,7 @@ declare module 'slate' {
 export type ElementType = BaseElement & {
     type: string
     align: TEXT_ALIGN_TYPE | undefined
+    // list: LIST_TYPE | undefined
 }
 
 export type LeafType = {

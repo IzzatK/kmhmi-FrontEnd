@@ -22,12 +22,13 @@ export function isMultiElementActive(editor: Editor, elementKey: string, element
         Editor.nodes(editor, {
             at: Editor.unhangRange(editor, selection),
             match: (n: any) => {
-
                 const lookup: Record<string, string> = n;
 
-                return !Editor.isEditor(n) &&
+                const result = !Editor.isEditor(n) &&
                     SlateElement.isElement(n) &&
-                    lookup[elementKey] === elementValue;
+                    lookup[elementKey] == elementValue;
+
+                return result;
             }
 
         })

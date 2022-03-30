@@ -34,6 +34,7 @@ import {ItalicInput, renderItalicLeaf} from "./slate/italicPlugin";
 import {renderUnderlineLeaf, UnderlineInput} from "./slate/underlinePlugin";
 import {FontSizeInput, renderFontSizeLeaf} from "./slate/fontSizePlugin";
 import {renderTextAlignElement, TextAlignInputToolbar} from "./slate/textAlignPlugin";
+import {ListInputToolbar, renderListElement} from "./slate/listPlugin";
 
 const initialValue: Descendant[] = [
     {
@@ -83,18 +84,11 @@ export function RichTextEditView() {
                 <div className={'toolbar d-flex flex-column v-gap-3'}>
                     <div className={'toolbar flex-fill d-flex h-gap-5'}>
                         <div className={'d-flex h-gap-3'}>
-                            <FontFamilyInput/>
+                            <FontFamilyInput />
                             <FontSizeInput />
                         </div>
                         <TextAlignInputToolbar />
-                        <div className={'d-flex h-gap-2'}>
-                            <BlockButton format={LIST_TYPE.numbered}>
-                                <TextListNumber className={'small-image-container'}/>
-                            </BlockButton>
-                            <BlockButton format={LIST_TYPE.bulleted}>
-                                <TextListBulletSVG className={'small-image-container'}/>
-                            </BlockButton>
-                        </div>
+                        <ListInputToolbar />
                     </div>
                     <div className={'align-self-stretch d-flex justify-content-between'}>
                         <div className={'d-flex h-gap-3'}>
@@ -132,7 +126,7 @@ export function RichTextEditView() {
                                                     if (isHotkey(hotkey, event)) {
                                                         event.preventDefault()
                                                         const mark = HOTKEYS[hotkey]
-                                                        toggleMarkFormat(editor, mark)
+                                                        // toggleMarkFormat(editor, mark)
                                                     }
                                                 }
                                             }
@@ -146,173 +140,24 @@ export function RichTextEditView() {
     )
 }
 
-function toggleMarkFormat (editor: Editor, format: string) {
-    const isActive = isMarkActive(editor, format)
-
-    if (isActive) {
-        Editor.removeMark(editor, format)
-    } else {
-        Editor.addMark(editor, format, true)
-    }
-}
-
-function isListType(format: string): boolean {
-    let result = false;
-
-    if (format in LIST_TYPE) {
-        result = true;
-    }
-
-    // result = Object.values(LIST_TYPE)?.includes(format as LIST_TYPE);
-
-    return result;
-}
-
-function isTextAlignType(format: string): boolean {
-    let result = false;
-
-    if (format in TEXT_ALIGN_TYPE) {
-        result = true;
-    }
-
-    // result = Object.values(TEXT_ALIGN_TYPE)?.includes(format as TEXT_ALIGN_TYPE);
-
-    return result;
-}
-
-const toggleBlock = (editor: Editor, format: string) => {
-    const isActive = isBlockActive(
-        editor,
-        format,
-        isTextAlignType(format) ? 'align' : 'type'
-    )
-    const isList = isListType(format)
-
-    Transforms.unwrapNodes(editor, {
-        match: (n) =>
-            !Editor.isEditor(n) &&
-            SlateElement.isElement(n) &&
-            isListType((n as ElementType).type) &&
-            !isTextAlignType(format),
-        split: true,
-    })
-    let element: Partial<ElementType>;
-    if (isTextAlignType(format)) {
-        element = {
-            align: isActive ? undefined : format as TEXT_ALIGN_TYPE,
-        }
-    } else {
-        element = {
-            type: isActive ? 'paragraph' : isList ? 'list-item' : format,
-        }
-    }
-    Transforms.setNodes<ElementType>(editor, element)
-
-    if (!isActive && isList) {
-        const block = { type: format, children: [] }
-        Transforms.wrapNodes(editor, block)
-    }
-}
-
-function isMarkActive (editor: Editor, format:string) {
-    const marks = Editor.marks(editor) as Record<string, boolean>
-    return marks ? marks[format] : false
-}
-
-function BlockButton(props: BlockButtonProps) {
-    const editor = useSlate();
-
-    const {format, onClick, ...rest} = props;
-
-    const selected = isBlockActive(
-            editor,
-            props.format,
-            isTextAlignType(props.format) ? 'align' : 'type');
-
-    return <Button className={'btn-transparent'} {...rest} selected={selected} onClick={
-        event => {
-            event.preventDefault()
-            toggleBlock(editor, format)
-        }
-    }>
-        {props.children}
-    </Button>
-}
-
-function isBlockActive (editor: Editor, format: any, blockType = 'type') {
-    const { selection } = editor
-    if (!selection) return false
-
-    const [match] = Array.from(
-        Editor.nodes(editor, {
-            at: Editor.unhangRange(editor, selection),
-            match: (n: any) => {
-
-                const lookup: Record<string, string> = n;
-
-                return !Editor.isEditor(n) &&
-                    SlateElement.isElement(n) &&
-                    lookup[blockType] === format;
-            }
-
-        })
-    )
-
-    return !!match
-}
-
 function Element (props: ElementProps) {
 
-    const {attributes, children, element } = props;
+    const {attributes, element } = props;
 
-    const style = {
-        textAlign: element.align || TEXT_ALIGN_TYPE.left,
+    let children = props.children;
+
+    children = renderTextAlignElement(element, children, attributes);
+    children = renderListElement(element, children, attributes);
+
+    if (children == props.children) {
+        children = (
+            <p {...attributes}>
+                {children}
+            </p>
+        )
     }
 
-    switch (element.type) {
-        case 'block-quote':
-            return (
-                <blockquote style={style} {...attributes}>
-                    {children}
-                </blockquote>
-            )
-        case 'bulleted':
-            return (
-                <ul style={style} {...attributes}>
-                    {children}
-                </ul>
-            )
-        case 'heading-one':
-            return (
-                <h1 style={style} {...attributes}>
-                    {children}
-                </h1>
-            )
-        case 'heading-two':
-            return (
-                <h2 style={style} {...attributes}>
-                    {children}
-                </h2>
-            )
-        case 'list-item':
-            return (
-                <li style={style} {...attributes}>
-                    {children}
-                </li>
-            )
-        case 'numbered':
-            return (
-                <ol style={style} {...attributes}>
-                    {children}
-                </ol>
-            )
-        default:
-            return (
-                <p style={style} {...attributes}>
-                    {children}
-                </p>
-            )
-    }
+    return children;
 }
 
 function Leaf( props: LeafProps) {
