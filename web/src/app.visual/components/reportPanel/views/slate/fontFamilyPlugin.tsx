@@ -3,6 +3,7 @@ import React from "react";
 import {useSlate} from "slate-react";
 import ComboBox from "../../../../theme/widgets/comboBox/comboBox";
 import {Editor} from "slate";
+import {getMarkValue} from "./slate-utils";
 
 const markKey = 'fontFamily';
 const defaultMarkValue = 'Open Sans';
@@ -42,8 +43,7 @@ function hasFontFamilyMark (editor: Editor) {
 }
 
 function getFontFamilyMark (editor: Editor) {
-    const marks = Editor.marks(editor) as Record<string, string>
-    return marks[markKey] ? marks[markKey] : defaultMarkValue;
+    return getMarkValue(editor, markKey, defaultMarkValue);
 }
 
 const options = [

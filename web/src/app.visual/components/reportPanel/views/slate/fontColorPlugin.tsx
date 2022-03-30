@@ -6,6 +6,7 @@ import Portal from "../../../../theme/widgets/portal/portal";
 import Button from "../../../../theme/widgets/button/button";
 import {TextFormatHighlightSVG} from "../../../../theme/svgs/textFormatHighlightSVG";
 import {TextFormatColorSVG} from "../../../../theme/svgs/textFormatColorSVG";
+import {getMarkValue} from "./slate-utils";
 
 
 const markKey = 'fontColor';
@@ -93,8 +94,7 @@ function hasFontColorMark (editor: Editor) {
 }
 
 function getFontColorMark (editor: Editor) {
-    const marks = Editor.marks(editor) as Record<string, string>
-    return marks[markKey] ? marks[markKey] : defaultMarkValue;
+    return getMarkValue(editor, markKey, defaultMarkValue);
 }
 
 

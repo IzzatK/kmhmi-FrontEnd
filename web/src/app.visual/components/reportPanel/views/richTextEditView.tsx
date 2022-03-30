@@ -33,6 +33,7 @@ import {BoldInput, renderBoldLeaf} from "./slate/boldPlugin";
 import {ItalicInput, renderItalicLeaf} from "./slate/italicPlugin";
 import {renderUnderlineLeaf, UnderlineInput} from "./slate/underlinePlugin";
 import {FontSizeInput, renderFontSizeLeaf} from "./slate/fontSizePlugin";
+import {renderTextAlignElement, TextAlignInputToolbar} from "./slate/textAlignPlugin";
 
 const initialValue: Descendant[] = [
     {
@@ -85,25 +86,12 @@ export function RichTextEditView() {
                             <FontFamilyInput/>
                             <FontSizeInput />
                         </div>
+                        <TextAlignInputToolbar />
                         <div className={'d-flex h-gap-2'}>
-                            <BlockButton format={'left'}>
-                                <TextAlignLeftSVG className={'small-image-container'}/>
-                            </BlockButton>
-                            <BlockButton format={'center'}>
-                                <TextAlignCenterSVG className={'small-image-container'}/>
-                            </BlockButton>
-                            <BlockButton format={'right'}>
-                                <TextAlignRightSVG className={'small-image-container'}/>
-                            </BlockButton>
-                            <BlockButton format={'justify'}>
-                                <TextAlignJustifySVG className={'small-image-container'}/>
-                            </BlockButton>
-                        </div>
-                        <div className={'d-flex h-gap-2'}>
-                            <BlockButton format={'numbered-list'}>
+                            <BlockButton format={LIST_TYPE.numbered}>
                                 <TextListNumber className={'small-image-container'}/>
                             </BlockButton>
-                            <BlockButton format={'bulleted-list'}>
+                            <BlockButton format={LIST_TYPE.bulleted}>
                                 <TextListBulletSVG className={'small-image-container'}/>
                             </BlockButton>
                         </div>
@@ -288,7 +276,7 @@ function Element (props: ElementProps) {
                     {children}
                 </blockquote>
             )
-        case 'bulleted-list':
+        case 'bulleted':
             return (
                 <ul style={style} {...attributes}>
                     {children}
@@ -312,7 +300,7 @@ function Element (props: ElementProps) {
                     {children}
                 </li>
             )
-        case 'numbered-list':
+        case 'numbered':
             return (
                 <ol style={style} {...attributes}>
                     {children}

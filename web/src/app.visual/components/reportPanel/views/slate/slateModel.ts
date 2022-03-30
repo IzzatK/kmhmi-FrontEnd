@@ -45,8 +45,8 @@ export type SlateEditorState = {
 }
 
 export enum LIST_TYPE {
-    'numbered-list'='numbered-list',
-    'bulleted-list'='bulleted-list'
+    'numbered'='numbered',
+    'bulleted'='bulleted'
 }
 export enum TEXT_ALIGN_TYPE {
     'left'='left',
@@ -80,6 +80,22 @@ export type ItalicInputProps = {
 }
 
 export type UnderlineInputProps = {
+
+}
+
+export type TextAlignInputButtonProps = ButtonProps & {
+    align: TEXT_ALIGN_TYPE;
+}
+
+export type TextAlignInputToolbarProps = {
+
+}
+
+export type ListInputButtonProps = ButtonProps &{
+    list: LIST_TYPE
+}
+
+export type ListInputToolbarProps = {
 
 }
 
