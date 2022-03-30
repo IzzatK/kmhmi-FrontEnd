@@ -1,7 +1,7 @@
 import {Editor, Transforms} from "slate";
 import {ElementType, TEXT_ALIGN_TYPE, TextAlignInputButtonProps, TextAlignInputToolbarProps} from "./slateModel";
 import {isMultiElementActive} from "./slate-utils";
-import {useSlate} from "slate-react";
+import {ReactEditor, useSlate} from "slate-react";
 import Button from "../../../../theme/widgets/button/button";
 import React from "react";
 import {TextAlignLeftSVG} from "../../../../theme/svgs/textAlignLeftSVG";
@@ -79,7 +79,9 @@ function textAlignStrategy(editor: Editor, value: any) {
         align: isActive ? defaultValue : value as TEXT_ALIGN_TYPE,
     }
 
-    Transforms.setNodes<ElementType>(editor, element)
+    Transforms.setNodes<ElementType>(editor, element);
+
+    ReactEditor.focus(editor);
 }
 
 function isTextAlignActive (editor: Editor, format: TEXT_ALIGN_TYPE) {

@@ -1,6 +1,6 @@
 import {BoldInputProps, FontFamilyInputProps, KeyEventHandler, LeafProps, LeafType} from "./slateModel";
 import React from "react";
-import {useSlate} from "slate-react";
+import {ReactEditor, useSlate} from "slate-react";
 import ComboBox from "../../../../theme/widgets/comboBox/comboBox";
 import {Editor} from "slate";
 import Button from "../../../../theme/widgets/button/button";
@@ -23,7 +23,8 @@ export function renderBoldLeaf(leaf: LeafType, children: any) {
 export function BoldInput(props: BoldInputProps) {
     const editor = useSlate();
 
-    function _onSelect() {
+    function _onSelect(event: React.MouseEvent) {
+        event.preventDefault();
         boldStrategy(editor);
     }
 
@@ -41,6 +42,7 @@ function boldStrategy(editor: Editor) {
     else {
         editor.addMark(markKey, true);
     }
+    ReactEditor.focus(editor);
 }
 
 function hasBoldMark (editor: Editor) {

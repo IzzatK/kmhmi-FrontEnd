@@ -1,6 +1,6 @@
 import {FontSizeInputProps, LeafProps, LeafType} from "./slateModel";
 import React from "react";
-import {useSlate} from "slate-react";
+import {ReactEditor, useSlate} from "slate-react";
 import ComboBox from "../../../../theme/widgets/comboBox/comboBox";
 import {Editor} from "slate";
 import {getMarkValue} from "./slate-utils";
@@ -35,6 +35,8 @@ export function FontSizeInput(props: FontSizeInputProps) {
 function fontSizeStrategy(editor: Editor, value: string) {
     editor.removeMark('fontSize')
     editor.addMark('fontSize', value);
+
+    ReactEditor.focus(editor);
 }
 
 function hasFontSizeMark (editor: Editor) {

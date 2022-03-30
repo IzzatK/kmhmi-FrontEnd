@@ -1,6 +1,6 @@
 import {FontFamilyInputProps, LeafProps, LeafType} from "./slateModel";
 import React from "react";
-import {useSlate} from "slate-react";
+import {ReactEditor, useSlate} from "slate-react";
 import ComboBox from "../../../../theme/widgets/comboBox/comboBox";
 import {Editor} from "slate";
 import {getMarkValue} from "./slate-utils";
@@ -35,6 +35,8 @@ export function FontFamilyInput(props: FontFamilyInputProps) {
 function fontFamilyStrategy(editor: Editor, value: string) {
     editor.removeMark('fontFamily')
     editor.addMark('fontFamily', value);
+
+    ReactEditor.focus(editor);
 }
 
 function hasFontFamilyMark (editor: Editor) {

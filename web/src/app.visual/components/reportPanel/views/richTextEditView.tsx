@@ -109,7 +109,7 @@ export function RichTextEditView() {
                         <div className={'bg-primary h-100'}>
                             <div className={'text-secondary h-100'}>
                                     <Editable
-                                        className={'unreset h-100'}
+                                        className={'unreset h-100 p-3'}
                                         renderElement={renderElement}
                                         renderLeaf={renderLeaf}
                                         spellCheck={false}
@@ -122,14 +122,14 @@ export function RichTextEditView() {
                                                 editor.insertText('    ')
                                             }
                                             else {
-                                                let handler = null;
-                                                handler = handler ? handler : handleBoldKeyEvent(event, editor);
-                                                handler = handler ? handler : handleItalicKeyEvent(event, editor);
-                                                handler = handler ? handler : handleUnderlineKeyEvent(event, editor);
+                                                let handler =            handleBoldKeyEvent(event, editor);
+                                                    handler = handler ?? handleItalicKeyEvent(event, editor);
+                                                    handler = handler ?? handleUnderlineKeyEvent(event, editor);
 
                                                 if (handler != null) {
                                                     event.preventDefault()
                                                     handler();
+                                                    
                                                 }
                                             }
                                         }}/>

@@ -1,7 +1,7 @@
 import {Editor, Element as SlateElement, Transforms} from "slate";
 import {ElementType, LIST_TYPE, ListInputButtonProps, TEXT_ALIGN_TYPE, TextAlignInputToolbarProps} from "./slateModel";
 import {isMultiElementActive} from "./slate-utils";
-import {useSlate} from "slate-react";
+import {ReactEditor, useSlate} from "slate-react";
 import Button from "../../../../theme/widgets/button/button";
 import React from "react";
 import {TextListNumber} from "../../../../theme/svgs/textListNumber";
@@ -99,6 +99,8 @@ function listStrategy(editor: Editor, listType: LIST_TYPE) {
         const block = { type: listType, children: [] }
         Transforms.wrapNodes(editor, block)
     }
+
+    ReactEditor.focus(editor);
 }
 
 function isListActive (editor: Editor, list: LIST_TYPE) {

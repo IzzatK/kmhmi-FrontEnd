@@ -1,6 +1,6 @@
 import {KeyEventHandler, LeafType, UnderlineInputProps} from "./slateModel";
 import React from "react";
-import {useSlate} from "slate-react";
+import {ReactEditor, useSlate} from "slate-react";
 import {Editor} from "slate";
 import Button from "../../../../theme/widgets/button/button";
 import {TextFormatUnderlineSVG} from "../../../../theme/svgs/textFormatUnderlineSVG";
@@ -39,6 +39,8 @@ function underlineStrategy(editor: Editor) {
     else {
         editor.addMark(markKey, true);
     }
+
+    ReactEditor.focus(editor);
 }
 
 function hasUnderlineMark (editor: Editor) {

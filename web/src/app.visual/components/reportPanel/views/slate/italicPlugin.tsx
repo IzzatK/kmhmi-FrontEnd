@@ -1,6 +1,6 @@
 import {ItalicInputProps, KeyEventHandler, LeafType} from "./slateModel";
 import React from "react";
-import {useSlate} from "slate-react";
+import {ReactEditor, useSlate} from "slate-react";
 import {Editor} from "slate";
 import Button from "../../../../theme/widgets/button/button";
 import {TextFormatItalicSVG} from "../../../../theme/svgs/textFormatItalicSVG";
@@ -39,6 +39,8 @@ function italicStrategy(editor: Editor) {
     else {
         editor.addMark(markKey, true);
     }
+
+    ReactEditor.focus(editor);
 }
 
 function hasItalicMark (editor: Editor) {

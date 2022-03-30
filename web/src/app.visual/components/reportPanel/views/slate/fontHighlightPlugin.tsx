@@ -1,6 +1,6 @@
 import {HighlightColorInputProps, LeafProps, LeafType} from "./slateModel";
 import React, {useState} from "react";
-import {useSlate} from "slate-react";
+import {ReactEditor, useSlate} from "slate-react";
 import {Editor} from "slate";
 import Portal from "../../../../theme/widgets/portal/portal";
 import Button from "../../../../theme/widgets/button/button";
@@ -79,6 +79,8 @@ export function FontHighlightInput(props: HighlightColorInputProps) {
 function fontHighlightStrategy(editor: Editor, value: string) {
     editor.removeMark(markKey)
     editor.addMark(markKey, value);
+
+    ReactEditor.focus(editor);
 }
 
 function hasFontHighlightMark (editor: Editor) {
