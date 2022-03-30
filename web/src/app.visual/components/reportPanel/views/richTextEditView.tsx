@@ -149,6 +149,7 @@ function Element (props: ElementProps) {
     children = renderTextAlignElement(element, children, attributes);
     children = renderListElement(element, children, attributes);
 
+    // default to rendering with a paragraph
     if (children == props.children) {
         children = (
             <p {...attributes}>
