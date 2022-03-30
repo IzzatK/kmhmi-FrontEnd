@@ -62,3 +62,7 @@ export interface IDocumentService extends IPlugin {
 
     getPendingDocuments(): Record<string, DocumentInfo>;
 }
+
+type OmitParamsType = 'className';
+
+export type DocumentParamType = Omit<Partial<DocumentInfo>, OmitParamsType>

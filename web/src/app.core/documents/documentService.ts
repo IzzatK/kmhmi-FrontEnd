@@ -209,18 +209,18 @@ export class DocumentService extends Plugin implements IDocumentService {
     }
 
     updateDocument(modifiedDocument: any) {
-        const {id} = modifiedDocument;
+        const { id } = modifiedDocument;
 
         // tell the ui we are going to be updating
         let document = this.getDocument(id);
 
-        if (modifiedDocument.hasOwnProperty('private_tag')) {
-            let total_private_tag: Record<string, Record<string, string>> = {};
+        if (document) {
+            const { private_tag:original_private_tag, title, scope, department } = document;
 
-            let currentUserId = this.userService?.getCurrentUserId();
+            if (modifiedDocument.hasOwnProperty('private_tag')) {
+                let total_private_tag: Record<string, Record<string, string>> = {};
 
-            if (document) {
-                const { private_tag:original_private_tag } = document;
+                let currentUserId = this.userService?.getCurrentUserId();
 
                 if (original_private_tag) {
                     forEachKVP(original_private_tag, (itemKey: string, itemValue: Record<string, string>) => {
@@ -236,13 +236,35 @@ export class DocumentService extends Plugin implements IDocumentService {
 
                 modifiedDocument = {
                     ...modifiedDocument,
-                    private_tag: total_private_tag
+                    private_tag: total_private_tag,
+                }
+            }
+
+            //populate required fields
+            if (!modifiedDocument['title']) {
+                modifiedDocument = {
+                    ...modifiedDocument,
+                    title,
+                }
+            }
+
+            if (!modifiedDocument['scope']) {
+                modifiedDocument = {
+                    ...modifiedDocument,
+                    scope,
+                }
+            }
+
+            if (!modifiedDocument['department']) {
+                modifiedDocument = {
+                    ...modifiedDocument,
+                    department,
                 }
             }
         }
 
         let mergedDocumentInfo = {
-            ...document,
+            // ...document,
             ...modifiedDocument,
             isUpdating: true
         }

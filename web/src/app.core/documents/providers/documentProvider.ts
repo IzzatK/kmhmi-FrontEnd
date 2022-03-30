@@ -2,10 +2,10 @@ import {EntityProvider} from "../../common/providers/entityProvider";
 import {DocumentInfo, ParamType, ReferenceInfo, SearchParamInfo, SortPropertyInfo, TagInfo} from "../../../app.model";
 import {Nullable} from "../../../framework.core/extras/utils/typeUtils";
 import {DeleteDocumentResponseConverter} from "../converters/deleteDocumentResponseConverter";
-import {DocumentResponseConverter} from "../converters/documentResponseConverter";
+import {DocumentStatusResponseConverter} from "../converters/documentStatusResponseConverter";
 import {GetDocumentArrayRequestConverter} from "../converters/getDocumentArrayRequestConverter";
 import {GetDocumentArrayResponseConverter} from "../converters/getDocumentArrayResponseConverter";
-import {GetDocumentResponseConverter} from "../converters/getDocumentResponseConverter";
+import {DocumentResponseConverter} from "../converters/documentResponseConverter";
 import {UpdateDocumentRequestConverter} from "../converters/updateDocumentRequestConverter";
 import {UploadDocumentRequestConverter} from "../converters/uploadDocumentRequestConverter";
 import {UploadDocumentResponseConverter} from "../converters/uploadDocumentResponseConverter";
@@ -23,9 +23,9 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
 
     private deleteDocumentResponseConverter!: DeleteDocumentResponseConverter;
 
-    private documentResponseConverter!: DocumentResponseConverter;
+    private documentStatusResponseConverter!: DocumentStatusResponseConverter;
 
-    private getDocumentResponseConverter!: GetDocumentResponseConverter;
+    private documentResponseConverter!: DocumentResponseConverter;
 
     private getDocumentArrayRequestConverter!: GetDocumentArrayRequestConverter;
     private getDocumentArrayResponseConverter!: GetDocumentArrayResponseConverter;
@@ -49,13 +49,13 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
 
         this.deleteDocumentResponseConverter = this.addConverter(DeleteDocumentResponseConverter);
 
-        this.documentResponseConverter = this.addConverter(DocumentResponseConverter);
+        this.documentStatusResponseConverter = this.addConverter(DocumentStatusResponseConverter);
 
-        this.getDocumentResponseConverter = this.addConverter(GetDocumentResponseConverter);
+        this.documentResponseConverter = this.addConverter(DocumentResponseConverter);
 
         this.getDocumentArrayRequestConverter = this.addConverter(GetDocumentArrayRequestConverter);
         this.getDocumentArrayResponseConverter = this.addConverter(GetDocumentArrayResponseConverter);
-        this.getDocumentArrayResponseConverter.singleConverter = this.getDocumentResponseConverter;
+        this.getDocumentArrayResponseConverter.singleConverter = this.documentResponseConverter;
 
         this.updateDocumentRequestConverter = this.addConverter(UpdateDocumentRequestConverter);
 
@@ -130,36 +130,22 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
 
     update(id: string, uiRequestData: {id: string, modifiedDocument: Record<string, any>}) : Promise<Nullable<DocumentInfo>> {
         return new Promise((resolve, reject) => {
-                this.getSingle(id)
-                    .then(latestDocument => {
-                        if (latestDocument != null) {
-                            let converterData = {
-                                id: uiRequestData.id,
-                                latestDocument: latestDocument,
-                                modifiedDocument: uiRequestData.modifiedDocument,
-                            }
-
-                            this.sendPut(id,
-                                () => this.updateDocumentRequestConverter.convert(converterData),
-                                (responseData, errorHandler) => this.getDocumentResponseConverter.convert(responseData, errorHandler))
-                                .then(document => {
-                                    //have to fetch from the server
-                                    if (document != null) {
-                                        resolve(document);
-                                    }
-                                    else {
-                                        reject(`Error Updating Document with id ${id}`);
-                                    }
-                                })
-                                .catch(error => {
-                                    console.log(error);
-                                    reject(error);
-                                });
-                        }
-                        else {
-                            reject(`Document with id ${id} does not exist`)
-                        }
-                    });
+            this.sendPut(id,
+                () => this.updateDocumentRequestConverter.convert(uiRequestData),
+                (responseData, errorHandler) => this.documentResponseConverter.convert(responseData, errorHandler))
+                .then(document => {
+                    //have to fetch from the server
+                    if (document != null) {
+                        resolve(document);
+                    }
+                    else {
+                        reject(`Error Updating Document with id ${id}`);
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    reject(error);
+                });
             }
         )
     }
@@ -176,7 +162,7 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
                     .then(document => {
                         if (document != null) {
                             super.sendDelete(id,
-                                (responseData, errorHandler) => this.getDocumentResponseConverter.convert(responseData, errorHandler))
+                                (responseData, errorHandler) => this.documentResponseConverter.convert(responseData, errorHandler))
                                 .then(data => {
                                     if (data.id === document.id) {
                                         resolve(document);
@@ -203,7 +189,7 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
     getSingle(id: string): Promise<Nullable<DocumentInfo>> {
         return new Promise((resolve, reject) => {
             super.sendGetSingle(id,
-                (responseData, errorHandler) => this.getDocumentResponseConverter.convert(responseData, errorHandler))
+                (responseData, errorHandler) => this.documentResponseConverter.convert(responseData, errorHandler))
                 .then(data => {
                     resolve(data);
                 })

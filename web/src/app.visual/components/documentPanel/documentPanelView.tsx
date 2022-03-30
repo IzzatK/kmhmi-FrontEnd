@@ -14,7 +14,7 @@ import {
     DocumentPanelState,
     DocumentInfoVM,
     EditPropertyVM,
-    CreateExcerptEventData
+    CreateExcerptEventData, DocumentUpdateParams
 } from "./documentPanelModel";
 import {InfoSVG} from "../../theme/svgs/infoSVG";
 import Card from "../../theme/widgets/card/card";
@@ -111,7 +111,7 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
         }
     }
 
-    setTmpDocument(doc: DocumentInfoVM) {
+    setTmpDocument(doc: DocumentUpdateParams) {
 
         const { scope } = doc;
 
@@ -133,25 +133,34 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
         const { document } = this.props;
 
         if (document) {
-            let nextDoc = {
+            let nextDoc: DocumentUpdateParams = {
                 ...tmpDocument,
                 [name]: value
             };
 
             if (typeof value === 'object') {
                 if (document[name] === value) {
-                    delete nextDoc[name];
+
+                    forEachKVP(tmpDocument, (itemKey: keyof DocumentUpdateParams, itemValue: any) => {
+                        if (name === itemKey) {
+                            delete nextDoc[itemKey];
+                        }
+                    });
                 }
             } else if (document[name] === value) {
-                delete nextDoc[name];
+                forEachKVP(tmpDocument, (itemKey: keyof DocumentUpdateParams, itemValue: any) => {
+                    if (name === itemKey) {
+                        delete nextDoc[itemKey];
+                    }
+                });
             }
             this.setTmpDocument(nextDoc);
         }
     }
 
     refreshDirtyFlag() {
-        const {document} = this.props;
-        const {tmpDocument } = this.state;
+        const { document } = this.props;
+        const { tmpDocument } = this.state;
 
         if (!document) return;
 
@@ -160,40 +169,42 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
         };
         let dirty = false;
 
-        let keysToDelete = [];
-        let itemKeys = Object.keys(nextTmpDocument), itemsLength = itemKeys.length;
-        for (let index = 0; index < itemsLength; index++) {
-            let key = itemKeys[index];
+        let keysToDelete: string[] = [];
 
-            if (Array.isArray(tmpDocument[key])) {
-                if (arrayEquals(tmpDocument[key], document[key])) {
-                    keysToDelete.push(key);
+        forEachKVP(nextTmpDocument, (itemKey: keyof DocumentUpdateParams, itemValue: any) => {
+            if (Array.isArray(itemValue)) {
+                if (arrayEquals(itemValue, document[itemKey])) {
+                    keysToDelete.push(itemKey);
                 }
                 else {
                     dirty = true;
                 }
             }
-            else if (typeof tmpDocument[key] === 'object') {
-                if (tmpDocument[key] === document[key]) {
-                    keysToDelete.push(key);
+            else if (typeof itemValue === 'object') {
+                if (itemValue === document[itemKey]) {
+                    keysToDelete.push(itemKey);
                 }
                 else {
                     dirty = true;
                 }
             }
             else {
-                if (tmpDocument[key] === document[key]) {
-                    keysToDelete.push(key);
+                if (itemValue === document[itemKey]) {
+                    keysToDelete.push(itemKey);
                 }
                 else {
                     dirty = true;
                 }
             }
-        }
+        });
 
         forEach(keysToDelete, (key: string) => {
             if (key !== 'id') {
-                delete nextTmpDocument[key];
+                forEachKVP(tmpDocument, (itemKey: keyof DocumentUpdateParams, itemValue: any) => {
+                    if (key === itemKey) {
+                        delete nextTmpDocument[itemKey];
+                    }
+                });
             }
         })
 
@@ -211,11 +222,11 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
         const { id } = document;
 
         if (onUpdateDocument) {
-            let updatedDocument = tmpDocument;
+            let updatedDocument = Object.assign({}, tmpDocument);
 
             updatedDocument['id'] = id;
 
-            onUpdateDocument({...updatedDocument});
+            onUpdateDocument(updatedDocument);
         }
 
     }
@@ -246,7 +257,13 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
         let originalValue = document ? document[id] : [];
         originalValue = originalValue || [];
 
-        let editValue = tmpDocument ? tmpDocument[id] : [];
+        let editValue = '';
+
+        forEachKVP(tmpDocument, (itemKey: keyof DocumentUpdateParams, itemValue: any) => {
+            if (id === itemKey) {
+                editValue = itemValue;
+            }
+        })
 
         let value = editValue ? editValue : originalValue;
 
@@ -269,7 +286,13 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
         let originalValue = document ? document[id] : [];
         originalValue = originalValue || [];
 
-        let editValue = tmpDocument ? tmpDocument[id] : [];
+        let editValue = '';
+
+        forEachKVP(tmpDocument, (itemKey: keyof DocumentUpdateParams, itemValue: any) => {
+            if (id === itemKey) {
+                editValue = itemValue;
+            }
+        })
 
         let value = editValue ? editValue : originalValue;
 
@@ -377,7 +400,7 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
         })
     }
 
-    getCellRenderer(tmpDocument: DocumentInfoVM, document: DocumentInfoVM, editProperty: EditPropertyVM, isGlobal?: boolean) {
+    getCellRenderer(tmpDocument: DocumentUpdateParams, document: DocumentInfoVM, editProperty: EditPropertyVM, isGlobal?: boolean) {
         const { permissions } = this.props;
         const { canModify } = permissions;
         const {id, type, title='test', options={}, long=false} = editProperty;
@@ -389,7 +412,13 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
         let originalValue = document ? document[id] : '';
         originalValue = originalValue || '';
 
-        let editValue = tmpDocument ? tmpDocument[id] : '';
+        let editValue = '';
+
+        forEachKVP(tmpDocument, (itemKey: keyof DocumentUpdateParams, itemValue: any) => {
+            if (id === itemKey) {
+                editValue = itemValue;
+            }
+        })
 
         let dirty = !!editValue
         let value = editValue ? editValue : originalValue;

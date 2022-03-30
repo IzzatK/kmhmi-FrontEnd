@@ -65,10 +65,17 @@ export const forEachKVP = (items: Record<string, any>, consumer: any) => {
 }
 
 export const sortByProperty = (items: { [s: string]: any; } | ArrayLike<any>, sortProperty: string) => {
+    const sortPropertyArray  = sortProperty.split("_");
 
-    let property = sortProperty;
+    let property = sortPropertyArray[0];
 
-    let sortFunction = null;
+    for (let i = 1; i < sortPropertyArray.length - 1; i++) {
+        property += "_" + sortPropertyArray[i];
+    }
+
+    let direction = sortPropertyArray[sortPropertyArray.length - 1];
+
+    let sortFunction;
 
     if (property.startsWith('-')) {
         property = property.substring(1);
@@ -89,10 +96,26 @@ export const sortByProperty = (items: { [s: string]: any; } | ArrayLike<any>, so
                 result = Math.floor((utc2 - utc1) / _MS_PER_DAY);
             }
             else if (aElement && bElement) {
-                result = bElement.localeCompare(aElement);
+                if (Array.isArray(aElement)) {
+                    aElement = aElement[0];
+                }
+
+                if (Array.isArray(bElement)) {
+                    bElement = bElement[0];
+                }
+
+                if (aElement && bElement) {
+                    result = aElement.localeCompare(bElement);
+                } else {
+                    result = -1;
+                }
             }
             else {
                 result = -1;
+            }
+
+            if (direction === "descending") {
+                result *= -1;
             }
 
             return result;
@@ -114,16 +137,34 @@ export const sortByProperty = (items: { [s: string]: any; } | ArrayLike<any>, so
             result = Math.floor((utc2 - utc1) / _MS_PER_DAY);
         }
         else if (aElement && bElement) {
-            result = aElement.localeCompare(bElement);
+            if (Array.isArray(aElement)) {
+                aElement = aElement[0];
+            }
+
+            if (Array.isArray(bElement)) {
+                bElement = bElement[0];
+            }
+
+            if (aElement && bElement) {
+                result = aElement.localeCompare(bElement);
+            } else {
+                result = -1;
+            }
         }
         else {
             result = -1;
         }
 
+        if (direction === "descending") {
+            result *= -1;
+        }
+
         return result;
     }
 
-    return Object.values(items).sort(sortFunction);
+    let copyItems = Object.assign([], items);
+
+    return Object.values(copyItems).sort(sortFunction);
 }
 
 export const findFirstByProperty = (items: any[], propertyName: string, propertyValue: any) => {

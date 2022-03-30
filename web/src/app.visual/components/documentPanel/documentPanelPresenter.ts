@@ -2,12 +2,12 @@ import DocumentPanelView from "./documentPanelView";
 import {createSelector} from "@reduxjs/toolkit";
 import {
     DocumentInfo,
-    ExcerptInfo, ExcerptMapper,
+    ExcerptMapper,
     NoteInfo,
     ParamType,
-    PocketInfo, PocketMapper,
+    PocketMapper,
     ReferenceType,
-    ResourceInfo, ResourceMapper
+    ResourceMapper
 } from "../../../app.model";
 import {
     authenticationService,
@@ -19,10 +19,11 @@ import {
 } from "../../../serviceComposition";
 import {
     CreateExcerptEventData,
-    DocumentInfoVM, DocumentPanelDispatchProps, DocumentPanelStateProps, ExcerptVM, NoteVM,
+    DocumentInfoVM, DocumentPanelDispatchProps, DocumentPanelStateProps, DocumentUpdateParams, ExcerptVM, NoteVM,
     PocketVM
 } from "./documentPanelModel";
 import {
+    DocumentParamType,
     ExcerptParamType,
     NoteParamType,
     PERMISSION_ENTITY,
@@ -68,7 +69,7 @@ class DocumentPanel extends VisualWrapper {
 
         this.mapDispatchToProps = (): DocumentPanelDispatchProps => {
             return {
-                onUpdateDocument: (document: DocumentInfoVM) => documentService.updateDocument(document),
+                onUpdateDocument: (edits: DocumentUpdateParams) => this._onUpdateDocument(edits),
                 onRemoveDocument: (id: string) => documentService.removeDocument(id),
                 onCreateExcerpt: (params: CreateExcerptEventData) => this._createExcerpt(params),
                 onSaveNote: (note) => this._onSaveNote(note)
@@ -77,6 +78,16 @@ class DocumentPanel extends VisualWrapper {
 
         this.pollingForNLPStatus = false;
         this.documentLookup = {};
+    }
+
+    _onUpdateDocument(edits: DocumentUpdateParams) {
+        const params: DocumentParamType = {};
+
+        forEachKVP(edits, (itemKey: keyof DocumentParamType, itemValue: any) => {
+            params[itemKey] = itemValue;
+        });
+
+        documentService.updateDocument(params);
     }
 
     _onSaveNote(note: NoteVM) {

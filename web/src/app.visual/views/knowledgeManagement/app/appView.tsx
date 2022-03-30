@@ -79,8 +79,11 @@ export class AppView extends Component<Props, State> {
                                         <SearchPresenter className={"d-flex flex-fill flex-basis-0"} style={{zIndex: '1'}}/>
                                         :
                                         <div className={"d-flex flex-fill align-items-center justify-content-center"}>
-                                            <div className={'display-1 text-secondary'}>You do not have search permissions
-                                            </div>
+                                            {
+                                                !permissions.isAuthorizing &&
+                                                <div className={'display-1 text-secondary'}>You do not have search permissions
+                                                </div>
+                                            }
                                         </div>
                                 }
 

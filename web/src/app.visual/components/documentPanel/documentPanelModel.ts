@@ -1,4 +1,4 @@
-import {ParamType} from "../../../app.model";
+import {DocumentInfo, ParamType} from "../../../app.model";
 
 export type DocumentPanelStateProps = {
     className?: string;
@@ -13,7 +13,7 @@ export type DocumentPanelStateProps = {
 }
 
 export type DocumentPanelDispatchProps = {
-    onUpdateDocument: (document: DocumentInfoVM) => void;
+    onUpdateDocument: (document: DocumentUpdateParams) => void;
     onRemoveDocument: (id: string) => void;
 
     onCreateExcerpt: (params: CreateExcerptEventData) => void;
@@ -27,7 +27,7 @@ export type DocumentPanelDispatchProps = {
 export type DocumentPanelProps = DocumentPanelStateProps & DocumentPanelDispatchProps;
 
 export type DocumentPanelState = {
-    tmpDocument: DocumentInfoVM;
+    tmpDocument: DocumentUpdateParams;
     isDirty: boolean;
     isGlobal: boolean;
     isPrivate: boolean;
@@ -137,3 +137,5 @@ export type NoteVM = {
     text: string;
     content: string;
 }
+
+export type DocumentUpdateParams = Partial<Record<keyof Omit<DocumentInfo, 'className'>, string>>;
