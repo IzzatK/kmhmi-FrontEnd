@@ -259,6 +259,16 @@ export class PocketService extends Plugin implements IPocketService {
                         modifiedPocketMapper.pocket = params;
                         modifiedPocketMapper.resourceMappers = existingItem.resourceMappers;
 
+                        let pocket = this.getPocketInfo(params.id);
+                        if (pocket) {
+                            let modifiedPocket = {
+                                ...pocket,
+                                isUpdating: true,
+                            }
+
+                            this.addOrUpdateRepoItem(modifiedPocket);
+                        }
+
                         // check if params other than id exist on params
                         if (this.pocketProvider != null) {
                             this.pocketProvider.update(params.id, modifiedPocketMapper)

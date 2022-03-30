@@ -13,18 +13,20 @@ export class ResourceNodeRenderer extends Component<ResourceNodeRendererProps> {
     }
 
     _onDownload(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+        const { onDownload, id } = this.props;
         event.stopPropagation();
 
-        if (this.props.onDownload != null) {
-            this.props.onDownload(this.props.id);
+        if (onDownload) {
+            onDownload(id);
         }
     }
 
     _onRemove(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+        const { onRemove, id } = this.props;
         event.stopPropagation();
 
-        if (this.props.onRemove != null) {
-            this.props.onRemove(this.props.id);
+        if (onRemove) {
+            onRemove(id);
         }
     }
 
@@ -42,10 +44,10 @@ export class ResourceNodeRenderer extends Component<ResourceNodeRendererProps> {
                     <div className={"title"}>{title ? title : ''}</div>
                 </div>
                 <div className={'action-bar d-flex h-gap-3'}>
-                    <Button onClick={this._onDownload}>
+                    <Button className={"btn-transparent"} onClick={this._onDownload} tooltip={"Download"}>
                         <DownloadSVG className={"small-image-container"}/>
                     </Button>
-                    <Button onClick={this._onRemove}>
+                    <Button className={"btn-transparent"} onClick={this._onRemove} tooltip={"Remove"}>
                         <RemoveSVG className={"small-image-container"}/>
                     </Button>
                 </div>

@@ -34,6 +34,7 @@ export type NodeRendererProps = {
     path: string;
     className?: string;
     title?: string;
+    isUpdating?: boolean;
 }
 
 export type PocketNodeRendererProps = NodeRendererProps &
@@ -74,7 +75,8 @@ export enum PocketTabType {
     NONE,
     SHARE,
     DOWNLOAD,
-    SETTINGS
+    REPORT,
+    EDIT,
 }
 
 export type PocketNodeVM = {
@@ -82,9 +84,8 @@ export type PocketNodeVM = {
     path: string,
     title: string,
     content: string,
-    type: PocketNodeType
-    // expanded: boolean,
-    // selected: boolean,
+    type: PocketNodeType,
     childNodes: PocketNodeVM[],
     pocket_id: string,
+    isUpdating: boolean,
 }

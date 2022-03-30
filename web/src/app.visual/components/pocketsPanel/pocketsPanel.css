@@ -10,6 +10,7 @@
 
 .pockets-panel .tree-node > .tree-node-graphic > .tree-node-content .action-bar.open,
 .pockets-panel .tree-node.expanded > .tree-node-graphic > .tree-node-content .action-bar,
+.pockets-panel .tree-node.selected > .tree-node-graphic > .tree-node-content .action-bar,
 .pockets-panel .tree-node.no-children > .tree-node-graphic > .tree-node-content .action-bar,
 .pockets-panel .tree-node .tree-node-graphic .tree-node-content:hover .action-bar {
     animation: fadeIn 0.1s forwards ease-in;
@@ -25,10 +26,6 @@
     }
 }
 
-.pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content {
-    padding: 0;
-}
-
 .pockets-panel .tree-view {
     --tree-view-connector: transparent;
 }
@@ -39,34 +36,15 @@
 }
 
 .pockets-panel .tree-view ul.tree-node-children {
-    margin: 0 2rem;
+    margin: 0 1rem;
 }
 
 .pockets-panel .tree-view ul li.tree-node > .tree-node-graphic:before {
     width: 0;
 }
 
-.pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .dark .pocket-header {
-    padding: 1rem;
-    background: var(--pocket-node-pocket-background);
-    border: 0.1rem solid var(--pocket-node-pocket-background);
-    --tree-view-primary-color: var(--pocket-node-pocket-color);
-}
-
-.pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .dark .pocket-header:hover {
-    background: var(--pocket-node-pocket-hover-background);
-    border: 0.1rem solid var(--pocket-node-pocket-hover-border-color);
-    --tree-view-primary-color: var(--pocket-node-pocket-hover-color);
-}
-
-.pockets-panel .tree-view .tree-node.expanded  > .tree-node-graphic > .tree-node-content > .dark .pocket-header {
-    background: var(--pocket-node-pocket-selected-background);
-    border: 0.1rem solid var(--pocket-node-pocket-selected-border-color);
-    --tree-view-primary-color: var(--pocket-node-pocket-selected-color);
-    font-weight: 400 !important;
-}
-
 .pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content {
+    padding: 0;
     border: none;
     background: transparent;
 }
@@ -75,27 +53,79 @@
     background: transparent;
 }
 
+.pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .dark {
+}
+
+.pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .dark .pocket-header {
+    min-height: 5.61rem;
+    padding: 1rem;
+    background: var(--pocket-node-dark-background);
+    border: 0.1rem solid var(--pocket-node-dark-border-color);
+    --tree-view-primary-color: var(--pocket-node-dark-color);
+}
+
+.pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .dark .pocket-header:hover {
+    background: var(--pocket-node-dark-hover-background);
+    border: 0.1rem solid var(--pocket-node-dark-hover-border-color);
+    --tree-view-primary-color: var(--pocket-node-dark-hover-color);
+}
+
+.pockets-panel .tree-view .tree-node.expanded  > .tree-node-graphic > .tree-node-content > .dark .pocket-header,
+.pockets-panel .tree-view .tree-node.selected  > .tree-node-graphic > .tree-node-content > .dark .pocket-header {
+    background: var(--pocket-node-dark-selected-background);
+    border: 0.1rem solid var(--pocket-node-dark-selected-border-color);
+    --tree-view-primary-color: var(--pocket-node-dark-selected-color);
+    font-weight: 400 !important;
+}
+
 .pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .dark .pocket-header .button {
-    background: transparent;
+    fill: var(--pocket-node-dark-button-fill);
+}
+
+.pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .dark .pocket-header .button:hover {
+    fill: var(--pocket-node-dark-button-hover-fill);
 }
 
 .pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .dark .pocket-header .button.selected {
-    fill: cyan;
+    fill: var(--pocket-node-dark-button-selected-fill);
 }
 
 .pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .light {
     padding: 1rem;
-    background: var(--pocket-node-resource-background);
-    --tree-view-primary-color: var(--pocket-node-resource-color);
+    background: var(--pocket-node-light-background);
+    --tree-view-primary-color: var(--pocket-node-light-color);
 }
 
-.pockets-panel .tree-view .tree-node.expanded > .tree-node-graphic > .tree-node-content > .light {
-    background: var(--pocket-node-resource-selected-background);
-    --tree-view-primary-color: var(--pocket-node-resource-selected-color);
+.pockets-panel .tree-view .tree-node:hover > .tree-node-graphic > .tree-node-content > .light {
+    background: var(--pocket-node-light-hover-background);
+    --tree-view-primary-color: var(--pocket-node-light-hover-color);
+}
+
+.pockets-panel .tree-view .tree-node.expanded > .tree-node-graphic > .tree-node-content > .light,
+.pockets-panel .tree-view .tree-node.selected > .tree-node-graphic > .tree-node-content > .light {
+    background: var(--pocket-node-light-selected-background);
+    --tree-view-primary-color: var(--pocket-node-light-selected-color);
+}
+
+.pockets-panel .tree-view .tree-node.expanded > .tree-node-graphic > .tree-node-content > .resource-node,
+.pockets-panel .tree-view .tree-node.selected > .tree-node-graphic > .tree-node-content > .resource-node,
+.pockets-panel .tree-view .tree-node.expanded > .tree-node-graphic > .tree-node-content > .excerpt-node,
+.pockets-panel .tree-view .tree-node.selected > .tree-node-graphic > .tree-node-content > .excerpt-node {
     font-weight: 700 !important;
 }
 
+.pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .note-node {
+    font-weight: 300 !important;
+}
+
+.pockets-panel .tree-view .tree-node.selected > .tree-node-graphic > .tree-node-content > .note-node {
+    font-weight: 400 !important;
+}
+
 .pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .light .button {
-    background: transparent;
-    fill: var(--pocket-node-resource-color);
+    fill: var(--pocket-node-light-button-fill);
+}
+
+.pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .light .button:hover {
+    fill: var(--pocket-node-light-button-hover-fill);
 }

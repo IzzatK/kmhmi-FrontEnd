@@ -6,7 +6,7 @@ import {
 import {DocumentPdfPreviewProps, ExcerptVM, NoteVM, PocketVM} from "./documentPanelModel";
 import React, {Component} from "react";
 import Button from "../../theme/widgets/button/button";
-import {NoteSVG} from "../../theme/svgs/noteSVG";
+import {CreateNoteSVG} from "../../theme/svgs/createNoteSVG";
 import {DeleteSVG} from "../../theme/svgs/deleteSVG";
 import ComboBox from "../../theme/widgets/comboBox/comboBox";
 import TextArea from "../../theme/widgets/textEdit/textArea";
@@ -23,7 +23,7 @@ export function renderHighlightTarget(pluginProps: RenderHighlightTargetProps, p
              }}
         >
             <Button className={"btn-transparent"} onClick={pluginProps.toggle}>
-                <NoteSVG className={"small-image-container"}/>
+                <CreateNoteSVG className={"small-image-container"}/>
             </Button>
         </div>
     );

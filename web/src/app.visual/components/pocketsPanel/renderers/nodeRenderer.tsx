@@ -1,10 +1,5 @@
 import React, {Component} from "react";
-import {NodeRendererProps, PocketNodeRendererState, ResourceNodeRendererProps} from "../pocketsPanelModel";
-import Button from "../../../theme/widgets/button/button";
-import {DownloadSVG} from "../../../theme/svgs/downloadSVG";
-import {RemoveSVG} from "../../../theme/svgs/removeSVG";
-import {ShareSVG} from "../../../theme/svgs/shareSVG";
-import {SettingsSVG} from "../../../theme/svgs/settingsSVG";
+import {NodeRendererProps} from "../pocketsPanelModel";
 import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
 
 export class NodeRenderer extends Component<NodeRendererProps> {

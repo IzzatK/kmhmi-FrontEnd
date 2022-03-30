@@ -1,9 +1,7 @@
-import React, {Component, createRef, MouseEventHandler} from 'react';
+import React, {Component, createRef} from 'react';
 import './textEdit.css';
 import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
 import {TextEditProps, TextEditState} from "./textEditModel";
-
-let tooltip = 0;
 
 class TextEdit extends Component<TextEditProps, TextEditState> {
 	private readonly inputRef: { current: any };
@@ -15,39 +13,51 @@ class TextEdit extends Component<TextEditProps, TextEditState> {
 
 		this.state = {
 			tmpValue: props.value ? props.value : '',
-			tooltipId: `textedit-${tooltip}`,
+			tooltipId: "",
 			isHover: false,
 			cancelHover: true
 		}
 
 		this.inputRef = createRef();
+	}
 
-		tooltip++;
+	componentDidMount() {
+		const { id } = this.props;
+
+		if (id) {
+			this.setState({
+				...this.state,
+				tooltipId: id + "_tooltip",
+			})
+		}
 	}
 
 	componentDidUpdate(prevProps: Readonly<TextEditProps>, prevState: Readonly<TextEditState>, snapshot?: any) {
 		const { value } = this.props;
 
 		if (this.inputRef.current) {
-			// this.inputRef.current.focus();//TODO this line was causing a bug where last text edit in a panel was always getting focused
-			this.inputRef.current.addEventListener("focusout",  this.submit);
+			this.inputRef.current.addEventListener("focusout",  this._onSubmit);
 		}
 
 		if (prevProps.value !== value) {
-			this.setTmpValue(value ? value : "");
+			this._setTmpValue(value ? value : "");
 		}
 	}
 
-	submit() {
-		const {tmpValue } = this.state;
+	_onSubmit() {
+		const { tmpValue } = this.state;
 		const { value, onSubmit, name } = this.props;
 
 		if (value !== tmpValue) {
-			if (onSubmit) onSubmit(name ? name : "", tmpValue);
+			if (onSubmit) {
+				onSubmit(name ? name : "", tmpValue);
+
+				console.log("onSubmit")
+			}
 		}
 	};
 
-	cancel() {
+	_onCancel() {
 		const { value, onCancel } = this.props;
 
 		this.setState({
@@ -56,17 +66,19 @@ class TextEdit extends Component<TextEditProps, TextEditState> {
 		});
 
 		// revert the value
-		if (onCancel) onCancel();
+		if (onCancel) {
+			onCancel();
+		}
 	};
 
-	setTmpValue(tmpValue: string) {
+	_setTmpValue(tmpValue: string) {
 		this.setState({
 			...this.state,
 			tmpValue
 		})
 	}
 
-	handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+	_handleChange(e: React.ChangeEvent<HTMLInputElement>) {
 
 		const { onChange } = this.props;
 
@@ -80,19 +92,23 @@ class TextEdit extends Component<TextEditProps, TextEditState> {
 		}
 	};
 
-	onKeyPress(e: { key: string; }) {
+	_onKeyPress(e: { key: string; }) {
 		switch (e.key.toUpperCase()) {
 			case 'ENTER':
-				this.submit();
+				this._onSubmit();
 				break;
 			case 'ESCAPE':
-				this.cancel();
+				this._onCancel();
 				break;
 		}
 	}
 
+	private static onClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+		event.stopPropagation();
+	}
+
 	render() {
-		const { placeholder, dirty, className, disable, value, type='text', autoFocus=false, edit=true, id } = this.props;
+		const { placeholder, dirty, className, disable, type='text', autoFocus=false, edit=true, id } = this.props;
 
 		const { tmpValue } = this.state;
 
@@ -116,25 +132,23 @@ class TextEdit extends Component<TextEditProps, TextEditState> {
 
 		return (
 			<div className={cn}>
-				<input  type={type} className={'position-absolute h-100 w-100'}
-						ref={this.inputRef}
-						placeholder={placeholder}
-						value={tmpValue}
-						onClick={this.onClick}
-						onKeyUp={this.onKeyPress}
-						onChange={this.handleChange}
-						readOnly={!edit}
-						disabled={disable || !edit}
-						autoFocus={edit && autoFocus}
-						id={id}
+				<input
+					type={type}
+					className={'position-absolute h-100 w-100'}
+					ref={this.inputRef}
+					placeholder={placeholder}
+					value={tmpValue}
+					onClick={TextEdit.onClick}
+					onKeyUp={this._onKeyPress}
+					onChange={this._handleChange}
+					readOnly={!edit}
+					disabled={disable || !edit}
+					autoFocus={edit && autoFocus}
+					id={id}
 				>
 				</input>
 			</div>
 		);
-	}
-
-	private onClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-		event.stopPropagation();
 	}
 }
 

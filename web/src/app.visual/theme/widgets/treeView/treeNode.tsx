@@ -6,7 +6,6 @@ import {TriangleSVG} from "../../svgs/triangleSVG";
 import {CircleSVG} from "../../svgs/circleSVG";
 import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
 import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
-import exp from "constants";
 
 class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
     constructor(props: any) {
@@ -25,17 +24,17 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
         let expanded = false;
         let selected = false;
 
-        const { node } = this.props;
+        const { node, expandedPaths, selectionPath } = this.props;
 
         if (node != null) {
-            forEach(this.props.expandedPaths, (path: string) => {
+            forEach(expandedPaths, (path: string) => {
                 if (path.includes(node.path)) {
                     expanded = true;
                     dirty = true;
                 }
             });
 
-            if (this.props.selectionPath == node.path) {
+            if (selectionPath == node.path) {
                 selected = true;
                 expanded = true;
                 dirty = true;
@@ -115,8 +114,9 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
     }
 
     _toggleExpanded() {
-        const { expanded } = this.state;
+        const { expanded, selected } = this.state;
         const nextExpanded = !expanded;
+        const nextSelected = !selected;
 
         if (this.hasChildren()) {
             this.setState({
@@ -128,6 +128,11 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
                     this.props.onToggle(this.props.node, this.state.expanded);
                 }
             });
+        } else {
+            this.setState({
+                ...this.state,
+                selected: nextSelected,
+            })
         }
     }
 

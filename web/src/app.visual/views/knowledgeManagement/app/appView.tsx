@@ -8,7 +8,7 @@ import {TagsPanelWrapper} from "../../../components/tagsPanel/tagsPanelWrapper";
 import {StatsPanelPresenter} from "../../../components/statsPanel/statsPanelPresenter";
 import {PocketsPanelPresenter} from "../../../components/pocketsPanel/pocketsPanelPresenter";
 import {SystemToolbarPresenter} from "../../../components/systemToolbar/systemToolbarPresenter";
-import {referenceService, statService, tagService} from "../../../../serviceComposition";
+import {pocketService, referenceService, statService, tagService} from "../../../../serviceComposition";
 import {ReferenceType} from "../../../../app.model";
 import {LandingPanelPresenter} from "../../../components/landingPanel/landingPanelPresenter";
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
@@ -51,10 +51,8 @@ export class AppView extends Component<Props, State> {
             referenceService.fetchReferences(ReferenceType.PURPOSE);
             referenceService.fetchReferences(ReferenceType.ROLE);
             // referenceService.fetchReferences(ReferenceType.STATUS);
-            //
-            // setTimeout(() => {
-            //     referenceService.fetchReferences(ReferenceType.ROLE);
-            // }, 1000)
+
+            pocketService.fetchPockets();
         }
     }
 
