@@ -1,13 +1,14 @@
-import {ItalicInputProps, LeafType} from "./slateModel";
+import {ISlateLeafPlugin, ItalicInputProps, KeyEventHandler, LeafType} from "./slateModel";
 import React from "react";
-import {useSlate} from "slate-react";
+import {ReactEditor, useSlate} from "slate-react";
 import {Editor} from "slate";
 import Button from "../../../../theme/widgets/button/button";
 import {TextFormatItalicSVG} from "../../../../theme/svgs/textFormatItalicSVG";
+import {hasMark, isKeyMod, toggleMark} from "./slate-utils";
 
 const markKey = 'italic';
 
-export function renderItalicLeaf(leaf: LeafType, children: any) {
+function renderItalicLeaf(leaf: LeafType, children: any) {
     let result = children;
 
     if (leaf.italic) {
@@ -21,12 +22,7 @@ export function ItalicInput(props: ItalicInputProps) {
     const editor = useSlate();
 
     function _onSelect() {
-        if (hasItalicMark(editor)) {
-            italicStrategy(editor, false);
-        }
-        else {
-            italicStrategy(editor, true);
-        }
+        italicStrategy(editor);
     }
 
     return (
@@ -36,12 +32,25 @@ export function ItalicInput(props: ItalicInputProps) {
     )
 }
 
-function italicStrategy(editor: Editor, value: any) {
-    editor.removeMark(markKey);
-    editor.addMark(markKey, value);
+function hasItalicMark(editor: Editor) {
+    return hasMark(editor, markKey);
 }
 
-function hasItalicMark (editor: Editor) {
-    const marks = Editor.marks(editor) as Record<string, boolean>
-    return marks ? marks[markKey] : false
+function italicStrategy(editor: Editor) {
+    toggleMark(editor, markKey);
+}
+
+function handleItalicKeyEvent(event: React.KeyboardEvent, editor: Editor): KeyEventHandler {
+    let handler = null;
+
+    if (isKeyMod(event) && event.key === 'i') {
+        handler = () => italicStrategy(editor)
+    }
+
+    return handler;
+}
+
+export const italicPlugin: ISlateLeafPlugin = {
+    handleKeyEvent: handleItalicKeyEvent,
+    render: renderItalicLeaf,
 }

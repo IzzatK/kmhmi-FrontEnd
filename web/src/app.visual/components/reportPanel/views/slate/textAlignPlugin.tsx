@@ -1,7 +1,13 @@
 import {Editor, Transforms} from "slate";
-import {ElementType, TEXT_ALIGN_TYPE, TextAlignInputButtonProps, TextAlignInputToolbarProps} from "./slateModel";
+import {
+    ElementType,
+    ISlateElementPlugin,
+    TEXT_ALIGN_TYPE,
+    TextAlignInputButtonProps,
+    TextAlignInputToolbarProps
+} from "./slateModel";
 import {isMultiElementActive} from "./slate-utils";
-import {useSlate} from "slate-react";
+import {ReactEditor, useSlate} from "slate-react";
 import Button from "../../../../theme/widgets/button/button";
 import React from "react";
 import {TextAlignLeftSVG} from "../../../../theme/svgs/textAlignLeftSVG";
@@ -51,7 +57,7 @@ export function TextAlignInputButton(props: TextAlignInputButtonProps) {
 }
 
 
-export function renderTextAlignElement(element: ElementType, children: any, attributes: any) {
+function renderTextAlignElement(element: ElementType, children: any, attributes: any) {
     let result = children;
 
     if (element.align) {
@@ -75,13 +81,19 @@ function textAlignStrategy(editor: Editor, value: any) {
         value
     )
 
-    let element: Partial<ElementType>;
-    element = {
+    const element: Partial<ElementType> = {
         align: isActive ? defaultValue : value as TEXT_ALIGN_TYPE,
     }
-    Transforms.setNodes<ElementType>(editor, element)
+
+    Transforms.setNodes<ElementType>(editor, element);
+
+    ReactEditor.focus(editor);
 }
 
 function isTextAlignActive (editor: Editor, format: TEXT_ALIGN_TYPE) {
     return isMultiElementActive(editor, pluginKey, format);
+}
+
+export const textAlignPlugin: ISlateElementPlugin = {
+    render: renderTextAlignElement,
 }

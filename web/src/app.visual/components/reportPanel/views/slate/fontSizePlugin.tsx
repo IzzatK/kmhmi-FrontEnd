@@ -1,19 +1,19 @@
-import {FontSizeInputProps, LeafProps, LeafType} from "./slateModel";
+import {FontSizeInputProps, ISlateLeafPlugin, LeafProps, LeafType} from "./slateModel";
 import React from "react";
-import {useSlate} from "slate-react";
+import {ReactEditor, useSlate} from "slate-react";
 import ComboBox from "../../../../theme/widgets/comboBox/comboBox";
 import {Editor} from "slate";
-import {getMarkValue} from "./slate-utils";
+import {getMarkValue, setMark} from "./slate-utils";
 
 const markKey = 'fontSize';
 const defaultMarkValue = '12';
 
-export function renderFontSizeLeaf(leaf: LeafType, children: any) {
+function renderFontSizeLeaf(leaf: LeafType, children: any) {
     let result = children;
 
     if (leaf.fontSize) {
         const style = {
-            fontSize: parseInt(leaf.fontSize) || 12,
+            fontSize: parseInt(leaf.fontSize) || parseInt(defaultMarkValue) || 12,
         }
 
         result = <span style={style}>{result}</span>
@@ -33,17 +33,16 @@ export function FontSizeInput(props: FontSizeInputProps) {
 }
 
 function fontSizeStrategy(editor: Editor, value: string) {
-    editor.removeMark('fontSize')
-    editor.addMark('fontSize', value);
+    setMark(editor, markKey, value);
 }
 
-function hasFontSizeMark (editor: Editor) {
-    const marks = Editor.marks(editor) as Record<string, boolean>
-    return marks ? marks['fontSize'] : false
-}
 
 function getFontSizeMark (editor: Editor) {
     return getMarkValue(editor, markKey, defaultMarkValue);
+}
+
+export const fontSizePlugin: ISlateLeafPlugin = {
+    render: renderFontSizeLeaf,
 }
 
 const options = [

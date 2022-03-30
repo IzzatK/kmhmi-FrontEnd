@@ -1,14 +1,20 @@
-import {Editor, Transforms} from "slate";
-import {ElementType, LIST_TYPE, ListInputButtonProps, TEXT_ALIGN_TYPE, TextAlignInputToolbarProps} from "./slateModel";
+import {Editor, Element as SlateElement, Transforms} from "slate";
+import {
+    ElementType, ISlateElementPlugin,
+    ISlateLeafPlugin,
+    LIST_TYPE,
+    ListInputButtonProps,
+    TEXT_ALIGN_TYPE,
+    TextAlignInputToolbarProps
+} from "./slateModel";
 import {isMultiElementActive} from "./slate-utils";
-import {useSlate} from "slate-react";
+import {ReactEditor, useSlate} from "slate-react";
 import Button from "../../../../theme/widgets/button/button";
 import React from "react";
 import {TextListNumber} from "../../../../theme/svgs/textListNumber";
 import {TextListBulletSVG} from "../../../../theme/svgs/textListBulletSVG";
-import {elementType} from "prop-types";
 
-const pluginKey = 'list';
+const pluginKey = 'type';
 const defaultValue = undefined;
 
 export function ListInputToolbar(props: TextAlignInputToolbarProps) {
@@ -46,18 +52,18 @@ export function ListInputButton(props: ListInputButtonProps) {
 }
 
 
-export function renderListElement(element: ElementType, children: any, attributes: any) {
+function renderListElement(element: ElementType, children: any, attributes: any) {
     let result = children;
 
     switch (element.type) {
-        case 'bulleted-list':
+        case 'bulleted':
             result =  (
                 <ul {...attributes}>
                     {children}
                 </ul>
             );
             break;
-        case 'numbered-list':
+        case 'numbered':
             result = (
                 <ol {...attributes}>
                     {children}
@@ -76,19 +82,38 @@ export function renderListElement(element: ElementType, children: any, attribute
     return result;
 }
 
-function listStrategy(editor: Editor, value: any) {
+function listStrategy(editor: Editor, listType: LIST_TYPE) {
     const isActive = isListActive(
         editor,
-        value
-    )
-    
-    let element: Partial<ElementType>;
-    element = {
-        align: isActive ? defaultValue : value as TEXT_ALIGN_TYPE,
+        listType
+    );
+
+    Transforms.unwrapNodes(editor, {
+        match: (n) =>
+            !Editor.isEditor(n) &&
+            SlateElement.isElement(n) &&
+            (n as ElementType).type in LIST_TYPE,
+        split: true,
+    });
+
+    const element: Partial<ElementType> = {
+        type: isActive ? defaultValue : 'list-item'
     }
+
     Transforms.setNodes<ElementType>(editor, element)
+
+    if (!isActive) {
+        const block = { type: listType, children: [] }
+        Transforms.wrapNodes(editor, block)
+    }
+
+    ReactEditor.focus(editor);
 }
 
 function isListActive (editor: Editor, list: LIST_TYPE) {
     return isMultiElementActive(editor, pluginKey, list);
+}
+
+export const listPlugin: ISlateElementPlugin = {
+    render: renderListElement,
 }

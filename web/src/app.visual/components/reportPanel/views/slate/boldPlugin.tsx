@@ -1,14 +1,24 @@
-import {BoldInputProps, FontFamilyInputProps, LeafProps, LeafType} from "./slateModel";
+import {
+    BoldInputProps,
+    ElementType,
+    FontFamilyInputProps,
+    ISlateLeafPlugin,
+    KeyEventHandler,
+    LeafProps,
+    LeafType
+} from "./slateModel";
 import React from "react";
-import {useSlate} from "slate-react";
+import {ReactEditor, useSlate} from "slate-react";
 import ComboBox from "../../../../theme/widgets/comboBox/comboBox";
 import {Editor} from "slate";
 import Button from "../../../../theme/widgets/button/button";
 import {TextFormatBoldSVGD} from "../../../../theme/svgs/textFormatBoldSVG";
+import {hasMark, isKeyMod, toggleMark} from "./slate-utils";
+import {Nullable} from "../../../../../framework.core/extras/utils/typeUtils";
 
 const markKey = 'bold';
 
-export function renderBoldLeaf(leaf: LeafType, children: any) {
+function renderBoldLeaf(leaf: LeafType, children: any) {
     let result = children;
 
     if (leaf.bold) {
@@ -21,13 +31,9 @@ export function renderBoldLeaf(leaf: LeafType, children: any) {
 export function BoldInput(props: BoldInputProps) {
     const editor = useSlate();
 
-    function _onSelect() {
-        if (hasBoldMark(editor)) {
-            boldStrategy(editor, false);
-        }
-        else {
-            boldStrategy(editor, true);
-        }
+    function _onSelect(event: React.MouseEvent) {
+        event.preventDefault();
+        boldStrategy(editor);
     }
 
     return (
@@ -37,12 +43,25 @@ export function BoldInput(props: BoldInputProps) {
     )
 }
 
-function boldStrategy(editor: Editor, value: any) {
-    editor.removeMark(markKey);
-    editor.addMark(markKey, value);
+function hasBoldMark(editor: Editor) {
+    return hasMark(editor, markKey);
 }
 
-function hasBoldMark (editor: Editor) {
-    const marks = Editor.marks(editor) as Record<string, boolean>
-    return marks ? marks[markKey] : false
+function boldStrategy(editor: Editor) {
+    toggleMark(editor, markKey);
+}
+
+function handleBoldKeyEvent(event: React.KeyboardEvent, editor: Editor): KeyEventHandler {
+    let handler = null;
+
+    if (isKeyMod(event) && event.key === 'b') {
+        handler = () => boldStrategy(editor)
+    }
+
+    return handler;
+}
+
+export const boldPlugin: ISlateLeafPlugin = {
+    handleKeyEvent: handleBoldKeyEvent,
+    render: renderBoldLeaf,
 }

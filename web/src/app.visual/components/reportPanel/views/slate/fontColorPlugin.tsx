@@ -1,18 +1,18 @@
-import {HighlightColorInputProps, LeafProps, LeafType} from "./slateModel";
+import {HighlightColorInputProps, ISlateLeafPlugin, LeafProps, LeafType} from "./slateModel";
 import React, {useState} from "react";
-import {useSlate} from "slate-react";
+import {ReactEditor, useSlate} from "slate-react";
 import {Editor} from "slate";
 import Portal from "../../../../theme/widgets/portal/portal";
 import Button from "../../../../theme/widgets/button/button";
 import {TextFormatHighlightSVG} from "../../../../theme/svgs/textFormatHighlightSVG";
 import {TextFormatColorSVG} from "../../../../theme/svgs/textFormatColorSVG";
-import {getMarkValue} from "./slate-utils";
+import {getMarkValue, hasMark, setMark} from "./slate-utils";
 
 
 const markKey = 'fontColor';
 const defaultMarkValue = 'black';
 
-export function renderFontColorLeaf(leaf: LeafType, children: any) {
+function renderFontColorLeaf(leaf: LeafType, children: any) {
     let result = children;
 
     if (leaf.fontColor) {
@@ -83,18 +83,19 @@ export function FontColorInput(props: HighlightColorInputProps) {
 }
 
 function fontColorStrategy(editor: Editor, value: string) {
-    editor.removeMark(markKey)
-
-    editor.addMark(markKey, value);
+    setMark(editor, markKey, value);
 }
 
 function hasFontColorMark (editor: Editor) {
-    const marks = Editor.marks(editor) as Record<string, boolean>
-    return marks ? marks[markKey] : false
+    return hasMark(editor, markKey);
 }
 
 function getFontColorMark (editor: Editor) {
     return getMarkValue(editor, markKey, defaultMarkValue);
+}
+
+export const fontColorPlugin: ISlateLeafPlugin = {
+    render: renderFontColorLeaf,
 }
 
 

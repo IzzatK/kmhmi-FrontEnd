@@ -1,39 +1,24 @@
 import React, {useCallback, useRef, useState} from "react";
-import {Editable, RenderElementProps, Slate, useSlate, withReact,} from "slate-react";
-import {createEditor, Descendant, Editor, Element as SlateElement, Transforms} from "slate";
+import {Editable, Slate, withReact,} from "slate-react";
+import {createEditor, Descendant, Editor } from "slate";
 import {withHistory} from "slate-history";
-import Button from "../../../theme/widgets/button/button";
-import isHotkey from 'is-hotkey';
-import {TextFormatBoldSVGD} from "../../../theme/svgs/textFormatBoldSVG";
-import {TextFormatItalicSVG} from "../../../theme/svgs/textFormatItalicSVG";
-import {TextFormatUnderlineSVG} from "../../../theme/svgs/textFormatUnderlineSVG";
-import {TextFormatHighlightSVG} from "../../../theme/svgs/textFormatHighlightSVG";
-import {TextFormatColorSVG} from "../../../theme/svgs/textFormatColorSVG";
 import ComboBox from "../../../theme/widgets/comboBox/comboBox";
-import {TextAlignLeftSVG} from "../../../theme/svgs/textAlignLeftSVG";
-import {TextAlignCenterSVG} from "../../../theme/svgs/textAlignCenterSVG";
-import {TextAlignRightSVG} from "../../../theme/svgs/textAlignRightSVG";
-import {TextAlignJustifySVG} from "../../../theme/svgs/textAlignJustifySVG";
-import {TextListNumber} from "../../../theme/svgs/textListNumber";
-import {TextListBulletSVG} from "../../../theme/svgs/textListBulletSVG";
 import {
-    BlockButtonProps,
     ElementProps,
-    ElementType, FontColorInputProps, FontFamilyInputProps,
-    FontSizeInputProps, HighlightColorInputProps,
+    ISlateElementPlugin,
+    ISlateLeafPlugin,
     LeafProps,
-    LIST_TYPE,
-    TEXT_ALIGN_TYPE
 } from "./slate/slateModel";
-import Portal from "../../../theme/widgets/portal/portal";
-import {FontFamilyInput, renderFontFamilyLeaf} from "./slate/fontFamilyPlugin";
-import {FontHighlightInput, renderFontHighlightLeaf} from "./slate/fontHighlightPlugin";
-import {FontColorInput, renderFontColorLeaf} from "./slate/fontColorPlugin";
-import {BoldInput, renderBoldLeaf} from "./slate/boldPlugin";
-import {ItalicInput, renderItalicLeaf} from "./slate/italicPlugin";
-import {renderUnderlineLeaf, UnderlineInput} from "./slate/underlinePlugin";
-import {FontSizeInput, renderFontSizeLeaf} from "./slate/fontSizePlugin";
-import {renderTextAlignElement, TextAlignInputToolbar} from "./slate/textAlignPlugin";
+import {FontFamilyInput, fontFamilyPlugin } from "./slate/fontFamilyPlugin";
+import {FontHighlightInput, fontHighlightPlugin } from "./slate/fontHighlightPlugin";
+import {FontColorInput, fontColorPlugin } from "./slate/fontColorPlugin";
+import {BoldInput, boldPlugin } from "./slate/boldPlugin";
+import {ItalicInput, italicPlugin } from "./slate/italicPlugin";
+import {UnderlineInput, underlinePlugin } from "./slate/underlinePlugin";
+import {FontSizeInput, fontSizePlugin } from "./slate/fontSizePlugin";
+import {TextAlignInputToolbar, textAlignPlugin } from "./slate/textAlignPlugin";
+import {ListInputToolbar, listPlugin } from "./slate/listPlugin";
+import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
 
 const initialValue: Descendant[] = [
     {
@@ -42,13 +27,6 @@ const initialValue: Descendant[] = [
         ],
     },
 ]
-
-const HOTKEYS:Record<string, string> = {
-    'mod+b': 'bold',
-    'mod+i': 'italic',
-    'mod+u': 'underline',
-    'mod+`': 'code',
-}
 
 const citation = [
     {
@@ -59,6 +37,21 @@ const citation = [
         id: 'chicago',
         title: 'Chicago'
     }
+]
+
+const slateLeafPlugins: ISlateLeafPlugin[] = [
+    boldPlugin,
+    fontColorPlugin,
+    fontFamilyPlugin,
+    fontHighlightPlugin,
+    fontSizePlugin,
+    italicPlugin,
+    underlinePlugin
+]
+
+const slateElementPlugins: ISlateElementPlugin[] = [
+    listPlugin,
+    textAlignPlugin
 ]
 
 export function RichTextEditView() {
@@ -83,18 +76,11 @@ export function RichTextEditView() {
                 <div className={'toolbar d-flex flex-column v-gap-3'}>
                     <div className={'toolbar flex-fill d-flex h-gap-5'}>
                         <div className={'d-flex h-gap-3'}>
-                            <FontFamilyInput/>
+                            <FontFamilyInput />
                             <FontSizeInput />
                         </div>
                         <TextAlignInputToolbar />
-                        <div className={'d-flex h-gap-2'}>
-                            <BlockButton format={LIST_TYPE.numbered}>
-                                <TextListNumber className={'small-image-container'}/>
-                            </BlockButton>
-                            <BlockButton format={LIST_TYPE.bulleted}>
-                                <TextListBulletSVG className={'small-image-container'}/>
-                            </BlockButton>
-                        </div>
+                        <ListInputToolbar />
                     </div>
                     <div className={'align-self-stretch d-flex justify-content-between'}>
                         <div className={'d-flex h-gap-3'}>
@@ -115,7 +101,7 @@ export function RichTextEditView() {
                         <div className={'bg-primary h-100'}>
                             <div className={'text-secondary h-100'}>
                                     <Editable
-                                        className={'unreset h-100'}
+                                        className={'unreset h-100 p-3'}
                                         renderElement={renderElement}
                                         renderLeaf={renderLeaf}
                                         spellCheck={false}
@@ -128,12 +114,21 @@ export function RichTextEditView() {
                                                 editor.insertText('    ')
                                             }
                                             else {
-                                                for (const hotkey in HOTKEYS) {
-                                                    if (isHotkey(hotkey, event)) {
-                                                        event.preventDefault()
-                                                        const mark = HOTKEYS[hotkey]
-                                                        toggleMarkFormat(editor, mark)
+
+                                                let handler: any = null;
+                                                forEach(slateLeafPlugins, (plugin: ISlateLeafPlugin) => {
+                                                    if (plugin.handleKeyEvent) {
+                                                        handler = handler ?? plugin.handleKeyEvent(event, editor);
+                                                        if (handler) {
+                                                            return true;
+                                                        }
                                                     }
+                                                })
+
+
+                                                if (handler != null) {
+                                                    event.preventDefault();
+                                                    handler();
                                                 }
                                             }
                                         }}/>
@@ -146,173 +141,32 @@ export function RichTextEditView() {
     )
 }
 
-function toggleMarkFormat (editor: Editor, format: string) {
-    const isActive = isMarkActive(editor, format)
-
-    if (isActive) {
-        Editor.removeMark(editor, format)
-    } else {
-        Editor.addMark(editor, format, true)
-    }
-}
-
-function isListType(format: string): boolean {
-    let result = false;
-
-    if (format in LIST_TYPE) {
-        result = true;
-    }
-
-    // result = Object.values(LIST_TYPE)?.includes(format as LIST_TYPE);
-
-    return result;
-}
-
-function isTextAlignType(format: string): boolean {
-    let result = false;
-
-    if (format in TEXT_ALIGN_TYPE) {
-        result = true;
-    }
-
-    // result = Object.values(TEXT_ALIGN_TYPE)?.includes(format as TEXT_ALIGN_TYPE);
-
-    return result;
-}
-
-const toggleBlock = (editor: Editor, format: string) => {
-    const isActive = isBlockActive(
-        editor,
-        format,
-        isTextAlignType(format) ? 'align' : 'type'
-    )
-    const isList = isListType(format)
-
-    Transforms.unwrapNodes(editor, {
-        match: (n) =>
-            !Editor.isEditor(n) &&
-            SlateElement.isElement(n) &&
-            isListType((n as ElementType).type) &&
-            !isTextAlignType(format),
-        split: true,
-    })
-    let element: Partial<ElementType>;
-    if (isTextAlignType(format)) {
-        element = {
-            align: isActive ? undefined : format as TEXT_ALIGN_TYPE,
-        }
-    } else {
-        element = {
-            type: isActive ? 'paragraph' : isList ? 'list-item' : format,
-        }
-    }
-    Transforms.setNodes<ElementType>(editor, element)
-
-    if (!isActive && isList) {
-        const block = { type: format, children: [] }
-        Transforms.wrapNodes(editor, block)
-    }
-}
-
-function isMarkActive (editor: Editor, format:string) {
-    const marks = Editor.marks(editor) as Record<string, boolean>
-    return marks ? marks[format] : false
-}
-
-function BlockButton(props: BlockButtonProps) {
-    const editor = useSlate();
-
-    const {format, onClick, ...rest} = props;
-
-    const selected = isBlockActive(
-            editor,
-            props.format,
-            isTextAlignType(props.format) ? 'align' : 'type');
-
-    return <Button className={'btn-transparent'} {...rest} selected={selected} onClick={
-        event => {
-            event.preventDefault()
-            toggleBlock(editor, format)
-        }
-    }>
-        {props.children}
-    </Button>
-}
-
-function isBlockActive (editor: Editor, format: any, blockType = 'type') {
-    const { selection } = editor
-    if (!selection) return false
-
-    const [match] = Array.from(
-        Editor.nodes(editor, {
-            at: Editor.unhangRange(editor, selection),
-            match: (n: any) => {
-
-                const lookup: Record<string, string> = n;
-
-                return !Editor.isEditor(n) &&
-                    SlateElement.isElement(n) &&
-                    lookup[blockType] === format;
-            }
-
-        })
-    )
-
-    return !!match
+function handleHotKey(event: React.KeyboardEvent) {
+    event.preventDefault()
 }
 
 function Element (props: ElementProps) {
 
-    const {attributes, children, element } = props;
+    const {attributes, element } = props;
 
-    const style = {
-        textAlign: element.align || TEXT_ALIGN_TYPE.left,
+    let children = props.children;
+
+    forEach(slateElementPlugins, (plugin: ISlateElementPlugin) => {
+        if (plugin.render) {
+            children = plugin.render(element, children, attributes);
+        }
+    })
+
+    // default to rendering with a paragraph
+    if (children == props.children) {
+        children = (
+            <p {...attributes}>
+                {children}
+            </p>
+        )
     }
 
-    switch (element.type) {
-        case 'block-quote':
-            return (
-                <blockquote style={style} {...attributes}>
-                    {children}
-                </blockquote>
-            )
-        case 'bulleted':
-            return (
-                <ul style={style} {...attributes}>
-                    {children}
-                </ul>
-            )
-        case 'heading-one':
-            return (
-                <h1 style={style} {...attributes}>
-                    {children}
-                </h1>
-            )
-        case 'heading-two':
-            return (
-                <h2 style={style} {...attributes}>
-                    {children}
-                </h2>
-            )
-        case 'list-item':
-            return (
-                <li style={style} {...attributes}>
-                    {children}
-                </li>
-            )
-        case 'numbered':
-            return (
-                <ol style={style} {...attributes}>
-                    {children}
-                </ol>
-            )
-        default:
-            return (
-                <p style={style} {...attributes}>
-                    {children}
-                </p>
-            )
-    }
+    return children;
 }
 
 function Leaf( props: LeafProps) {
@@ -320,13 +174,11 @@ function Leaf( props: LeafProps) {
 
     let children = props.children;
 
-    children = renderFontSizeLeaf(leaf, children);
-    children = renderFontFamilyLeaf(leaf, children);
-    children = renderFontColorLeaf(leaf, children);
-    children = renderFontHighlightLeaf(leaf, children);
-    children = renderBoldLeaf(leaf, children);
-    children = renderItalicLeaf(leaf, children);
-    children = renderUnderlineLeaf(leaf, children);
+    forEach(slateLeafPlugins, (plugin: ISlateLeafPlugin) => {
+        if (plugin.render) {
+            children = plugin.render(leaf, children);
+        }
+    })
 
     return <span {...attributes}>{children}</span>;
 }

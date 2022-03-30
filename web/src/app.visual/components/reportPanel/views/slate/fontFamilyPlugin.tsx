@@ -1,14 +1,14 @@
-import {FontFamilyInputProps, LeafProps, LeafType} from "./slateModel";
+import {FontFamilyInputProps, ISlateLeafPlugin, LeafProps, LeafType} from "./slateModel";
 import React from "react";
-import {useSlate} from "slate-react";
+import {ReactEditor, useSlate} from "slate-react";
 import ComboBox from "../../../../theme/widgets/comboBox/comboBox";
 import {Editor} from "slate";
-import {getMarkValue} from "./slate-utils";
+import {getMarkValue, hasMark, setMark} from "./slate-utils";
 
 const markKey = 'fontFamily';
 const defaultMarkValue = 'Open Sans';
 
-export function renderFontFamilyLeaf(leaf: LeafType, children: any) {
+function renderFontFamilyLeaf(leaf: LeafType, children: any) {
     let result = children;
 
     if (leaf.fontFamily) {
@@ -33,17 +33,19 @@ export function FontFamilyInput(props: FontFamilyInputProps) {
 }
 
 function fontFamilyStrategy(editor: Editor, value: string) {
-    editor.removeMark('fontFamily')
-    editor.addMark('fontFamily', value);
+    setMark(editor, markKey, value)
 }
 
 function hasFontFamilyMark (editor: Editor) {
-    const marks = Editor.marks(editor) as Record<string, boolean>
-    return marks ? marks['fontFamily'] : false
+    return hasMark(editor, markKey);
 }
 
 function getFontFamilyMark (editor: Editor) {
     return getMarkValue(editor, markKey, defaultMarkValue);
+}
+
+export const fontFamilyPlugin: ISlateLeafPlugin = {
+    render: renderFontFamilyLeaf,
 }
 
 const options = [

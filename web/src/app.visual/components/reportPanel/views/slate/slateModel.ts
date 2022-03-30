@@ -1,8 +1,10 @@
-import {BaseEditor, BaseElement} from "slate";
+import {BaseEditor, BaseElement, Editor} from "slate";
 import {ReactEditor, RenderLeafProps} from "slate-react";
 import {HistoryEditor} from "slate-history";
 import {ButtonProps} from "../../../../theme/widgets/button/buttonModel";
 import {RenderElementProps} from "slate-react/dist/components/editable";
+import {Nullable} from "../../../../../framework.core/extras/utils/typeUtils";
+import React from "react";
 
 declare module 'slate' {
     interface CustomTypes {
@@ -13,6 +15,7 @@ declare module 'slate' {
 export type ElementType = BaseElement & {
     type: string
     align: TEXT_ALIGN_TYPE | undefined
+    // list: LIST_TYPE | undefined
 }
 
 export type LeafType = {
@@ -101,4 +104,19 @@ export type ListInputToolbarProps = {
 
 export type BlockButtonProps = ButtonProps & {
     format: string
+}
+
+export type KeyEventHandler = Nullable<() => void>;
+
+export interface ISlatePlugin<T> {
+    handleKeyEvent?: (event: React.KeyboardEvent, editor: Editor) => KeyEventHandler,
+    render?: (node: T, children: any, attributes?: any) => any;
+}
+
+export interface ISlateLeafPlugin extends ISlatePlugin<LeafType>{
+
+}
+
+export interface ISlateElementPlugin extends ISlatePlugin<ElementType>{
+
 }
