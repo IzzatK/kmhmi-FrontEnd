@@ -84,14 +84,14 @@ export function RichTextEditView() {
                     </div>
                     <div className={'align-self-stretch d-flex justify-content-between'}>
                         <div className={'d-flex h-gap-3'}>
-                            <BoldInput/>
-                            <ItalicInput/>
-                            <UnderlineInput/>
-                            <FontHighlightInput/>
-                            <FontColorInput/>
+                            <BoldInput />
+                            <ItalicInput />
+                            <UnderlineInput />
+                            <FontHighlightInput />
+                            <FontColorInput />
                         </div>
                         <div className={'d-flex'}>
-                            <ComboBox items={citation} />
+                            <ComboBox items={citation} title={'MLA'}/>
                         </div>
                     </div>
                 </div>
@@ -100,38 +100,26 @@ export function RichTextEditView() {
                     <div className={'position-absolute w-100 h-100 overflow-auto pr-4 pt-4'}>
                         <div className={'bg-primary h-100'}>
                             <div className={'text-secondary h-100'}>
-                                    <Editable
-                                        className={'unreset h-100 p-3'}
-                                        renderElement={renderElement}
-                                        renderLeaf={renderLeaf}
-                                        spellCheck={false}
-                                        autoFocus={true}
-                                        onKeyDown={event => {
-                                            if (event.key.toUpperCase() === 'TAB') {
-                                                // Prevent the ampersand character from being inserted.
-                                                event.preventDefault()
-                                                // Execute the `insertText` method when the event occurs.
-                                                editor.insertText('    ')
+                                <Editable
+                                    className={'unreset h-100 p-3'}
+                                    renderElement={renderElement}
+                                    renderLeaf={renderLeaf}
+                                    spellCheck={false}
+                                    autoFocus={true}
+                                    onKeyDown={event => {
+                                        if (event.key.toUpperCase() === 'TAB') {
+                                            // Prevent the ampersand character from being inserted.
+                                            event.preventDefault()
+                                            // Execute the `insertText` method when the event occurs.
+                                            editor.insertText('    ')
+                                        }
+
+                                        forEach(slateLeafPlugins, (plugin: ISlateLeafPlugin) => {
+                                            if (plugin.handleKeyEvent) {
+                                                plugin.handleKeyEvent(event, editor);
                                             }
-                                            else {
-
-                                                let handler: any = null;
-                                                forEach(slateLeafPlugins, (plugin: ISlateLeafPlugin) => {
-                                                    if (plugin.handleKeyEvent) {
-                                                        handler = handler ?? plugin.handleKeyEvent(event, editor);
-                                                        if (handler) {
-                                                            return true;
-                                                        }
-                                                    }
-                                                })
-
-
-                                                if (handler != null) {
-                                                    event.preventDefault();
-                                                    handler();
-                                                }
-                                            }
-                                        }}/>
+                                        })
+                                    }}/>
                             </div>
                         </div>
                     </div>
@@ -139,10 +127,6 @@ export function RichTextEditView() {
             </div>
         </Slate>
     )
-}
-
-function handleHotKey(event: React.KeyboardEvent) {
-    event.preventDefault()
 }
 
 function Element (props: ElementProps) {

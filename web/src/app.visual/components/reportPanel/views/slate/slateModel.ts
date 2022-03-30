@@ -106,10 +106,8 @@ export type BlockButtonProps = ButtonProps & {
     format: string
 }
 
-export type KeyEventHandler = Nullable<() => void>;
-
 export interface ISlatePlugin<T> {
-    handleKeyEvent?: (event: React.KeyboardEvent, editor: Editor) => KeyEventHandler,
+    handleKeyEvent?: (event: React.KeyboardEvent, editor: Editor) => void,
     render?: (node: T, children: any, attributes?: any) => any;
 }
 

@@ -1,4 +1,4 @@
-import {ISlateLeafPlugin, ItalicInputProps, KeyEventHandler, LeafType} from "./slateModel";
+import {ISlateLeafPlugin, ItalicInputProps, LeafType} from "./slateModel";
 import React from "react";
 import {ReactEditor, useSlate} from "slate-react";
 import {Editor} from "slate";
@@ -40,14 +40,10 @@ function italicStrategy(editor: Editor) {
     toggleMark(editor, markKey);
 }
 
-function handleItalicKeyEvent(event: React.KeyboardEvent, editor: Editor): KeyEventHandler {
-    let handler = null;
-
+function handleItalicKeyEvent(event: React.KeyboardEvent, editor: Editor): void {
     if (isKeyMod(event) && event.key === 'i') {
-        handler = () => italicStrategy(editor)
+        italicStrategy(editor);
     }
-
-    return handler;
 }
 
 export const italicPlugin: ISlateLeafPlugin = {

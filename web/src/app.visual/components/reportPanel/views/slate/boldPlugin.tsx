@@ -1,20 +1,14 @@
 import {
     BoldInputProps,
-    ElementType,
-    FontFamilyInputProps,
     ISlateLeafPlugin,
-    KeyEventHandler,
-    LeafProps,
     LeafType
 } from "./slateModel";
 import React from "react";
-import {ReactEditor, useSlate} from "slate-react";
-import ComboBox from "../../../../theme/widgets/comboBox/comboBox";
+import {useSlate} from "slate-react";
 import {Editor} from "slate";
 import Button from "../../../../theme/widgets/button/button";
 import {TextFormatBoldSVGD} from "../../../../theme/svgs/textFormatBoldSVG";
 import {hasMark, isKeyMod, toggleMark} from "./slate-utils";
-import {Nullable} from "../../../../../framework.core/extras/utils/typeUtils";
 
 const markKey = 'bold';
 
@@ -51,14 +45,10 @@ function boldStrategy(editor: Editor) {
     toggleMark(editor, markKey);
 }
 
-function handleBoldKeyEvent(event: React.KeyboardEvent, editor: Editor): KeyEventHandler {
-    let handler = null;
-
+function handleBoldKeyEvent(event: React.KeyboardEvent, editor: Editor): void {
     if (isKeyMod(event) && event.key === 'b') {
-        handler = () => boldStrategy(editor)
+        boldStrategy(editor)
     }
-
-    return handler;
 }
 
 export const boldPlugin: ISlateLeafPlugin = {
