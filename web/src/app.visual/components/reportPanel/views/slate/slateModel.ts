@@ -3,6 +3,7 @@ import {ReactEditor, RenderLeafProps} from "slate-react";
 import {HistoryEditor} from "slate-history";
 import {ButtonProps} from "../../../../theme/widgets/button/buttonModel";
 import {RenderElementProps} from "slate-react/dist/components/editable";
+import {Nullable} from "../../../../../framework.core/extras/utils/typeUtils";
 
 declare module 'slate' {
     interface CustomTypes {
@@ -103,3 +104,5 @@ export type ListInputToolbarProps = {
 export type BlockButtonProps = ButtonProps & {
     format: string
 }
+
+export type KeyEventHandler = Nullable<() => void>;

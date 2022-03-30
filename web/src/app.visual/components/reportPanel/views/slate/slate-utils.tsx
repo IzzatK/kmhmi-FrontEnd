@@ -1,4 +1,7 @@
 import {Editor, Element as SlateElement} from "slate";
+import React from "react";
+
+export const isKeyMod = (event: React.KeyboardEvent) => (event.metaKey && !event.ctrlKey) || event.ctrlKey;
 
 export function getMarkValue(editor: Editor, markKey: string, defaultValue: string) {
     let result: string = defaultValue;

@@ -1,10 +1,12 @@
-import {BoldInputProps, FontFamilyInputProps, LeafProps, LeafType} from "./slateModel";
+import {BoldInputProps, FontFamilyInputProps, KeyEventHandler, LeafProps, LeafType} from "./slateModel";
 import React from "react";
 import {useSlate} from "slate-react";
 import ComboBox from "../../../../theme/widgets/comboBox/comboBox";
 import {Editor} from "slate";
 import Button from "../../../../theme/widgets/button/button";
 import {TextFormatBoldSVGD} from "../../../../theme/svgs/textFormatBoldSVG";
+import {isKeyMod} from "./slate-utils";
+import {Nullable} from "../../../../../framework.core/extras/utils/typeUtils";
 
 const markKey = 'bold';
 
@@ -22,12 +24,7 @@ export function BoldInput(props: BoldInputProps) {
     const editor = useSlate();
 
     function _onSelect() {
-        if (hasBoldMark(editor)) {
-            boldStrategy(editor, false);
-        }
-        else {
-            boldStrategy(editor, true);
-        }
+        boldStrategy(editor);
     }
 
     return (
@@ -37,12 +34,26 @@ export function BoldInput(props: BoldInputProps) {
     )
 }
 
-function boldStrategy(editor: Editor, value: any) {
-    editor.removeMark(markKey);
-    editor.addMark(markKey, value);
+function boldStrategy(editor: Editor) {
+    if (hasBoldMark(editor)) {
+        editor.removeMark(markKey);
+    }
+    else {
+        editor.addMark(markKey, true);
+    }
 }
 
 function hasBoldMark (editor: Editor) {
     const marks = Editor.marks(editor) as Record<string, boolean>
     return marks ? marks[markKey] : false
+}
+
+export function handleBoldKeyEvent(event: React.KeyboardEvent, editor: Editor): KeyEventHandler {
+    let handler = null;
+
+    if (isKeyMod(event) && event.key === 'b') {
+        handler = () => boldStrategy(editor)
+    }
+
+    return handler;
 }

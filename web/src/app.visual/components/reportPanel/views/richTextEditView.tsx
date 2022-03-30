@@ -29,9 +29,9 @@ import Portal from "../../../theme/widgets/portal/portal";
 import {FontFamilyInput, renderFontFamilyLeaf} from "./slate/fontFamilyPlugin";
 import {FontHighlightInput, renderFontHighlightLeaf} from "./slate/fontHighlightPlugin";
 import {FontColorInput, renderFontColorLeaf} from "./slate/fontColorPlugin";
-import {BoldInput, renderBoldLeaf} from "./slate/boldPlugin";
-import {ItalicInput, renderItalicLeaf} from "./slate/italicPlugin";
-import {renderUnderlineLeaf, UnderlineInput} from "./slate/underlinePlugin";
+import {BoldInput, handleBoldKeyEvent, renderBoldLeaf} from "./slate/boldPlugin";
+import {handleItalicKeyEvent, ItalicInput, renderItalicLeaf} from "./slate/italicPlugin";
+import {handleUnderlineKeyEvent, renderUnderlineLeaf, UnderlineInput} from "./slate/underlinePlugin";
 import {FontSizeInput, renderFontSizeLeaf} from "./slate/fontSizePlugin";
 import {renderTextAlignElement, TextAlignInputToolbar} from "./slate/textAlignPlugin";
 import {ListInputToolbar, renderListElement} from "./slate/listPlugin";
@@ -122,12 +122,14 @@ export function RichTextEditView() {
                                                 editor.insertText('    ')
                                             }
                                             else {
-                                                for (const hotkey in HOTKEYS) {
-                                                    if (isHotkey(hotkey, event)) {
-                                                        event.preventDefault()
-                                                        const mark = HOTKEYS[hotkey]
-                                                        // toggleMarkFormat(editor, mark)
-                                                    }
+                                                let handler = null;
+                                                handler = handler ? handler : handleBoldKeyEvent(event, editor);
+                                                handler = handler ? handler : handleItalicKeyEvent(event, editor);
+                                                handler = handler ? handler : handleUnderlineKeyEvent(event, editor);
+
+                                                if (handler != null) {
+                                                    event.preventDefault()
+                                                    handler();
                                                 }
                                             }
                                         }}/>
@@ -138,6 +140,10 @@ export function RichTextEditView() {
             </div>
         </Slate>
     )
+}
+
+function handleHotKey(event: React.KeyboardEvent) {
+    event.preventDefault()
 }
 
 function Element (props: ElementProps) {
