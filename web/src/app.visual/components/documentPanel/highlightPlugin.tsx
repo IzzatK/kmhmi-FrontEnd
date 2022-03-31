@@ -71,16 +71,32 @@ export function renderHighlightContent(pluginProps: RenderHighlightContentProps,
     }
 
     let top = pluginProps.selectionRegion.top + pluginProps.selectionRegion.height;
-    if (top > 81) {
-        top = 81;
+
+
+
+    if (props.zoomScale) {
+        const limit = 93 - (17.8 * Math.pow(props.zoomScale, -1.6));//rough estimation - TODO probably should be polished or replaced
+
+        if (top > limit) {
+            top = 0;
+        }
     }
 
     return (
         <div
             className={"popup d-flex flex-column bg-accent rounded position-absolute"}
-            style={{
-                top: `${top}%`,
-            }}>
+            style={
+            top== 0 ?
+                {
+                    bottom: 0,
+                    marginTop: "auto",
+                }
+                :
+                {
+                    top: `${top}%`,
+                }
+
+        }>
             <div className={"d-flex flex-column v-gap-2 p-3 position-relative"}>
                 <div className={"position-absolute close"}>
                     <Button className={"btn-transparent"} onClick={pluginProps.cancel}>

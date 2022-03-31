@@ -35,6 +35,7 @@ export type DocumentPanelState = {
     isPrivate: boolean;
     showTagEditor: boolean;
     renderTrigger: number;
+    zoomScale: number;
     tmpExcerpt: Partial<CreateExcerptEventData>;
 }
 
@@ -45,13 +46,16 @@ export type DocumentPdfPreviewProps = {
     userProfile: UserProfileVM;
     token: string;
     permissions: PermissionsVM
-    onCreateExcerpt: (text: string, content: any, location: string) => void;
     tmpExcerpt: Partial<CreateExcerptEventData>;
     pockets: Record<string, PocketVM>;
+    excerpts: Record<string, ExcerptVM>;
+    zoomScale: number;
+
+    onCreateExcerpt: (text: string, content: any, location: string) => void;
     onPocketSelectionChanged?: (value: string) => void;
     onUpdateTmpNote?: (text: string) => void;
-    excerpts: Record<string, ExcerptVM>;
     onSaveNote: (note: NoteVM) => void;
+    onZoom: (zoomScale: number) => void;
 }
 
 export type UserProfileVM = {

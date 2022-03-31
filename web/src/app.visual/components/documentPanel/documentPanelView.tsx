@@ -50,6 +50,7 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
             showTagEditor: false,
             renderTrigger: 0,
             tmpExcerpt: {},
+            zoomScale: 1,
         }
 
         this.characterWidth = 8.15;//pixels
@@ -401,6 +402,13 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
         })
     }
 
+    _onZoom(zoom: number) {
+        this.setState({
+            ...this.state,
+            zoomScale: zoom,
+        });
+    }
+
     getCellRenderer(tmpDocument: DocumentUpdateParams, document: DocumentInfoVM, editProperty: EditPropertyVM, isGlobal?: boolean) {
         const { permissions, tagSuggestionSupplier } = this.props;
         const { canModify } = permissions;
@@ -661,14 +669,40 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
 
     render() {
         const {
-            document, editProperties, userProfile, token,
-            className, permissions, pockets
+            document,
+            editProperties,
+            userProfile,
+            token,
+            className,
+            permissions,
+            pockets,
+            excerpts,
+            onSaveNote
         } = this.props;
-        const {id, preview_url = "", original_url, isUpdating=false, upload_date, publication_date, file_type, uploaded_by,
-            primary_sme_name, primary_sme_phone, primary_sme_email, secondary_sme_name, secondary_sme_phone, secondary_sme_email,
-            file_name, file_size, status, nlpComplete, nlpCompleteAnimation, showStatusBanner} = document || {};
 
-        const { tmpDocument, isDirty, isGlobal, isPrivate, tmpExcerpt } = this.state;
+        const {
+            id,
+            preview_url = "",
+            original_url,
+            isUpdating=false,
+            upload_date,
+            file_type,
+            uploaded_by,
+            file_name,
+            file_size,
+            status,
+            nlpComplete,
+            showStatusBanner
+        } = document || {};
+
+        const {
+            tmpDocument,
+            isDirty,
+            isGlobal,
+            isPrivate,
+            tmpExcerpt,
+            zoomScale
+        } = this.state;
 
         let cn = "document-panel d-flex";
         if (className) {
@@ -678,10 +712,8 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
         return (
             <div className={cn}>
                 <div className={'d-flex flex-fill flex-column align-items-stretch'}>
-                    {/*<div className={'header-1 title py-4 pl-5'}>DOCUMENT INFORMATION</div>*/}
                     <div className={`header position-relative`}>
                         <div className={`d-flex flex-column p-4 v-gap-5 position-relative ${!id && 'disabled'} `}>
-                            {/*</Card>*/}
                             <div className={"d-flex flex-column v-gap-1 header-1"}>
                                 <div className={'title-grid'}>
                                     <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end text-right label'}>Title:</div>
@@ -829,13 +861,15 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
                                         userProfile={userProfile}
                                         token={token}
                                         permissions={permissions}
-                                        onUpdateTmpNote={(text: string) => this._onTmpNoteChanged(nameOf<CreateExcerptEventData>("note_text"), text)}
-                                        onCreateExcerpt={this._onCreateExcerpt}
-                                        excerpts={this.props.excerpts}
+                                        excerpts={excerpts}
                                         tmpExcerpt={tmpExcerpt}
                                         pockets={pockets}
-                                        onSaveNote={this.props.onSaveNote}
+                                        zoomScale={zoomScale}
+                                        onUpdateTmpNote={(text: string) => this._onTmpNoteChanged(nameOf<CreateExcerptEventData>("note_text"), text)}
+                                        onCreateExcerpt={this._onCreateExcerpt}
+                                        onSaveNote={onSaveNote}
                                         onPocketSelectionChanged={(value: string) => this._onTmpExcerptChanged(nameOf<CreateExcerptEventData>("pocketId"), value)}
+                                        onZoom={this._onZoom}
                                         />
                                     :
                                     <div className={"position-relative w-100 h-100"}>
@@ -888,12 +922,6 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
                                     permissions.canDelete &&
                                     <Button light={true} text={'DELETE'} onClick={this.removeDocument}/>
                                 }
-                                {/*{*/}
-                                {/*    permissions.canModify && isDirty &&*/}
-                                {/*    <Button*/}
-                                {/*        disabled={!isDirty}*/}
-                                {/*        text={'CANCEL'} onClick={this.cancelEdit}/>*/}
-                                {/*}*/}
                                 {
                                     permissions.canModify && isDirty &&
                                     <Button

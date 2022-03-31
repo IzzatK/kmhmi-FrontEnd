@@ -6,7 +6,7 @@ import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import '@react-pdf-viewer/highlight/lib/styles/index.css';
 import { toolbarPlugin } from '@react-pdf-viewer/toolbar';
 import type { ToolbarSlot } from '@react-pdf-viewer/toolbar';
-import type { RenderZoomInProps, RenderZoomOutProps } from '@react-pdf-viewer/zoom';
+import { zoomPlugin, RenderZoomProps } from '@react-pdf-viewer/zoom';
 import type { RenderGoToPageProps } from '@react-pdf-viewer/page-navigation';
 import type { RenderCurrentPageLabelProps } from '@react-pdf-viewer/page-navigation';
 import {
@@ -26,10 +26,28 @@ import {DocumentPdfPreviewProps} from "./documentPanelModel";
 import {renderHighlightContent, renderHighlights, renderHighlightTarget} from "./highlightPlugin";
 
 function DocumentPdfPreview(props: DocumentPdfPreviewProps) {
-    const {className, preview_url, original_url, userProfile, token, permissions, onUpdateTmpNote, onCreateExcerpt, tmpExcerpt, pockets, onPocketSelectionChanged, ...rest} = props;
+    const {
+        className,
+        preview_url,
+        original_url,
+        userProfile,
+        token,
+        permissions,
+        onUpdateTmpNote,
+        onCreateExcerpt,
+        tmpExcerpt,
+        pockets,
+        onPocketSelectionChanged,
+        onZoom,
+        zoomScale,
+        ...rest
+    } = props;
 
     const toolbarPluginInstance = toolbarPlugin();
     const { Toolbar } = toolbarPluginInstance;
+
+    const zoomPluginInstance = zoomPlugin();
+    const { Zoom } = zoomPluginInstance;
 
     const highlightPluginInstance = highlightPlugin({
         renderHighlightTarget: (pluginProps: RenderHighlightTargetProps) => renderHighlightTarget(pluginProps, props),
@@ -80,6 +98,20 @@ function DocumentPdfPreview(props: DocumentPdfPreviewProps) {
         lastName = userProfile.lastName;
     }
 
+    const _onZoomIn = (props: RenderZoomProps) => {
+        if (props.scale < 4) {
+            onZoom(props.scale + 0.25);
+            props.onZoom(props.scale + 0.25);
+        }
+    }
+
+    const _onZoomOut = (props: RenderZoomProps) => {
+        if (props.scale > 0.25) {
+            onZoom(props.scale - 0.25);
+            props.onZoom(props.scale - 0.25);
+        }
+    }
+
     return (
         <div className={cn} {...rest}>
             {
@@ -94,7 +126,7 @@ function DocumentPdfPreview(props: DocumentPdfPreviewProps) {
                                     backgroundColor: 'transparent',
                                     borderBottom: '0',
                                     display: 'flex',
-                                    padding: '24px',
+                                    padding: '2.4rem',
                                 }}
                             >
                                 <Toolbar>
@@ -103,8 +135,6 @@ function DocumentPdfPreview(props: DocumentPdfPreviewProps) {
                                             CurrentPageLabel,
                                             GoToNextPage,
                                             GoToPreviousPage,
-                                            ZoomIn,
-                                            ZoomOut,
                                         } = props;
                                         return (
                                             <>
@@ -158,23 +188,23 @@ function DocumentPdfPreview(props: DocumentPdfPreviewProps) {
                                                 </div>
 
                                                 <div className={"toolbar"} style={{ padding: '0px 2px', marginLeft: 'auto' }}>
-                                                    <ZoomOut>
-                                                        {(props: RenderZoomOutProps) => (
-                                                            <div onClick={props.onClick}>
+                                                    <Zoom levels={[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3]}>
+                                                        {(props: RenderZoomProps) => (
+                                                            <div onClick={() => _onZoomOut(props)}>
                                                                 <ZoomOutSVG className={'small-image-container cursor-pointer pdf-icon mx-3'}/>
                                                             </div>
                                                         )}
-                                                    </ZoomOut>
+                                                    </Zoom>
                                                 </div>
 
                                                 <div className={"toolbar"} style={{ padding: '0px 2px' }}>
-                                                    <ZoomIn>
-                                                        {(props: RenderZoomInProps) => (
-                                                            <div onClick={props.onClick}>
+                                                    <Zoom levels={[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3]}>
+                                                        {(props: RenderZoomProps) => (
+                                                            <div onClick={() => _onZoomIn(props)}>
                                                                 <ZoomInSVG className={'small-image-container cursor-pointer pdf-icon mx-5'}/>
                                                             </div>
                                                         )}
-                                                    </ZoomIn>
+                                                    </Zoom>
                                                 </div>
 
                                             </>
@@ -184,10 +214,9 @@ function DocumentPdfPreview(props: DocumentPdfPreviewProps) {
                             </div>
                             <Viewer fileUrl={preview_url}
                                     plugins={[
-                                        // Register application
-                                        // defaultLayoutPluginInstance,
                                         toolbarPluginInstance,
                                         highlightPluginInstance,
+                                        zoomPluginInstance,
                                     ]}
                                     theme={'dark'}
                                     httpHeaders={{
