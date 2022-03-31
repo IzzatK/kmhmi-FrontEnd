@@ -68,7 +68,7 @@ class ProfilePanel extends VisualWrapper {
                 onDeclineUserRequest: (id: string) => userService.declineUserRequest(id),
                 onSearch: () => userService.fetchUsers(),
                 onSearchTextChanged: (value: string) => userService.setSearchText(value),
-                onClearSearch: () => userService.clearSearch(),
+                onClearSearch: () => userService.fetchUsers(),
             };
         }
     }
