@@ -81,4 +81,23 @@ export class TagService extends Plugin implements ITagService {
 
         return result;
     }
+
+    searchTags(text: string): Promise<TagInfo[]> {
+
+        return new Promise<TagInfo[]>((resolve, reject) => {
+            if (this.tagProvider) {
+                this.tagProvider.getAll(text)
+                    .then(result => {
+                        resolve(result);
+                    })
+                    .catch(error => {
+                        this.error(error);
+                        reject(error);
+                    });
+            }
+            else {
+                resolve([])
+            }
+        })
+    }
 }

@@ -36,7 +36,19 @@ export class TagProvider extends EntityProvider<TagInfo> {
                 () => this.getTagArrayRequestConverter.convert(uiRequestData),
                 (responseData, reject) => this.getTagArrayResponseConverter.convert(responseData, reject))
                 .then(data => {
-                    resolve(data);
+                    if (uiRequestData) {
+                        // perform a filter client side
+                        const filterText:string = uiRequestData.toUpperCase();
+                        const filteredTags = data.filter((tag) => tag.title.toUpperCase().startsWith(filterText));
+
+                        resolve(filteredTags);
+                    }
+                    else {
+                        resolve(data);
+                    }
+
+
+
                 })
                 .catch(error => {
                     reject(error);

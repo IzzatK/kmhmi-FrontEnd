@@ -1,4 +1,5 @@
 import {DocumentInfo, ParamType} from "../../../app.model";
+import {TagItemVM} from "../../theme/widgets/tag/tagModel";
 
 export type DocumentPanelStateProps = {
     className?: string;
@@ -10,6 +11,7 @@ export type DocumentPanelStateProps = {
     pockets: Record<string, PocketVM>;
     documentHighlightAreas?: any[];
     excerpts: Record<string, ExcerptVM>;
+    tagSuggestionSupplier: (text:string) => Promise<TagItemVM[]>
 }
 
 export type DocumentPanelDispatchProps = {

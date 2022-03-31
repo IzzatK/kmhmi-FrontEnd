@@ -1,3 +1,6 @@
+import {Nullable} from "../../../../framework.core/extras/utils/typeUtils";
+import {SuggestionItemVM} from "../autoComplete/autoCompleteModel";
+
 export type TagProps = {
     className?: string;
     name: string;
@@ -7,9 +10,12 @@ export type TagProps = {
     isEdit?: boolean;
     isGlobal?: boolean;
     readonly?: boolean;
+    suggestionSupplier?: (text: string) => Promise<Nullable<TagItemVM[]>>
 }
 
 export type TagState = {
     selected: boolean;
     tmpText: string;
 }
+
+export type TagItemVM = SuggestionItemVM;

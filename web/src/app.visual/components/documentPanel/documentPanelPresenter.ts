@@ -7,14 +7,14 @@ import {
     ParamType,
     PocketMapper,
     ReferenceType,
-    ResourceMapper
+    ResourceMapper, TagInfo
 } from "../../../app.model";
 import {
     authenticationService,
     authorizationService,
     documentService, pocketService,
     referenceService, repoService,
-    selectionService,
+    selectionService, tagService,
     userService,
 } from "../../../serviceComposition";
 import {
@@ -34,6 +34,7 @@ import {
 import {StatusType} from "../../../app.model";
 import {forEach, forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 import {createVisualConnector, VisualWrapper} from "../../../framework.visual";
+import {TagItemVM} from "../../theme/widgets/tag/tagModel";
 
 class DocumentPanel extends VisualWrapper {
 
@@ -63,7 +64,8 @@ class DocumentPanel extends VisualWrapper {
                 token: authenticationService.getToken(),
                 permissions: this.getPermissions(state),
                 pockets: this.getPockets(state),
-                excerpts: this.getExcerpts(state)
+                excerpts: this.getExcerpts(state),
+                tagSuggestionSupplier: text => this._getSuggestedTags(text)
             }
         }
 
@@ -465,6 +467,29 @@ class DocumentPanel extends VisualWrapper {
             return itemVMs;
         }
     )
+
+    private _getSuggestedTags(text: string) {
+
+        return new Promise<TagItemVM[]>((resolve, reject) => {
+            tagService.searchTags(text)
+                .then(result => {
+                    const tagVMs: TagItemVM[] = [];
+
+                    forEach(result, (tag: TagInfo) => {
+                        tagVMs.push({
+                            id: tag.id,
+                            title: tag.title
+                        })
+                    })
+
+                    resolve(tagVMs);
+                })
+                .catch(error => {
+                    console.log(error);
+                    resolve([]);
+                })
+        })
+    }
 }
 
 export const {

@@ -1,9 +1,9 @@
 import React from "react";
 import './tag.css';
-import TextEdit from "../textEdit/textEdit";
 import {DeleteSVG} from "../../svgs/deleteSVG";
 import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
 import {TagProps, TagState} from "./tagModel";
+import {AutoComplete} from "../autoComplete/autoComplete";
 
 class Tag extends React.Component<TagProps, TagState> {
     constructor(props: any) {
@@ -44,7 +44,7 @@ class Tag extends React.Component<TagProps, TagState> {
 
 
     render() {
-        const { className, text, name, isEdit=false, isGlobal=false, readonly=true } = this.props;
+        const { className, text, name, isEdit=false, isGlobal=false, readonly=true, suggestionSupplier } = this.props;
         const { tmpText, selected } = this.state;
 
         let cn = 'tag d-flex rounded-pill cursor-pointer';
@@ -71,7 +71,7 @@ class Tag extends React.Component<TagProps, TagState> {
                 <div className={"d-grid"} onClick={this._toggleSelected}>
                     {
                         isEdit ?
-                        <TextEdit
+                        <AutoComplete
                             className={"pl-4 mr-4 align-self-center"}
                             placeholder={'Enter New Tag'}
                             name={name}
@@ -80,6 +80,7 @@ class Tag extends React.Component<TagProps, TagState> {
                             onSubmit={this._onSubmit}
                             edit={true}
                             autoFocus={true}
+                            suggestionSupplier={suggestionSupplier}
                         />
                         :
                         <div className={`tag-text display-4 text-nowrap align-self-center pr-4 ${readonly ? 'px-4' : 'pl-4'}`}>
