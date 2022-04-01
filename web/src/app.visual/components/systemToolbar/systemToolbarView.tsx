@@ -34,9 +34,9 @@ class SystemToolbarView extends Component<SystemToolbarProps, SystemToolbarState
                         <Button tooltip={docTitle} onClick={onDocumentPreviewSelected} selected={docSelected}>
                             <DocPreviewSVG className={'small-image-container'}/>
                         </Button>
-                        <Button tooltip={reportTitle} onClick={onReportSelected} selected={reportSelected}>
-                            <DocPreviewSVG className={'small-image-container'}/>
-                        </Button>
+                        {/*<Button tooltip={reportTitle} onClick={onReportSelected} selected={reportSelected}>*/}
+                        {/*    <DocPreviewSVG className={'small-image-container'}/>*/}
+                        {/*</Button>*/}
                     </div>
                     <div className={"border-top align-self-stretch justify-self-stretch border-muted"}/>
                     {toolbarDiv}
