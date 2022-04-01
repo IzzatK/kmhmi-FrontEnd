@@ -5,7 +5,8 @@ import {bindInstanceMethods, Nullable} from "../../../../framework.core/extras/u
 import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
 import Portal from "../portal/portal";
 import Button from "../button/button";
-import {TextFormatHighlightSVG} from "../../svgs/textFormatHighlightSVG";
+import {LoadingIndicator} from "../loadingIndicator/loadingIndicator";
+import {Size} from "../loadingIndicator/loadingIndicatorModel";
 
 export class AutoComplete extends React.Component<AutoCompleteProps, AutoCompleteState> {
 
@@ -47,10 +48,10 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                         .then(result => {
                             if (result != null) {
 
-                                console.log(`Suggestions Found: ${result ? result.length : 0}`);
-                                forEach(result, (item: SuggestionItemVM) => {
-                                    console.log(`id: ${item.id}, title: ${item.title}`);
-                                })
+                                // console.log(`Suggestions Found: ${result ? result.length : 0}`);
+                                // forEach(result, (item: SuggestionItemVM) => {
+                                //     console.log(`id: ${item.id}, title: ${item.title}`);
+                                // })
 
                                 this.setState({
                                     ...this.state,
@@ -73,6 +74,12 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         }
     }
 
+    _onSubmit(name: string, value: string) {
+        if (this.props.onSubmit) {
+            this.props.onSubmit(name, value);
+        }
+    }
+
     _onClickHandler() {
         this.setState({
             ...this.state,
@@ -81,9 +88,9 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
     }
 
     render() {
-        const { ...rest } = this.props;
+        const { onSubmit, onChange, ...rest } = this.props;
 
-        const { suggestions, showSuggestions } = this.state;
+        const { suggestions, showSuggestions, loadingSuggestions } = this.state;
 
         let items: JSX.Element[] = [];
         if (suggestions) {
@@ -91,8 +98,8 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                 items.push(
                     <Button key={suggestion.id}
                             text={suggestion.title}
-                            onClick={() => {
-                                // do something with the click event
+                            onClick={(event) => {
+                                this._onSubmit(this.props.name || '', suggestion.id);
                             }}
                     />
                 )
@@ -112,14 +119,24 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                     portalContent={(params: any) => {
                         const { relatedWidth=0 } = params;
                         return (
-                            <div className={'ml-4 mt-2 d-flex'} style={{minWidth: relatedWidth}}>
-                                <div className={`flex-fill d-flex flex-column w-100 bg-muted p-3 v-gap-2`}>
-                                    {items}
+                            <div className={'ml-4 mt-2 d-flex shadow shadow-lg bg-muted overflow-scroll-y'} style={{minWidth: relatedWidth*2, maxHeight: '15.0rem'}}>
+                                <div className={`flex-fill d-flex flex-column w-100`}>
+                                    {
+                                        loadingSuggestions ?
+                                            <div className={'d-flex align-items-center justify-content-center'}>
+                                                <LoadingIndicator size={Size.nano}/>
+                                            </div>
+                                            :
+                                            <ul className={'v-gap-2 p-3'}>
+                                                {items}
+                                            </ul>
+
+                                    }
                                 </div>
                             </div>
                         )
                     }}>
-                    <TextEdit onChange={this._onChange} {...rest} />
+                    <TextEdit manualFocus={true} onChange={this._onChange} onSubmit={this._onSubmit} {...rest} />
                 </Portal>
             </div>
         )

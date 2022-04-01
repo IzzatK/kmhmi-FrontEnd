@@ -25,11 +25,11 @@ class Tag extends React.Component<TagProps, TagState> {
         }
     }
 
-    _onSubmit(name: string, tmpValue: string) {
-        const { onSubmit, text } = this.props;
+    _onSubmit(name: string, newValue: string) {
+        const { onSubmit, text:oldValue } = this.props;
 
         if (onSubmit) {
-            onSubmit(name, text, tmpValue);
+            onSubmit(name, oldValue, newValue);
         }
     }
 

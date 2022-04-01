@@ -30,14 +30,14 @@ class TextEdit extends Component<TextEditProps, TextEditState> {
 				tooltipId: id + "_tooltip",
 			})
 		}
+
+		if (this.inputRef.current && !this.props.manualFocus ) {
+			this.inputRef.current.addEventListener("focusout",  this._onSubmit);
+		}
 	}
 
 	componentDidUpdate(prevProps: Readonly<TextEditProps>, prevState: Readonly<TextEditState>, snapshot?: any) {
 		const { value } = this.props;
-
-		if (this.inputRef.current) {
-			this.inputRef.current.addEventListener("focusout",  this._onSubmit);
-		}
 
 		if (prevProps.value !== value) {
 			this._setTmpValue(value ? value : "");
@@ -51,8 +51,6 @@ class TextEdit extends Component<TextEditProps, TextEditState> {
 		if (value !== tmpValue) {
 			if (onSubmit) {
 				onSubmit(name ? name : "", tmpValue);
-
-				console.log("onSubmit")
 			}
 		}
 	};

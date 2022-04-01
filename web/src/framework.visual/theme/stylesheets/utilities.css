@@ -46,6 +46,11 @@
     overflow: scroll !important;
 }
 
+.overflow-scroll-y {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
 .d-none {
     display: none !important;
 }
