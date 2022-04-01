@@ -1,0 +1,11 @@
+.auto-complete {
+
+}
+
+.auto-complete .auto-complete-container {
+    background: var(--app-vulcan);
+}
+
+.auto-complete .match {
+    color: var(--app-whiteSmoke);
+}

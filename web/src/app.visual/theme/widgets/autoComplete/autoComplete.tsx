@@ -4,9 +4,9 @@ import TextEdit from "../textEdit/textEdit";
 import {bindInstanceMethods, Nullable} from "../../../../framework.core/extras/utils/typeUtils";
 import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
 import Portal from "../portal/portal";
-import Button from "../button/button";
 import {LoadingIndicator} from "../loadingIndicator/loadingIndicator";
 import {Size} from "../loadingIndicator/loadingIndicatorModel";
+import './auto-complete.css';
 
 export class AutoComplete extends React.Component<AutoCompleteProps, AutoCompleteState> {
 
@@ -19,7 +19,8 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         this.state = {
             loadingSuggestions: false,
             showSuggestions: false,
-            suggestions: []
+            suggestions: [],
+            value: "",
         }
 
         bindInstanceMethods(this);
@@ -42,7 +43,8 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                     this.setState({
                         ...this.state,
                         loadingSuggestions: true,
-                        showSuggestions: true
+                        showSuggestions: true,
+                        value,
                     })
                     this.props.suggestionSupplier(value)
                         .then(result => {
@@ -89,19 +91,28 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
 
     render() {
         const { onSubmit, onChange, ...rest } = this.props;
+        const { value } = this.state;
 
         const { suggestions, showSuggestions, loadingSuggestions } = this.state;
 
         let items: JSX.Element[] = [];
         if (suggestions) {
             forEach(suggestions, (suggestion: SuggestionItemVM) => {
+                let matched_text = suggestion.title.slice(0, value.length);
+                let text = suggestion.title.slice(value.length, suggestion.title.length);
+
                 items.push(
-                    <Button key={suggestion.id}
-                            text={suggestion.title}
-                            onClick={(event) => {
-                                this._onSubmit(this.props.name || '', suggestion.id);
-                            }}
-                    />
+                    <div
+                        key={suggestion.id}
+                        className={"d-flex display-4 cursor-pointer"}
+                         onClick={(event) => {
+                             this._onSubmit(this.props.name || '', suggestion.id);
+                         }}
+                    >
+                        <div className={"match font-weight-bold"}>{matched_text}</div>
+                        <div className={"text-info"}>{text}</div>
+                    </div>
+
                 )
             })
         }
@@ -116,10 +127,11 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                     timeout={200}
                     autoLayout={false}
                     onShouldClose={this._onClickHandler}
+                    className={"auto-complete"}
                     portalContent={(params: any) => {
                         const { relatedWidth=0 } = params;
                         return (
-                            <div className={'ml-4 mt-2 d-flex shadow shadow-lg bg-muted overflow-scroll-y'} style={{minWidth: relatedWidth*2, maxHeight: '15.0rem'}}>
+                            <div className={'auto-complete-container ml-4 mt-2 d-flex shadow shadow-lg overflow-scroll-y'} style={{minWidth: relatedWidth*2, maxHeight: '15.0rem'}}>
                                 <div className={`flex-fill d-flex flex-column w-100`}>
                                     {
                                         loadingSuggestions ?

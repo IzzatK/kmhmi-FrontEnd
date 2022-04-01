@@ -9,6 +9,7 @@ export type AutoCompleteState = {
     showSuggestions: boolean;
     loadingSuggestions: boolean;
     suggestions: SuggestionItemVM[];
+    value: string;
 }
 
 export interface SuggestionItemVM {
