@@ -216,7 +216,7 @@ class TableCollectionView extends Component<TableCollectionRendererProps, TableC
                 }
 
                 return (
-                    <div key={id} className={"position-relative"}>
+                    <div key={id} className={"position-relative"} draggable={true}>
                         <ListItem selected={selected} className={cn} onClick={() => onDocumentSelected(id)}>
                             <div className={"d-flex align-items-center justify-content-center"} style={{width: columnWidths[0]}}>
                                 <CheckBox className={'mt-1'} selected={selected} disabled={true}/>

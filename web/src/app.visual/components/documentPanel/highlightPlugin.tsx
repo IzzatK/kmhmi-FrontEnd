@@ -75,7 +75,7 @@ export function renderHighlightContent(pluginProps: RenderHighlightContentProps,
 
 
     if (props.zoomScale) {
-        const limit = 93 - (17.8 * Math.pow(props.zoomScale, -1.6));//rough estimation - TODO probably should be polished or replaced
+        const limit = (194.281 / ((792 * props.zoomScale) + 15.994)) * 100;//TODO need to account for rem scaling
 
         if (top > limit) {
             top = 0;
@@ -86,7 +86,7 @@ export function renderHighlightContent(pluginProps: RenderHighlightContentProps,
         <div
             className={"popup d-flex flex-column bg-accent rounded position-absolute"}
             style={
-            top== 0 ?
+            top === 0 ?
                 {
                     bottom: 0,
                     marginTop: "auto",

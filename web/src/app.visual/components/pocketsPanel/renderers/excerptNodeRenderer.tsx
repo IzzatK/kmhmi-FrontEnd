@@ -22,6 +22,10 @@ export class ExcerptNodeRenderer extends Component<ExcerptNodeRendererProps> {
         }
     }
 
+    _onDragStart(event: React.DragEvent<HTMLDivElement>) {
+        event.dataTransfer.setData("text/plain", this.props.title ? this.props.title : "");
+    }
+
     render() {
         const { className, title } = this.props;
 
@@ -31,7 +35,7 @@ export class ExcerptNodeRenderer extends Component<ExcerptNodeRendererProps> {
         }
 
         return (
-            <div className={cn}>
+            <div draggable={true} className={cn} onDragStart={(e) => this._onDragStart(e)}>
                 <Button className={"btn-transparent"} disabled={true}>
                     <ExcerptSVG className={"small-image-container"}/>
                 </Button>

@@ -166,7 +166,7 @@ class ListCollectionView extends Component<ListCollectionRendererProps, ListColl
                 }
 
                 return (
-                    <div key={id}>
+                    <div key={id} draggable={true}>
                         <ListItem key={id} selected={selected} className={cn} onClick={() => onDocumentSelected(id)}>
                             <CheckBox className={'mt-1'} selected={selected} disabled={true}/>
                             <div className={"flex-fill align-self-stretch d-flex flex-column v-gap-3"}>

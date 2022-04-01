@@ -149,7 +149,7 @@ class CardCollectionView extends Component<CardCollectionRendererProps, CardColl
                 }
 
                 return (
-                    <div key={id} className={cn}>
+                    <div key={id} className={cn} draggable={true}>
                         <Card className={'position-absolute w-100 h-100'} selected={selected} onClick={() => onDocumentSelected(id)}
                               header={
                                   <div className={"h-100 flex-fill align-self-stretch d-flex flex-column v-gap-2 p-4"}>
