@@ -6,13 +6,13 @@ import {
 import {DocumentPdfPreviewProps, ExcerptVM, NoteVM, PocketVM} from "./documentPanelModel";
 import React, {Component} from "react";
 import Button from "../../theme/widgets/button/button";
-import {CreateNoteSVG} from "../../theme/svgs/createNoteSVG";
 import {DeleteSVG} from "../../theme/svgs/deleteSVG";
 import ComboBox from "../../theme/widgets/comboBox/comboBox";
 import TextArea from "../../theme/widgets/textEdit/textArea";
 import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
 import {bindInstanceMethods} from "../../../framework.core/extras/utils/typeUtils";
 import TextEdit from "../../theme/widgets/textEdit/textEdit";
+import {NoteSVG} from "../../theme/svgs/noteSVG";
 
 export function renderHighlightTarget(pluginProps: RenderHighlightTargetProps, props: DocumentPdfPreviewProps) {
     return (
@@ -23,7 +23,7 @@ export function renderHighlightTarget(pluginProps: RenderHighlightTargetProps, p
              }}
         >
             <Button className={"btn-transparent"} onClick={pluginProps.toggle}>
-                <CreateNoteSVG className={"small-image-container"}/>
+                <NoteSVG className={"small-image-container"}/>
             </Button>
         </div>
     );
@@ -75,7 +75,7 @@ export function renderHighlightContent(pluginProps: RenderHighlightContentProps,
 
 
     if (props.zoomScale) {
-        const limit = (194.281 / ((792 * props.zoomScale) + 15.994)) * 100;//TODO need to account for rem scaling
+        const limit = 100 - (200 / ((792 * props.zoomScale) + 15.994)) * 100;//TODO need to account for rem scaling
 
         if (top > limit) {
             top = 0;

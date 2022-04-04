@@ -8,9 +8,9 @@ import TextEdit from "../../../theme/widgets/textEdit/textEdit";
 import SearchBox from "../../../theme/widgets/searchBox/searchBox";
 import {RemoveSVG} from "../../../theme/svgs/removeSVG";
 import {EditSVG} from "../../../theme/svgs/editSVG";
-import {AddNewSVG} from "../../../theme/svgs/addNewSVG";
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
 import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
+import {CopyPocketSVG} from "../../../theme/svgs/copyPocketSVG";
 
 export class PocketNodeRenderer extends Component<PocketNodeRendererProps, PocketNodeRendererState> {
     constructor(props: any) {
@@ -187,8 +187,8 @@ export class PocketNodeRenderer extends Component<PocketNodeRendererProps, Pocke
                                 <Button className={"btn-transparent"} onClick={this._onSettings} selected={tab === PocketTabType.EDIT} tooltip={"Edit"}>
                                     <EditSVG className={"small-image-container"}/>
                                 </Button>
-                                <Button className={"btn-transparent"} onClick={(e) => {e.stopPropagation()}} selected={tab === PocketTabType.NONE} tooltip={"Create Report"}>
-                                    <AddNewSVG className={"small-image-container"}/>
+                                <Button className={"btn-transparent"} onClick={(e) => {e.stopPropagation()}} selected={tab === PocketTabType.NONE} tooltip={"Copy Pocket"}>
+                                    <CopyPocketSVG className={"small-image-container"}/>
                                 </Button>
                                 <Button className={"btn-transparent"} onClick={this._onShare} selected={tab === PocketTabType.SHARE} tooltip={"Share"}>
                                     <ShareSVG className={"small-image-container"}/>

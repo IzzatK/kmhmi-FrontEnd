@@ -12,6 +12,7 @@ import {NoteNodeRenderer} from "./renderers/noteNodeRenderer";
 import {ResourceNodeRenderer} from "./renderers/resourceNodeRenderer";
 import {TreeNodeVM} from "../../theme/widgets/treeView/treeViewModel";
 import {PocketNodeType} from "../../model/pocketNodeType";
+import {PlusSVG} from "../../theme/svgs/plusSVG";
 
 class PocketsPanelView extends Component<PocketsPanelProps> {
     constructor(props: any, context: any) {
@@ -195,11 +196,11 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         return (
             <div className={cn}>
                 <div className={'system-tool-panel pockets-panel flex-fill h-100 p-4 d-flex flex-column'}>
-                    <div className={'header-1 title py-3'}>POCKETS MANAGER</div>
-
                     <div className={"d-flex justify-content-between px-3"}>
-                        <Button text={"Sort"}/>
-                        <Button text={"Create Pocket"} onClick={this.onCreatePocket}/>
+                        <Button className={"bg-transparent"} onClick={this.onCreatePocket}>
+                            <div>Create Pocket</div>
+                            <PlusSVG className={"nano-image-container"}/>
+                        </Button>
                     </div>
                     <div className={'flex-fill'}>
                         <ScrollBar className={'flex-fill'} renderTrackHorizontal={false}>
