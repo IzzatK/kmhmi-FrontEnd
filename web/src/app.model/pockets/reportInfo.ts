@@ -8,8 +8,11 @@ export class ReportInfo extends WocketInfo {
   title: string =  '';
   date: string =  '';
   citation: CitationType = CitationType.MLA;
+  value: string = '';
 
   document_ids: string[] = [];
+
+  isUpdating?: boolean = false;
 
   constructor(id: string)
   {

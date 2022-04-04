@@ -82,20 +82,7 @@ export class ExcerptProvider extends EntityProvider<ExcerptInfo> {
 
                     uiRequestData.id = id;
 
-                    if (onUpdated) {
-                        onUpdated(uiRequestData);
-                    }
-
-                    // it's a single fetch to get the new user
-                    setTimeout(() => {
-                        this.getSingle(id)
-                            .then(excerpt => {
-                                resolve(excerpt);
-                            })
-                            .catch(error => {
-                                reject(error);
-                            });
-                    }, 3000)
+                    resolve(uiRequestData);
                 })
                 .catch(error => {
                     reject(error);

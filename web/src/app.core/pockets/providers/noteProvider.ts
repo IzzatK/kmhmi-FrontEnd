@@ -82,20 +82,7 @@ export class NoteProvider extends EntityProvider<NoteInfo> {
 
                     uiRequestData.id = id;
 
-                    if (onUpdated) {
-                        onUpdated(uiRequestData);
-                    }
-
-                    // it's a single fetch to get the new user
-                    setTimeout(() => {
-                        this.getSingle(id)
-                            .then(note => {
-                                resolve(note);
-                            })
-                            .catch(error => {
-                                reject(error);
-                            });
-                    }, 3000)
+                    resolve(uiRequestData);
                 })
                 .catch(error => {
                     reject(error);

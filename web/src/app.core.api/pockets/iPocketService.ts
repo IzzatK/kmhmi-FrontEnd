@@ -5,8 +5,7 @@ import {
     NoteInfo,
     PocketInfo,
     PocketMapper,
-    ResourceInfo,
-    ReportInfo
+    ResourceInfo
 } from "../../app.model";
 import {IUserService} from "../users/iUserService";
 import {IDocumentService} from "../documents/iDocumentService";
@@ -36,7 +35,6 @@ export interface IPocketService extends IPlugin {
 
     getPocketInfos(): Record<string, PocketInfo>;
     getPocketInfo(id: string): Nullable<PocketInfo>;
-
     /*********** end pocket methods *************************/
 
 
@@ -61,20 +59,12 @@ export interface IPocketService extends IPlugin {
 
 
     /*********** begin multi-part methods *************************/
-
     addNoteAndExcerptToPocket(noteParams: NoteParamType, excerptParams: ExcerptParamType, resourceParams: ResourceParamType, pocketParams: PocketParamType): void;
     addExcerptToPocket(excerptParams: ExcerptParamType, resourceParams: ResourceParamType, pocketParams: PocketParamType): void;
 
     removeNoteFromExcerpt(note_id: string, pocket_id: string): void;
     removeExcerptFromResource(excerpt_id: string, pocket_id: string): void;
     removeResourceFromPocket(resource_id: string, pocket_id: string): void;
-    //
-    // addNoteToReport(noteParams: NoteParamType, reportDocumentParams: ResourceParamType): void;
-    //
-    // addExcerptToReportDocument(excerptParams: ExcerptParamType, reportDocumentParams: ResourceParamType): void;
-    //
-    // addReportToPocket(reportParams: ReportParamType, pocketParams: PocketParamType): void;
-
     /*********** end multi-part methods *************************/
 }
 
@@ -83,5 +73,4 @@ type OmitParamsType = 'className';
 export type ExcerptParamType = Omit<Partial<ExcerptInfo>, OmitParamsType>;
 export type NoteParamType = Omit<Partial<NoteInfo>, OmitParamsType>;
 export type ResourceParamType = Omit<Partial<ResourceInfo>, OmitParamsType>;
-export type ReportParamType = Omit<Partial<ReportInfo>, OmitParamsType>;
 export type PocketParamType = Omit<Partial<PocketInfo>, OmitParamsType>;

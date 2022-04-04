@@ -82,20 +82,7 @@ export class ResourceProvider extends EntityProvider<ResourceInfo> {
 
                     uiRequestData.id = id;
 
-                    if (onUpdated) {
-                        onUpdated(uiRequestData);
-                    }
-
-                    // it's a single fetch to get the new resource
-                    setTimeout(() => {
-                        this.getSingle(id)
-                            .then(resource => {
-                                resolve(resource);
-                            })
-                            .catch(error => {
-                                reject(error);
-                            });
-                    }, 3000)
+                    resolve(uiRequestData);
                 })
                 .catch(error => {
                     reject(error);
