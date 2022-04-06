@@ -1,5 +1,5 @@
 import {Plugin} from "../../framework.core/extras/plugin";
-import {IReportService, ReportParamType} from "../../app.core.api/reports/iReportService";
+import {IReportService, ReportParamType} from "../../app.core.api";
 import {IEntityProvider, ISelectionService} from "../../framework.core.api";
 import {ReportInfo} from "../../app.model";
 import {Nullable} from "../../framework.core/extras/utils/typeUtils";
@@ -90,6 +90,10 @@ export class ReportService extends Plugin implements IReportService {
         return super.getRepoItem<ReportInfo>(ReportInfo.class, id);
     }
 
+    getReports(): Record<string, ReportInfo> {
+        return this.getAllReportsSelector(super.getRepoState());
+    }
+
     removeReport(id: string): void {
         this.reportProvider?.remove(id)
             .then(report => {
@@ -128,5 +132,17 @@ export class ReportService extends Plugin implements IReportService {
                     console.log(error);
                 });
         }
+    }
+
+    createReport(params: ReportParamType): void {
+        this.reportProvider?.create(params)
+            .then(result => {
+                if (result != null) {
+                    this.addOrUpdateRepoItem(result);
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 }

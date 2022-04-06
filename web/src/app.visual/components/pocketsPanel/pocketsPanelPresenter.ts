@@ -2,12 +2,13 @@ import PocketsPanelView from "./pocketsPanelView";
 import {VisualWrapper} from "../../../framework.visual";
 import {createVisualConnector} from "../../../framework.visual";
 import {createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {pocketService, selectionService, userService} from "../../../serviceComposition";
+import {displayService, pocketService, reportService, selectionService, userService} from "../../../serviceComposition";
 import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
-import {ExcerptMapper, NoteInfo, PocketMapper, ResourceMapper} from "../../../app.model";
+import {ExcerptMapper, NoteInfo, PocketMapper, ReportInfo, ResourceMapper} from "../../../app.model";
 import {PocketNodeType} from "../../model/pocketNodeType";
 import {PocketNodeVM, PocketsPanelDispatchProps, PocketsPanelStateProps, PocketUpdateParams} from "./pocketsPanelModel";
-import {PocketParamType} from "../../../app.core.api";
+import {PocketParamType, ReportParamType} from "../../../app.core.api";
+import {ReportPanelId} from "../reportPanel/reportPanelWrapper";
 
 
 type PocketSliceState = {
@@ -117,18 +118,21 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                 },
                 onDownloadPocket(id: string): void {
                 },
-                onUpdatePocket: (edits: PocketUpdateParams) => this._onUpdatePocket(edits),
+                onUpdatePocket: (edits: PocketUpdateParams) => _PocketsPanelPresenter._onUpdatePocket(edits),
                 onRemoveExcerpt: (id: string, pocket_id: string) => this._onRemoveExcerpt(id, pocket_id),
                 onRemoveResource: (id: string, pocket_id: string) => this._onRemoveResource(id, pocket_id),
                 onRemoveNote: (id: string, pocket_id: string) => this._onRemoveNote(id, pocket_id),
                 onSearch: () => userService.fetchUsers(),
                 onSearchTextChanged: (value: string) => userService.setSearchText(value),
                 onDelete: (id: string) => pocketService.removePocket(id),
+                onCreateReport: (id: string) => _PocketsPanelPresenter._onCreateReport(id),
+                onRemoveReport: (id: string) => reportService.removeReport(id),
+                onReportItemSelected: (id: string) => this.onReportItemSelected(id),
             };
         }
     }
 
-    private _onUpdatePocket(edits: PocketUpdateParams) {
+    private static _onUpdatePocket(edits: PocketUpdateParams) {
         const params: PocketParamType = {
             id: edits.id
         }
@@ -140,9 +144,18 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
         void pocketService.addOrUpdatePocket(params)
     }
 
+    private static _onCreateReport(id: string) {
+        const params: ReportParamType = {
+            title: "New Report",
+            pocket_id: id,
+        }
+
+        reportService.createReport(params);
+    }
+
     getPocketNodeVMs = createSelector(
-        [(s) => pocketService.getPocketMappers()],
-        (pocketMappers) => {
+        [() => pocketService.getPocketMappers(), () => reportService.getReports()],
+        (pocketMappers, reportInfos) => {
             let nodeVMs: Record<string, PocketNodeVM> = {};
 
             forEach(pocketMappers, (pocketMapper: PocketMapper) => {
@@ -210,6 +223,21 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                 });
             });
 
+            forEach(reportInfos, (reportInfo: ReportInfo) => {
+                const reportPath = `/${reportInfo.pocket_id}/${reportInfo.id}`;
+
+                nodeVMs[reportPath] = {
+                    id: reportInfo.id,
+                    type: PocketNodeType.REPORT,
+                    path: reportPath,
+                    title: reportInfo.title,
+                    content: '',
+                    childNodes: [],
+                    pocket_id: reportInfo.pocket_id,
+                    isUpdating: reportInfo.isUpdating || false,
+                }
+            });
+
             return nodeVMs;
         }
     );
@@ -218,6 +246,11 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
 
     onPocketItemSelected(id: string) {
         selectionService.setContext("selected-pocket-node-path", id);
+    }
+
+    onReportItemSelected(id: string) {
+        selectionService.setContext("selected-report", id);
+        displayService.showNode(ReportPanelId);
     }
 
     onPocketItemToggle(id: string, expanded: boolean) {

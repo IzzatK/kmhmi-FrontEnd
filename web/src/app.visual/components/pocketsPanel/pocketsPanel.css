@@ -129,3 +129,12 @@
 .pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .light .button:hover {
     fill: var(--pocket-node-light-button-hover-fill);
 }
+
+.pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .report-node {
+
+    border-bottom: 0.5rem solid var(--pocket-node-report-border-color);
+}
+
+.pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .report-node .title {
+    color: var(--pocket-node-report-color);
+}

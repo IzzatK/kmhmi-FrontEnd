@@ -127,6 +127,10 @@ class SystemToolbar extends VisualWrapper {
         else {
             displayService.pushNode(ReportPanelId);
         }
+
+        if (selectionService.getContext("selected-report") !== '') {
+            selectionService.setContext("selected-report", '');
+        }
     }
 
     getDocumentPreviewToolVM = createSelector(

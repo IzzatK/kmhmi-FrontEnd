@@ -10,9 +10,9 @@ import {PocketNodeRenderer} from "./renderers/pocketNodeRenderer";
 import {ExcerptNodeRenderer} from "./renderers/excerptNodeRenderer";
 import {NoteNodeRenderer} from "./renderers/noteNodeRenderer";
 import {ResourceNodeRenderer} from "./renderers/resourceNodeRenderer";
-import {TreeNodeVM} from "../../theme/widgets/treeView/treeViewModel";
 import {PocketNodeType} from "../../model/pocketNodeType";
 import {PlusSVG} from "../../theme/svgs/plusSVG";
+import {ReportNodeRenderer} from "./renderers/reportNodeRenderer";
 
 class PocketsPanelView extends Component<PocketsPanelProps> {
     constructor(props: any, context: any) {
@@ -41,8 +41,9 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                         searchText={searchText}
                         onSearch={this._onSearch}
                         onSearchTextChanged={this._onSearchTextChanged}
-                        onDelete={(id: string) => this._deletePocket(id)}
+                        onDelete={() => this._deletePocket(id)}
                         isUpdating={isUpdating}
+                        onCreateReport={() => this._onCreateReport(id)}
                     />
                 )
                 break;
@@ -81,6 +82,17 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                     />
                 )
                 break;
+            case PocketNodeType.REPORT:
+                renderer = (
+                    <ReportNodeRenderer
+                        id={id}
+                        path={path}
+                        title={title}
+                        onDownload={this._onDownloadReport}
+                        onRemove={this._onRemoveReport}
+                    />
+                )
+                break;
             default:
                 renderer = (
                     <div className={'display-1, text-secondary'}>UNDEFINED CELL RENDERER</div>
@@ -91,15 +103,39 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         return renderer;
     }
 
-    private _onNodeSelected(nodeVM: TreeNodeVM) {
+    private _onNodeSelected(nodeVM: any) {
         if (this.props.onPocketItemSelected != null) {
             this.props.onPocketItemSelected(nodeVM?.path || '');
         }
+
+        if (nodeVM) {
+            if (nodeVM.type) {
+                if (nodeVM.type === PocketNodeType.REPORT) {
+                    if (this.props.onReportItemSelected) {
+                        this.props.onReportItemSelected(nodeVM.id);
+                    }
+                }
+            }
+        }
     }
 
-    private _onNodeToggle(nodeVM: TreeNodeVM, expanded: boolean) {
-        if (this.props.onPocketItemToggle != null) {
-            this.props.onPocketItemToggle(nodeVM.path, expanded);
+    private _onNodeToggle(nodeVM: any, expanded: boolean) {
+        if (nodeVM) {
+            if (nodeVM.type) {
+                if (nodeVM.type === PocketNodeType.REPORT) {
+                    if (this.props.onReportItemSelected) {
+                        this.props.onReportItemSelected(nodeVM.id);
+                    }
+                } else {
+                    if (this.props.onPocketItemToggle != null) {
+                        this.props.onPocketItemToggle(nodeVM.path, expanded);
+                    }
+                }
+            } else {
+                if (this.props.onPocketItemToggle != null) {
+                    this.props.onPocketItemToggle(nodeVM.path, expanded);
+                }
+            }
         }
     }
 
@@ -116,10 +152,11 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
     }
 
     _onSavePocket(edits: PocketUpdateParams) {
-        if (this.props.onUpdatePocket != null) {
-            this.props.onUpdatePocket(edits);
+        const { onUpdatePocket } = this.props;
+
+        if (onUpdatePocket) {
+            onUpdatePocket(edits);
         }
-        //opens settings ui
     }
 
     private _deletePocket(id: string) {
@@ -127,6 +164,14 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
 
         if (onDelete) {
             onDelete(id);
+        }
+    }
+
+    private _onCreateReport(id: string) {
+        const { onCreateReport } = this.props;
+
+        if (onCreateReport) {
+            onCreateReport(id);
         }
     }
 
@@ -162,7 +207,19 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         }
     }
 
-    onCreatePocket() {
+    _onRemoveReport(id: string) {
+        const { onRemoveReport } = this.props;
+
+        if (onRemoveReport) {
+            onRemoveReport(id);
+        }
+    }
+
+    _onDownloadReport(id: string) {
+
+    }
+
+    _onCreatePocket() {
         if (this.props.onCreatePocket != null) {
             this.props.onCreatePocket('New Pocket')
         }
@@ -197,7 +254,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
             <div className={cn}>
                 <div className={'system-tool-panel pockets-panel flex-fill h-100 p-4 d-flex flex-column'}>
                     <div className={"d-flex justify-content-between px-3"}>
-                        <Button className={"bg-transparent"} onClick={this.onCreatePocket}>
+                        <Button className={"bg-transparent"} onClick={this._onCreatePocket}>
                             <div>Create Pocket</div>
                             <PlusSVG className={"nano-image-container"}/>
                         </Button>

@@ -1,6 +1,6 @@
-import React, {useCallback, useRef, useState} from "react";
+import React, {useCallback, useRef} from "react";
 import {Editable, Slate, withReact,} from "slate-react";
-import {createEditor, Descendant, Editor } from "slate";
+import {createEditor, Editor } from "slate";
 import {withHistory} from "slate-history";
 import ComboBox from "../../../theme/widgets/comboBox/comboBox";
 import {
@@ -19,14 +19,7 @@ import {FontSizeInput, fontSizePlugin } from "./slate/fontSizePlugin";
 import {TextAlignInputToolbar, textAlignPlugin } from "./slate/textAlignPlugin";
 import {ListInputToolbar, listPlugin } from "./slate/listPlugin";
 import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
-
-const initialValue: Descendant[] = [
-    {
-        children: [
-            { text: 'This is editable plain text, just like a <textarea>!' },
-        ],
-    },
-]
+import {RichTextEditViewProps} from "../reportPanelModel";
 
 const citation = [
     {
@@ -54,7 +47,8 @@ const slateElementPlugins: ISlateElementPlugin[] = [
     textAlignPlugin
 ]
 
-export function RichTextEditView() {
+export function RichTextEditView(props: RichTextEditViewProps) {
+    const { value, onReportValueChanged } = props;
 
     const editorRef = useRef<Editor>()
     if (!editorRef.current) {
@@ -63,15 +57,20 @@ export function RichTextEditView() {
             withReact(createEditor()))
     }
     const editor = editorRef.current
-    const [value, setValue] = useState<Descendant[]>(initialValue)
     const renderElement = useCallback(props => <Element {...props} />, [])
-    const renderLeaf = useCallback(props => <Leaf {...props} />, [])
+    const renderLeaf = useCallback(props => <Leaf {...props} />, []);
+
+    if (editor) {
+        if (editor.children) {
+            editor.children = value;
+        }
+    }
 
     return (
         <Slate
             editor={editor}
-            value={value}
-            onChange={setValue}>
+            value={value}//initial value
+            onChange={onReportValueChanged}>
             <div className={'flex-fill d-flex flex-column v-gap-3 p-5'}>
                 <div className={'toolbar d-flex flex-column v-gap-3'}>
                     <div className={'toolbar flex-fill d-flex h-gap-5'}>

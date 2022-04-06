@@ -13,8 +13,10 @@ export interface IReportService extends IPlugin {
     fetchReports(): void;
     updateReport(params: ReportParamType): void;
     removeReport(id: string): void;
+    createReport(params: ReportParamType): void;
 
     getReport(id: string): Nullable<ReportInfo>;
+    getReports(): Record<string, ReportInfo>;
 }
 
 type OmitParamsType = 'className';

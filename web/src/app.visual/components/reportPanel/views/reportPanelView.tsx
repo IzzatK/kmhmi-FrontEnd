@@ -1,46 +1,16 @@
 import React, {Component} from "react";
 import './reportPanel.css';
-import {ReportPanelPresenterProps, ReportPanelPresenterState} from "../reportPanelModel";
-import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
+import {ReportPanelViewProps} from "../reportPanelModel";
 import Button from "../../../theme/widgets/button/button";
-import ComboBox from "../../../theme/widgets/comboBox/comboBox";
 import TextEdit from "../../../theme/widgets/textEdit/textEdit";
 import {RichTextEditView} from "./richTextEditView";
 
-class ReportPanelView extends Component<ReportPanelPresenterProps, ReportPanelPresenterState> {
-
-    constructor(props: any) {
-        super(props);
-
-        bindInstanceMethods(this);
-
-        this.state = {
-            tmpReport: {},
-        }
-    }
-
-    componentDidMount() {
-
-    }
-
-    componentDidUpdate(prevProps: Readonly<ReportPanelPresenterProps>, prevState: Readonly<ReportPanelPresenterState>, snapshot?: any) {
-
-    }
-
-    _onTmpReportChanged(name: string, value: string) {
-
-    }
-
-    _onSaveReport() {
-
-    }
-
+class ReportPanelView extends Component<ReportPanelViewProps> {
     render() {
-        const { className, report, excerpts, citations } = this.props;
-        const { tmpReport } = this.state;
+        const { className, report, tmpReport, tmpValue, excerpts, citations, onTmpReportChanged, onSaveReport, onReportValueChanged } = this.props;
 
         const { id, pocketId, authorId, title, date, citation } = report || {};
-        const { id: tmpId, pocketId: tmpPocketId, authorId: tmpAuthorId, title: tmpTitle, date: tmpDate, citation: tmpCitation } = tmpReport;
+        const { id: tmpId, pocket_id: tmpPocketId, author_id: tmpAuthorId, title: tmpTitle, date: tmpDate, citation: tmpCitation } = tmpReport;
 
         let cn = "report-panel d-flex flex-column";
         if (className) {
@@ -84,7 +54,7 @@ class ReportPanelView extends Component<ReportPanelPresenterProps, ReportPanelPr
                                     value={titleValue}
                                     // disable={id === undefined}
                                     // edit={id !== undefined}
-                                    onSubmit={this._onTmpReportChanged}
+                                    onSubmit={onTmpReportChanged}
                                 />
                             </div>
 
@@ -98,7 +68,7 @@ class ReportPanelView extends Component<ReportPanelPresenterProps, ReportPanelPr
                                     value={dateValue}
                                     // disable={id === undefined}
                                     // edit={id !== undefined}
-                                    onSubmit={(name, value) => this._onTmpReportChanged(name, value)}
+                                    onSubmit={onTmpReportChanged}
                                 />
                             </div>
 
@@ -114,7 +84,10 @@ class ReportPanelView extends Component<ReportPanelPresenterProps, ReportPanelPr
                     <div className={"body flex-fill d-flex align-self-stretch position-relative"}>
                         {
                             // id ?
-                                <RichTextEditView/>
+                                <RichTextEditView
+                                    value={tmpValue}
+                                    onReportValueChanged={onReportValueChanged}
+                                />
                                 // :
                                 // <div
                                 //     className={'flex-fill d-flex flex-column align-items-center justify-content-center v-gap-5 bg-tertiary'}>
@@ -130,7 +103,7 @@ class ReportPanelView extends Component<ReportPanelPresenterProps, ReportPanelPr
                             <Button
                                 light={true}
                                 text={'Save'}
-                                onClick={() => this._onSaveReport()}/>
+                                onClick={onSaveReport}/>
                         </div>
                     }
                 </div>

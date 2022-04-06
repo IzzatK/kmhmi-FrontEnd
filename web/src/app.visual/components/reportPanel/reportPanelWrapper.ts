@@ -1,9 +1,16 @@
-import {VisualWrapper} from "../../../framework.visual/extras/visualWrapper";
-import ReportPanelView from "./views/reportPanelView";
-import {createVisualConnector} from "../../../framework.visual/connectors/visualConnector";
-import {CitationType} from "../../../app.model";
-import {selectionService} from "../../../serviceComposition";
+import {VisualWrapper} from "../../../framework.visual";
+import {createVisualConnector} from "../../../framework.visual";
+import {CitationType, ReportInfo} from "../../../app.model";
+import {reportService, selectionService} from "../../../serviceComposition";
 import ReportPanelPresenter from "./presenters/reportPanelPresenter";
+import {
+    ReportInfoVM,
+    ReportPanelAppDispatchProps,
+    ReportPanelAppStateProps,
+    ReportUpdateParams
+} from "./reportPanelModel";
+import {ReportParamType} from "../../../app.core.api";
+import {createSelector} from "@reduxjs/toolkit";
 
 class _ReportPanelWrapper extends VisualWrapper {
     constructor() {
@@ -21,16 +28,18 @@ class _ReportPanelWrapper extends VisualWrapper {
             exitClass: 'shrinkHorizontal-active',
         };
 
-        this.mapStateToProps = (state: any) => {
+        this.mapStateToProps = (state: any): ReportPanelAppStateProps => {
             return {
-                report: {},// this._getReport(state),
-                citations: () => this._getCitations(),
+                report: this._getReport(state),
+                citations: {},
                 excerpts: {},// this._getExcerpts(state),
             };
         }
 
-        this.mapDispatchToProps = () => {
-            return {};
+        this.mapDispatchToProps = (): ReportPanelAppDispatchProps => {
+            return {
+                onSaveReport: (edits: any) => this._onSaveReport(edits),
+            };
         }
     }
 
@@ -43,7 +52,54 @@ class _ReportPanelWrapper extends VisualWrapper {
         }
     }
 
+
+
+    _onSaveReport(edits: ReportUpdateParams) {
+        const params: ReportParamType = {
+            ...edits
+        }
+
+        reportService.updateReport(params);
+    }
+
     _getSelectedReportId = selectionService.makeGetContext("selected-report");
+
+    _getReport = createSelector(
+        [(s) => this._getSelectedReportId(s), (s) => reportService.getReports()],
+        (reportId, reports: Record<string, ReportInfo>) => {
+            let report = reports[reportId];
+
+            let itemVM: ReportInfoVM = {};
+
+            if (report) {
+                const {
+                    id,
+                    author_id,
+                    title,
+                    date,
+                    citation,
+                    value,
+                    document_ids,
+                    pocket_id,
+                    isUpdating
+                } = report;
+
+                console.log(JSON.stringify(value));
+
+                itemVM = {
+                    id,
+                    author_id,
+                    title,
+                    date,
+                    value,
+                    pocket_id,
+                }
+            }
+
+
+            return itemVM;
+        }
+    )
 }
 
 export const {

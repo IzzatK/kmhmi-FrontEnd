@@ -132,6 +132,10 @@ class TreeNode extends Component<TreeNodeProps, TreeNodeState> {
             this.setState({
                 ...this.state,
                 selected: nextSelected,
+            }, () => {
+                if (this.props.onToggle != null) {
+                    this.props.onToggle(this.props.node, this.state.selected);
+                }
             })
         }
     }
