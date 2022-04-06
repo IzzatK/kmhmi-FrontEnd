@@ -5,6 +5,7 @@ import {DocumentPanelPresenter} from "../../../components/documentPanel/document
 import {UploadPanelPresenter} from "../../../components/uploadPanel/uploadPanelPresenter";
 import {ProfilePanelPresenter} from "../../../components/profilePanel/profilePanelPresenter";
 import {TagsPanelWrapper} from "../../../components/tagsPanel/tagsPanelWrapper";
+import {UserGuidePanelWrapper} from "../../../components/userGuidePanel/userGuidePanelWrapper";
 import {StatsPanelPresenter} from "../../../components/statsPanel/statsPanelPresenter";
 import {PocketsPanelPresenter} from "../../../components/pocketsPanel/pocketsPanelPresenter";
 import {SystemToolbarPresenter} from "../../../components/systemToolbar/systemToolbarPresenter";
@@ -137,6 +138,7 @@ export class AppView extends Component<Props, AppState> {
                                     <TagsPanelWrapper/>
                                     <StatsPanelPresenter/>
                                     <PocketsPanelPresenter/>
+                                    <UserGuidePanelWrapper/>
                                     {
                                         permissions.canSearch ?
                                             <SearchPresenter className={"d-flex flex-fill flex-basis-0"} style={{zIndex: '1'}}/>
