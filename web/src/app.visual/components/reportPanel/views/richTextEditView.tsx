@@ -60,7 +60,7 @@ export function RichTextEditView(props: RichTextEditViewProps) {
     const renderElement = useCallback(props => <Element {...props} />, [])
     const renderLeaf = useCallback(props => <Leaf {...props} />, []);
 
-    if (editor) {
+    if (editor && value) {
         if (editor.children) {
             editor.children = value;
         }
