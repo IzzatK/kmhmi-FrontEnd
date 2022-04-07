@@ -7,11 +7,11 @@ import Portal from "../portal/portal";
 import {LoadingIndicator} from "../loadingIndicator/loadingIndicator";
 import {Size} from "../loadingIndicator/loadingIndicatorModel";
 import './auto-complete.css';
+import SearchBox from "../searchBox/searchBox";
 
 export class AutoComplete extends React.Component<AutoCompleteProps, AutoCompleteState> {
 
     private autoCompleteTimeout: Nullable<NodeJS.Timeout> = null;
-
 
     constructor(props: AutoCompleteProps, context: any) {
         super(props, context);
@@ -50,11 +50,6 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                         .then(result => {
                             if (result != null) {
 
-                                // console.log(`Suggestions Found: ${result ? result.length : 0}`);
-                                // forEach(result, (item: SuggestionItemVM) => {
-                                //     console.log(`id: ${item.id}, title: ${item.title}`);
-                                // })
-
                                 this.setState({
                                     ...this.state,
                                     suggestions: result,
@@ -90,7 +85,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
     }
 
     render() {
-        const { onSubmit, onChange, ...rest } = this.props;
+        const { onSubmit, onChange, isSearch, ...rest } = this.props;
         const { value } = this.state;
 
         const { suggestions, showSuggestions, loadingSuggestions } = this.state;
@@ -148,7 +143,12 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                             </div>
                         )
                     }}>
-                    <TextEdit manualFocus={true} onChange={this._onChange} onSubmit={this._onSubmit} {...rest} />
+                    {
+                        isSearch ?
+                            <SearchBox onTextChange={this._onChange} onSearch={this._onSubmit} {...rest}/>
+                            :
+                            <TextEdit manualFocus={true} onChange={this._onChange} onSubmit={this._onSubmit} {...rest} />
+                    }
                 </Portal>
             </div>
         )

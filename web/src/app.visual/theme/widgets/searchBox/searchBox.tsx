@@ -20,16 +20,16 @@ class SearchBox extends React.Component<SearchBoxProps, SearchBoxState> {
 
 
     componentDidMount() {
-        this._setText(this.props.text);
+        this._setText(this.props.text || "");
     }
 
     componentDidUpdate(prevProps: SearchBoxProps, prevState: SearchBoxState, snapshot: any) {
         if (prevProps.text !== this.props.text) {
-            this._setText(this.props.text);
+            this._setText(this.props.text || "");
         }
     }
 
-    _setText(value: string | undefined) {
+    _setText(value: string) {
         this.setState({
             ...this.state,
             text: value
@@ -45,9 +45,7 @@ class SearchBox extends React.Component<SearchBoxProps, SearchBoxState> {
     _onKeyPress (e: { key: string; }) {
         switch (e.key.toUpperCase()) {
             case 'ENTER':
-                if (this.props.onSearch) {
-                    this.props.onSearch();
-                }
+                this._onSearch();
                 break;
         }
     }
@@ -57,6 +55,15 @@ class SearchBox extends React.Component<SearchBoxProps, SearchBoxState> {
             ...this.state,
             selected: focused,
         })
+    }
+
+    _onSearch() {
+        const { onSearch, name } = this.props;
+        const { text } = this.state;
+
+        if (onSearch) {
+            onSearch(name ? name : "", text);
+        }
     }
 
     render() {
@@ -77,7 +84,7 @@ class SearchBox extends React.Component<SearchBoxProps, SearchBoxState> {
 
         return (
             <div className={cn} {...rest}>
-                <Button className={"rounded-0 border-0 btn-transparent"} onClick={onSearch}>
+                <Button className={"rounded-0 border-0 btn-transparent"} onClick={this._onSearch}>
                     <SearchSVG className={"tiny-image-container"}/>
                 </Button>
                 <input className={"flex-fill px-2 display-4"} value={text} placeholder={placeholder ? placeholder : "Search"} onChange={this._onTextUpdate}

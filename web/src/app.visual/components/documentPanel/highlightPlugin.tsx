@@ -22,7 +22,7 @@ export function renderHighlightTarget(pluginProps: RenderHighlightTargetProps, p
                  top: `${pluginProps.selectionRegion.top + pluginProps.selectionRegion.height}%`,
              }}
         >
-            <Button className={"btn-transparent"} onClick={pluginProps.toggle}>
+            <Button className={"rounded"} onClick={pluginProps.toggle}>
                 <NoteSVG className={"small-image-container"}/>
             </Button>
         </div>
@@ -36,7 +36,7 @@ export function renderHighlightContent(pluginProps: RenderHighlightContentProps,
     if (props.pockets && props.pockets[pocketId]) {
         pocketTitle = props.pockets[pocketId].title;
     } else {
-        pocketTitle = pocketId;
+        pocketTitle = "Select Pocket";
     }
 
     let noteText = props.tmpExcerpt["note_text"] ? props.tmpExcerpt["note_text"] : "";
@@ -67,7 +67,7 @@ export function renderHighlightContent(pluginProps: RenderHighlightContentProps,
     const pockets: Record<string, PocketVM> = props.pockets;
     pockets[""] = {
         id: "",
-        title: "Create New Pocket",
+        title: "+ Create New Pocket",
     }
 
     let top = pluginProps.selectionRegion.top + pluginProps.selectionRegion.height;

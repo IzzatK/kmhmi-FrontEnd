@@ -220,7 +220,10 @@
 }
 
 .document-panel .note .button {
-    fill: #48A8ff;
+    fill: var(--document-panel-highlight-button-fill);
+    background: var(--document-panel-highlight-button-background);
+    border: 0.05rem solid var(--document-panel-highlight-button-border-color);
+    min-width: 2.7rem;
 }
 
 .document-panel .popup .close {

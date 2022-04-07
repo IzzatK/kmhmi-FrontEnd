@@ -146,6 +146,10 @@ body > * {
     --document-panel-context-menu-text-area-color: var(--app-suvaGrey);
     --documnent-panel-context-menu-text-area-background: var(--app-whiteSmoke);
 
+    --document-panel-highlight-button-fill: var(--app-vulcan);
+    --document-panel-highlight-button-background: var(--app-white);
+    --document-panel-highlight-button-border-color: var(--app-black);
+
     /* System Toolbar */
     --system-toolbar-background: var(--app-blackRussian);
 

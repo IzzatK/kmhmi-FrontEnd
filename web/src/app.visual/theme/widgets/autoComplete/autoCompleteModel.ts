@@ -3,6 +3,7 @@ import {Nullable} from "../../../../framework.core/extras/utils/typeUtils";
 
 export type AutoCompleteProps = TextEditProps & {
     suggestionSupplier?: (text: string) => Promise<Nullable<SuggestionItemVM[]>>;
+    isSearch?: boolean;
 }
 
 export type AutoCompleteState = {
