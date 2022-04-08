@@ -49,11 +49,15 @@ export class UpdateUserRequestConverter extends Converter<any, any> {
         if (modifiedUser['role']) {
             //check if role has been changed
             let role = parseInt(modifiedUser['role']);
-            tmpRoles.push(role);
+            if (role) {
+                tmpRoles.push(role);
+            }
         } else if (latestUser['role']) {
             //fetch role
             let role = parseInt(latestUser['role']);
-            tmpRoles.push(role);
+            if (role) {
+                tmpRoles.push(role);
+            }
         } else {
             //if no role set it to VIEWER
             let references = this.getRepoItems(ReferenceInfo.class);
@@ -85,6 +89,8 @@ export class UpdateUserRequestConverter extends Converter<any, any> {
             }
         }
 
+        debugger;
+
         let serverUser = {
             // id: id,
             dod_id: getTextValueOrDefault(nameOf<UserInfo>('dod_id'), dodid),
@@ -93,7 +99,7 @@ export class UpdateUserRequestConverter extends Converter<any, any> {
             last_name: getTextValueOrDefault(nameOf<UserInfo>('last_name'), ''),
             email_address: getTextValueOrDefault(nameOf<UserInfo>('email_address'), ''),
             phone_number: getTextValueOrDefault(nameOf<UserInfo>('phone_number'), ''),
-            dept_id: getTextValueOrDefault(nameOf<UserInfo>('department'), null),
+            dept_id: getTextValueOrDefault(nameOf<UserInfo>('department'), 1006),
             preferred_results_view: getTextValueOrDefault(nameOf<UserInfo>('preferred_results_view'), 'Card'),
             account_status: serverAccountStatus,
             roles: tmpRoles,
