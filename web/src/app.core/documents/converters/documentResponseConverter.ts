@@ -119,7 +119,7 @@ export class DocumentResponseConverter extends Converter<any, DocumentInfo>{
         documentInfo.preview_url = `${KM_API_SERVER_URL}/documents/${documentInfo.id}?format=PREVIEW`;
         documentInfo.isUpdating = false;
         documentInfo.isUploading = !documentInfo.status;
-        documentInfo.isPending = getValueOrDefault(item, 'tm_topics', '') === "Draft";
+        documentInfo.isPending = getValueOrDefault(item, 'scope', '') === "Draft";
 
         return documentInfo;
     }
