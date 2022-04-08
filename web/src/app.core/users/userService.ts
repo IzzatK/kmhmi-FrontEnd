@@ -158,7 +158,7 @@ export class UserService extends Plugin implements IUserService {
         return this.getActiveUsersSelector(this.getRepoState());
     }
 
-    createUser(userData: Record<string, string>) {
+    createUser(userData: Record<string, any>) {
         // since we are posting and don't have an id yet, use a placeholder
         let tmpId = makeGuid();
         const userInfo: any = new UserInfo(tmpId);
@@ -186,8 +186,15 @@ export class UserService extends Plugin implements IUserService {
             });
     }
 
-    updateUser(modifiedUser: UserInfo) {
+    updateUser(modifiedUser: any) {
         const { id } = modifiedUser;
+
+        let mergedUserInfo = {
+            ...modifiedUser,
+            isUpdating: true
+        }
+
+        this.addOrUpdateRepoItem(mergedUserInfo);
 
         this.userProvider?.update(id, {id, modifiedUser},
             (updatedUser) => {

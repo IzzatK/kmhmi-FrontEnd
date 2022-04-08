@@ -17,9 +17,9 @@ export interface IUserService extends IPlugin {
 
     getActiveUsers(): Record<string, UserInfo>;
 
-    createUser(userData: Record<string, string>): void;
+    createUser(userData: Record<string, any>): void;
 
-    updateUser(modifiedUser: UserInfo): void;
+    updateUser(modifiedUser: Record<string, any>): void;
 
     removeUser(id: string): void;
 
@@ -53,3 +53,7 @@ export interface IUserService extends IPlugin {
 
     getSearchUsers(): Record<string, UserInfo>;
 }
+
+type OmitParamsType = 'className';
+
+export type UserParamType = Omit<Partial<UserInfo>, OmitParamsType>

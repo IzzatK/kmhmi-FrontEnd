@@ -166,35 +166,19 @@ export class UserProvider extends EntityProvider<UserInfo> implements IUserProvi
 
     update(id: string, uiRequestData: { id: string, modifiedUser: Record<string, any> }, onUpdated?: (user: UserInfo) => void): Promise<Nullable<UserInfo>> {
         return new Promise((resolve, reject) => {
-                this.getSingle(id)
-                    .then(latestUser => {
-                        if (latestUser != null) {
-                            latestUser.isUpdating = true;
-
-                            if (onUpdated) {
-                                onUpdated(latestUser);
-                            }
-
-                            let converterData = {
-                                id: uiRequestData.id,
-                                modifiedUser: uiRequestData.modifiedUser,
-                                latestUser: latestUser,
-                            }
-
-                            this.sendPut(id,
-                                () => this.updateUserRequestConverter.convert(converterData),
-                                (responseData, errorHandler) => this.getUserResponseConverter.convert(responseData, errorHandler))
-                                .then(user => {
-                                    resolve(user);
-                                })
-                                .catch(error => {
-                                    console.log(error);
-                                });
-                        }
-                        else {
-                            reject(null);
-                        }
-                    });
+            this.sendPut(id,
+                () => this.updateUserRequestConverter.convert(uiRequestData),
+                (responseData, errorHandler) => this.getUserResponseConverter.convert(responseData, errorHandler))
+                .then(user => {
+                    if (user) {
+                        resolve(user);
+                    } else {
+                        reject(`Error Updating User with id ${id}`);
+                    }
+                })
+                .catch(error => {
+                    reject(error);
+                });
             }
         )
     }

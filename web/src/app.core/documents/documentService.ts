@@ -264,7 +264,6 @@ export class DocumentService extends Plugin implements IDocumentService {
         }
 
         let mergedDocumentInfo = {
-            // ...document,
             ...modifiedDocument,
             isUpdating: true
         }
