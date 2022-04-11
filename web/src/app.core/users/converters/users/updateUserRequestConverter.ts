@@ -38,7 +38,7 @@ export class UpdateUserRequestConverter extends Converter<any, any> {
                 if (itemValue !== "") {
                     if (itemKey === "role") {
                         let rolesArray = [];
-                        rolesArray.push(itemValue);
+                        rolesArray.push(parseInt(itemValue));
                         serverUser[serverUserKey] = rolesArray;
                     } else if (itemKey === "account_status") {
                         let serverAccountStatus = '';
