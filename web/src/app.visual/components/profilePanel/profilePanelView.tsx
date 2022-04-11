@@ -215,7 +215,7 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
 
         let tmpUsersCopy: Record<string, UserInfoVM> = {};
 
-        if (Object.keys(tmpUsers).length === 0) {
+        if (!tmpUsers[id]) {
             tmpUsersCopy[id] = {
                 id,
                 [name]: value,
@@ -226,16 +226,9 @@ class ProfilePanelView extends Component<ProfilePanelProps, ProfilePanelState> {
                 if (!tmpUserId) return;
 
                 if (tmpUserId === id) {
-                    if (tmpUsers[id]) {
-                        tmpUsersCopy[id] = {
-                            ...tmpUsers[id],
-                            [name]: value,
-                        }
-                    } else {
-                        tmpUsersCopy[id] = {
-                            id,
-                            [name]: value,
-                        }
+                    tmpUsersCopy[id] = {
+                        ...tmpUsers[id],
+                        [name]: value,
                     }
                 } else {
                     tmpUsersCopy[tmpUserId] = tmpUsers[tmpUserId];

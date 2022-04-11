@@ -27,7 +27,7 @@ export class UpdateUserRequestConverter extends Converter<any, any> {
         let serverUser: Record<string, any> = {};
 
         let numValues: Record<string, string> = {
-            "department": "department",
+            "dept_id": "dept_id",
             "dod_id": "dod_id",
         };
 
