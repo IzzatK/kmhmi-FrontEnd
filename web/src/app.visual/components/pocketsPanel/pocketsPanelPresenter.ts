@@ -156,9 +156,9 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
 
                     const pocket = pocketService.getPocketInfo(id);
                     if (pocket) {
-                        pocket.report_ids.map((report_id: string) => {
+                        forEach(pocket.report_ids, (report_id: string) => {
                             report_ids.push(report_id);
-                        });
+                        })
                     }
 
                     report_ids.push(report.id);
@@ -242,7 +242,7 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                     })
                 });
 
-                pocket.report_ids.map((report_id: string) => {
+                forEach(pocket.report_ids, (report_id: string) => {
                     if (reportInfos[report_id]) {
                         const reportInfo = reportInfos[report_id];
                         const reportPath = `/${pocket.id}/${reportInfo.id}`;
