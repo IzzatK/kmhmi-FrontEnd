@@ -5,6 +5,7 @@ import {ReportInfo} from "../../app.model";
 import {Nullable} from "../../framework.core/extras/utils/typeUtils";
 import {createSelector, Selector} from "@reduxjs/toolkit";
 import {IUserService} from "../../app.core.api";
+import {forEach, forEachKVP} from "../../framework.core/extras/utils/collectionUtils";
 
 export class ReportService extends Plugin implements IReportService {
     public static readonly class: string = 'ReportService';
@@ -20,9 +21,33 @@ export class ReportService extends Plugin implements IReportService {
         this.appendClassName(ReportService.class);
 
         this.getAllReportsSelector = createSelector(
-            [() => super.getAll<ReportInfo>(ReportInfo.class)],
-            (items) => {
-                return items;
+            [(s) => this.getAll<ReportInfo>(ReportInfo.class), (s) => this.userService?.getCurrentUserId()],
+            (reports, currentUserId) => {
+                let result: Record<string, ReportInfo> = {};
+
+                if (reports) {
+                    forEach(reports, (report: ReportInfo) => {
+                        if (report) {
+                            let private_tag: any = [];
+                            if (report.private_tag) {
+                                forEach(report.private_tag, (item:{user_id:string, tag_id: string}) => {
+                                    let user_id = item.user_id;
+                                    if (user_id === currentUserId) {
+                                        private_tag = item['tag_id'];
+                                    }
+                                })
+                            }
+
+                            let userReport = report;
+                            Object.assign(userReport.private_tag, private_tag);
+
+                            result[report.id] = userReport;
+                        }
+                    });
+
+                    return result;
+                }
+                return result;
             }
         );
     }
@@ -106,23 +131,47 @@ export class ReportService extends Plugin implements IReportService {
             });
     }
 
-    updateReport(params: ReportParamType): void {
-        const { id } = params;
+    updateReport(modifiedReport: any): void {
+        const { id } = modifiedReport;
 
         if (id) {
             const report = this.getReport(id);
 
             if (report) {
-                let modifiedReport = {
-                    ...report,
-                    ...params,
-                    isUpdating: true
-                }
+                const { private_tag:original_private_tag } = report;
 
-                this.addOrUpdateRepoItem(modifiedReport)
+                if (modifiedReport.hasOwnProperty('private_tag')) {
+                    let total_private_tag: Record<string, Record<string, string>> = {};
+
+                    let currentUserId = this.userService?.getCurrentUserId();
+
+                    if (original_private_tag) {
+                        forEachKVP(original_private_tag, (itemKey: string, itemValue: Record<string, string>) => {
+                            if (itemKey !== currentUserId) {
+                                total_private_tag[itemKey] = itemValue;
+                            }
+                        })
+                    }
+
+                    if (currentUserId) {
+                        total_private_tag[currentUserId] = modifiedReport['private_tag'];
+                    }
+
+                    modifiedReport = {
+                        ...modifiedReport,
+                        private_tag: total_private_tag,
+                    }
+                }
             }
 
-            this.reportProvider?.update(id, params)
+            let mergedReport = {
+                ...modifiedReport,
+                isUpdating: true
+            }
+
+            this.addOrUpdateRepoItem(mergedReport)
+
+            this.reportProvider?.update(id, mergedReport)
                 .then(report => {
                     if (report != null) {
                         this.addOrUpdateRepoItem(report);
@@ -134,15 +183,19 @@ export class ReportService extends Plugin implements IReportService {
         }
     }
 
-    createReport(params: ReportParamType): void {
-        this.reportProvider?.create(params)
-            .then(result => {
-                if (result != null) {
-                    this.addOrUpdateRepoItem(result);
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            });
+    createReport(params: ReportParamType): Promise<Nullable<ReportInfo>> {
+        return new Promise<Nullable<ReportInfo>>((resolve, reject) => {
+            this.reportProvider?.create(params)
+                .then(result => {
+                    if (result != null) {
+                        this.addOrUpdateRepoItem(result);
+                        resolve(result);
+                    }
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        })
+
     }
 }

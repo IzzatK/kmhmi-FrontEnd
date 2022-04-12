@@ -76,11 +76,10 @@ class _ReportPanelWrapper extends VisualWrapper {
                     id,
                     author_id,
                     title,
-                    date,
+                    publication_date,
                     citation,
                     value,
-                    document_ids,
-                    pocket_id,
+                    resource_ids,
                     isUpdating
                 } = report;
 
@@ -88,9 +87,8 @@ class _ReportPanelWrapper extends VisualWrapper {
                     id,
                     author_id,
                     title,
-                    date,
+                    publication_date,
                     value,
-                    pocket_id,
                 }
             }
 

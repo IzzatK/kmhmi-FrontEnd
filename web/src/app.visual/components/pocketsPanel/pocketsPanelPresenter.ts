@@ -147,10 +147,30 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
     private static _onCreateReport(id: string) {
         const params: ReportParamType = {
             title: "New Report",
-            pocket_id: id,
         }
 
-        reportService.createReport(params);
+        reportService.createReport(params)
+            .then(report => {
+                if (report) {
+                    let report_ids: string[] = [];
+
+                    const pocket = pocketService.getPocketInfo(id);
+                    if (pocket) {
+                        pocket.report_ids.map((report_id: string) => {
+                            report_ids.push(report_id);
+                        });
+                    }
+
+                    report_ids.push(report.id);
+
+                    const pocketParams: PocketParamType = {
+                        id,
+                        report_ids,
+                    }
+
+                    void pocketService.addOrUpdatePocket(pocketParams);
+                }
+            })
     }
 
     getPocketNodeVMs = createSelector(
@@ -221,21 +241,24 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
 
                     })
                 });
-            });
 
-            forEach(reportInfos, (reportInfo: ReportInfo) => {
-                const reportPath = `/${reportInfo.pocket_id}/${reportInfo.id}`;
+                pocket.report_ids.map((report_id: string) => {
+                    if (reportInfos[report_id]) {
+                        const reportInfo = reportInfos[report_id];
+                        const reportPath = `/${pocket.id}/${reportInfo.id}`;
 
-                nodeVMs[reportPath] = {
-                    id: reportInfo.id,
-                    type: PocketNodeType.REPORT,
-                    path: reportPath,
-                    title: reportInfo.title,
-                    content: '',
-                    childNodes: [],
-                    pocket_id: reportInfo.pocket_id,
-                    isUpdating: reportInfo.isUpdating || false,
-                }
+                        nodeVMs[reportPath] = {
+                            id: reportInfo.id,
+                            type: PocketNodeType.REPORT,
+                            path: reportPath,
+                            title: reportInfo.title,
+                            content: '',
+                            childNodes: [],
+                            pocket_id: pocket.id,
+                            isUpdating: reportInfo.isUpdating || false,
+                        }
+                    }
+                })
             });
 
             return nodeVMs;

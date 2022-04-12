@@ -10,7 +10,7 @@ class ReportPanelView extends Component<ReportPanelViewProps> {
         const { className, report, tmpReport, tmpValue, excerpts, citations, onTmpReportChanged, onSaveReport, onReportValueChanged } = this.props;
 
         const { id, pocketId, authorId, title, date, citation } = report || {};
-        const { id: tmpId, pocket_id: tmpPocketId, author_id: tmpAuthorId, title: tmpTitle, date: tmpDate, citation: tmpCitation } = tmpReport;
+        const { id: tmpId, author_id: tmpAuthorId, title: tmpTitle, publication_date: tmpDate, citation: tmpCitation } = tmpReport;
 
         let cn = "report-panel d-flex flex-column";
         if (className) {

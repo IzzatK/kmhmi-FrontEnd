@@ -6,12 +6,15 @@ export class ReportInfo extends WocketInfo {
 
   author_id: string =  '';
   title: string =  '';
-  date: string =  '';
+  creation_date: string =  '';
+  publication_date: string = '';
   citation: CitationType = CitationType.MLA;
   value: any = [{children: [{ text: "" },],}];
+  scope: string = '';
+  private_tag: Record<string, Record<string, string>> = {};
+  public_tag: Record<string, string> = {};
 
-  document_ids: string[] = [];
-  pocket_id: string = '';
+  resource_ids: string[] = [];
 
   isUpdating?: boolean = false;
 

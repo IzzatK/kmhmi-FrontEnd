@@ -37,10 +37,9 @@ export type RichTextEditViewProps = {
 export type ReportInfoVM = {
     [key: string]: any;
     id?: string;
-    pocket_id?: string;
     author_id?: string;
     title?: string;
-    date?: string;
+    publication_date?: string;
     citation?: string;
     documents?: Record<string, DocumentVM>;
     value?: any;

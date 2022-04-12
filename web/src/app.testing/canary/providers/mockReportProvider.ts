@@ -59,14 +59,10 @@ export class MockReportProvider extends EntityProvider<ReportInfo> {
 
             let reportInfo = new ReportInfo(id);
 
-            const { title, pocket_id } = uiRequestData;
+            const { title } = uiRequestData;
 
             if (title) {
                 reportInfo.title = title;
-            }
-
-            if (pocket_id) {
-                reportInfo.pocket_id = pocket_id;
             }
 
             resolve(reportInfo);

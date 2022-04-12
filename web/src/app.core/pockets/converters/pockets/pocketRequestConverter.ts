@@ -1,12 +1,9 @@
 import {Converter} from "../../../common/converters/converter";
 import {
     ExcerptInfo,
-    ExcerptMapper,
     NoteInfo,
     PocketInfo,
-    PocketMapper,
     ResourceInfo,
-    ResourceMapper
 } from "../../../../app.model";
 import {forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
 
@@ -20,6 +17,7 @@ export class PocketRequestConverter extends Converter<any, any> {
             title: "title",
             author_id: "author_id",
             note_ids: "note_ids",
+            report_ids: "report_ids",
         }
 
         const ResourceProperties: Partial<Record<keyof ResourceInfo, string>> = {

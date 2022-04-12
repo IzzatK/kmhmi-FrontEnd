@@ -107,6 +107,7 @@ export class PocketResponseConverter extends Converter<any, PocketMapper> {
         pocketInfo.author_id = getValueOrDefault(item, 'author_id', '');
         pocketInfo.resource_ids = resourceIds;
         pocketInfo.note_ids = getValueOrDefault(item, 'note_ids', '');
+        pocketInfo.report_ids = getValueOrDefault(item, 'report_ids', '');
         pocketInfo.isUpdating = false;
 
         const pocketMapper = new PocketMapper(pocketInfo);

@@ -45,6 +45,7 @@ export * from "./references/converters/getReferenceArrayRequestConverter";
 export * from "./references/converters/getReferenceArrayResponseConverter";
 export * from "./references/providers/referenceProvider";
 export * from "./reports/reportService";
+export * from "./reports/converters/createReportRequestConverter";
 export * from "./reports/converters/getReportArrayRequestConverter";
 export * from "./reports/converters/getReportArrayResponseConverter";
 export * from "./reports/converters/reportRequestConverter";

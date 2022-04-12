@@ -9,6 +9,7 @@ export class PocketInfo extends WocketInfo {
 
   resource_ids: string[] = [];
   note_ids: string[] = [];
+  report_ids: string[] = [];
 
   isUpdating: boolean = false;
 

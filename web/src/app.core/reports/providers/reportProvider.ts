@@ -10,7 +10,7 @@ import {GetReportArrayResponseConverter} from "../converters/getReportArrayRespo
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 export class ReportProvider extends EntityProvider<ReportInfo> {
-    baseUrl: string = `${serverUrl}/reports`;
+    baseUrl: string = `${serverUrl}/pockets/reports`;
     public static class: string = 'ReportProvider';
 
     private reportRequestConverter!: ReportRequestConverter;
