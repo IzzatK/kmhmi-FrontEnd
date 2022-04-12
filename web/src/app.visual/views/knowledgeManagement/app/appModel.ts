@@ -11,6 +11,13 @@ export type DispatchProps = {};
 
 export type Props = StateProps & DispatchProps;
 
+export type AppState = {
+    isMouseDown: boolean;
+    mousePosition: number;
+    documentPreviewPanelWidth: string;
+    movementDirection: number;
+}
+
 export type PermissionsVM = {
     canSearch: boolean;
     isAuthorizing: boolean;

@@ -48,7 +48,7 @@ class UploadPanel extends VisualWrapper {
 
     _onDocumentSelected(id: string) {
         selectionService.setContext("selected-document", id);
-        displayService.showNode(DocumentPanelId);
+        displayService.pushNode(DocumentPanelId);
     }
 
     _approvePendingDocument(id: string) {

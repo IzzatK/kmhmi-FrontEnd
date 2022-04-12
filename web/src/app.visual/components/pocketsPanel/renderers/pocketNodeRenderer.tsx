@@ -194,7 +194,7 @@ export class PocketNodeRenderer extends Component<PocketNodeRendererProps, Pocke
                             </div>
                             :
                             <div className={`action-bar d-flex h-gap-3 ${tab !== PocketTabType.NONE && 'open'}`}>
-                                {/*<Button text={"Create Report"} onClick={this._onCreateReport} tooltip={"Create Report"}/>*/}
+                                <Button text={"Create Report"} onClick={this._onCreateReport} tooltip={"Create Report"}/>
                                 <Button className={"btn-transparent"} onClick={this._onSettings} selected={tab === PocketTabType.EDIT} tooltip={"Edit"}>
                                     <EditSVG className={"small-image-container"}/>
                                 </Button>

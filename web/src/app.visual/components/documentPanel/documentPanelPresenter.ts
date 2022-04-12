@@ -44,7 +44,7 @@ class DocumentPanel extends VisualWrapper {
     constructor() {
         super();
 
-        this.id = 'components/documentPanel';
+        this.id = 'app.visual/components/documentPanel';
 
         this.view = DocumentPanelView;
 
@@ -53,7 +53,7 @@ class DocumentPanel extends VisualWrapper {
             visible: false,
             appearClass: 'fadeIn',
             enterClass: 'fadeIn',
-            exitClass: 'shrinkHorizontal-active',
+            exitClass: '',
         };
 
         this.mapStateToProps = (state: any): DocumentPanelStateProps => {

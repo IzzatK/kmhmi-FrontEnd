@@ -54,7 +54,8 @@ class SystemToolbar extends VisualWrapper {
         let currentId = displayService.getSelectedNodeId(SYSTEM_TOOLBAR_VIEW_ID)
 
         if (currentId === nextId) {
-            displayService.popNode(SYSTEM_TOOLBAR_VIEW_ID);
+            // displayService.popNode(SYSTEM_TOOLBAR_VIEW_ID);
+            displayService.pushNode('view/search');
         }
         else {
             displayService.pushNode(nextId);
@@ -101,11 +102,10 @@ class SystemToolbar extends VisualWrapper {
     );
 
     onDocumentPreviewSelected() {
-        // displayService.toggleNode(DocumentPanelId);
         let currentId = displayService.getSelectedNodeId(DOCUMENT_PREVIEW_VIEW_ID)
         console.log(currentId);
 
-        if (currentId === DocumentPanelId) {
+        if (currentId === DocumentPanelId || currentId === ReportPanelId) {
             displayService.popNode(DOCUMENT_PREVIEW_VIEW_ID);
         }
         else {
@@ -114,6 +114,9 @@ class SystemToolbar extends VisualWrapper {
 
         if (selectionService.getContext("selected-document") !== '') {
             selectionService.setContext("selected-document", '');
+        }
+        if (selectionService.getContext("selected-report") !== '') {
+            selectionService.setContext("selected-report", '');
         }
     }
 
@@ -130,6 +133,9 @@ class SystemToolbar extends VisualWrapper {
 
         if (selectionService.getContext("selected-report") !== '') {
             selectionService.setContext("selected-report", '');
+        }
+        if (selectionService.getContext("selected-document") !== '') {
+            selectionService.setContext("selected-document", '');
         }
     }
 

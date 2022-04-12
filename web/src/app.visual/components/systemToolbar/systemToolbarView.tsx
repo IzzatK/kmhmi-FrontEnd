@@ -31,7 +31,7 @@ class SystemToolbarView extends Component<SystemToolbarProps, SystemToolbarState
             <div className={cn} {...rest}>
                 <div className={'d-flex flex-column v-gap-3'}>
                     <div className={'tool-item'}>
-                        <Button tooltip={docTitle} onClick={onDocumentPreviewSelected} selected={docSelected}>
+                        <Button tooltip={docTitle} onClick={onDocumentPreviewSelected} selected={docSelected || reportSelected}>
                             <DocPreviewSVG className={'small-image-container'}/>
                         </Button>
                         {/*<Button tooltip={reportTitle} onClick={onReportSelected} selected={reportSelected}>*/}

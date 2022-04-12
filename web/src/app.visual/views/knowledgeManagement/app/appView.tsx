@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Props, State, StateProps} from "./appModel";
+import {AppState, Props, State, StateProps} from "./appModel";
 import {SearchPresenter} from "./search/searchPresenter";
 import {DocumentPanelPresenter} from "../../../components/documentPanel/documentPanelPresenter";
 import {UploadPanelPresenter} from "../../../components/uploadPanel/uploadPanelPresenter";
@@ -15,11 +15,18 @@ import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingI
 import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
 import {ReportPanelWrapper} from "../../../components/reportPanel/reportPanelWrapper";
 
-export class AppView extends Component<Props, State> {
+export class AppView extends Component<Props, AppState> {
     private interval!: NodeJS.Timer;
 
     constructor(props: StateProps | Readonly<StateProps>) {
         super(props);
+
+        this.state = {
+            isMouseDown: false,
+            mousePosition: 0,
+            documentPreviewPanelWidth: 'w-33',
+            movementDirection: 0,
+        }
     }
 
     componentDidMount() {
@@ -29,7 +36,7 @@ export class AppView extends Component<Props, State> {
         this.fetchData();
     }
 
-    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) {
+    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<AppState>, snapshot?: any) {
         if (!prevProps.permissions.canSearch && this.props.permissions.canSearch) {
             this.fetchData();
         }
@@ -56,14 +63,64 @@ export class AppView extends Component<Props, State> {
         }
     }
 
+    _onMouseDown(event: React.MouseEvent<HTMLDivElement>) {
+        this.setState({
+            ...this.state,
+            isMouseDown: true,
+            mousePosition: event.clientX,
+        })
+    }
+
+    _onMouseLeave(event: React.MouseEvent<HTMLDivElement>) {
+        const { mousePosition, isMouseDown } = this.state;
+
+        if (isMouseDown) {
+            let movementDirection = 1;
+            if (event.clientX < mousePosition) {
+                movementDirection = -1;
+            }
+
+            this.setState({
+                ...this.state,
+                movementDirection,
+            })
+        }
+    }
+
+    _onMouseUp(event: React.MouseEvent<HTMLDivElement>) {
+        const { documentPreviewPanelWidth, movementDirection, isMouseDown } = this.state;
+
+        if (isMouseDown) {
+            if (documentPreviewPanelWidth === 'w-33' && movementDirection === -1) {
+                this.setState({
+                    ...this.state,
+                    isMouseDown: false,
+                    documentPreviewPanelWidth: 'w-67',
+                })
+            } else if (documentPreviewPanelWidth === 'w-67' && movementDirection === 1) {
+                this.setState({
+                    ...this.state,
+                    isMouseDown: false,
+                    documentPreviewPanelWidth: 'w-33',
+                })
+            }
+        }
+
+    }
+
     render() {
         const {className, currentSystemTool, isDocumentVisible, isReportVisible, permissions, isAuthorized, isAuthorizing, ...rest} = this.props;
-
+        const { documentPreviewPanelWidth } = this.state;
 
         let cn = `${className ? className : ''} d-flex h-100`;
 
+        let searchPanelWidth = 'w-33';
+        if (documentPreviewPanelWidth === 'w-33') {
+            searchPanelWidth = 'w-67';
+        }
+
         return (
-            <div id={'analysis'} {...rest} className={cn}>
+            <div id={'analysis'} {...rest} className={cn} onMouseUp={(e) => this._onMouseUp(e)}>
                 {
                     // show loading indicator when fetching user status
                     isAuthorizing ?
@@ -72,35 +129,36 @@ export class AppView extends Component<Props, State> {
                             // is user status not authorized, then show landing page
                             <LandingPanelPresenter/> :
                             <React.Fragment>
-                                {
-                                    permissions.canSearch ?
-                                        <SearchPresenter className={"d-flex flex-fill flex-basis-0"} style={{zIndex: '1'}}/>
-                                        :
-                                        <div className={"d-flex flex-fill align-items-center justify-content-center"}>
-                                            {
-                                                !permissions.isAuthorizing &&
-                                                <div className={'display-1 text-secondary'}>You do not have search permissions
-                                                </div>
-                                            }
-                                        </div>
-                                }
+                                <SystemToolbarPresenter style={{zIndex: '1'}}/>
 
-                                <div className={isDocumentVisible ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
-                                    <DocumentPanelPresenter className={isDocumentVisible ? 'flex-fill flex-basis-0' : ''}
-                                                            style={{zIndex: '9999'}}/>
-                                </div>
-                                <div className={isReportVisible ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
-                                    <ReportPanelWrapper className={isReportVisible ? 'flex-fill flex-basis-0' : ''}
-                                                            style={{zIndex: '9999'}}/>
-                                </div>
-                                <div className={currentSystemTool ? "view-container system-tools-panel flex-fill flex-basis-0 position-relative slideRightIn-active" : 'view-container slideRightOut-active'}>
+                                <div className={currentSystemTool ? `view-container system-tools-panel flex-fill slideLeftIn-active ${searchPanelWidth}` : 'view-container slideLeftOut-active'}>
                                     <UploadPanelPresenter/>
                                     <ProfilePanelPresenter/>
                                     <TagsPanelWrapper/>
                                     <StatsPanelPresenter/>
                                     <PocketsPanelPresenter/>
+                                    {
+                                        permissions.canSearch ?
+                                            <SearchPresenter className={"d-flex flex-fill flex-basis-0"} style={{zIndex: '1'}}/>
+                                            :
+                                            <div className={"d-flex flex-fill align-items-center justify-content-center"}>
+                                                {
+                                                    !permissions.isAuthorizing &&
+                                                    <div className={'display-1 text-secondary'}>You do not have search permissions
+                                                    </div>
+                                                }
+                                            </div>
+                                    }
                                 </div>
-                                <SystemToolbarPresenter style={{zIndex: '1'}}/>
+
+                                <div className={(isDocumentVisible || isReportVisible) ? `view-container system-tools-panel flex-fill slideRightIn-active position-relative ${documentPreviewPanelWidth}` : 'view-container slideRightOut-active'}>
+                                    {
+                                        (isDocumentVisible || isReportVisible) &&
+                                        <div className={"position-absolute h-100"} style={{cursor: 'e-resize', width: '1rem', left: 0, top: 0, zIndex: '10'}} onMouseDown={(e) => this._onMouseDown(e)} onMouseLeave={(e) => this._onMouseLeave(e)}/>
+                                    }
+                                    <DocumentPanelPresenter className={'flex-fill'} style={{zIndex: '9'}}/>
+                                    <ReportPanelWrapper className={'flex-fill'} style={{zIndex: '9'}}/>
+                                </div>
                             </React.Fragment>
                 }
             </div>

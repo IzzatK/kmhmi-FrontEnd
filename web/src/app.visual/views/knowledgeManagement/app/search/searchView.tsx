@@ -11,7 +11,7 @@ export class SearchView extends Component<Props, State> {
     render() {
         const { className, toolsVisible, ...rest } = this.props;
 
-        let cn = `${className ? className : ''} d-flex flex-column h-100`;
+        let cn = `${className ? className : ''} d-flex flex-column h-100 search-view`;
 
         return (
             <div id={'search-view'} {...rest} className={cn}>

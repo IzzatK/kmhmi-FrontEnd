@@ -25,7 +25,7 @@ class _ReportPanelWrapper extends VisualWrapper {
             visible: false,
             appearClass: 'fadeIn',
             enterClass: 'fadeIn',
-            exitClass: 'shrinkHorizontal-active',
+            exitClass: '',
         };
 
         this.mapStateToProps = (state: any): ReportPanelAppStateProps => {
@@ -83,8 +83,6 @@ class _ReportPanelWrapper extends VisualWrapper {
                     pocket_id,
                     isUpdating
                 } = report;
-
-                console.log(JSON.stringify(value));
 
                 itemVM = {
                     id,

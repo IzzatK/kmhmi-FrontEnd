@@ -13,10 +13,10 @@ class Search extends VisualWrapper {
         this.view = SearchView;
 
         this.displayOptions = {
-            containerId: 'view/app',
+            containerId: 'system-tool-panel',
             visible: true,
-            appearClass: '',
-            enterClass: '',
+            appearClass: 'fadeIn',
+            enterClass: 'fadeIn',
             exitClass: '',
             timeout: 0
         };

@@ -1,5 +1,5 @@
 .search-view {
-    background-color: transparent;
+    background-color: var(--app-background);
 }
 
 

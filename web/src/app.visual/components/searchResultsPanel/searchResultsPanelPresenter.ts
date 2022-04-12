@@ -198,7 +198,7 @@ class SearchResultsPanel extends VisualWrapper {
 
     onDocumentSelected(id: string) {
         selectionService.setContext("selected-document", id);
-        displayService.showNode(DocumentPanelId);
+        displayService.pushNode(DocumentPanelId);
     }
 
     getResultViews = () => {
