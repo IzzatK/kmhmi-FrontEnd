@@ -10,7 +10,6 @@ export class UpdateUserRequestConverter extends Converter<any, any> {
         const { modifiedUser } = fromData;
 
         const UserProperties: Partial<Record<keyof UserInfo, any>> = {
-            id: "id",
             dod_id: "dod_id",
             first_name: "first_name",
             last_name: "last_name",
