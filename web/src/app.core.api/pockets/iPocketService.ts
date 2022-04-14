@@ -9,6 +9,7 @@ import {
 } from "../../app.model";
 import {IUserService} from "../users/iUserService";
 import {IDocumentService} from "../documents/iDocumentService";
+import {IReportService} from "../reports/iReportService";
 
 export interface IPocketService extends IPlugin {
     /********** begin dependency injection **************************/
@@ -20,6 +21,7 @@ export interface IPocketService extends IPlugin {
     setUserService(userService: IUserService): void;
     setSelectionService(service: ISelectionService): void;
     setDocumentService(service: IDocumentService): void;
+    setReportService(service: IReportService): void;
     /********** end dependency injection **************************/
 
 

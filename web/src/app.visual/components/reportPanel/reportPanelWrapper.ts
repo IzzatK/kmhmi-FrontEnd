@@ -78,7 +78,7 @@ class _ReportPanelWrapper extends VisualWrapper {
                     title,
                     publication_date,
                     citation,
-                    value,
+                    content,
                     resource_ids,
                     isUpdating
                 } = report;
@@ -88,7 +88,7 @@ class _ReportPanelWrapper extends VisualWrapper {
                     author_id,
                     title,
                     publication_date,
-                    value,
+                    content,
                 }
             }
 

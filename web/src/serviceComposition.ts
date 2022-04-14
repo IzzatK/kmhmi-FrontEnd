@@ -51,7 +51,7 @@ import {
     PermissionProvider, PocketProvider,
     PocketService,
     ReferenceProvider,
-    ReferenceService, ReportService, ResourceProvider,
+    ReferenceService, ReportProvider, ReportService, ResourceProvider,
     RoleProvider,
     StatProvider,
     StatService,
@@ -93,7 +93,7 @@ const noteProvider: IEntityProvider<NoteInfo> = new MockNoteProvider();
 const excerptProvider: IEntityProvider<ExcerptInfo> = new MockExcerptProvider();
 const resourceProvider: IEntityProvider<ResourceInfo> = new MockResourceProvider();
 const pocketProvider: IEntityProvider<PocketMapper> = new PocketProvider();
-const reportProvider: IEntityProvider<ReportInfo> = new MockReportProvider();
+const reportProvider: IEntityProvider<ReportInfo> = new ReportProvider();
 
 // create the application services
 export const authenticationService: IAuthenticationService = new AuthenticationService();
@@ -106,7 +106,7 @@ export const userService: IUserService = new UserService();
 export const pocketService: IPocketService = new PocketService();
 export const reportService: IReportService = new ReportService();
 
-// create the ui plugins. jk. that's alot of work.
+// create the ui plugins. jk. that's a lot of work.
 
 
 
@@ -265,6 +265,7 @@ pocketService.setRepositoryService(repoService);
 pocketService.setSelectionService(selectionService);
 pocketService.setDocumentService(documentService);
 pocketService.setUserService(userService);
+pocketService.setReportService(reportService);
 pocketService.setResourceProvider(resourceProvider);
 pocketService.setExcerptProvider(excerptProvider);
 pocketService.setNoteProvider(noteProvider);

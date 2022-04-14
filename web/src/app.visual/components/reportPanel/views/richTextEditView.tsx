@@ -1,7 +1,7 @@
 import React, {useCallback, useRef} from "react";
-import {Editable, Slate, withReact,} from "slate-react";
-import {createEditor, Editor } from "slate";
-import {withHistory} from "slate-history";
+import {Editable, ReactEditor, Slate, withReact,} from "slate-react";
+import {BaseEditor, createEditor, Editor, Transforms, Node} from "slate";
+import {HistoryEditor, withHistory} from "slate-history";
 import ComboBox from "../../../theme/widgets/comboBox/comboBox";
 import {
     ElementProps,
@@ -9,17 +9,18 @@ import {
     ISlateLeafPlugin,
     LeafProps,
 } from "./slate/slateModel";
-import {FontFamilyInput, fontFamilyPlugin } from "./slate/fontFamilyPlugin";
-import {FontHighlightInput, fontHighlightPlugin } from "./slate/fontHighlightPlugin";
-import {FontColorInput, fontColorPlugin } from "./slate/fontColorPlugin";
-import {BoldInput, boldPlugin } from "./slate/boldPlugin";
-import {ItalicInput, italicPlugin } from "./slate/italicPlugin";
-import {UnderlineInput, underlinePlugin } from "./slate/underlinePlugin";
-import {FontSizeInput, fontSizePlugin } from "./slate/fontSizePlugin";
-import {TextAlignInputToolbar, textAlignPlugin } from "./slate/textAlignPlugin";
-import {ListInputToolbar, listPlugin } from "./slate/listPlugin";
+import {FontFamilyInput, fontFamilyPlugin} from "./slate/fontFamilyPlugin";
+import {FontHighlightInput, fontHighlightPlugin} from "./slate/fontHighlightPlugin";
+import {FontColorInput, fontColorPlugin} from "./slate/fontColorPlugin";
+import {BoldInput, boldPlugin} from "./slate/boldPlugin";
+import {ItalicInput, italicPlugin} from "./slate/italicPlugin";
+import {UnderlineInput, underlinePlugin} from "./slate/underlinePlugin";
+import {FontSizeInput, fontSizePlugin} from "./slate/fontSizePlugin";
+import {TextAlignInputToolbar, textAlignPlugin} from "./slate/textAlignPlugin";
+import {ListInputToolbar, listPlugin} from "./slate/listPlugin";
 import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
 import {RichTextEditViewProps} from "../reportPanelModel";
+import {superscriptPlugin} from "./slate/superscriptPlugin";
 
 const citation = [
     {
@@ -39,7 +40,8 @@ const slateLeafPlugins: ISlateLeafPlugin[] = [
     fontHighlightPlugin,
     fontSizePlugin,
     italicPlugin,
-    underlinePlugin
+    underlinePlugin,
+    superscriptPlugin
 ]
 
 const slateElementPlugins: ISlateElementPlugin[] = [
@@ -47,14 +49,108 @@ const slateElementPlugins: ISlateElementPlugin[] = [
     textAlignPlugin
 ]
 
+const withHtml = (editor: BaseEditor & ReactEditor & HistoryEditor) => {
+    const { insertData, isInline, isVoid } = editor
+
+    editor.isInline = (element) => {
+        // @ts-ignore
+        return element.type === 'link' ? true : isInline(element)
+    }
+
+    editor.isVoid = (element) => {
+        // @ts-ignore
+        return element.type === 'image' ? true : isVoid(element)
+    }
+
+    editor.insertData = (data: DataTransfer) => {
+
+        const excerpt = data.getData('text/excerpt');
+        const excerpt_id = data.getData("text/excerpt/excerpt_id");
+
+        if (excerpt) {
+
+
+            let footnote_number = 1;
+            if (editor.selection) {
+                let index = 0;
+
+                forEach(editor.children, (child: any) => {
+
+                    if (editor.selection) {
+                        if (index >= editor.selection.focus.path[0]) {
+                            return;
+                        }
+                    }
+
+                    if (child.type) {
+                        console.log(child.type)
+                        if (child.type === "excerpt") {
+                            footnote_number++;
+                        }
+                    }
+                    index++;
+                })
+                // editor.selection.anchor.path[0];
+            }
+
+            const footnoteNode: Node = {
+                // @ts-ignore
+                type: 'footnote',
+                id: (excerpt_id + "_footnote"),
+                footnote_number,
+                children: [
+                    {
+                        text: (footnote_number + ". " + excerpt)
+                    }
+                ]
+            }
+
+            Transforms.insertNodes(
+                editor,
+                footnoteNode,
+                { at: [editor.children.length] }
+            )
+
+            const text = data.getData('text/plain');
+
+            const excerptNode: Node = {
+                type: 'excerpt',
+                id: excerpt_id,
+                footnote_number,
+                children: [
+                    {
+                        text
+                    },
+                    {
+                        text: footnote_number.toString(),
+                        // @ts-ignore
+                        superscript: true
+                    }
+                ]
+            }
+
+            Transforms.insertNodes(
+                editor,
+                excerptNode,
+            )
+        } else {
+            insertData(data)
+        }
+    }
+
+    return editor
+}
+
 export function RichTextEditView(props: RichTextEditViewProps) {
     const { value, onReportValueChanged } = props;
 
     const editorRef = useRef<Editor>()
     if (!editorRef.current) {
         editorRef.current =
-            withHistory(
-            withReact(createEditor()))
+            withHtml(
+                withHistory(
+                    withReact(
+                        createEditor())))
     }
     const editor = editorRef.current
     const renderElement = useCallback(props => <Element {...props} />, [])
@@ -65,6 +161,18 @@ export function RichTextEditView(props: RichTextEditViewProps) {
             editor.children = value;
         }
     }
+
+    forEach(editor.children, (child: any) => {
+        if (child.type) {
+            if (child.type === "excerpt") {
+                if (child.children) {
+                    if (child.children.text === "") {
+                        child.type = "paragraph";
+                    }
+                }
+            }
+        }
+    });
 
     return (
         <Slate
@@ -96,7 +204,7 @@ export function RichTextEditView(props: RichTextEditViewProps) {
                 </div>
 
                 <div className={'flex-fill d-flex position-relative h-100'}>
-                    <div className={'position-absolute w-100 h-100 overflow-auto pr-4 pt-4'}>
+                    <div className={'position-absolute bg-primary w-100 h-100 overflow-auto pr-4 pt-4'}>
                         <div className={'bg-primary h-100'}>
                             <div className={'text-secondary h-100'}>
                                 <Editable
@@ -130,7 +238,7 @@ export function RichTextEditView(props: RichTextEditViewProps) {
 
 function Element (props: ElementProps) {
 
-    const {attributes, element } = props;
+    const { attributes, element } = props;
 
     let children = props.children;
 
@@ -142,11 +250,31 @@ function Element (props: ElementProps) {
 
     // default to rendering with a paragraph
     if (children == props.children) {
-        children = (
-            <p {...attributes}>
-                {children}
-            </p>
-        )
+
+        switch (element.type) {
+            case "excerpt":
+                children = (
+                    <p {...attributes}>
+                        {children}
+                    </p>
+                )
+                break;
+            case "footnote":
+                children = (
+                    <p {...attributes}>
+                        {children}
+                    </p>
+                )
+                break;
+            default:
+                children = (
+                    <p {...attributes}>
+                        {children}
+                    </p>
+                )
+                break;
+
+        }
     }
 
     return children;

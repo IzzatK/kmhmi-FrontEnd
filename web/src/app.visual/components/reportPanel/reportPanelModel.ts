@@ -42,7 +42,7 @@ export type ReportInfoVM = {
     publication_date?: string;
     citation?: string;
     documents?: Record<string, DocumentVM>;
-    value?: any;
+    content?: any;
 }
 
 export type CitationVM = {

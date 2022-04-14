@@ -9,7 +9,7 @@ export class ReportInfo extends WocketInfo {
   creation_date: string =  '';
   publication_date: string = '';
   citation: CitationType = CitationType.MLA;
-  value: any = [{children: [{ text: "" },],}];
+  content: any = [{children: [{ text: "" },],}];
   scope: string = '';
   private_tag: Record<string, Record<string, string>> = {};
   public_tag: Record<string, string> = {};

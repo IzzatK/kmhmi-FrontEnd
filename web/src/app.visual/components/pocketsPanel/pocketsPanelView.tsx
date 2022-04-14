@@ -89,7 +89,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                         path={path}
                         title={title}
                         onDownload={this._onDownloadReport}
-                        onRemove={this._onRemoveReport}
+                        onRemove={(id: string) => this._onRemoveReport(id, pocket_id)}
                     />
                 )
                 break;
@@ -207,11 +207,11 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         }
     }
 
-    _onRemoveReport(id: string) {
+    _onRemoveReport(id: string, pocket_id: string) {
         const { onRemoveReport } = this.props;
 
         if (onRemoveReport) {
-            onRemoveReport(id);
+            onRemoveReport(id, pocket_id);
         }
     }
 

@@ -2,7 +2,7 @@ import {Nullable} from "../../framework.core/extras/utils/typeUtils";
 import {
     ExcerptParamType,
     IDocumentService,
-    IPocketService,
+    IPocketService, IReportService,
     IUserService,
     NoteParamType,
     PocketParamType,
@@ -38,6 +38,8 @@ export class PocketService extends Plugin implements IPocketService {
     private userService: Nullable<IUserService> = null;
     private selectionService: Nullable<ISelectionService> = null;
     private documentService: Nullable<IDocumentService> = null;
+
+    private reportService: Nullable<IReportService> = null;
 
     private pocketProvider: Nullable<IEntityProvider<PocketMapper>> = null;
     private excerptProvider: Nullable<IEntityProvider<ExcerptInfo>> = null;
@@ -200,6 +202,10 @@ export class PocketService extends Plugin implements IPocketService {
         this.documentService = service
     }
 
+    setReportService(service: IReportService): void {
+        this.reportService = service;
+    }
+
     setPocketProvider(provider: IEntityProvider<PocketMapper>): void {
         this.pocketProvider = provider
     }
@@ -349,6 +355,10 @@ export class PocketService extends Plugin implements IPocketService {
                 if (pocketMapper != null) {
                     const items = this.flattenPocketMapper(pocketMapper);
                     this.addOrUpdateAllRepoItems(items);
+
+                    forEach(pocketMapper.pocket.report_ids, (report_id: string) => {
+                        this.reportService?.fetchReport(report_id);
+                    });
                 }
             })
             .catch(error => {
@@ -366,6 +376,10 @@ export class PocketService extends Plugin implements IPocketService {
                 forEach(pocketMappers, (pocketMapper: PocketMapper) => {
                     const flattenedItems = this.flattenPocketMapper(pocketMapper);
                     items.push(...flattenedItems);
+
+                    forEach(pocketMapper.pocket.report_ids, (report_id: string) => {
+                        this.reportService?.fetchReport(report_id);
+                    });
                 })
 
                 this.addOrUpdateAllRepoItems(items);

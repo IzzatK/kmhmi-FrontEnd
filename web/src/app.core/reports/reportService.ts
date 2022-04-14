@@ -119,16 +119,20 @@ export class ReportService extends Plugin implements IReportService {
         return this.getAllReportsSelector(super.getRepoState());
     }
 
-    removeReport(id: string): void {
-        this.reportProvider?.remove(id)
-            .then(report => {
-                if (report) {
-                    this.removeRepoItem(report)
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            });
+    removeReport(id: string): Promise<Nullable<string>> {
+        return new Promise<Nullable<string>>((resolve, reject) => {
+            this.reportProvider?.remove(id)
+                .then(report => {
+                    if (report) {
+                        this.removeRepoItem(report)
+                        resolve(report.id);
+                    }
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        })
+
     }
 
     updateReport(modifiedReport: any): void {
@@ -184,6 +188,15 @@ export class ReportService extends Plugin implements IReportService {
     }
 
     createReport(params: ReportParamType): Promise<Nullable<ReportInfo>> {
+        const author_id = this.userService?.getCurrentUserId();
+
+        if (author_id) {
+            params = {
+                ...params,
+                author_id
+            }
+        }
+
         return new Promise<Nullable<ReportInfo>>((resolve, reject) => {
             this.reportProvider?.create(params)
                 .then(result => {

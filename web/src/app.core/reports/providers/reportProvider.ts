@@ -6,6 +6,7 @@ import {Nullable} from "../../../framework.core/extras/utils/typeUtils";
 import {ReportStatusResponseConverter} from "../converters/reportStatusResponseConverter";
 import {GetReportArrayRequestConverter} from "../converters/getReportArrayRequestConverter";
 import {GetReportArrayResponseConverter} from "../converters/getReportArrayResponseConverter";
+import {CreateReportRequestConverter} from "../converters/createReportRequestConverter";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -19,6 +20,8 @@ export class ReportProvider extends EntityProvider<ReportInfo> {
 
     private getReportArrayRequestConverter!: GetReportArrayRequestConverter;
     private getReportArrayResponseConverter!: GetReportArrayResponseConverter;
+
+    private createReportRequestConverter!: CreateReportRequestConverter;
 
     constructor() {
         super();
@@ -35,6 +38,8 @@ export class ReportProvider extends EntityProvider<ReportInfo> {
         this.getReportArrayRequestConverter = this.addConverter(GetReportArrayRequestConverter);
         this.getReportArrayResponseConverter = this.addConverter(GetReportArrayResponseConverter);
         this.getReportArrayResponseConverter.singleConverter = this.reportResponseConverter;
+
+        this.createReportRequestConverter = this.addConverter(CreateReportRequestConverter);
     }
 
     getSingle(id: string): Promise<Nullable<ReportInfo>> {
@@ -66,14 +71,17 @@ export class ReportProvider extends EntityProvider<ReportInfo> {
 
     create(uiRequestData: any, onUpdated?: (item: ReportInfo) => void): Promise<Nullable<ReportInfo>> {
         return new Promise((resolve, reject) => {
-            super.sendPost(() => this.reportRequestConverter.convert(uiRequestData),
+            super.sendPost(() => this.createReportRequestConverter.convert(uiRequestData),
                 (responseData, errorHandler) => this.reportStatusResponseConverter.convert(responseData, errorHandler))
                 .then(data => {
                     const { id } = data;
 
-                    uiRequestData.id = id;
+                    const reportInfo = new ReportInfo(id);
 
-                    resolve(uiRequestData);
+                    reportInfo.author_id = uiRequestData.author_id;
+                    reportInfo.title = uiRequestData.title;
+
+                    resolve(reportInfo);
                 })
                 .catch(error => {
                     reject(error);

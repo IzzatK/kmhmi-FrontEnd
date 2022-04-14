@@ -40,8 +40,8 @@ class ReportPanelView extends Component<ReportPanelViewProps> {
                         <div className={'d-flex justify-content-between'}>
                             <div className={'header-1 title'}>REPORT INFORMATION</div>
                             <div className={'d-flex h-gap-3'}>
-                                <Button text={'Cancel'}/>
-                                <Button text={'Save'}/>
+                                {/*<Button text={'Cancel'}/>*/}
+                                {/*<Button text={'Save'}/>*/}
                             </div>
                         </div>
                         <div className={`d-flex h-gap-5`}>

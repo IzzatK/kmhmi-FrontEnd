@@ -124,9 +124,9 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                 onRemoveNote: (id: string, pocket_id: string) => this._onRemoveNote(id, pocket_id),
                 onSearch: () => userService.fetchUsers(),
                 onSearchTextChanged: (value: string) => userService.setSearchText(value),
-                onDelete: (id: string) => pocketService.removePocket(id),
+                onDelete: (id: string) => this._onRemovePocket(id),
                 onCreateReport: (id: string) => _PocketsPanelPresenter._onCreateReport(id),
-                onRemoveReport: (id: string) => reportService.removeReport(id),
+                onRemoveReport: (id: string, pocket_id: string) => this._onRemoveReport(id, pocket_id),
                 onReportItemSelected: (id: string) => this.onReportItemSelected(id),
             };
         }
@@ -323,6 +323,42 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
 
     private _onRemoveResource(id: string, pocket_id: string) {
         void pocketService.removeResourceFromPocket(id, pocket_id);
+    }
+
+    private _onRemoveReport(id: string, pocket_id: string) {
+        reportService.removeReport(id)
+            .then(report_id => {
+                const pocket = pocketService.getPocketInfo(pocket_id);
+
+                if (pocket) {
+                    let newReportIds: string[] = [];
+                    forEach(pocket.report_ids, (report_id: string) => {
+                        if (report_id !== id) {
+                            newReportIds.push(report_id);
+                        }
+                    });
+
+                    const params: PocketParamType = {
+                        id: pocket_id,
+                        report_ids: newReportIds,
+                    }
+
+                    pocketService.addOrUpdatePocket(params);
+                }
+            })
+    }
+
+    private _onRemovePocket(pocket_id: string) {
+        const pocket = pocketService.getPocketInfo(pocket_id);
+
+        if (pocket) {
+            forEach(pocket.report_ids, (report_id: string) => {
+                reportService.removeReport(report_id);
+            })
+
+            pocketService.removePocket(pocket_id);
+        }
+
     }
 }
 

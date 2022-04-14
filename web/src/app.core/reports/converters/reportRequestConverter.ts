@@ -12,7 +12,7 @@ export class ReportRequestConverter extends Converter<any, any> {
             creation_date: "creation_date",
             publication_date: "publication_date",
             citation: "citation",
-            value: "rte_text",
+            content: "rte_text",
             scope: "scope",
             private_tag: "custom_personal_tag",
             public_tag: "custom_shared_tag",
@@ -61,6 +61,8 @@ export class ReportRequestConverter extends Converter<any, any> {
                             resourcesArray.push({resource_id});
                         })
                         serverReport[serverReportKey] = resourcesArray;
+                    } else if (itemKey === "content") {
+                        serverReport[serverReportKey] = JSON.stringify(itemValue);
                     } else {
                         serverReport[serverReportKey] = itemValue;
                     }

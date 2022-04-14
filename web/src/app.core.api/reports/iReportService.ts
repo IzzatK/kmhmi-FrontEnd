@@ -12,7 +12,7 @@ export interface IReportService extends IPlugin {
     fetchReport(id: string): void;
     fetchReports(): void;
     updateReport(params: ReportParamType): void;
-    removeReport(id: string): void;
+    removeReport(id: string): Promise<Nullable<string>>;
     createReport(params: ReportParamType): Promise<Nullable<ReportInfo>>;
 
     getReport(id: string): Nullable<ReportInfo>;

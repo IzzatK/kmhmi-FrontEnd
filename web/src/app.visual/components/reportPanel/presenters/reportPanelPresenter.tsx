@@ -91,7 +91,7 @@ class ReportPanelPresenter extends Component<ReportPanelPresenterProps, ReportPa
 
         const params: ReportUpdateParams = {
             ...tmpReport,
-            value: tmpValue,
+            content: tmpValue,
         }
 
         if (onSaveReport) {

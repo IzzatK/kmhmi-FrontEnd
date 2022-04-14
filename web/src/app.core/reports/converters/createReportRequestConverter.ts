@@ -11,7 +11,6 @@ export class CreateReportRequestConverter extends Converter<ReportParamType, any
         const ReportProperties: Partial<Record<keyof ReportInfo, any>> = {
             title: "title",
             author_id: "author_id",
-            value: "rte_text",
         }
 
         let serverReport: Record<string, any> = {};
@@ -25,6 +24,9 @@ export class CreateReportRequestConverter extends Converter<ReportParamType, any
                 }
             }
         });
+
+        serverReport["plain_text"] = "";
+        serverReport["rte_text"] = JSON.stringify([{children: [{ text: "" },],}]);
 
         return serverReport;
     }

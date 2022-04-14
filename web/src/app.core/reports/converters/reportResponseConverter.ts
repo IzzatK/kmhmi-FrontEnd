@@ -13,14 +13,15 @@ export class ReportResponseConverter extends Converter<any, ReportInfo> {
             reject(detail);
         }
 
-        const reportInfo: ReportInfo = new ReportInfo(getValueOrDefault(item, 'pocket_id', getValueOrDefault(item, 'id', '')));
+        const reportInfo: ReportInfo = new ReportInfo(getValueOrDefault(item, 'report_id', getValueOrDefault(item, 'id', '')));
 
         reportInfo.title = getValueOrDefault(item, "title", "");
         reportInfo.author_id = getValueOrDefault(item, "author_id", "");
         reportInfo.creation_date = getValueOrDefault(item, "creation_date", "");
         reportInfo.publication_date = getValueOrDefault(item, "publication_date", "");
         reportInfo.scope = getValueOrDefault(item, "scope", "");
-        reportInfo.value = getValueOrDefault(item, "rte_text", "");
+
+        reportInfo.content = JSON.parse(getValueOrDefault(item, "rte_text", ""));
 
         let public_tags: Record<string, string> = {};
         forEach(getValueOrDefault(item, 'custom_shared_tag', []), (tag: string) => {
