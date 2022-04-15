@@ -6,32 +6,40 @@
     background: var(--system-tool-panel-background);
 }
 
-.custom-animation-in {
-    animation: slidePanelIn 300ms 1 linear;
+.drag-preview {
+    top: 0;
+    right: 0;
+    clip: unset;
+    border: 0.1rem solid #46A2F7;
+    background: rgba(70, 162, 247, 0.3);
 }
 
-.custom-animation-out {
-    animation: slidePanelOut 300ms 1 linear;
-}
+/*.custom-animation-in {*/
+/*    animation: slidePanelIn 300ms 1 linear;*/
+/*}*/
 
-@keyframes slidePanelIn {
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-}
+/*.custom-animation-out {*/
+/*    animation: slidePanelOut 300ms 1 linear;*/
+/*}*/
 
-@keyframes slidePanelOut {
-    to {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    from {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
+/*@keyframes slidePanelIn {*/
+/*    to {*/
+/*        transform: translateX(0);*/
+/*        opacity: 1;*/
+/*    }*/
+/*    from {*/
+/*        transform: translateX(100%);*/
+/*        opacity: 0;*/
+/*    }*/
+/*}*/
+
+/*@keyframes slidePanelOut {*/
+/*    to {*/
+/*        transform: translateX(100%);*/
+/*        opacity: 0;*/
+/*    }*/
+/*    from {*/
+/*        transform: translateX(0);*/
+/*        opacity: 1;*/
+/*    }*/
+/*}*/

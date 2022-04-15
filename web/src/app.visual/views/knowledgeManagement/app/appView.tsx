@@ -26,6 +26,7 @@ export class AppView extends Component<Props, AppState> {
             mousePosition: 0,
             documentPreviewPanelWidth: 'w-33',
             movementDirection: 0,
+            showPreview: false,
         }
     }
 
@@ -72,7 +73,7 @@ export class AppView extends Component<Props, AppState> {
     }
 
     _onMouseLeave(event: React.MouseEvent<HTMLDivElement>) {
-        const { mousePosition, isMouseDown } = this.state;
+        const { mousePosition, isMouseDown, documentPreviewPanelWidth } = this.state;
 
         if (isMouseDown) {
             let movementDirection = 1;
@@ -80,9 +81,17 @@ export class AppView extends Component<Props, AppState> {
                 movementDirection = -1;
             }
 
+            let showPreview = false;
+            if (documentPreviewPanelWidth === 'w-33' && movementDirection === -1) {
+                showPreview = true;
+            } else if (documentPreviewPanelWidth === 'w-67' && movementDirection === 1) {
+                showPreview = true;
+            }
+
             this.setState({
                 ...this.state,
                 movementDirection,
+                showPreview,
             })
         }
     }
@@ -96,12 +105,14 @@ export class AppView extends Component<Props, AppState> {
                     ...this.state,
                     isMouseDown: false,
                     documentPreviewPanelWidth: 'w-67',
+                    showPreview: false,
                 })
             } else if (documentPreviewPanelWidth === 'w-67' && movementDirection === 1) {
                 this.setState({
                     ...this.state,
                     isMouseDown: false,
                     documentPreviewPanelWidth: 'w-33',
+                    showPreview: false,
                 })
             }
         }
@@ -110,7 +121,7 @@ export class AppView extends Component<Props, AppState> {
 
     render() {
         const {className, currentSystemTool, isDocumentVisible, isReportVisible, permissions, isAuthorized, isAuthorizing, ...rest} = this.props;
-        const { documentPreviewPanelWidth } = this.state;
+        const { documentPreviewPanelWidth, showPreview } = this.state;
 
         let cn = `${className ? className : ''} d-flex h-100`;
 
@@ -131,34 +142,42 @@ export class AppView extends Component<Props, AppState> {
                             <React.Fragment>
                                 <SystemToolbarPresenter style={{zIndex: '1'}}/>
 
-                                <div className={currentSystemTool ? `view-container system-tools-panel flex-fill slideLeftIn-active ${searchPanelWidth}` : 'view-container slideLeftOut-active'}>
-                                    <UploadPanelPresenter/>
-                                    <ProfilePanelPresenter/>
-                                    <TagsPanelWrapper/>
-                                    <StatsPanelPresenter/>
-                                    <PocketsPanelPresenter/>
+                                <div className={'d-flex w-100 h-100 position-relative'}>
+                                    <div className={currentSystemTool ? `view-container system-tools-panel flex-fill slideLeftIn-active ${searchPanelWidth}` : 'view-container slideLeftOut-active'}>
+                                        <UploadPanelPresenter/>
+                                        <ProfilePanelPresenter/>
+                                        <TagsPanelWrapper/>
+                                        <StatsPanelPresenter/>
+                                        <PocketsPanelPresenter/>
+                                        {
+                                            permissions.canSearch ?
+                                                <SearchPresenter className={"d-flex flex-fill flex-basis-0"} style={{zIndex: '1'}}/>
+                                                :
+                                                <div className={"d-flex flex-fill align-items-center justify-content-center"}>
+                                                    {
+                                                        !permissions.isAuthorizing &&
+                                                        <div className={'display-1 text-secondary'}>You do not have search permissions
+                                                        </div>
+                                                    }
+                                                </div>
+                                        }
+                                    </div>
+
+                                    <div className={(isDocumentVisible || isReportVisible) ? `view-container system-tools-panel flex-fill slideRightIn-active position-relative ${documentPreviewPanelWidth}` : 'view-container slideRightOut-active'}>
+                                        {
+                                            (isDocumentVisible || isReportVisible) &&
+                                            <div className={"position-absolute h-100"} style={{cursor: 'e-resize', width: '1rem', left: 0, top: 0, zIndex: '10'}} onMouseDown={(e) => this._onMouseDown(e)} onMouseLeave={(e) => this._onMouseLeave(e)}/>
+                                        }
+                                        <DocumentPanelPresenter className={'flex-fill'} style={{zIndex: '9'}}/>
+                                        <ReportPanelWrapper className={'flex-fill'} style={{zIndex: '9'}}/>
+                                    </div>
+
                                     {
-                                        permissions.canSearch ?
-                                            <SearchPresenter className={"d-flex flex-fill flex-basis-0"} style={{zIndex: '1'}}/>
-                                            :
-                                            <div className={"d-flex flex-fill align-items-center justify-content-center"}>
-                                                {
-                                                    !permissions.isAuthorizing &&
-                                                    <div className={'display-1 text-secondary'}>You do not have search permissions
-                                                    </div>
-                                                }
-                                            </div>
+                                        showPreview &&
+                                        <div className={`drag-preview position-absolute h-100 ${searchPanelWidth}`}/>
                                     }
                                 </div>
 
-                                <div className={(isDocumentVisible || isReportVisible) ? `view-container system-tools-panel flex-fill slideRightIn-active position-relative ${documentPreviewPanelWidth}` : 'view-container slideRightOut-active'}>
-                                    {
-                                        (isDocumentVisible || isReportVisible) &&
-                                        <div className={"position-absolute h-100"} style={{cursor: 'e-resize', width: '1rem', left: 0, top: 0, zIndex: '10'}} onMouseDown={(e) => this._onMouseDown(e)} onMouseLeave={(e) => this._onMouseLeave(e)}/>
-                                    }
-                                    <DocumentPanelPresenter className={'flex-fill'} style={{zIndex: '9'}}/>
-                                    <ReportPanelWrapper className={'flex-fill'} style={{zIndex: '9'}}/>
-                                </div>
                             </React.Fragment>
                 }
             </div>

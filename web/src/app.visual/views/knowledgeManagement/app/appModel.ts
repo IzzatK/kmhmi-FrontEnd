@@ -16,6 +16,7 @@ export type AppState = {
     mousePosition: number;
     documentPreviewPanelWidth: string;
     movementDirection: number;
+    showPreview: boolean;
 }
 
 export type PermissionsVM = {
