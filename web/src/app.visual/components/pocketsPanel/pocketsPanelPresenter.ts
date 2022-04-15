@@ -272,8 +272,8 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
     }
 
     onReportItemSelected(id: string) {
-        // selectionService.setContext("selected-report", id);
-        // displayService.pushNode(ReportPanelId);
+        selectionService.setContext("selected-report", id);
+        displayService.pushNode(ReportPanelId);
     }
 
     onPocketItemToggle(id: string, expanded: boolean) {

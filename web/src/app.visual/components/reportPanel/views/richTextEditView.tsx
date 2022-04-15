@@ -21,6 +21,7 @@ import {ListInputToolbar, listPlugin} from "./slate/listPlugin";
 import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
 import {RichTextEditViewProps} from "../reportPanelModel";
 import {superscriptPlugin} from "./slate/superscriptPlugin";
+import {makeGuid} from "../../../../framework.core/extras/utils/uniqueIdUtils";
 
 const citation = [
     {
@@ -68,63 +69,126 @@ const withHtml = (editor: BaseEditor & ReactEditor & HistoryEditor) => {
         const excerpt_id = data.getData("text/excerpt/excerpt_id");
 
         if (excerpt) {
-
-
             let footnote_number = 1;
+            let footnote_count = 0;
+            let excerpt_count = 0;
+            let footnote_location = 0;
+            let id = makeGuid();
             if (editor.selection) {
                 let index = 0;
 
                 forEach(editor.children, (child: any) => {
+                    if (child.children) {
+                        if (child.children[0]) {
+                            if (child.children[0].type) {
+                                if (child.children[0].type === "excerpt") {
+                                    excerpt_count++;
 
-                    if (editor.selection) {
-                        if (index >= editor.selection.focus.path[0]) {
-                            return;
-                        }
-                    }
+                                    if (editor.selection) {
+                                        if (index < editor.selection.focus.path[0]) {
+                                            footnote_number++;
+                                        }
+                                    }
 
-                    if (child.type) {
-                        console.log(child.type)
-                        if (child.type === "excerpt") {
-                            footnote_number++;
+                                    if (excerpt_count >= footnote_number) {
+
+                                        let childIndex = 0;
+                                        forEach(child.children, (innerChild: any) => {
+                                            if (innerChild.type) {
+                                                if (innerChild.type === "footnote_number") {
+                                                    let id = "";
+                                                    if (innerChild.id) {
+                                                        id = innerChild.id;
+                                                    }
+
+                                                    Transforms.delete(editor, {at: {path: [index, childIndex], offset: 0}});
+
+                                                    const footnoteNumberNode: Node = {
+                                                        // @ts-ignore
+                                                        type: 'footnote_number',
+                                                        text: (excerpt_count + 1).toString(),
+                                                        superscript: true,
+                                                        id,
+                                                    }
+
+                                                    Transforms.insertNodes(editor, footnoteNumberNode, {at: [index, childIndex]})
+                                                }
+                                            }
+                                            childIndex++;
+                                        })
+                                    }
+                                } else if (child.children[0].type === "footnote_number_footnote") {
+                                    footnote_count++;
+
+                                    if (footnote_count === footnote_number) {
+                                        footnote_location += index;
+                                    }
+
+                                    if (footnote_count >= footnote_number) {
+
+                                        Transforms.delete(editor, {at: {path: [index, 0], offset: 0}});
+                                        Transforms.insertText(editor, (footnote_count + 1).toString(), {at: {path: [index, 0], offset: 0}})
+                                    }
+                                }
+                            }
                         }
                     }
                     index++;
                 })
-                // editor.selection.anchor.path[0];
             }
 
             const footnoteNode: Node = {
-                // @ts-ignore
-                type: 'footnote',
-                id: (excerpt_id + "_footnote"),
-                footnote_number,
                 children: [
                     {
-                        text: (footnote_number + ". " + excerpt)
+                        // @ts-ignore
+                        type: 'footnote_number_footnote',
+                        text: footnote_number + ". ",
+                        id,
+                    },
+                    {
+                        // @ts-ignore
+                        type: 'footnote',
+                        id,
+                        text: excerpt,
+                        excerpt_id,
                     }
                 ]
             }
 
-            Transforms.insertNodes(
-                editor,
-                footnoteNode,
-                { at: [editor.children.length] }
-            )
+            if (footnote_location === 0) {
+                Transforms.insertNodes(
+                    editor,
+                    footnoteNode,
+                    { at: [editor.children.length] }
+                )
+            } else {
+                Transforms.insertNodes(
+                    editor,
+                    footnoteNode,
+                { at: [footnote_location] }
+                )
+            }
+
+
 
             const text = data.getData('text/plain');
 
+
             const excerptNode: Node = {
-                type: 'excerpt',
-                id: excerpt_id,
-                footnote_number,
                 children: [
                     {
-                        text
+                        // @ts-ignore
+                        type: 'excerpt',
+                        excerpt_id,
+                        text,
+                        id
                     },
                     {
-                        text: footnote_number.toString(),
                         // @ts-ignore
-                        superscript: true
+                        type: 'footnote_number',
+                        text: footnote_number.toString(),
+                        superscript: true,
+                        id,
                     }
                 ]
             }
@@ -161,18 +225,6 @@ export function RichTextEditView(props: RichTextEditViewProps) {
             editor.children = value;
         }
     }
-
-    forEach(editor.children, (child: any) => {
-        if (child.type) {
-            if (child.type === "excerpt") {
-                if (child.children) {
-                    if (child.children.text === "") {
-                        child.type = "paragraph";
-                    }
-                }
-            }
-        }
-    });
 
     return (
         <Slate
@@ -219,6 +271,53 @@ export function RichTextEditView(props: RichTextEditViewProps) {
                                             event.preventDefault()
                                             // Execute the `insertText` method when the event occurs.
                                             editor.insertText('    ')
+                                        }
+
+                                        if (event.key.toUpperCase() === 'BACKSPACE') {
+                                            event.preventDefault();
+
+                                            if (editor && editor.selection) {
+                                                const node: any = Editor.node(editor, editor.selection?.anchor);
+
+                                                if (node) {
+                                                    forEach(node, (child: any) => {
+                                                        if (child.type) {
+                                                            if (child.type === "footnote_number") {
+
+                                                                if (child.id) {
+                                                                    let id = child.id;
+
+                                                                    let index = 0;
+
+                                                                    forEach(editor.children, (child: any) => {
+                                                                        if (child.children) {
+                                                                            let subIndex = 0;
+                                                                            forEach(child.children, (innerChild: any) => {
+                                                                                if (innerChild.type) {
+                                                                                    if (innerChild.type === "footnote") {
+                                                                                        if (innerChild.id) {
+                                                                                            if (innerChild.id === id) {
+                                                                                                Transforms.delete(editor, {at: [index, subIndex]});
+                                                                                                Transforms.delete(editor, {at: [index, subIndex - 1]});
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                                subIndex++;
+                                                                            })
+                                                                        }
+                                                                        index++;
+                                                                    })
+
+                                                                }
+
+                                                            }
+                                                        }
+                                                    })
+                                                }
+                                            }
+
+                                            Transforms.delete(editor, {unit: "character", reverse: true});
                                         }
 
                                         forEach(slateLeafPlugins, (plugin: ISlateLeafPlugin) => {
