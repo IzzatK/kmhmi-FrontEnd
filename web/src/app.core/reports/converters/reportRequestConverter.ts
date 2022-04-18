@@ -70,6 +70,8 @@ export class ReportRequestConverter extends Converter<any, any> {
             }
         });
 
+        serverReport["plain_text"] = "";
+
         return serverReport;
     }
 

@@ -142,7 +142,7 @@ export class ReportService extends Plugin implements IReportService {
             const report = this.getReport(id);
 
             if (report) {
-                const { private_tag:original_private_tag } = report;
+                const { private_tag:original_private_tag, author_id } = report;
 
                 if (modifiedReport.hasOwnProperty('private_tag')) {
                     let total_private_tag: Record<string, Record<string, string>> = {};
@@ -164,6 +164,14 @@ export class ReportService extends Plugin implements IReportService {
                     modifiedReport = {
                         ...modifiedReport,
                         private_tag: total_private_tag,
+                    }
+                }
+
+                //populate required fields
+                if (!modifiedReport['author_id']) {
+                    modifiedReport = {
+                        ...modifiedReport,
+                        author_id,
                     }
                 }
             }
