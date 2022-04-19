@@ -27,7 +27,8 @@ export function SuperscriptInput(props: SuperscriptInputProps) {
 
     return (
         <Button className={'btn-transparent'} onClick={_onSelect} selected={hasSuperscriptMark(editor)}>
-            <TextFormatItalicSVG className={'small-image-container'}/>
+            {/*<TextFormatItalicSVG className={'small-image-container'}/>*/}
+            Superscript
         </Button>
     )
 }

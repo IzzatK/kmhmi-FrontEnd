@@ -1,12 +1,18 @@
-import {Editor, Element as SlateElement} from "slate";
+import {Editor, Element as SlateElement, Text} from "slate";
 import React from "react";
 import {ReactEditor} from "slate-react";
 
 export const isKeyMod = (event: React.KeyboardEvent) => (event.metaKey && !event.ctrlKey) || event.ctrlKey;
 
 export function hasMark(editor: Editor, markKey: string) {
-    const marks = Editor.marks(editor) as Record<string, boolean>
-    return marks ? marks[markKey] : false
+    try {
+        const marks = Editor.marks(editor) as Record<string, boolean>
+        return marks ? marks[markKey] : false
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+
 }
 
 export function toggleMark(editor: Editor, markKey: string) {
@@ -32,13 +38,18 @@ export function setMark(editor: Editor, markKey: string, markValue: string) {
 export function getMarkValue(editor: Editor, markKey: string, defaultValue: string) {
     let result: string = defaultValue;
 
-    const marks = Editor.marks(editor) as Record<string, string>
-    if (marks != null) {
-        const currentValue = marks[markKey];
-        if (currentValue != null) {
-            result =  currentValue;
+    try {
+        const marks = Editor.marks(editor) as Record<string, string>
+        if (marks != null) {
+            const currentValue = marks[markKey];
+            if (currentValue != null) {
+                result =  currentValue;
+            }
         }
+    } catch (error) {
+        console.log(error);
     }
+
 
     return result;
 }
@@ -113,4 +124,75 @@ export function escapeHtml(string: string) {
     return lastIndex !== index
         ? html + str.substring(lastIndex, index)
         : html
+}
+
+export const serialize = (node: any) => {
+    if (Text.isText(node)) {
+        let string = escapeHtml(node.text)
+        // @ts-ignore
+        if (node.bold) {
+            string = `<strong>${string}</strong>`
+        }
+        // @ts-ignore
+        if (node.fontColor) {
+            // @ts-ignore
+            string = `<span style={{color: ${node.fontColor}}}>${string}</span>`
+        }
+        // @ts-ignore
+        if (node.fontFamily) {
+            // @ts-ignore
+            string = `<span style={{fontFamily: ${node.fontFamily}}}>${string}</span>`
+        }
+        // @ts-ignore
+        if (node.fontHighlight) {
+            // @ts-ignore
+            string = `<span style={{backgroundColor: ${node.fontHighlight}}}>${string}</span>`
+        }
+        // @ts-ignore
+        if (node.fontSize) {
+            // @ts-ignore
+            string = `<span style={{fontSize: ${parseInt(node.fontSize)}}}>${string}</span>`
+        }
+        // @ts-ignore
+        if (node.italic) {
+            string = `<i>${string}</i>`
+        }
+        // @ts-ignore
+        if (node.superscript) {
+            string = `<sup>${string}</sup>`
+        }
+        // @ts-ignore
+        if (node.align) {
+            // @ts-ignore
+            string = `<div style={{textAlign: ${node.align}}}>${string}</div>`
+        }
+        // @ts-ignore
+        if (node.underline) {
+            string = `<u>${string}</u>`
+        }
+        return string
+    }
+
+    const children = node.children.map((n: any) => serialize(n)).join('')
+
+    // @ts-ignore
+    if (node.align) {
+        return `<div style={{textAlign: ${node.align}}}>${children}</div>`
+    }
+
+    switch (node.type) {
+        case 'bulleted':
+            return `<ul>${children}</ul>`
+        case 'numbered':
+            return `<ol>${children}</ol>`
+        case 'list-item':
+            return `<li>${children}</li>`
+        case 'quote':
+            return `<blockquote><p>${children}</p></blockquote>`
+        case 'link':
+            return `<a href="${escapeHtml(node.url)}">${children}</a>`
+        case 'paragraph':
+        default:
+            return `<p>${children}</p>`
+    }
 }

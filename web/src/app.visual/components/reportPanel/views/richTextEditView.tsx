@@ -20,10 +20,10 @@ import {TextAlignInputToolbar, textAlignPlugin} from "./slate/textAlignPlugin";
 import {ListInputToolbar, listPlugin} from "./slate/listPlugin";
 import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
 import {RichTextEditViewProps} from "../reportPanelModel";
-import {superscriptPlugin} from "./slate/superscriptPlugin";
+import {SuperscriptInput, superscriptPlugin} from "./slate/superscriptPlugin";
 import {makeGuid} from "../../../../framework.core/extras/utils/uniqueIdUtils";
 import Button from "../../../theme/widgets/button/button";
-import {escapeHtml} from "./slate/slate-utils";
+import {serialize} from "./slate/slate-utils";
 
 const citation = [
     {
@@ -51,33 +51,6 @@ const slateElementPlugins: ISlateElementPlugin[] = [
     listPlugin,
     textAlignPlugin
 ]
-
-const serialize = (node: any) => {
-    if (Text.isText(node)) {
-        let string = escapeHtml(node.text)
-        // @ts-ignore
-        if (node.bold) {
-            string = `<strong>${string}</strong>`
-        }
-        // @ts-ignore
-        if (node.italic) {
-            string = `<i>${string}</i>`
-        }
-        return string
-    }
-
-    const children = node.children.map((n: any) => serialize(n)).join('')
-
-    switch (node.type) {
-        case 'quote':
-            return `<blockquote><p>${children}</p></blockquote>`
-        case 'link':
-            return `<a href="${escapeHtml(node.url)}">${children}</a>`
-        case 'paragraph':
-        default:
-            return `<p>${children}</p>`
-    }
-}
 
 function insertFootnote(editor: Editor) {
     let footnote_number = 1;
@@ -207,7 +180,6 @@ function insertFootnote(editor: Editor) {
             let index_0 = editor.selection.focus.path[0];
             let index_1 = editor.selection.focus.path[1];
 
-            debugger;
             let child: any;
             let text: string;
 
@@ -263,6 +235,11 @@ function insertFootnote(editor: Editor) {
             }
         }
     }
+}
+
+function printHtml(editor: Editor) {
+    console.log(JSON.stringify(editor.children))
+    console.log(serialize(editor));
 }
 
 const withHtml = (editor: BaseEditor & ReactEditor & HistoryEditor) => {
@@ -463,9 +440,6 @@ export function RichTextEditView(props: RichTextEditViewProps) {
         }
     }
 
-    // console.log(serialize(editor))
-    // console.log(JSON.stringify(editor?.children))
-
     return (
         <Slate
             editor={editor}
@@ -488,7 +462,9 @@ export function RichTextEditView(props: RichTextEditViewProps) {
                             <UnderlineInput />
                             <FontHighlightInput />
                             <FontColorInput />
+                            <SuperscriptInput />
                         </div>
+                        <Button text={"HTML"} onClick={() => printHtml(editor)}/>
                         <Button text={"Footnote"} onClick={() => insertFootnote(editor)}/>
                         <div className={'d-flex'}>
                             <ComboBox items={citation} title={'MLA'}/>
