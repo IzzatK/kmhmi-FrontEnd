@@ -25,12 +25,12 @@ class ReportPanelPresenter extends Component<ReportPanelPresenterProps, ReportPa
 
     componentDidMount() {
         const { report } = this.props;
-        const { id, value } = report;
+        const { id, content } = report;
 
         this.setState({
             ...this.state,
             tmpReport: { id },
-            tmpValue: value,
+            tmpValue: content,
         })
     }
 
@@ -38,12 +38,12 @@ class ReportPanelPresenter extends Component<ReportPanelPresenterProps, ReportPa
         const { report } = this.props;
 
         if (report !== prevProps.report) {
-            const { id, value } = report;
+            const { id, content } = report;
 
             this.setState({
                 ...this.state,
                 tmpReport: { id },
-                tmpValue: value,
+                tmpValue: content,
             })
         }
     }

@@ -1,6 +1,6 @@
 import React, {useCallback, useRef} from "react";
 import {Editable, ReactEditor, Slate, withReact,} from "slate-react";
-import {BaseEditor, createEditor, Editor, Transforms, Node} from "slate";
+import {BaseEditor, createEditor, Editor, Transforms, Node, Text} from "slate";
 import {HistoryEditor, withHistory} from "slate-history";
 import ComboBox from "../../../theme/widgets/comboBox/comboBox";
 import {
@@ -22,6 +22,8 @@ import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
 import {RichTextEditViewProps} from "../reportPanelModel";
 import {superscriptPlugin} from "./slate/superscriptPlugin";
 import {makeGuid} from "../../../../framework.core/extras/utils/uniqueIdUtils";
+import Button from "../../../theme/widgets/button/button";
+import {escapeHtml} from "./slate/slate-utils";
 
 const citation = [
     {
@@ -49,6 +51,219 @@ const slateElementPlugins: ISlateElementPlugin[] = [
     listPlugin,
     textAlignPlugin
 ]
+
+const serialize = (node: any) => {
+    if (Text.isText(node)) {
+        let string = escapeHtml(node.text)
+        // @ts-ignore
+        if (node.bold) {
+            string = `<strong>${string}</strong>`
+        }
+        // @ts-ignore
+        if (node.italic) {
+            string = `<i>${string}</i>`
+        }
+        return string
+    }
+
+    const children = node.children.map((n: any) => serialize(n)).join('')
+
+    switch (node.type) {
+        case 'quote':
+            return `<blockquote><p>${children}</p></blockquote>`
+        case 'link':
+            return `<a href="${escapeHtml(node.url)}">${children}</a>`
+        case 'paragraph':
+        default:
+            return `<p>${children}</p>`
+    }
+}
+
+function insertFootnote(editor: Editor) {
+    let footnote_number = 1;
+    let footnote_count = 0;
+    let excerpt_count = 0;
+    let footnote_location = 0;
+    let id = makeGuid();
+    if (editor.selection) {
+        let index = 0;
+
+        forEach(editor.children, (child: any) => {
+            if (child.children) {
+                if (child.children[0]) {
+                    if (child.children[0].type) {
+                        if (child.children[0].type === "excerpt") {
+                            if (child.children[1]) {
+                                if (child.children[1].type) {
+                                    if (child.children[1].type === "excerpt_number") {
+                                        excerpt_count++;
+
+                                        if (editor.selection) {
+                                            if (index < editor.selection.focus.path[0]) {
+                                                footnote_number++;
+                                            }
+                                        }
+
+                                        if (excerpt_count >= footnote_number) {
+
+                                            let childIndex = 0;
+                                            forEach(child.children, (innerChild: any) => {
+                                                if (innerChild.type) {
+                                                    if (innerChild.type === "excerpt_number") {
+                                                        let id = "";
+                                                        if (innerChild.id) {
+                                                            id = innerChild.id;
+                                                        }
+
+                                                        Transforms.removeNodes(editor, {at: [index, childIndex]}); //TODO add match
+
+                                                        const excerptNumberNode: Node = {
+                                                            // @ts-ignore
+                                                            type: 'excerpt_number',
+                                                            text: (excerpt_count + 1).toString(),
+                                                            superscript: true,
+                                                            id,
+                                                        }
+
+                                                        Transforms.insertNodes(editor, excerptNumberNode, {at: [index, childIndex]})
+                                                    }
+                                                }
+                                                childIndex++;
+                                            })
+                                        }
+                                    }
+                                }
+                            } else {
+                                // @ts-ignore
+                                Transforms.setNodes(editor, { type: "" }, {at: [index, 0]})
+                            }
+
+                        } else if (child.children[0].type === "footnote_number") {
+                            if (child.children[0].text !== "") {
+                                footnote_count++;
+
+                                if (footnote_count === footnote_number) {
+                                    footnote_location += index;
+                                }
+
+                                if (footnote_count >= footnote_number) {
+
+                                    Transforms.removeNodes(editor, {at: [index, 0]});
+
+                                    const footnoteNumberNode: Node = {
+                                        // @ts-ignore
+                                        type: 'footnote_number',
+                                        text: (footnote_count + 1) + ". ",
+                                        id,
+                                    }
+
+                                    Transforms.insertNodes(editor, footnoteNumberNode, {at: [index, 0]})
+                                }
+                            } else {
+                                // @ts-ignore
+                                Transforms.setNodes(editor, { type: "" }, {at: [index, 0]})
+                            }
+                        }
+                    }
+                }
+            }
+            index++;
+        })
+    }
+
+    const footnoteNode: Node = {
+        children: [
+            {
+                // @ts-ignore
+                type: 'footnote_number',
+                text: footnote_number + ". ",
+                id,
+            },
+            {
+                // @ts-ignore
+                type: 'footnote',
+                id,
+                text: "Enter Footnote Here",
+            }
+        ]
+    }
+
+    if (footnote_location === 0) {
+        Transforms.insertNodes(
+            editor,
+            footnoteNode,
+            { at: [editor.children.length] }
+        )
+    } else {
+        Transforms.insertNodes(
+            editor,
+            footnoteNode,
+            { at: [footnote_location] }
+        )
+    }
+
+    if (editor.selection) {
+        if (editor.selection.focus) {
+            let index_0 = editor.selection.focus.path[0];
+            let index_1 = editor.selection.focus.path[1];
+
+            debugger;
+            let child: any;
+            let text: string;
+
+            if (index_1 > 0) {
+                Transforms.splitNodes(editor, {at: [index_0, index_1]});
+                child = editor.children[index_1];
+                text = child.children[0].text;
+                Transforms.delete(editor, {at: [index_1, 0]});
+
+                const excerptNode: Node = {
+                    children: [
+                        {
+                            // @ts-ignore
+                            type: 'excerpt',//TODO check for other styling
+                            text,
+                            id
+                        },
+                        {
+                            // @ts-ignore
+                            type: 'excerpt_number',
+                            text: footnote_number.toString(),
+                            superscript: true,
+                            id,
+                        }
+                    ]
+                }
+
+                Transforms.insertNodes(editor, excerptNode, { at: [index_1, 0]})
+            } else {
+                child = editor.children[index_0];
+                text = child.children[index_1].text;
+                Transforms.delete(editor, {at: [index_0, index_1]});
+
+                const excerptNode: Node = {
+                    children: [
+                        {
+                            // @ts-ignore
+                            type: 'excerpt',//TODO check for other styling
+                            text,
+                            id
+                        },
+                        {
+                            // @ts-ignore
+                            type: 'excerpt_number',
+                            text: footnote_number.toString(),
+                            superscript: true,
+                            id,
+                        }
+                    ]
+                }
+
+                Transforms.insertNodes(editor, excerptNode, { at: [index_0, index_1]})
+            }
+        }
+    }
+}
 
 const withHtml = (editor: BaseEditor & ReactEditor & HistoryEditor) => {
     const { insertData, isInline, isVoid } = editor
@@ -81,53 +296,78 @@ const withHtml = (editor: BaseEditor & ReactEditor & HistoryEditor) => {
                     if (child.children) {
                         if (child.children[0]) {
                             if (child.children[0].type) {
+                                // debugger;
                                 if (child.children[0].type === "excerpt") {
-                                    excerpt_count++;
 
-                                    if (editor.selection) {
-                                        if (index < editor.selection.focus.path[0]) {
-                                            footnote_number++;
-                                        }
-                                    }
+                                    if (child.children[1]) {
+                                        if (child.children[1].type) {
+                                            if (child.children[1].type === "excerpt_number") {
+                                                excerpt_count++;
 
-                                    if (excerpt_count >= footnote_number) {
-
-                                        let childIndex = 0;
-                                        forEach(child.children, (innerChild: any) => {
-                                            if (innerChild.type) {
-                                                if (innerChild.type === "footnote_number") {
-                                                    let id = "";
-                                                    if (innerChild.id) {
-                                                        id = innerChild.id;
+                                                if (editor.selection) {
+                                                    if (index < editor.selection.focus.path[0]) {
+                                                        footnote_number++;
                                                     }
+                                                }
 
-                                                    Transforms.delete(editor, {at: {path: [index, childIndex], offset: 0}});
+                                                if (excerpt_count >= footnote_number) {
 
-                                                    const footnoteNumberNode: Node = {
-                                                        // @ts-ignore
-                                                        type: 'footnote_number',
-                                                        text: (excerpt_count + 1).toString(),
-                                                        superscript: true,
-                                                        id,
-                                                    }
+                                                    let childIndex = 0;
+                                                    forEach(child.children, (innerChild: any) => {
+                                                        if (innerChild.type) {
+                                                            if (innerChild.type === "excerpt_number") {
+                                                                let id = "";
+                                                                if (innerChild.id) {
+                                                                    id = innerChild.id;
+                                                                }
 
-                                                    Transforms.insertNodes(editor, footnoteNumberNode, {at: [index, childIndex]})
+                                                                Transforms.removeNodes(editor, {at: [index, childIndex]}); //TODO add match
+
+                                                                const excerptNumberNode: Node = {
+                                                                    // @ts-ignore
+                                                                    type: 'excerpt_number',
+                                                                    text: (excerpt_count + 1).toString(),
+                                                                    superscript: true,
+                                                                    id,
+                                                                }
+
+                                                                Transforms.insertNodes(editor, excerptNumberNode, {at: [index, childIndex]})
+                                                            }
+                                                        }
+                                                        childIndex++;
+                                                    })
                                                 }
                                             }
-                                            childIndex++;
-                                        })
-                                    }
-                                } else if (child.children[0].type === "footnote_number_footnote") {
-                                    footnote_count++;
-
-                                    if (footnote_count === footnote_number) {
-                                        footnote_location += index;
+                                        }
+                                    } else {
+                                        // @ts-ignore
+                                        Transforms.setNodes(editor, { type: "" }, {at: [index, 0]})
                                     }
 
-                                    if (footnote_count >= footnote_number) {
+                                } else if (child.children[0].type === "footnote_number") {
+                                    if (child.children[0].text !== "") {
+                                        footnote_count++;
 
-                                        Transforms.delete(editor, {at: {path: [index, 0], offset: 0}});
-                                        Transforms.insertText(editor, (footnote_count + 1).toString(), {at: {path: [index, 0], offset: 0}})
+                                        if (footnote_count === footnote_number) {
+                                            footnote_location += index;
+                                        }
+
+                                        if (footnote_count >= footnote_number) {
+
+                                            Transforms.removeNodes(editor, {at: [index, 0]});
+
+                                            const footnoteNumberNode: Node = {
+                                                // @ts-ignore
+                                                type: 'footnote_number',
+                                                text: (footnote_count + 1) + ". ",
+                                                id,
+                                            }
+
+                                            Transforms.insertNodes(editor, footnoteNumberNode, {at: [index, 0]})
+                                        }
+                                    } else {
+                                        // @ts-ignore
+                                        Transforms.setNodes(editor, { type: "" }, {at: [index, 0]})
                                     }
                                 }
                             }
@@ -141,7 +381,7 @@ const withHtml = (editor: BaseEditor & ReactEditor & HistoryEditor) => {
                 children: [
                     {
                         // @ts-ignore
-                        type: 'footnote_number_footnote',
+                        type: 'footnote_number',
                         text: footnote_number + ". ",
                         id,
                     },
@@ -169,10 +409,7 @@ const withHtml = (editor: BaseEditor & ReactEditor & HistoryEditor) => {
                 )
             }
 
-
-
             const text = data.getData('text/plain');
-
 
             const excerptNode: Node = {
                 children: [
@@ -185,7 +422,7 @@ const withHtml = (editor: BaseEditor & ReactEditor & HistoryEditor) => {
                     },
                     {
                         // @ts-ignore
-                        type: 'footnote_number',
+                        type: 'excerpt_number',
                         text: footnote_number.toString(),
                         superscript: true,
                         id,
@@ -226,6 +463,9 @@ export function RichTextEditView(props: RichTextEditViewProps) {
         }
     }
 
+    // console.log(serialize(editor))
+    // console.log(JSON.stringify(editor?.children))
+
     return (
         <Slate
             editor={editor}
@@ -249,6 +489,7 @@ export function RichTextEditView(props: RichTextEditViewProps) {
                             <FontHighlightInput />
                             <FontColorInput />
                         </div>
+                        <Button text={"Footnote"} onClick={() => insertFootnote(editor)}/>
                         <div className={'d-flex'}>
                             <ComboBox items={citation} title={'MLA'}/>
                         </div>
@@ -349,31 +590,11 @@ function Element (props: ElementProps) {
 
     // default to rendering with a paragraph
     if (children == props.children) {
-
-        switch (element.type) {
-            case "excerpt":
-                children = (
-                    <p {...attributes}>
-                        {children}
-                    </p>
-                )
-                break;
-            case "footnote":
-                children = (
-                    <p {...attributes}>
-                        {children}
-                    </p>
-                )
-                break;
-            default:
-                children = (
-                    <p {...attributes}>
-                        {children}
-                    </p>
-                )
-                break;
-
-        }
+        children = (
+            <p {...attributes}>
+                {children}
+            </p>
+        )
     }
 
     return children;
