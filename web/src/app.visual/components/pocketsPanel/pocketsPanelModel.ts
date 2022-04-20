@@ -1,5 +1,6 @@
 import {PocketNodeType} from "../../model/pocketNodeType";
 import {PocketInfo} from "../../../app.model";
+import React from "react";
 
 export type PocketsPanelStateProps = {
     className?: string;
@@ -19,6 +20,7 @@ export type PocketsPanelDispatchProps = {
     onRemoveNote: (id: string, pocket_id: string) => void;
     onRemoveExcerpt: (id: string, pocket_id: string) => void;
     onRemoveResource: (id: string, pocket_id: string) => void;
+    onAddExcerptToReport: (event: React.DragEvent<HTMLDivElement>, id: string, resource_id: string) => void;
     onSearchTextChanged: (value: string) => void;
     onSearch: () => void;
     onDelete: (id: string) => void;
@@ -67,6 +69,7 @@ export type ReportNodeRendererProps = NodeRendererProps &
 export type ExcerptNodeRendererProps = NodeRendererProps &
     {
         onRemove: (id: string) => void;
+        onAddExcerptToReport: (event: React.DragEvent<HTMLDivElement>, id: string) => void;
     }
 
 export type NoteNodeRendererProps = NodeRendererProps &
@@ -97,5 +100,6 @@ export type PocketNodeVM = {
     type: PocketNodeType,
     childNodes: PocketNodeVM[],
     pocket_id: string,
+    resource_id?: string;
     isUpdating: boolean,
 }

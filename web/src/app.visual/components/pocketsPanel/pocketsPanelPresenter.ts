@@ -9,6 +9,7 @@ import {PocketNodeType} from "../../model/pocketNodeType";
 import {PocketNodeVM, PocketsPanelDispatchProps, PocketsPanelStateProps, PocketUpdateParams} from "./pocketsPanelModel";
 import {PocketParamType, ReportParamType} from "../../../app.core.api";
 import {ReportPanelId} from "../reportPanel/reportPanelWrapper";
+import React from "react";
 
 
 type PocketSliceState = {
@@ -111,13 +112,12 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
 
         this.mapDispatchToProps = (dispatch: any): PocketsPanelDispatchProps => {
             return {
+                onAddExcerptToReport: (event: React.DragEvent<HTMLDivElement>, id: string, report_id: string) => this._onAddExcerptToReport(event, id, report_id),
                 onPocketItemSelected: (id: string) => this.onPocketItemSelected(id),
                 onPocketItemToggle: (id: string, expanded: boolean) => this.onPocketItemToggle(id, expanded),
                 onCreatePocket: (title: string) => pocketService.addOrUpdatePocket({title}),
-                onDownloadDocument(id: string): void {
-                },
-                onDownloadPocket(id: string): void {
-                },
+                onDownloadDocument(id: string): void {},
+                onDownloadPocket(id: string): void {},
                 onUpdatePocket: (edits: PocketUpdateParams) => _PocketsPanelPresenter._onUpdatePocket(edits),
                 onRemoveExcerpt: (id: string, pocket_id: string) => this._onRemoveExcerpt(id, pocket_id),
                 onRemoveResource: (id: string, pocket_id: string) => this._onRemoveResource(id, pocket_id),
@@ -127,7 +127,7 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                 onDelete: (id: string) => this._onRemovePocket(id),
                 onCreateReport: (id: string) => _PocketsPanelPresenter._onCreateReport(id),
                 onRemoveReport: (id: string, pocket_id: string) => this._onRemoveReport(id, pocket_id),
-                onReportItemSelected: (id: string) => this.onReportItemSelected(id),
+                onReportItemSelected: (id: string) => this.onReportItemSelected(id)
             };
         }
     }
@@ -222,6 +222,7 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                             childNodes: [],
                             pocket_id: pocket.id,
                             isUpdating: pocket.isUpdating,
+                            resource_id: resource.id,
                         }
 
                         forEach(excerptMapper.notes, (note: NoteInfo) => {
@@ -359,6 +360,42 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
             pocketService.removePocket(pocket_id);
         }
 
+    }
+
+    private _onAddExcerptToReport(event: React.DragEvent<HTMLDivElement>, id: string, resource_id: string) {
+        const excerpt = pocketService.getExcerpt(id);
+
+        const resource = pocketService.getResource(resource_id);
+
+        if (excerpt) {
+            const { text } = excerpt;
+
+            event.dataTransfer.setData("text/plain", text);
+            event.dataTransfer.setData("text/excerpt/excerpt_id", id);
+
+            if (resource) {
+                const { source_author, title, source_publication_date} = resource;
+
+                let resource_information = "";
+
+                let index = 0;
+                forEach(JSON.parse(source_author), (author: string) => {
+                    if (index < source_author.length - 2) {
+                        resource_information += author + ", ";
+                    } else {
+                        resource_information += author + ". ";
+                    }
+
+                    index++;
+                });
+
+                resource_information += title + ". " + source_publication_date.toLocaleString().split("T")[0]
+
+                event.dataTransfer.setData("text/excerpt", resource_information);
+            } else {
+                event.dataTransfer.setData("text/excerpt", "resource information");
+            }
+        }
     }
 }
 

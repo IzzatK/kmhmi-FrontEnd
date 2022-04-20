@@ -23,7 +23,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
 
     getCellContentRenderer(node: PocketNodeVM): JSX.Element {
         const { searchText } = this.props;
-        const { id, path, title, pocket_id, isUpdating } = node;
+        const { id, path, title, pocket_id, isUpdating, resource_id } = node;
 
         let renderer: JSX.Element;
 
@@ -68,6 +68,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                         title={title}
                         onRemove={(id: string) => this._onRemoveExcerpt(id, pocket_id)}
                         isUpdating={isUpdating}
+                        onAddExcerptToReport={(event: React.DragEvent<HTMLDivElement>, id: string) => this._onAddExcerptToReport(event, id, resource_id || "")}
                     />
                 )
                 break;
@@ -156,6 +157,14 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
 
         if (onUpdatePocket) {
             onUpdatePocket(edits);
+        }
+    }
+
+    _onAddExcerptToReport(event: React.DragEvent<HTMLDivElement>, id: string, resource_id: string) {
+        const { onAddExcerptToReport } = this.props;
+
+        if (onAddExcerptToReport) {
+            onAddExcerptToReport(event, id, resource_id);
         }
     }
 
