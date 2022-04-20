@@ -7,7 +7,7 @@ import {RichTextEditView} from "./richTextEditView";
 
 class ReportPanelView extends Component<ReportPanelViewProps> {
     render() {
-        const { className, report, tmpReport, tmpValue, excerpts, citations, onTmpReportChanged, onSaveReport, onReportValueChanged } = this.props;
+        const { className, report, tmpReport, tmpValue, excerpts, citations, onTmpReportChanged, onSaveReport, onReportValueChanged, onPublishReport } = this.props;
 
         const { id, pocketId, authorId, title, date, citation } = report || {};
         const { id: tmpId, author_id: tmpAuthorId, title: tmpTitle, publication_date: tmpDate, citation: tmpCitation } = tmpReport;
@@ -87,6 +87,7 @@ class ReportPanelView extends Component<ReportPanelViewProps> {
                                 <RichTextEditView
                                     value={tmpValue}
                                     onReportValueChanged={onReportValueChanged}
+                                    onPublishReport={onPublishReport}
                                 />
                                 // :
                                 // <div

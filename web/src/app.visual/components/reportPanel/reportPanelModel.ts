@@ -1,4 +1,5 @@
 import {ReportInfo} from "../../../app.model";
+import {Editor} from "slate";
 
 export type ReportPanelAppStateProps = {
     report: ReportInfoVM;
@@ -27,11 +28,13 @@ export type ReportPanelViewProps = {
     onTmpReportChanged: (name: string, value: any) => void;
     onReportValueChanged: (value: any) => void;
     onSaveReport: () => void;
+    onPublishReport: (editor: Editor, scope: string) => void;
 }
 
 export type RichTextEditViewProps = {
     value: any;
     onReportValueChanged: (value: any) => void;
+    onPublishReport: (editor: Editor, scope: string) => void;
 }
 
 export type ReportInfoVM = {
@@ -43,6 +46,8 @@ export type ReportInfoVM = {
     citation?: string;
     documents?: Record<string, DocumentVM>;
     content?: any;
+    html?: string;
+    scope?: string;
 }
 
 export type CitationVM = {

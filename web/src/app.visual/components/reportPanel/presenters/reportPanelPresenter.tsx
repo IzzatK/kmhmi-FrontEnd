@@ -3,6 +3,8 @@ import {ReportPanelPresenterProps, ReportPanelPresenterState, ReportUpdateParams
 import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
 import ReportPanelView from "../views/reportPanelView";
 import {forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
+import {Editor} from "slate";
+import {serialize} from "../views/slate/slate-utils";
 
 class ReportPanelPresenter extends Component<ReportPanelPresenterProps, ReportPanelPresenterState> {
 
@@ -106,6 +108,29 @@ class ReportPanelPresenter extends Component<ReportPanelPresenterProps, ReportPa
         })
     }
 
+    _onPublishReport(editor: Editor, scope: string) {
+        const { onSaveReport } = this.props;
+        const { tmpReport, tmpValue } = this.state;
+
+        // console.log(JSON.stringify(editor.children))
+        // console.log(serialize(editor));
+
+        let nextReport: ReportUpdateParams = {
+            ...tmpReport,
+            ["html"]: serialize(editor),
+            scope,
+        };
+
+        const params: ReportUpdateParams = {
+            ...nextReport,
+            content: tmpValue,
+        }
+
+        if (onSaveReport) {
+            onSaveReport(params);
+        }
+    }
+
     render() {
         const { report, citations, excerpts } = this.props;
         const { tmpReport, tmpValue } = this.state;
@@ -120,6 +145,7 @@ class ReportPanelPresenter extends Component<ReportPanelPresenterProps, ReportPa
                 onTmpReportChanged={this._onTmpReportChanged}
                 tmpReport={tmpReport}
                 tmpValue={tmpValue}
+                onPublishReport={this._onPublishReport}
             />
         )
     }

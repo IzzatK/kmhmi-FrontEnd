@@ -52,8 +52,6 @@ class _ReportPanelWrapper extends VisualWrapper {
         }
     }
 
-
-
     _onSaveReport(edits: ReportUpdateParams) {
         const params: ReportParamType = {
             ...edits
@@ -80,7 +78,8 @@ class _ReportPanelWrapper extends VisualWrapper {
                     citation,
                     content,
                     resource_ids,
-                    isUpdating
+                    isUpdating,
+                    scope
                 } = report;
 
                 itemVM = {
@@ -89,6 +88,7 @@ class _ReportPanelWrapper extends VisualWrapper {
                     title,
                     publication_date,
                     content,
+                    scope
                 }
             }
 

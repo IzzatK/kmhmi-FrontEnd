@@ -38,22 +38,29 @@ export function TextAlignInputToolbar(props: TextAlignInputToolbarProps) {
 }
 
 export function TextAlignInputButton(props: TextAlignInputButtonProps) {
-    const editor = useSlate();
+    try {
+        const editor = useSlate();
 
-    const {align, onClick, ...rest} = props;
+        const {align, onClick, ...rest} = props;
 
-    const selected = isTextAlignActive(
-        editor,
-        props.align);
+        const selected = isTextAlignActive(
+            editor,
+            props.align);
 
-    function _onSelect(event: React.MouseEvent) {
-        event.preventDefault();
-        textAlignStrategy(editor, align);
+        const _onSelect = (event: React.MouseEvent) => {
+            event.preventDefault();
+            textAlignStrategy(editor, align);
+        }
+
+        return <Button className={'btn-transparent'} {...rest} selected={selected} onClick={_onSelect}>
+            {props.children}
+        </Button>
+    } catch (error) {
+        console.log(error);
+        return <Button className={'btn-transparent'}>
+            {props.children}
+        </Button>
     }
-
-    return <Button className={'btn-transparent'} {...rest} selected={selected} onClick={_onSelect}>
-        {props.children}
-    </Button>
 }
 
 
