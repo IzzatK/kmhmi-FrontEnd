@@ -2,9 +2,9 @@ import SystemBannerView from './systemBannerView'
 import {VisualWrapper} from "../../../framework.visual/extras/visualWrapper";
 import {createVisualConnector} from "../../../framework.visual/connectors/visualConnector";
 import {
-    authenticationService,
+    authenticationService, displayService,
     documentService,
-    referenceService,
+    referenceService, selectionService,
     userService
 } from "../../../serviceComposition";
 import {ReferenceType, UserInfo} from "../../../app.model";
@@ -12,6 +12,9 @@ import {makeGuid} from "../../../framework.core/extras/utils/uniqueIdUtils";
 import {createSelector} from "@reduxjs/toolkit";
 import {forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 import {RoleVM} from "./systemBannerModel";
+import {UserGuidePanelId} from "../userGuidePanel/userGuidePanelWrapper";
+
+export const DOCUMENT_PREVIEW_VIEW_ID = 'document-preview-panel';
 
 class SystemBanner extends VisualWrapper {
     constructor() {
@@ -32,7 +35,8 @@ class SystemBanner extends VisualWrapper {
         this.mapDispatchToProps = () => {
             return {
                 onReturnHome: () => this.onReturnHome(),
-                onLogout: () => this.onLogout()
+                onLogout: () => this.onLogout(),
+                onShowHelp: () => this.onShowHelp(),
             };
         }
     }
@@ -75,6 +79,25 @@ class SystemBanner extends VisualWrapper {
 
     onReturnHome = () => {
         documentService.clearSearch();
+    }
+
+    onShowHelp = () => {
+        let currentId = displayService.getSelectedNodeId(DOCUMENT_PREVIEW_VIEW_ID);
+        console.log(currentId);
+
+        if (currentId === UserGuidePanelId) {
+            displayService.popNode(DOCUMENT_PREVIEW_VIEW_ID);
+        }
+        else {
+            displayService.pushNode(UserGuidePanelId);
+        }
+
+        if (selectionService.getContext("selected-report") !== '') {
+            selectionService.setContext("selected-report", '');
+        }
+        if (selectionService.getContext("selected-document") !== '') {
+            selectionService.setContext("selected-document", '');
+        }
     }
 }
 

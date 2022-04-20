@@ -29,7 +29,8 @@ import {
     IReferenceService, IReportService,
     IStatService,
     ITagService,
-    IUserProvider, IUserService
+    IUserProvider, IUserService,
+    IUserGuideService
 } from "./app.core.api";
 import {
     DocumentInfo,
@@ -41,7 +42,7 @@ import {
     ResourceInfo,
     RoleInfo,
     StatInfo,
-    TagInfo
+    TagInfo, UserGuideInfo
 } from "./app.model";
 import {
     AuthenticationService,
@@ -58,13 +59,15 @@ import {
     TagProvider,
     TagService,
     UserProvider,
-    UserService
+    UserService,
+    UserGuideService
 } from "./app.core";
 import {
     MockExcerptProvider,
     MockNoteProvider,
     MockPocketProvider,
-    MockResourceProvider
+    MockResourceProvider,
+    MockUserGuideProvider
 } from "./app.testing/canary";
 import {ScenarioService} from "./app.config/scenarioService";
 import {MockReportProvider} from "./app.testing/canary/providers/mockReportProvider";
@@ -94,6 +97,7 @@ const excerptProvider: IEntityProvider<ExcerptInfo> = new MockExcerptProvider();
 const resourceProvider: IEntityProvider<ResourceInfo> = new MockResourceProvider();
 const pocketProvider: IEntityProvider<PocketMapper> = new PocketProvider();
 const reportProvider: IEntityProvider<ReportInfo> = new ReportProvider();
+const userGuideProvider: IEntityProvider<UserGuideInfo> = new MockUserGuideProvider();
 
 // create the application services
 export const authenticationService: IAuthenticationService = new AuthenticationService();
@@ -105,6 +109,7 @@ export const tagService: ITagService = new TagService();
 export const userService: IUserService = new UserService();
 export const pocketService: IPocketService = new PocketService();
 export const reportService: IReportService = new ReportService();
+export const userGuideService: IUserGuideService = new UserGuideService();
 
 // create the ui plugins. jk. that's a lot of work.
 
@@ -213,6 +218,12 @@ reportProvider.setRepositoryService(repoService);
 reportProvider.setHttpService(httpService);
 reportProvider.start();
 
+// user guide
+userGuideProvider.setLogService(logService);
+userGuideProvider.setRepositoryService(repoService);
+userGuideProvider.setHttpService(httpService);
+userGuideProvider.start();
+
 // set references and start application
 // authentication service
 authenticationService.setLogService(logService);
@@ -278,6 +289,11 @@ reportService.setSelectionService(selectionService);
 reportService.setUserService(userService);
 reportService.setReportProvider(reportProvider);
 reportService.start();
+// user guide service
+userGuideService.setLogService(logService);
+userGuideService.setRepositoryService(repoService);
+userGuideService.setUserGuideProvider(userGuideProvider);
+userGuideService.start();
 
 // for the UI Components, using the Provider/Consumer pattern seems to be the way to go
 // not entirely sure yet for those pieces

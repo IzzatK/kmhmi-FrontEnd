@@ -29,8 +29,15 @@ class SystemBannerView extends Component<SystemBannerProps, SystemBannerState> {
         }
     }
 
+    _onShowHelp() {
+        const { onShowHelp } = this.props;
+        if (onShowHelp) {
+            onShowHelp();
+        }
+    }
+
     render() {
-        const {className, onLogout, userName, role, isLoggedIn, onReturnHome, ...rest} = this.props;
+        const {className, onLogout, onShowHelp, userName, role, isLoggedIn, onReturnHome, ...rest} = this.props;
 
         let cn = 'system-banner d-flex p-3';
         if (className) {
@@ -51,6 +58,7 @@ class SystemBannerView extends Component<SystemBannerProps, SystemBannerState> {
                 <div className={"flex-fill flex-basis-0"}/>
                 <div className={"d-flex flex-fill flex-shrink-0 align-self-stretch justify-content-end"}>
                     <div className={`d-flex align-items-center h-gap-5 mr-3`}>
+                        <Button className={"help-button rounded-circle"} onClick={this._onShowHelp} text={"?"}/>
                         <div className={"header-1 font-weight-semi-bold title"}>{userName}</div>
                         <div className={"header-1 font-weight-light text-info"}>{role}</div>
                         {
