@@ -17,7 +17,12 @@ class UserGuidePanelPresenter extends Component<UserGuidePanelPresenterProps, Us
         return (
             <UserGuidePanelView
                 className={this.props.className}
+                helpDocument={this.props.helpDocument}
+                userProfile={this.props.userProfile}
+                token={this.props.token}
             />
         );
     }
 }
+
+export default UserGuidePanelPresenter;

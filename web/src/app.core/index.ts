@@ -61,6 +61,8 @@ export * from "./tags/converters/getTagArrayRequestConverter";
 export * from "./tags/converters/getTagArrayResponseConverter";
 export * from "./tags/converters/getTagResponseConverter";
 export * from "./tags/providers/tagProvider";
+export * from "./userGuide/userGuideService";
+export * from "./userGuide/providers/userGuideProvider";
 export * from "./users/userService";
 export * from "./users/converters/roles/getSingleRoleResponseConverter";
 export * from "./users/converters/users/createUserRequestConverter";

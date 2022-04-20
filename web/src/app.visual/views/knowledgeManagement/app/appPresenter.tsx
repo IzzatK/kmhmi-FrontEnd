@@ -15,6 +15,7 @@ import {PermissionInfo} from "../../../../app.model";
 import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../../app.core.api";
 import {NodeInfo} from "../../../../framework.core/services";
 import {ReportPanelId} from "../../../components/reportPanel/reportPanelWrapper";
+import {UserGuidePanelId} from "../../../components/userGuidePanel/userGuidePanelWrapper";
 
 class App extends VisualWrapper {
     constructor() {
@@ -44,6 +45,7 @@ class App extends VisualWrapper {
                 currentSystemTool: displayService.getSelectedNodeId('system-tool-panel'),
                 isDocumentVisible: this.isDocumentVisible(state),
                 isReportVisible: this.isReportVisible(state),
+                isHelpVisible: this.isHelpVisible(state),
                 permissions: this.getPermissions(state),
                 isAuthorized: true,//authorizationService.isAuthorized(),
                 isAuthorizing: false// authorizationService.isAuthorizing()
@@ -66,6 +68,19 @@ class App extends VisualWrapper {
 
     isReportVisible = createSelector(
         [() => displayService.getNodeInfo(ReportPanelId)],
+        (nodeInfo) => {
+            let result = false;
+
+            if (nodeInfo && nodeInfo.visible) {
+                result = true;
+            }
+
+            return result;
+        }
+    )
+
+    isHelpVisible = createSelector(
+        [() => displayService.getNodeInfo(UserGuidePanelId)],
         (nodeInfo) => {
             let result = false;
 

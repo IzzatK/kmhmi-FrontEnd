@@ -1,6 +1,7 @@
 import {createVisualConnector, VisualWrapper} from "../../../framework.visual";
-import UserGuidePanelView from "./views/userGuidePanelView";
-import {UserGuidePanelDispatchProps, UserGuidePanelStateProps} from "./userGuidePanelModel";
+import {UserGuideInfoVM, UserGuidePanelDispatchProps, UserGuidePanelStateProps} from "./userGuidePanelModel";
+import {authenticationService, userGuideService} from "../../../serviceComposition";
+import UserGuidePanelPresenter from "./presenters/userGuidePanelPresenter";
 
 class _UserGuidePanelWrapper extends VisualWrapper {
     constructor() {
@@ -8,10 +9,10 @@ class _UserGuidePanelWrapper extends VisualWrapper {
 
         this.id = 'app.visual/components/userGuidePanel';
 
-        this.view = UserGuidePanelView;
+        this.view = UserGuidePanelPresenter;
 
         this.displayOptions = {
-            containerId: 'system-tool-panel',
+            containerId: 'document-preview-panel',
             visible: false,
             appearClass: 'fadeIn',
             enterClass: 'fadeIn',
@@ -19,7 +20,9 @@ class _UserGuidePanelWrapper extends VisualWrapper {
 
         this.mapStateToProps = (state: any, props: any): UserGuidePanelStateProps => {
             return {
-
+                helpDocument: this.getHelpDocument(),
+                userProfile: authenticationService.getUserProfile(),
+                token: authenticationService.getToken(),
             };
         };
 
@@ -28,7 +31,17 @@ class _UserGuidePanelWrapper extends VisualWrapper {
 
             };
         };
+
+        userGuideService.fetchUserGuide();
     }
+
+    getHelpDocument = () => {
+        let userGuide = userGuideService.getUserGuide();
+        let userGuideVM: UserGuideInfoVM = {
+            preview_url: userGuide?.preview_url
+        }
+        return userGuideVM;
+    };
 }
 
 export const {

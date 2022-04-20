@@ -6,6 +6,7 @@ export type SystemBannerProps = {
     className: string;
     onReturnHome: () => void;
     onLogout: () => void;
+    onShowHelp: () => void;
     userName: string;
     classification: Classification;
     role: string;

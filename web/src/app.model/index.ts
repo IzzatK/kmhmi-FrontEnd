@@ -19,6 +19,7 @@ export * from "./statusType";
 export * from "./systemToolMenuItem";
 export * from "./tagInfo";
 export * from "./tagType";
+export * from "./userGuideInfo";
 export * from "./userInfo";
 export * from "./userRequestInfo";
 export * from "./pockets/excerptInfo";

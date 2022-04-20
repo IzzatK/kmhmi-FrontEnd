@@ -19,6 +19,25 @@
     min-width: 8.7rem;
 }
 
+.system-banner .help-button {
+    min-width: 2.6rem;
+    min-height: 2.6rem;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--app-black);
+    background-color: var(--app-whiteSmoke);
+}
+
+.system-banner .help-button:hover {
+    color: var(--app-white);
+    background-color: var(--app-bunker);
+}
+
+.system-banner .help-button.selected {
+    color: var(--app-black);
+    background-color: var(--app-white);
+}
+
 @media screen and (max-width: 800px) {
     .system-banner .hidden-first {
         display: none;

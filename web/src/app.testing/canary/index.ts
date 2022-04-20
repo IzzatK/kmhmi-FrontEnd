@@ -8,3 +8,4 @@ export * from "./providers/mockPocketProvider";
 export * from "./providers/mockProvider";
 export * from "./providers/mockReportProvider";
 export * from "./providers/mockResourceProvider";
+export * from "./providers/mockUserGuideProvider";
