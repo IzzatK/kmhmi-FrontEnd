@@ -23,9 +23,11 @@ export class ExcerptNodeRenderer extends Component<ExcerptNodeRendererProps> {
     }
 
     _onDragStart(event: React.DragEvent<HTMLDivElement>) {
-        event.dataTransfer.setData("text/plain", this.props.title ? this.props.title : "");
-        event.dataTransfer.setData("text/excerpt", "resource information");
-        event.dataTransfer.setData("text/excerpt/excerpt_id", this.props.id);
+        const { id, onAddExcerptToReport } = this.props;
+
+        if (onAddExcerptToReport) {
+            onAddExcerptToReport(event, id);
+        }
     }
 
     render() {

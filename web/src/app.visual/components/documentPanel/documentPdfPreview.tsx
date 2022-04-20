@@ -70,12 +70,12 @@ function DocumentPdfPreview(props: DocumentPdfPreviewProps) {
             window.open(original_url);
         }, false);
 
-        xhr.setRequestHeader("km_token", `bearer ${token}` );
-        xhr.setRequestHeader("km_user_name", username );
-        xhr.setRequestHeader("km_user_id", id );
-        xhr.setRequestHeader("km_email", email );
-        xhr.setRequestHeader("km_first_name", firstName );
-        xhr.setRequestHeader("km_last_name", lastName );
+        xhr.setRequestHeader("km-token", `bearer ${token}` );
+        xhr.setRequestHeader("km-user-name", username );
+        xhr.setRequestHeader("km-user-id", id );
+        xhr.setRequestHeader("km-email", email );
+        xhr.setRequestHeader("km-first-name", firstName );
+        xhr.setRequestHeader("km-last-name", lastName );
 
         xhr.send();
     }
@@ -220,12 +220,12 @@ function DocumentPdfPreview(props: DocumentPdfPreviewProps) {
                                     ]}
                                     theme={'dark'}
                                     httpHeaders={{
-                                        'km_token': `bearer ${token}`,
-                                        'km_user_name': username,
-                                        'km_user_id': id,
-                                        'km_email': email,
-                                        'km_first_name': firstName,
-                                        'km_last_name': lastName,
+                                        'km-token': `bearer ${token}`,
+                                        'km-user-name': username,
+                                        'km-user-id': id,
+                                        'km-email': email,
+                                        'km-first-name': firstName,
+                                        'km-last-name': lastName,
                                     }}
                             />
                         </Worker>

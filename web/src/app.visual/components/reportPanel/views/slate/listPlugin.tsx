@@ -31,24 +31,34 @@ export function ListInputToolbar(props: TextAlignInputToolbarProps) {
 }
 
 export function ListInputButton(props: ListInputButtonProps) {
-    const editor = useSlate();
+    try {
+        const editor = useSlate();
 
-    const {list, onClick, ...rest} = props;
+        const {list, onClick, ...rest} = props;
 
-    const selected = isListActive(
-        editor,
-        list);
+        const selected = isListActive(
+            editor,
+            list);
 
-    function _onSelect(event: React.MouseEvent) {
-        event.preventDefault();
-        listStrategy(editor, list);
+        const _onSelect = (event: React.MouseEvent) => {
+            event.preventDefault();
+            listStrategy(editor, list);
+        }
+
+        return (
+            <Button className={'btn-transparent'} {...rest} selected={selected} onClick={_onSelect}>
+                {props.children}
+            </Button>
+        )
+    } catch (error) {
+        console.log(error);
+        return (
+            <Button className={'btn-transparent'}>
+                {props.children}
+            </Button>
+        )
     }
 
-    return (
-        <Button className={'btn-transparent'} {...rest} selected={selected} onClick={_onSelect}>
-            {props.children}
-        </Button>
-    )
 }
 
 

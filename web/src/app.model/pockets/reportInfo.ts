@@ -13,6 +13,7 @@ export class ReportInfo extends WocketInfo {
   scope: string = '';
   private_tag: Record<string, Record<string, string>> = {};
   public_tag: Record<string, string> = {};
+  html: string = '';
 
   resource_ids: string[] = [];
 

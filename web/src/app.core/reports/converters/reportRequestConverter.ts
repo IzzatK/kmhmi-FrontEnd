@@ -17,6 +17,7 @@ export class ReportRequestConverter extends Converter<any, any> {
             private_tag: "custom_personal_tag",
             public_tag: "custom_shared_tag",
             resource_ids: "resources",
+            html: "html_text",
         }
 
         let serverReport: Record<string, any> = {};
