@@ -113,6 +113,13 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
         }
     }
 
+    componentWillUnmount() {
+        let element = document.getElementById('tag-row');
+        if (element) {
+            this.tagsResizeObserver.unobserve(element);
+        }
+    }
+
     setTmpDocument(doc: DocumentUpdateParams) {
 
         const { scope } = doc;

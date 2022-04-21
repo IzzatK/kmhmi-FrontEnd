@@ -104,7 +104,7 @@ class DocumentPanel extends VisualWrapper {
         const excerptParams: ExcerptParamType = {
             text: params.excerpt_text,
             content: JSON.stringify(params.excerpt_content),
-            location: '',
+            location: params.excerpt_location,
         };
 
         const noteParams: NoteParamType = {
@@ -439,7 +439,8 @@ class DocumentPanel extends VisualWrapper {
                                 text: excerptMapper.excerpt.text,
                                 content: excerptMapper.excerpt.content,
                                 pocketId: pocketMapper.pocket.id,
-                                noteVM: noteVM
+                                noteVM: noteVM,
+                                location: excerptMapper.excerpt.location,
                             }
 
                             results[excerptMapper.id] = itemVM;

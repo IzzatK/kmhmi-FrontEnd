@@ -135,7 +135,8 @@ export type ExcerptVM = {
     pocketId?: string;
     noteVM: NoteVM;
     text: string;
-    content: any;
+    content: string;
+    location: string;
 }
 
 export type NoteVM = {

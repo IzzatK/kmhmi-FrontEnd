@@ -100,8 +100,8 @@ export class PocketRequestConverter extends Converter<any, any> {
 
                         let serverExcerpt: Record<string, string> = {};
 
-                        let requiredFields: Record<string, boolean> = {};
-                        requiredFields["rte_text"] = false;
+                        let requiredFields: Record<string, string> = {};
+                        requiredFields["rte_text"] = "";
 
                         forEachKVP(excerptMapper.excerpt, (itemKey: keyof ExcerptInfo, itemValue: any) => {
                             let serverExcerptKey = ExcerptProperties[itemKey]?.toString();
@@ -109,16 +109,13 @@ export class PocketRequestConverter extends Converter<any, any> {
                             if (serverExcerptKey) {
 
                                 if (itemValue !== "") {
-                                    if (requiredFields[serverExcerptKey]) {
-                                        requiredFields[serverExcerptKey] = true;
-                                    }
                                     serverExcerpt[serverExcerptKey] = itemValue;
                                 }
                             }
                         });
 
                         forEachKVP(requiredFields, (itemKey: string, itemValue: boolean) => {
-                            if (!itemValue) {
+                            if (!serverExcerpt[itemKey]) {
                                 serverExcerpt[itemKey] = "";
                             }
                         })
@@ -129,24 +126,21 @@ export class PocketRequestConverter extends Converter<any, any> {
 
                             let serverNote: Record<string, string> = {};
 
-                            let requiredFields: Record<string, boolean> = {};
-                            requiredFields["rte_text"] = false;
+                            let requiredFields: Record<string, string> = {};
+                            requiredFields["rte_text"] = "";
 
                             forEachKVP(note, (itemKey: keyof NoteInfo, itemValue: any) => {
                                 let serverNoteKey = NoteProperties[itemKey]?.toString();
 
                                 if (serverNoteKey) {
                                     if (itemValue !== "") {
-                                        if (requiredFields[serverNoteKey]) {
-                                            requiredFields[serverNoteKey] = true;
-                                        }
                                         serverNote[serverNoteKey] = itemValue;
                                     }
                                 }
                             });
 
                             forEachKVP(requiredFields, (itemKey: string, itemValue: boolean) => {
-                                if (!itemValue) {
+                                if (!serverNote[itemKey]) {
                                     serverNote[itemKey] = "";
                                 }
                             })

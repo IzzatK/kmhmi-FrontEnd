@@ -143,7 +143,13 @@ export function renderHighlights(pluginProps: RenderHighlightsProps, props: Docu
     let highlights: HighlightNotePair[] = [];
 
     forEach(props.excerpts, (excerpt: ExcerptVM) => {
-        let highlight = JSON.parse(excerpt.content);
+        let highlight = [];
+
+        try {
+            highlight = JSON.parse(excerpt.content);
+        } catch (e) {
+            console.log(e);
+        }
 
         const highlightNotePair: HighlightNotePair = {
             highlight: highlight,

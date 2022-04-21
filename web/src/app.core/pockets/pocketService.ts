@@ -611,17 +611,42 @@ export class PocketService extends Plugin implements IPocketService {
                             if (resource !== null) {
                                 resource.excerptIds.push(excerpt.id);
 
-                                this.pocketProvider?.update(pocketParams.id, pocketMapper)
-                                    .then(pocketMapper => {
-                                        if (pocketMapper) {
-                                            const items:IRepoItem[] = [];
+                                if (pocketMapper) {
 
-                                            const flattenedItems = this.flattenPocketMapper(pocketMapper);
-                                            items.push(...flattenedItems);
+                                    let excerptMapper: ExcerptMapper = new ExcerptMapper(excerpt);
 
-                                            this.addOrUpdateAllRepoItems(items);
-                                        }
-                                    })
+                                    let resourceMapper: ResourceMapper = new ResourceMapper(resource);
+                                    resourceMapper.excerptMappers[excerpt.id] = excerptMapper;
+
+                                    pocketMapper.resourceMappers[resource.id] = resourceMapper;
+
+                                    this.pocketProvider?.update(pocketMapper.id, pocketMapper)
+                                        .then(pocketMapper => {
+                                            if (pocketMapper) {
+                                                const items:IRepoItem[] = [];
+
+                                                const flattenedItems = this.flattenPocketMapper(pocketMapper);
+                                                items.push(...flattenedItems);
+
+                                                this.addOrUpdateAllRepoItems(items);
+                                            }
+                                        })
+                                        .catch(error => {
+                                            console.log(error);
+                                        });
+                                }
+
+                                // this.pocketProvider?.update(pocketParams.id, pocketMapper)
+                                //     .then(pocketMapper => {
+                                //         if (pocketMapper) {
+                                //             const items:IRepoItem[] = [];
+                                //
+                                //             const flattenedItems = this.flattenPocketMapper(pocketMapper);
+                                //             items.push(...flattenedItems);
+                                //
+                                //             this.addOrUpdateAllRepoItems(items);
+                                //         }
+                                //     })
                             } else {
                                 if (resourceParams.source_id) {
                                     if (this.documentService) {
