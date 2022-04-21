@@ -378,16 +378,22 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
 
                 let resource_information = "";
 
-                let index = 0;
-                forEach(JSON.parse(source_author), (author: string) => {
-                    if (index < source_author.length - 2) {
-                        resource_information += author + ", ";
-                    } else {
-                        resource_information += author + ". ";
-                    }
+                let authors = JSON.parse(source_author);
 
-                    index++;
-                });
+                if (Array.isArray(authors)) {
+                    let index = 0;
+                    forEach(JSON.parse(source_author), (author: string) => {
+                        if (index < source_author.length - 2) {
+                            resource_information += author + ", ";
+                        } else {
+                            resource_information += author + ". ";
+                        }
+
+                        index++;
+                    });
+                } else {
+                    resource_information = authors;
+                }
 
                 resource_information += title + ". " + source_publication_date.toLocaleString().split("T")[0]
 

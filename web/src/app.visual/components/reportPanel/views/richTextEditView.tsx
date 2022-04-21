@@ -127,10 +127,20 @@ export function RichTextEditView(props: RichTextEditViewProps) {
                                             event.preventDefault();
 
                                             if (editor && editor.selection) {
-                                                removeFootnote(editor);
-                                            }
+                                                const node: any = Editor.node(editor, editor.selection?.anchor, {edge: "start"});
 
-                                            Transforms.delete(editor, {unit: "character", reverse: true});
+                                                if (node) {
+                                                    const footnote_type = node[0].footnote || "";
+
+                                                    if (footnote_type === "excerpt_number") {
+                                                        const id = node[0].id || "";
+
+                                                        removeFootnote(editor, id);
+                                                    } else {
+                                                        Transforms.delete(editor, {unit: "character", reverse: true});
+                                                    }
+                                                }
+                                            }
                                         }
 
                                         forEach(slateLeafPlugins, (plugin: ISlateLeafPlugin) => {
