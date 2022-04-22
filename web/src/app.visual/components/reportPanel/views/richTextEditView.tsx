@@ -22,8 +22,8 @@ import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
 import {RichTextEditViewProps} from "../reportPanelModel";
 import {SuperscriptInput, superscriptPlugin} from "./slate/superscriptPlugin";
 import Button from "../../../theme/widgets/button/button";
-import {serialize} from "./slate/slate-utils";
 import {insertFootnote, removeFootnote, withFootnotes} from "./slate/footnote-utils";
+import {SubscriptInput, subscriptPlugin} from "./slate/subscriptPlugin";
 
 const citation = [
     {
@@ -33,6 +33,14 @@ const citation = [
     {
         id: 'chicago',
         title: 'Chicago'
+    },
+    {
+        id: 'harvard',
+        title: 'Harvard'
+    },
+    {
+        id: 'apa',
+        title: 'APA'
     }
 ]
 
@@ -44,7 +52,8 @@ const slateLeafPlugins: ISlateLeafPlugin[] = [
     fontSizePlugin,
     italicPlugin,
     underlinePlugin,
-    superscriptPlugin
+    superscriptPlugin,
+    subscriptPlugin,
 ]
 
 const slateElementPlugins: ISlateElementPlugin[] = [
@@ -53,7 +62,7 @@ const slateElementPlugins: ISlateElementPlugin[] = [
 ]
 
 export function RichTextEditView(props: RichTextEditViewProps) {
-    const { value, onReportValueChanged, onPublishReport } = props;
+    const { value, onReportValueChanged } = props;
 
     const editorRef = useRef<Editor>()
     if (!editorRef.current) {
@@ -77,7 +86,7 @@ export function RichTextEditView(props: RichTextEditViewProps) {
         <Slate
             editor={editor}
             value={value}//initial value
-            onChange={onReportValueChanged}>
+            onChange={(value: any) => onReportValueChanged(value, editor)}>
             <div className={'flex-fill d-flex flex-column v-gap-3 p-5'}>
                 <div className={'toolbar d-flex flex-column v-gap-3'}>
                     <div className={'toolbar flex-fill d-flex h-gap-5'}>
@@ -95,10 +104,10 @@ export function RichTextEditView(props: RichTextEditViewProps) {
                             <UnderlineInput />
                             <FontHighlightInput />
                             <FontColorInput />
-                            <SuperscriptInput />
+                            {/*<SuperscriptInput />*/}
+                            {/*<SubscriptInput />*/}
                         </div>
-                        <Button text={"Publish"} onClick={() => onPublishReport(editor, "Public")}/>
-                        <Button text={"Footnote"} onClick={() => insertFootnote(editor)}/>
+                        {/*<Button text={"Footnote"} onClick={() => insertFootnote(editor)}/>*/}
                         <div className={'d-flex'}>
                             <ComboBox items={citation} title={'MLA'}/>
                         </div>

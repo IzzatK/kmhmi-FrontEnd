@@ -28,6 +28,7 @@ export type LeafType = {
     fontColor: string,
     fontHighlight: string,
     superscript: boolean,
+    subscript: boolean,
 }
 
 export type ElementProps = RenderElementProps & {
@@ -88,6 +89,10 @@ export type UnderlineInputProps = {
 }
 
 export type SuperscriptInputProps = {
+
+}
+
+export type SubscriptInputProps = {
 
 }
 

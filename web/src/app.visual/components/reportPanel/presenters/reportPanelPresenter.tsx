@@ -21,7 +21,8 @@ class ReportPanelPresenter extends Component<ReportPanelPresenterProps, ReportPa
                         { text: "" },
                     ],
                 },
-            ]
+            ],
+            editor: {},
         }
     }
 
@@ -101,16 +102,17 @@ class ReportPanelPresenter extends Component<ReportPanelPresenterProps, ReportPa
         }
     }
 
-    _onReportValueChanged(value: any) {
+    _onReportValueChanged(value: any, editor: Editor) {
         this.setState({
             ...this.state,
             tmpValue: value,
+            editor: editor,
         })
     }
 
-    _onPublishReport(editor: Editor, scope: string) {
+    _onPublishReport() {
         const { onSaveReport } = this.props;
-        const { tmpReport, tmpValue } = this.state;
+        const { tmpReport, tmpValue, editor } = this.state;
 
         // console.log(JSON.stringify(editor.children))
         // console.log(serialize(editor));
@@ -118,7 +120,7 @@ class ReportPanelPresenter extends Component<ReportPanelPresenterProps, ReportPa
         let nextReport: ReportUpdateParams = {
             ...tmpReport,
             ["html"]: serialize(editor),
-            scope,
+            scope: "Public",
         };
 
         const params: ReportUpdateParams = {

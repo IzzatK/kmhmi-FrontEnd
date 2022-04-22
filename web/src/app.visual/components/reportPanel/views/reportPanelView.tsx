@@ -39,10 +39,6 @@ class ReportPanelView extends Component<ReportPanelViewProps> {
                     <div className={`d-flex flex-column v-gap-3 header position-relative px-5 py-4`}>
                         <div className={'d-flex justify-content-between'}>
                             <div className={'header-1 title'}>REPORT INFORMATION</div>
-                            <div className={'d-flex h-gap-3'}>
-                                {/*<Button text={'Cancel'}/>*/}
-                                {/*<Button text={'Save'}/>*/}
-                            </div>
                         </div>
                         <div className={`d-flex h-gap-5`}>
                             <div className={'flex-fill d-flex align-items-center h-gap-3'}>
@@ -87,7 +83,6 @@ class ReportPanelView extends Component<ReportPanelViewProps> {
                                 <RichTextEditView
                                     value={tmpValue}
                                     onReportValueChanged={onReportValueChanged}
-                                    onPublishReport={onPublishReport}
                                 />
                                 // :
                                 // <div
@@ -103,8 +98,14 @@ class ReportPanelView extends Component<ReportPanelViewProps> {
                         <div className={'d-flex align-items-center justify-content-end h-gap-2 bg-selected py-3 px-5'}>
                             <Button
                                 light={true}
+                                text={'Publish'}
+                                onClick={onPublishReport}
+                            />
+                            <Button
+                                light={true}
                                 text={'Save'}
-                                onClick={onSaveReport}/>
+                                onClick={onSaveReport}
+                            />
                         </div>
                     }
                 </div>

@@ -16,6 +16,7 @@ export type ReportPanelPresenterProps = ReportPanelAppStateProps & ReportPanelAp
 export type ReportPanelPresenterState = {
     tmpReport: ReportUpdateParams;
     tmpValue: any;
+    editor: any;
 }
 
 export type ReportPanelViewProps = {
@@ -26,15 +27,14 @@ export type ReportPanelViewProps = {
     citations: Record<string, CitationVM>;
     excerpts: Record<string, ExcerptVM>;
     onTmpReportChanged: (name: string, value: any) => void;
-    onReportValueChanged: (value: any) => void;
+    onReportValueChanged: (value: any, editor: Editor) => void;
     onSaveReport: () => void;
-    onPublishReport: (editor: Editor, scope: string) => void;
+    onPublishReport: () => void;
 }
 
 export type RichTextEditViewProps = {
     value: any;
-    onReportValueChanged: (value: any) => void;
-    onPublishReport: (editor: Editor, scope: string) => void;
+    onReportValueChanged: (value: any, editor: Editor) => void;
 }
 
 export type ReportInfoVM = {

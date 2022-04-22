@@ -1,10 +1,9 @@
-import {ISlateLeafPlugin, ItalicInputProps, LeafType, SuperscriptInputProps} from "./slateModel";
+import {ISlateLeafPlugin, LeafType, SuperscriptInputProps} from "./slateModel";
 import React from "react";
-import {ReactEditor, useSlate} from "slate-react";
+import {useSlate} from "slate-react";
 import {Editor} from "slate";
 import Button from "../../../../theme/widgets/button/button";
-import {TextFormatItalicSVG} from "../../../../theme/svgs/textFormatItalicSVG";
-import {hasMark, isKeyMod, toggleMark} from "./slate-utils";
+import {hasMark, toggleMark} from "./slate-utils";
 
 const markKey = 'superscript';
 
@@ -27,8 +26,7 @@ export function SuperscriptInput(props: SuperscriptInputProps) {
 
     return (
         <Button className={'btn-transparent'} onClick={_onSelect} selected={hasSuperscriptMark(editor)}>
-            {/*<TextFormatItalicSVG className={'small-image-container'}/>*/}
-            Superscript
+            <div>X<sup>x</sup></div>
         </Button>
     )
 }
