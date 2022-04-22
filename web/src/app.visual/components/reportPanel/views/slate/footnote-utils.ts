@@ -414,7 +414,6 @@ export function removeFootnote(editor: Editor, id: string) {
                         }
                     } else if (child_footnote_type === "footnote_number") {
 
-                        // debugger;
                         if (child_id === id) {
                             const sibling_index = editor_child_child_index + 1;
                             const sibling = editor_child.children[sibling_index];

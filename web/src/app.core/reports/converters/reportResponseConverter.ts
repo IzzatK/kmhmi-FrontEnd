@@ -21,7 +21,15 @@ export class ReportResponseConverter extends Converter<any, ReportInfo> {
         reportInfo.publication_date = getValueOrDefault(item, "publication_date", "");
         reportInfo.scope = getValueOrDefault(item, "scope", "");
 
-        reportInfo.content = JSON.parse(getValueOrDefault(item, "rte_text", ""));
+        let content = [{children: [{ text: "" },],}];
+
+        try {
+            content = JSON.parse(getValueOrDefault(item, "rte_text", "[{\"children\":[{\"text\":\"\"}]}]"));
+        } catch (error) {
+            console.log(error);
+        }
+
+        reportInfo.content = content;
 
         let public_tags: Record<string, string> = {};
         forEach(getValueOrDefault(item, 'custom_shared_tag', []), (tag: string) => {
