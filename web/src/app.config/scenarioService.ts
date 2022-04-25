@@ -16,10 +16,10 @@ import {SearchResultsMenuItem} from "../app.model";
 import {CardsSVG} from "../app.visual/theme/svgs/cardsSVG";
 import {TableSVG} from "../app.visual/theme/svgs/tableSVG";
 import {ListSVG} from "../app.visual/theme/svgs/listSVG";
-import CardCollectionView from "../app.visual/components/searchResultsPanel/renderers/cardCollectionView";
-import TableCollectionView from "../app.visual/components/searchResultsPanel/renderers/tableCollectionView";
-import ListCollectionView from "../app.visual/components/searchResultsPanel/renderers/listCollectionView";
 import {PocketSVG} from "../app.visual/theme/svgs/pocketSVG";
+import CardCollectionView from "../app.visual/components/searchResultsPanel/views/renderers/cardCollectionView";
+import TableCollectionView from "../app.visual/components/searchResultsPanel/views/renderers/tableCollectionView";
+import ListCollectionView from "../app.visual/components/searchResultsPanel/views/renderers/listCollectionView";
 
 export class ScenarioService extends Plugin implements IScenarioService {
     public static readonly class: string = 'ScenarioService';

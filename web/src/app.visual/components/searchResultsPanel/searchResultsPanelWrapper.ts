@@ -1,7 +1,6 @@
 import {createSelector} from "@reduxjs/toolkit";
-import SearchResultsPanelView from "./searchResultsPanelView";
-import {VisualWrapper} from "../../../framework.visual/extras/visualWrapper";
-import {createVisualConnector} from "../../../framework.visual/connectors/visualConnector";
+import {VisualWrapper} from "../../../framework.visual";
+import {createVisualConnector} from "../../../framework.visual";
 import {forEach, forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 import {DocumentPanelId} from "../documentPanel/documentPanelPresenter";
 import {
@@ -15,18 +14,28 @@ import {
     SortPropertyInfo
 } from "../../../app.model";
 import {
+    authorizationService,
     displayService,
-    documentService,
-    referenceService,
+    documentService, pocketService,
+    referenceService, reportService,
     repoService,
     selectionService,
     userService
 } from "../../../serviceComposition";
 import {MenuItemVM} from "../../../framework.visual";
-import {DocumentInfoVM, ObjectType, ReferenceInfoVM, SortPropertyInfoVM} from "./searchResultsModel";
+import {
+    DocumentInfoVM,
+    ObjectType,
+    ReferenceInfoVM, SearchResultsPanelAppDispatchProps,
+    SearchResultsPanelAppStateProps,
+    SortPropertyInfoVM
+} from "./searchResultsModel";
 import {DOCUMENT_PREVIEW_VIEW_ID} from "../systemToolbar/systemToolbarPresenter";
+import {Nullable} from "../../../framework.core/extras/utils/typeUtils";
+import SearchResultsPanelPresenter from "./presenters/searchResultsPanelPresenter";
+import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../app.core.api";
 
-class SearchResultsPanel extends VisualWrapper {
+class _SearchResultsPanelWrapper extends VisualWrapper {
     constructor() {
         super();
 
@@ -34,9 +43,9 @@ class SearchResultsPanel extends VisualWrapper {
 
         this.metadataId = MetadataType.DOCUMENTS_GET_ARRAY;
 
-        this.view = SearchResultsPanelView;
+        this.view = SearchResultsPanelPresenter;
 
-        this.mapStateToProps = (state: any, props: any) => {
+        this.mapStateToProps = (state: any, props: any): SearchResultsPanelAppStateProps => {
             return {
                 searchResults: this.getSearchResultVMs(state),
                 resultViews: this.getResultViewVMs(state),
@@ -44,20 +53,53 @@ class SearchResultsPanel extends VisualWrapper {
                 sortTypes: this.getSortVMs(state),
                 selectedSort: this.getSelectedSort(state),
                 userLookup: userService.getActiveUsers(),
-                selectedId: this.getSelectedId(state),
+                selectedDocument: this.getSelectedDocumentVM(state),
+                permissions: this.getPermissions(state),
             };
         }
 
-        this.mapDispatchToProps = () => {
+        this.mapDispatchToProps = (dispatch: any): SearchResultsPanelAppDispatchProps => {
             return {
                 onDocumentSelected: (id: string, object_type: ObjectType) => this.onDocumentSelected(id, object_type),
                 onResultViewSelected: (id: string) => this.onResultViewSelected(id),
-                onSortSelected: (id: string) => this.onSortSelected(id)
+                onSortSelected: (id: string) => this.onSortSelected(id),
+                onDelete: (id: string, object_type: ObjectType) => this._onDelete(id, object_type),
+                onDownload: (id: string, object_type: ObjectType) => this._onDownload(id, object_type),
             };
         }
 
         //select card view by default
         this.onResultViewSelected('cardViewId');
+    }
+
+    _onDelete(id: string, object_type: ObjectType) {
+        switch (object_type) {
+            case ObjectType.PocketInfo:
+                pocketService.removePocket(id);
+                break;
+            case ObjectType.ReportInfo:
+                reportService.removeReport(id);
+                break;
+            case ObjectType.DocumentInfo:
+            default:
+                documentService.removeDocument(id);
+                break;
+        }
+    }
+
+    _onDownload(id: string, object_type: ObjectType) {
+        switch (object_type) {
+            case ObjectType.PocketInfo:
+
+                break;
+            case ObjectType.ReportInfo:
+
+                break;
+            case ObjectType.DocumentInfo:
+            default:
+
+                break;
+        }
     }
 
     getDepartmentVMs = createSelector(
@@ -116,17 +158,14 @@ class SearchResultsPanel extends VisualWrapper {
             (s) => this.getSelectedReportId(s)
         ],
         (selectedDocumentId, selectedPocketId, selectedReportId) => {
-            let result = "";
 
-            if (selectedDocumentId !== "") {
-                result = selectedDocumentId;
-            } else if (selectedPocketId !== "") {
-                result = selectedPocketId;
-            } else if (selectedReportId !== "") {
-                result = selectedReportId;
+            if (selectedDocumentId && selectedDocumentId !== "") {
+                return selectedDocumentId;
+            } else if (selectedPocketId && selectedPocketId !== "") {
+                return selectedPocketId;
+            } else if (selectedReportId && selectedReportId !== "") {
+                return selectedReportId;
             }
-
-            return result;
         }
     )
 
@@ -170,27 +209,27 @@ class SearchResultsPanel extends VisualWrapper {
                 if (item instanceof DocumentInfo) {
                     const {
                         id,
-                        author="",
-                        department="",
-                        file_name="",
-                        file_size="",
-                        file_page_count="",
-                        primary_sme_email="",
-                        primary_sme_name="",
-                        primary_sme_phone="",
-                        private_tag={},
-                        project="",
-                        public_tag={},
-                        publication_date="",
-                        purpose="",
-                        secondary_sme_email="",
-                        secondary_sme_name="",
-                        secondary_sme_phone="",
-                        status="",
-                        scope="",
-                        title="",
-                        upload_date="",
-                        uploadedBy_id="",
+                        author,
+                        department,
+                        file_name,
+                        file_size,
+                        file_page_count,
+                        primary_sme_email,
+                        primary_sme_name,
+                        primary_sme_phone,
+                        private_tag,
+                        project,
+                        public_tag,
+                        publication_date,
+                        purpose,
+                        secondary_sme_email,
+                        secondary_sme_name,
+                        secondary_sme_phone,
+                        status,
+                        scope,
+                        title,
+                        upload_date,
+                        uploadedBy_id,
                         isUpdating,
                     } = item;
 
@@ -307,6 +346,64 @@ class SearchResultsPanel extends VisualWrapper {
         }
     );
 
+    getSelectedDocumentVM = createSelector(
+        [
+            (s) => this.getSelectedDocumentId(s),
+            (s) => this.getSelectedPocketId(s),
+            (s) => this.getSelectedReportId(s)
+        ],
+        (selectedDocumentId, selectedPocketId, selectedReportId) => {
+            let result: DocumentInfoVM | undefined = undefined;
+
+            if (selectedDocumentId && selectedDocumentId !== "") {
+                const document = documentService.getDocument(selectedDocumentId);
+
+                if (document) {
+                    const { id, title, file_name, author, uploadedBy_id } = document;
+
+                    result = {
+                        id,
+                        title: title ? title : file_name,
+                        author,
+                        object_type: ObjectType.DocumentInfo,
+                        uploadedBy_id
+                    }
+                }
+            } else if (selectedPocketId && selectedPocketId !== "") {
+                const pocket = pocketService.getPocketInfo(selectedPocketId);
+
+                if (pocket) {
+                    const { id, title, author_id, uploadedBy_id } = pocket;
+
+                    result = {
+                        id,
+                        title,
+                        author: author_id,
+                        object_type: ObjectType.PocketInfo,
+                        uploadedBy_id
+                    }
+                }
+            } else if (selectedReportId && selectedReportId !== "") {
+                const report = reportService.getReport(selectedReportId);
+
+                if (report) {
+                    const { id, title, author_id, uploadedBy_id } = report;
+
+                    result = {
+                        id,
+                        title: title,
+                        author: author_id,
+                        object_type: ObjectType.ReportInfo,
+                        uploadedBy_id
+                    }
+                }
+
+            }
+
+            return result
+        }
+    )
+
     onDocumentSelected(id: string, object_type: ObjectType) {
         switch (object_type) {
             case ObjectType.DocumentInfo:
@@ -401,9 +498,23 @@ class SearchResultsPanel extends VisualWrapper {
         documentService.setSortParam(id);
         documentService.fetchDocuments();
     }
+
+    getPermissions = createSelector(
+        [(s) => this.getSelectedDocumentVM(s), (s) => userService.getCurrentUserId(), (s) => authorizationService.getPermissions],
+        (documentInfoVM, currentUserId, permissionInfoLookup) => {
+
+            let uploadedBy = documentInfoVM?.uploadedBy_id || null;
+
+            return {
+                canDelete: authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.DELETE, currentUserId, uploadedBy),
+                canDownload: authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.DOWNLOAD, currentUserId, uploadedBy),
+                canModify: authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.MODIFY, currentUserId, uploadedBy)
+            }
+        }
+    )
 }
 
 export const {
-    connectedPresenter: SearchResultsPanelPresenter,
+    connectedPresenter: SearchResultsPanelWrapper,
     componentId: SearchResultsPanelId
-} = createVisualConnector(SearchResultsPanel);
+} = createVisualConnector(_SearchResultsPanelWrapper);

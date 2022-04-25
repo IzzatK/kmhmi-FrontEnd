@@ -3,27 +3,54 @@ import {MetaDataVM} from "../../../framework.visual";
 import {Nullable} from "../../../framework.core/extras/utils/typeUtils";
 import {ReferenceType, UserInfo} from "../../../app.model";
 
-export type SearchResultsStateProps = {
+export type SearchResultsPanelAppStateProps = {
     className?: string;
     searchResults: DocumentInfoVM[];
     resultViews: Record<string, MenuItemVM>;
     selectedResultView: string;
     sortTypes: SortPropertyInfoVM[];
-    selectedSort: SortPropertyInfoVM;
+    selectedSort: Nullable<SortPropertyInfoVM>;
     userLookup?: Record<string, UserInfo>;
-    selectedId?: string;
+    selectedDocument?: DocumentInfoVM | undefined;
+    permissions: PermissionsVM;
 }
 
-export type SearchResultsDispatchProps = {
-    onDocumentSelected: (id: Nullable<string>, object_type: ObjectType) => void;
+export type SearchResultsPanelAppDispatchProps = {
+    onDocumentSelected: (id: string, object_type: ObjectType) => void;
     onResultViewSelected: (id: string) => void;
-    onSortSelected: (id: Nullable<string>) => void;
+    onSortSelected: (id: string) => void;
+    onDownload: (id: string, object_type: ObjectType) => void;
+    onDelete: (id: string, object_type: ObjectType) => void;
 }
 
-export type SearchResultsProps = SearchResultsStateProps & SearchResultsDispatchProps & MetaDataVM;
+export type SearchResultsPanelPresenterProps = SearchResultsPanelAppStateProps & SearchResultsPanelAppDispatchProps & MetaDataVM;
 
-export type SearchResultsState = {
+export type SearchResultsPanelPresenterState = {
     pageWidth: PageWidth;
+}
+
+export type SearchResultsPanelViewProps = {
+    className?: string;
+    searchResults: DocumentInfoVM[];
+    resultViews: Record<string, MenuItemVM>;
+    selectedResultView: string;
+    sortTypes: SortPropertyInfoVM[];
+    selectedSort: Nullable<SortPropertyInfoVM>;
+    userLookup?: Record<string, UserInfo>;
+    selectedDocument?: DocumentInfoVM;
+    isLoading?: boolean;
+    hasError?: boolean;
+    errorMessage?: string;
+    pageWidth: PageWidth;
+    permissions: PermissionsVM;
+    onDocumentSelected: (id: string, object_type: ObjectType) => void;
+    onResultViewSelected: (id: string) => void;
+    onSortSelected: (id: string) => void;
+    onDownload: (id: string, object_type: ObjectType) => void;
+    onCopy: (id: string, object_type: ObjectType) => void;
+    onEdit: (id: string, object_type: ObjectType) => void;
+    onShare: (id: string, object_type: ObjectType) => void;
+    onDelete: (id: string, object_type: ObjectType) => void;
 }
 
 export type ResultsRendererProps = {
@@ -31,6 +58,11 @@ export type ResultsRendererProps = {
     pageWidth: PageWidth;
     searchResults: DocumentInfoVM[];
     onDocumentSelected: (id: Nullable<string>, object_type: ObjectType) => void;
+    userLookup?: Record<string, UserInfo>;
+}
+
+export type ResultsRendererState = {
+    renderTrigger: number;
 }
 
 export type CardCollectionRendererProps = ResultsRendererProps &
@@ -40,17 +72,13 @@ export type CardCollectionRendererProps = ResultsRendererProps &
 
 export type ListCollectionRendererProps = ResultsRendererProps &
     {
-        userLookup?: Record<string, UserInfo>;
+
     }
 
 export type TableCollectionRendererProps = ResultsRendererProps &
     {
 
     }
-
-export type ResultsRendererState = {
-    renderTrigger: number;
-}
 
 export type CardCollectionRendererState = ResultsRendererState &
     {
@@ -123,4 +151,10 @@ export type SortPropertyInfoVM = {
     title?: Nullable<string>;
     value?: Nullable<any>;
     selected?: boolean;
+}
+
+export type PermissionsVM = {
+    canDelete: boolean,
+    canDownload: boolean,
+    canModify: boolean
 }

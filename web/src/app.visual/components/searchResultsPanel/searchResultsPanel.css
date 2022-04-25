@@ -244,3 +244,17 @@
     left: 0;
     margin: auto;
 }
+
+.search-results-panel .banner {
+
+}
+
+.search-results-panel .banner .text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
+.search-results-panel .banner .button {
+    fill: var(--primary-color)
+}

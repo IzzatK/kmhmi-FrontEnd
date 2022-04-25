@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './searchView.css';
 
 import {SearchBannerPresenter} from "../../../../components/searchBanner/searchBannerPresenter";
-import {SearchResultsPanelPresenter} from "../../../../components/searchResultsPanel/searchResultsPanelPresenter";
+import {SearchResultsPanelWrapper} from "../../../../components/searchResultsPanel/searchResultsPanelWrapper";
 import {SearchGraphsPanelPresenter} from "../../../../components/searchGraphsPanel/searchGraphsPanelPresenter";
 
 import {Props, State} from "./searchModel";
@@ -29,7 +29,7 @@ export class SearchView extends Component<Props, State> {
                     <SearchGraphsPanelPresenter/>
                 </div>
 
-                <SearchResultsPanelPresenter className={'flex-fill'}/>
+                <SearchResultsPanelWrapper className={'flex-fill'}/>
             </div>
         );
     }

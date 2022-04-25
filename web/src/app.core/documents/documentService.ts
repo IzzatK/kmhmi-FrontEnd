@@ -96,17 +96,18 @@ export class DocumentService extends Plugin implements IDocumentService {
                     const { author_id } = item.pocket;
 
                     if (currentUserId !== author_id) {
-                        result[id] = item;
+
                     }
+                    result[id] = item;
                 })
 
                 forEach(reports, (item: ReportInfo) => {
                     const { id, author_id, scope } = item;
 
                     if (currentUserId !== author_id) {
-                        result[id] = item;
-                    }
 
+                    }
+                    result[id] = item;
                 })
 
 

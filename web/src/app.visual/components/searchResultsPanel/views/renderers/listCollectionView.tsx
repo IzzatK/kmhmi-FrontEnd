@@ -1,21 +1,23 @@
 import React, {Component} from 'react';
-import ListItem from "../../../theme/widgets/listItem/listItem";
-import ScrollBar from "../../../theme/widgets/scrollBar/scrollBar";
-import CheckBox from "../../../theme/widgets/checkBox/checkBox";
-import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
-import {TooltipPortal} from "../../../theme/widgets/tooltipPortal/tooltipPortal";
-import {InfoSVG} from "../../../theme/svgs/infoSVG";
 import {
-    DocumentInfoVM, ListCollectionRendererProps,
-    ListCollectionRendererState, ObjectType,
-} from "../searchResultsModel";
-import Tag from "../../../theme/widgets/tag/tag";
-import Card from "../../../theme/widgets/card/card";
-import {forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
-import {EllipsisSVG} from "../../../theme/svgs/ellipsisSVG";
-import {ReportInfoSVG} from "../../../theme/svgs/reportInfoSVG";
-import {PocketInfoSVG} from "../../../theme/svgs/pocketInfoSVG";
-import {DocumentInfoSVG} from "../../../theme/svgs/documentInfoSVG";
+    DocumentInfoVM,
+    ListCollectionRendererProps,
+    ListCollectionRendererState,
+    ObjectType
+} from "../../searchResultsModel";
+import {forEachKVP} from "../../../../../framework.core/extras/utils/collectionUtils";
+import Tag from "../../../../theme/widgets/tag/tag";
+import {ReportInfoSVG} from "../../../../theme/svgs/reportInfoSVG";
+import {PocketInfoSVG} from "../../../../theme/svgs/pocketInfoSVG";
+import {DocumentInfoSVG} from "../../../../theme/svgs/documentInfoSVG";
+import ListItem from "../../../../theme/widgets/listItem/listItem";
+import CheckBox from "../../../../theme/widgets/checkBox/checkBox";
+import {TooltipPortal} from "../../../../theme/widgets/tooltipPortal/tooltipPortal";
+import {EllipsisSVG} from "../../../../theme/svgs/ellipsisSVG";
+import Card from "../../../../theme/widgets/card/card";
+import {InfoSVG} from "../../../../theme/svgs/infoSVG";
+import {LoadingIndicator} from "../../../../theme/widgets/loadingIndicator/loadingIndicator";
+import ScrollBar from "../../../../theme/widgets/scrollBar/scrollBar";
 
 class ListCollectionView extends Component<ListCollectionRendererProps, ListCollectionRendererState> {
     private resizeObserver: ResizeObserver;
@@ -106,6 +108,17 @@ class ListCollectionView extends Component<ListCollectionRendererProps, ListColl
                     }
                     if (user.last_name) {
                         uploaded_by += ` ${user.last_name}`;
+                    }
+                }
+
+                let author_text = author;
+                if (object_type !== ObjectType.DocumentInfo) {
+                    if (userLookup) {
+                        const author_user = userLookup[author || ""];
+
+                        if (author_user) {
+                            author_text = author_user.first_name + " " + author_user.last_name;
+                        }
                     }
                 }
 
@@ -300,13 +313,13 @@ class ListCollectionView extends Component<ListCollectionRendererProps, ListColl
                                     <div>
                                         {
                                             author &&
-                                            <div>{author}</div>
+                                            <div>{author_text}</div>
                                         }
                                     </div>
                                 }>
                                     {
                                         author &&
-                                        <div className={`header-2 overflow-hidden text ${pageWidth !== 'FULL' ? 'collapsed' : ''}`}>Author: {author}</div>
+                                        <div className={`header-2 overflow-hidden text ${pageWidth !== 'FULL' ? 'collapsed' : ''}`}>Author: {author_text}</div>
                                     }
                                 </TooltipPortal>
 

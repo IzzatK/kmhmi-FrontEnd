@@ -4,19 +4,19 @@ import {
     PageWidth,
     TableCollectionRendererProps,
     TableCollectionRendererState
-} from "../searchResultsModel";
-import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
-import {forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
-import Tag from "../../../theme/widgets/tag/tag";
-import ListItem from "../../../theme/widgets/listItem/listItem";
-import CheckBox from "../../../theme/widgets/checkBox/checkBox";
-import {TooltipPortal} from "../../../theme/widgets/tooltipPortal/tooltipPortal";
-import {EllipsisSVG} from "../../../theme/svgs/ellipsisSVG";
-import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
-import ScrollBar from "../../../theme/widgets/scrollBar/scrollBar";
-import {ReportInfoSVG} from "../../../theme/svgs/reportInfoSVG";
-import {PocketInfoSVG} from "../../../theme/svgs/pocketInfoSVG";
-import {DocumentInfoSVG} from "../../../theme/svgs/documentInfoSVG";
+} from "../../searchResultsModel";
+import {bindInstanceMethods} from "../../../../../framework.core/extras/utils/typeUtils";
+import {forEachKVP} from "../../../../../framework.core/extras/utils/collectionUtils";
+import Tag from "../../../../theme/widgets/tag/tag";
+import {ReportInfoSVG} from "../../../../theme/svgs/reportInfoSVG";
+import {PocketInfoSVG} from "../../../../theme/svgs/pocketInfoSVG";
+import {DocumentInfoSVG} from "../../../../theme/svgs/documentInfoSVG";
+import ListItem from "../../../../theme/widgets/listItem/listItem";
+import CheckBox from "../../../../theme/widgets/checkBox/checkBox";
+import {TooltipPortal} from "../../../../theme/widgets/tooltipPortal/tooltipPortal";
+import {EllipsisSVG} from "../../../../theme/svgs/ellipsisSVG";
+import {LoadingIndicator} from "../../../../theme/widgets/loadingIndicator/loadingIndicator";
+import ScrollBar from "../../../../theme/widgets/scrollBar/scrollBar";
 
 class TableCollectionView extends Component<TableCollectionRendererProps, TableCollectionRendererState> {
     private resizeObserver: ResizeObserver;
@@ -145,7 +145,7 @@ class TableCollectionView extends Component<TableCollectionRendererProps, TableC
     }
 
     render() {
-        const { className, searchResults, onDocumentSelected, pageWidth } = this.props;
+        const { className, searchResults, onDocumentSelected, pageWidth, userLookup } = this.props;
         const { columnWidths } = this.state;
 
         let cn = "table h-100";
@@ -162,6 +162,17 @@ class TableCollectionView extends Component<TableCollectionRendererProps, TableC
                 let cn = 'result-item d-flex align-items-center h-gap-1';
                 if (selected) {
                     cn += ' selected shadow-lg'
+                }
+
+                let author_text = author;
+                if (object_type !== ObjectType.DocumentInfo) {
+                    if (userLookup) {
+                        const author_user = userLookup[author || ""];
+
+                        if (author_user) {
+                            author_text = author_user.first_name + " " + author_user.last_name;
+                        }
+                    }
                 }
 
                 let hoverTagDivs: any[] = [];
@@ -265,11 +276,11 @@ class TableCollectionView extends Component<TableCollectionRendererProps, TableC
                                     <div>
                                         {
                                             author &&
-                                            <div>{author}</div>
+                                            <div>{author_text}</div>
                                         }
                                     </div>
                                 }>
-                                    <div className={"text-break overflow-hidden header-2 author"}>{author}</div>
+                                    <div className={"text-break overflow-hidden header-2 author"}>{author_text}</div>
                                 </TooltipPortal>
                             </div>
 
