@@ -1,4 +1,4 @@
-import {Converter} from "../../common/converters/converter";
+import {Converter} from "../../../common/converters/converter";
 
 export interface UploadDocumentRequestData {
     pendingFilesRaw: Record<string, any>,

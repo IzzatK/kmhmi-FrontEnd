@@ -11,10 +11,11 @@ export type SearchResultsStateProps = {
     sortTypes: SortPropertyInfoVM[];
     selectedSort: SortPropertyInfoVM;
     userLookup?: Record<string, UserInfo>;
+    selectedId?: string;
 }
 
 export type SearchResultsDispatchProps = {
-    onDocumentSelected: (id: Nullable<string>) => void;
+    onDocumentSelected: (id: Nullable<string>, object_type: ObjectType) => void;
     onResultViewSelected: (id: string) => void;
     onSortSelected: (id: Nullable<string>) => void;
 }
@@ -29,7 +30,7 @@ export type ResultsRendererProps = {
     className?: string;
     pageWidth: PageWidth;
     searchResults: DocumentInfoVM[];
-    onDocumentSelected: (id: Nullable<string>) => void;
+    onDocumentSelected: (id: Nullable<string>, object_type: ObjectType) => void;
 }
 
 export type CardCollectionRendererProps = ResultsRendererProps &
@@ -108,6 +109,13 @@ export type DocumentInfoVM = {
     isUpdating?: boolean;
     isPending?: boolean;
     selected?: boolean;
+    object_type: ObjectType;
+}
+
+export enum ObjectType {
+    DocumentInfo,
+    PocketInfo,
+    ReportInfo
 }
 
 export type SortPropertyInfoVM = {

@@ -1,5 +1,5 @@
-import {Converter} from "../../common/converters/converter";
-import {ResponseStatusType} from "../../common/converters/types";
+import {Converter} from "../../../common/converters/converter";
+import {ResponseStatusType} from "../../../common/converters/types";
 
 export class DeleteDocumentResponseConverter extends Converter<any, ResponseStatusType>{
     convert(fromData: any): any {

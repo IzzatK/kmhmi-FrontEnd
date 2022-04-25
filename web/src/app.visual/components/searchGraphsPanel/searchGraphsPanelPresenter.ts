@@ -302,7 +302,7 @@ class SearchGraphsPanel extends VisualWrapper {
     );
 
     hasSearchResults = createSelector(
-        [documentService.getSearchDocuments],
+        [documentService.getSearchResults],
         (items) => {
 
             let length = 0;

@@ -7,12 +7,15 @@ import {TooltipPortal} from "../../../theme/widgets/tooltipPortal/tooltipPortal"
 import {InfoSVG} from "../../../theme/svgs/infoSVG";
 import {
     DocumentInfoVM, ListCollectionRendererProps,
-    ListCollectionRendererState,
+    ListCollectionRendererState, ObjectType,
 } from "../searchResultsModel";
 import Tag from "../../../theme/widgets/tag/tag";
 import Card from "../../../theme/widgets/card/card";
 import {forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
 import {EllipsisSVG} from "../../../theme/svgs/ellipsisSVG";
+import {ReportInfoSVG} from "../../../theme/svgs/reportInfoSVG";
+import {PocketInfoSVG} from "../../../theme/svgs/pocketInfoSVG";
+import {DocumentInfoSVG} from "../../../theme/svgs/documentInfoSVG";
 
 class ListCollectionView extends Component<ListCollectionRendererProps, ListCollectionRendererState> {
     private resizeObserver: ResizeObserver;
@@ -88,7 +91,7 @@ class ListCollectionView extends Component<ListCollectionRendererProps, ListColl
             itemDivs = searchResults.map((item: DocumentInfoVM) => {
                 const {id, author, title, upload_date, selected, scope, publication_date, public_tag, private_tag, type,
                     department, purpose, project, page_count, isUpdating, file_name, uploadedBy_id, primary_sme_email,
-                    primary_sme_name, primary_sme_phone, secondary_sme_email, secondary_sme_name, secondary_sme_phone} = item;
+                    primary_sme_name, primary_sme_phone, secondary_sme_email, secondary_sme_name, secondary_sme_phone, object_type} = item;
 
                 this.sampleId = id;
 
@@ -165,17 +168,36 @@ class ListCollectionView extends Component<ListCollectionRendererProps, ListColl
                     })
                 }
 
+                let graphic_node;
+
+                switch (object_type) {
+                    case ObjectType.ReportInfo:
+                        graphic_node = <ReportInfoSVG className={"medium-image-container"}/>
+                        break;
+                    case ObjectType.PocketInfo:
+                        graphic_node = <PocketInfoSVG className={"medium-image-container"}/>
+                        break;
+                    case ObjectType.DocumentInfo:
+                    default:
+                        graphic_node = <DocumentInfoSVG className={"medium-image-container"}/>
+                        break;
+                }
+
                 return (
                     <div key={id} draggable={true}>
-                        <ListItem key={id} selected={selected} className={cn} onClick={() => onDocumentSelected(id)}>
+                        <ListItem key={id} selected={selected} className={cn} onClick={() => onDocumentSelected(id, object_type)}>
                             <CheckBox className={'mt-1'} selected={selected} disabled={true}/>
                             <div className={"flex-fill align-self-stretch d-flex flex-column v-gap-3"}>
                                 <div id={id} className={"d-flex w-100 flex-nowrap h-gap-2 justify-content-between"}>
-                                    <TooltipPortal portalContent={
-                                        <div>{title}</div>
-                                    }>
-                                        <div className={"font-weight-semi-bold title text-left text-break overflow-hidden"}>{title}</div>
-                                    </TooltipPortal>
+                                    <div className={"d-flex h-gap-3 w-100 flex-nowrap align-items-center"}>
+                                        {graphic_node}
+                                        <TooltipPortal portalContent={
+                                            <div>{title}</div>
+                                        }>
+                                            <div className={"font-weight-semi-bold title text-left text-break overflow-hidden"}>{title}</div>
+                                        </TooltipPortal>
+                                    </div>
+
                                     {
                                         pageWidth === 'FULL' &&
                                         <TooltipPortal portalContent={

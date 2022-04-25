@@ -1,10 +1,9 @@
-import {forEach, sortByProperty} from "../../../framework.core/extras/utils/collectionUtils";
-import {IConverter} from "../../../framework.core.api";
-import {KM_API_SERVER_URL} from "../../../app.config/config";
-import {getValueOrDefault, Nullable} from "../../../framework.core/extras/utils/typeUtils";
-import {DocumentInfo, SearchParamInfo} from "../../../app.model";
-import {Converter} from "../../common/converters/converter";
-
+import {DocumentInfo, SearchParamInfo} from "../../../../app.model";
+import {Converter} from "../../../common/converters/converter";
+import {IConverter} from "../../../../framework.core.api";
+import {getValueOrDefault, Nullable} from "../../../../framework.core/extras/utils/typeUtils";
+import {forEach, sortByProperty} from "../../../../framework.core/extras/utils/collectionUtils";
+import {KM_API_SERVER_URL} from "../../../../app.config/config";
 
 type OptionsDataType = {
     getSearchParamValue: (searchParam: SearchParamInfo) => Record<string,any>

@@ -1,13 +1,12 @@
-import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
-import {SearchParamInfo} from "../../../app.model";
-import {Converter} from "../../common/converters/converter";
-
+import {SearchParamInfo} from "../../../../app.model";
+import {Converter} from "../../../common/converters/converter";
+import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
 
 type OptionsDataType = {
     getSearchParamValue: (searchParam: SearchParamInfo) => Record<string,any>
 }
 
-export class GetDocumentArrayRequestConverter extends Converter<any, any>{
+export class GetSearchResultsArrayRequestConverter extends Converter<any, any>{
     convert(fromData: any, reject: any, options: OptionsDataType): any {
         const result: Record<string, any> = {};
 
@@ -47,8 +46,6 @@ export class GetDocumentArrayRequestConverter extends Converter<any, any>{
             result["search_request"] = 'NULL';
             result["scope"] = 'Draft';
         }
-
-        result["kp_type"] = ['Document'];
 
         const { limit, offset, sort, ...rest } = result;
 

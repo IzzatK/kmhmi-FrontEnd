@@ -60,7 +60,7 @@ import {
     TagService,
     UserProvider,
     UserService,
-    UserGuideService
+    UserGuideService, SearchResultsProvider
 } from "./app.core";
 import {
     MockExcerptProvider,
@@ -98,6 +98,7 @@ const resourceProvider: IEntityProvider<ResourceInfo> = new MockResourceProvider
 const pocketProvider: IEntityProvider<PocketMapper> = new PocketProvider();
 const reportProvider: IEntityProvider<ReportInfo> = new ReportProvider();
 const userGuideProvider: IEntityProvider<UserGuideInfo> = new MockUserGuideProvider();
+const searchResultsProvider: IEntityProvider<any> = new SearchResultsProvider();
 
 // create the application services
 export const authenticationService: IAuthenticationService = new AuthenticationService();
@@ -224,6 +225,12 @@ userGuideProvider.setRepositoryService(repoService);
 userGuideProvider.setHttpService(httpService);
 userGuideProvider.start();
 
+//search results
+searchResultsProvider.setLogService(logService);
+searchResultsProvider.setRepositoryService(repoService);
+searchResultsProvider.setHttpService(httpService);
+searchResultsProvider.start();
+
 // set references and start application
 // authentication service
 authenticationService.setLogService(logService);
@@ -244,7 +251,10 @@ authorizationService.start();
 documentService.setLogService(logService);
 documentService.setRepositoryService(repoService);
 documentService.setUserService(userService);
+documentService.setPocketService(pocketService);
+documentService.setReportService(reportService);
 documentService.setDocumentProvider(documentProvider);
+documentService.setSearchResultsProvider(searchResultsProvider);
 documentService.start();
 // reference service
 referenceService.setLogService(logService);

@@ -17,9 +17,10 @@ export class ReportResponseConverter extends Converter<any, ReportInfo> {
 
         reportInfo.title = getValueOrDefault(item, "title", "");
         reportInfo.author_id = getValueOrDefault(item, "author_id", "");
-        reportInfo.creation_date = getValueOrDefault(item, "creation_date", "");
+        reportInfo.upload_date = getValueOrDefault(item, "upload_date", "");
         reportInfo.publication_date = getValueOrDefault(item, "publication_date", "");
         reportInfo.scope = getValueOrDefault(item, "scope", "");
+        reportInfo.uploadedBy_id = getValueOrDefault(item, "uploaded_by", "");
 
         let content = [{children: [{ text: "" },],}];
 

@@ -58,7 +58,7 @@ class SearchResultsPanelView extends Component<SearchResultsProps, SearchResults
 
     render() {
         const { className, searchResults, onDocumentSelected, resultViews, onResultViewSelected, userLookup,
-            sortTypes, selectedSort, onSortSelected, isLoading, hasError, errorMessage, selectedResultView } = this.props;
+            sortTypes, selectedSort, onSortSelected, isLoading, hasError, errorMessage, selectedResultView, selectedId } = this.props;
         const { pageWidth } = this.state;
 
         // select how to render the results
@@ -143,6 +143,21 @@ class SearchResultsPanelView extends Component<SearchResultsProps, SearchResults
                             </div>
                         </div>
                     }
+                    {/*{*/}
+                    {/*    selectedId !== "" &&*/}
+                    {/*    <div className={"position-absolute d-flex justify-content-between w-100"} style={{right: '0', bottom: '0', left:'0'}}>*/}
+                    {/*        <div className={"d-flex h-gap-2"}>*/}
+                    {/*            <div></div>*/}
+                    {/*            <div></div>*/}
+                    {/*        </div>*/}
+                    {/*        <div className={"d-flex h-gap-2"}>*/}
+                    {/*            <Button text={"Button"}/>*/}
+                    {/*            <Button/>*/}
+                    {/*            <Button/>*/}
+                    {/*            <Button/>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*}*/}
                 </div>
             </div>
         );

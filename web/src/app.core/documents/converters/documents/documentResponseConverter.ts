@@ -1,10 +1,10 @@
-import {KM_API_SERVER_URL} from "../../../app.config/config";
-import {getValueOrDefault} from "../../../framework.core/extras/utils/typeUtils";
-import {DocumentInfo, StatusType} from "../../../app.model";
-import {ErrorHandler} from "../../common/providers/entityProvider";
-import {Converter} from "../../common/converters/converter";
-import {getFormattedSize} from "../../../framework.core/extras/utils/sizeUtils";
-import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
+import {Converter} from "../../../common/converters/converter";
+import {DocumentInfo, StatusType} from "../../../../app.model";
+import {ErrorHandler} from "../../../common/providers/entityProvider";
+import {getValueOrDefault} from "../../../../framework.core/extras/utils/typeUtils";
+import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
+import {getFormattedSize} from "../../../../framework.core/extras/utils/sizeUtils";
+import {KM_API_SERVER_URL} from "../../../../app.config/config";
 
 export class DocumentResponseConverter extends Converter<any, DocumentInfo>{
     convert(fromData: any, reject: ErrorHandler): DocumentInfo {

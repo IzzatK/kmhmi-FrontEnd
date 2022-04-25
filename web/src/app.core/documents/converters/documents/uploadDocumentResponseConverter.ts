@@ -1,6 +1,6 @@
-import {ResponseStatusType} from "../../common/converters/types";
-import {Converter} from "../../common/converters/converter";
-import {StatusType} from "../../../app.model";
+import {Converter} from "../../../common/converters/converter";
+import {ResponseStatusType} from "../../../common/converters/types";
+import {StatusType} from "../../../../app.model";
 
 export class UploadDocumentResponseConverter extends Converter<any, ResponseStatusType>{
     convert(fromData: any): ResponseStatusType {

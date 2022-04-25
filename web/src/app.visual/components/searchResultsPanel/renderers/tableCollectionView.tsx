@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {
-    DocumentInfoVM,
+    DocumentInfoVM, ObjectType,
     PageWidth,
     TableCollectionRendererProps,
     TableCollectionRendererState
@@ -14,6 +14,9 @@ import {TooltipPortal} from "../../../theme/widgets/tooltipPortal/tooltipPortal"
 import {EllipsisSVG} from "../../../theme/svgs/ellipsisSVG";
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
 import ScrollBar from "../../../theme/widgets/scrollBar/scrollBar";
+import {ReportInfoSVG} from "../../../theme/svgs/reportInfoSVG";
+import {PocketInfoSVG} from "../../../theme/svgs/pocketInfoSVG";
+import {DocumentInfoSVG} from "../../../theme/svgs/documentInfoSVG";
 
 class TableCollectionView extends Component<TableCollectionRendererProps, TableCollectionRendererState> {
     private resizeObserver: ResizeObserver;
@@ -154,7 +157,7 @@ class TableCollectionView extends Component<TableCollectionRendererProps, TableC
         if (searchResults) {
             itemDivs = searchResults.map((item: DocumentInfoVM) => {
                 const {id, author, title, selected, publication_date, public_tag, private_tag,
-                    department, purpose, project, page_count, isUpdating} = item;
+                    department, purpose, project, page_count, isUpdating, object_type} = item;
 
                 let cn = 'result-item d-flex align-items-center h-gap-1';
                 if (selected) {
@@ -215,14 +218,30 @@ class TableCollectionView extends Component<TableCollectionRendererProps, TableC
                     })
                 }
 
+                let graphic_node;
+
+                switch (object_type) {
+                    case ObjectType.ReportInfo:
+                        graphic_node = <ReportInfoSVG className={"medium-image-container"}/>
+                        break;
+                    case ObjectType.PocketInfo:
+                        graphic_node = <PocketInfoSVG className={"medium-image-container"}/>
+                        break;
+                    case ObjectType.DocumentInfo:
+                    default:
+                        graphic_node = <DocumentInfoSVG className={"medium-image-container"}/>
+                        break;
+                }
+
                 return (
                     <div key={id} className={"position-relative"} draggable={true}>
-                        <ListItem selected={selected} className={cn} onClick={() => onDocumentSelected(id)}>
+                        <ListItem selected={selected} className={cn} onClick={() => onDocumentSelected(id, object_type)}>
                             <div className={"d-flex align-items-center justify-content-center"} style={{width: columnWidths[0]}}>
                                 <CheckBox className={'mt-1'} selected={selected} disabled={true}/>
                             </div>
 
-                            <div className={'d-flex align-items-center overflow-hidden'} style={{width: columnWidths[1]}}>
+                            <div className={'d-flex align-items-center overflow-hidden h-gap-3'} style={{width: columnWidths[1]}}>
+                                {graphic_node}
                                 <TooltipPortal portalContent={
                                     <div>{title}</div>
                                 }>

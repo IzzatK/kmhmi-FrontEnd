@@ -7,11 +7,14 @@ import {TooltipPortal} from "../../../theme/widgets/tooltipPortal/tooltipPortal"
 import {
     CardCollectionRendererProps,
     CardCollectionRendererState,
-    DocumentInfoVM,
+    DocumentInfoVM, ObjectType,
 } from "../searchResultsModel";
 import Tag from "../../../theme/widgets/tag/tag";
 import {EllipsisSVG} from "../../../theme/svgs/ellipsisSVG";
 import {forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
+import {DocumentInfoSVG} from "../../../theme/svgs/documentInfoSVG";
+import {PocketInfoSVG} from "../../../theme/svgs/pocketInfoSVG";
+import {ReportInfoSVG} from "../../../theme/svgs/reportInfoSVG";
 
 class CardCollectionView extends Component<CardCollectionRendererProps, CardCollectionRendererState> {
     private resizeObserver: ResizeObserver;
@@ -85,7 +88,7 @@ class CardCollectionView extends Component<CardCollectionRendererProps, CardColl
         let itemDivs: any[] = [];
         if (searchResults) {
             itemDivs = searchResults.map((item: DocumentInfoVM) => {
-                const {id, author, title, upload_date, private_tag=[], public_tag=[], selected, status, isUpdating=true, publication_date } = item;
+                const {id, author, title, upload_date, private_tag=[], public_tag=[], selected, status, isUpdating=true, publication_date, object_type } = item;
 
                 this.sampleId = id;
 
@@ -148,13 +151,29 @@ class CardCollectionView extends Component<CardCollectionRendererProps, CardColl
                     })
                 }
 
+                let graphic_node;
+
+                switch (object_type) {
+                    case ObjectType.ReportInfo:
+                        graphic_node = <ReportInfoSVG className={"medium-image-container"}/>
+                        break;
+                    case ObjectType.PocketInfo:
+                        graphic_node = <PocketInfoSVG className={"medium-image-container"}/>
+                        break;
+                    case ObjectType.DocumentInfo:
+                    default:
+                        graphic_node = <DocumentInfoSVG className={"medium-image-container"}/>
+                        break;
+                }
+
                 return (
                     <div key={id} className={cn} draggable={true}>
-                        <Card className={'position-absolute w-100 h-100'} selected={selected} onClick={() => onDocumentSelected(id)}
+                        <Card className={'position-absolute w-100 h-100'} selected={selected} onClick={() => onDocumentSelected(id, object_type)}
                               header={
                                   <div className={"h-100 flex-fill align-self-stretch d-flex flex-column v-gap-2 p-4"}>
                                       <div className={'d-flex align-items-center'}>
                                           <div className={'d-flex h-gap-3 align-items-center w-100 overflow-hidden'}>
+                                              {graphic_node}
                                               <div className={"overflow-hidden"}>
                                                   <TooltipPortal portalContent={
                                                       <div>{title}</div>

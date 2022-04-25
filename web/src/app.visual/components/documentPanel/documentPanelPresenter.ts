@@ -93,11 +93,13 @@ class DocumentPanel extends VisualWrapper {
     }
 
     _onSaveNote(note: NoteVM) {
-        pocketService.addOrUpdateNote({
-            id: note.id,
-            text: note.text,
-            content: note.content
-        })
+        // pocketService.addOrUpdateNote({
+        //     id: note.id,
+        //     text: note.text,
+        //     content: note.content
+        // })
+
+        // pocketService.addNoteAndExcerptToPocket(noteParams, excerptParams, resourceParams, pocketParams);
     }
 
     _createExcerpt(params: CreateExcerptEventData) {
