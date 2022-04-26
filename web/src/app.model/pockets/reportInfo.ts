@@ -16,6 +16,9 @@ export class ReportInfo extends WocketInfo {
   upload_date: string = '';
   uploadedBy_id: string = '';
 
+  preview_url: string = '';
+  original_url: string = '';
+
   resource_ids: string[] = [];
 
   isUpdating?: boolean = false;

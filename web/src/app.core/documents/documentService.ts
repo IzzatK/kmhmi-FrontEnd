@@ -1,5 +1,5 @@
 import {createSelector, OutputSelector} from "@reduxjs/toolkit";
-import {forEach, forEachKVP} from "../../framework.core/extras/utils/collectionUtils";
+import {forEach, forEachKVP, sortByProperty} from "../../framework.core/extras/utils/collectionUtils";
 import {
     DocumentInfo, ExcerptMapper,
     MetadataInfo,
@@ -102,15 +102,16 @@ export class DocumentService extends Plugin implements IDocumentService {
                 })
 
                 forEach(reports, (item: ReportInfo) => {
-                    const { id, author_id, scope } = item;
+                    const { id, author_id } = item;
 
                     if (currentUserId !== author_id) {
                         result[id] = item;
                     }
                 })
 
+                let sortValue: string = this.getSearchParam("sort")?.value || "";
 
-                //TODO perform sorting here?
+                result = sortByProperty(result, sortValue);
 
                 return result;
             }
@@ -275,7 +276,7 @@ export class DocumentService extends Plugin implements IDocumentService {
                     items.push(...flattenedItems);
                 })
 
-                let searchResults: Record<string, SearchResultInfo> = Object.assign({}, this.getPendingDocuments(), this.getLocalReports(), items);//TODO get pending documents, private pockets, unpublished reports
+                let searchResults: Record<string, SearchResultInfo> = Object.assign({}, this.getPendingDocuments(), this.getLocalReports(), items);
 
                 this.setGetDocumentArrayMetadata(false)
 
@@ -283,12 +284,6 @@ export class DocumentService extends Plugin implements IDocumentService {
                 if (values && values.length === 0) {
                     this.setGetDocumentArrayMetadata(false, 'No Results')
                 }
-
-                // this.removeAllByType(PocketInfo.class);
-                // this.removeAllByType(ExcerptInfo.class);
-                // this.removeAllByType(NoteInfo.class);
-                // this.removeAllByType(ResourceInfo.class);
-                // this.removeAllByType(ReportInfo.class);
 
                 this.removeAllByType(DocumentInfo.class);
                 this.removeAllByType(WocketInfo.class);

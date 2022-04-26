@@ -2,7 +2,7 @@ import {DocumentInfo, PocketMapper, ReportInfo, SearchParamInfo} from "../../../
 import {Converter} from "../../../common/converters/converter";
 import {IConverter} from "../../../../framework.core.api";
 import {getValueOrDefault, Nullable} from "../../../../framework.core/extras/utils/typeUtils";
-import {forEach, sortByProperty} from "../../../../framework.core/extras/utils/collectionUtils";
+import {forEach} from "../../../../framework.core/extras/utils/collectionUtils";
 import {KM_API_SERVER_URL} from "../../../../app.config/config";
 
 type OptionsDataType = {
@@ -27,16 +27,6 @@ export class GetSearchResultsArrayResponseConverter extends Converter<any,any[]>
             return searchResults;
         }
         else {
-            // client side sorting. boooo
-            const searchParams: any = super.getRepoItems<SearchParamInfo>(SearchParamInfo.class);
-
-            const {sort:sortProperty} = searchParams;
-            let searchValueObject: Record<string, any> = options.getSearchParamValue(sortProperty);
-
-            //get sort value or set default sort value
-            let sortValue: string = searchValueObject['sort'] ? searchValueObject['sort'] : "author_ascending";
-            fromData = sortByProperty(fromData, sortValue);
-
             forEach(fromData, (item: any) => {
                 switch (getValueOrDefault(item, 'kp_type', '')) {
                     case "Pocket":
@@ -54,6 +44,9 @@ export class GetSearchResultsArrayResponseConverter extends Converter<any,any[]>
 
                         if (reportInfo) {
                             reportInfo.id = getValueOrDefault(item, 'id', '');
+                            reportInfo.original_url = `${KM_API_SERVER_URL}/documents/${reportInfo.id}?format=ORIGINAL`;
+                            reportInfo.preview_url = `${KM_API_SERVER_URL}/documents/${reportInfo.id}?format=PREVIEW`;
+
                             searchResults.push(reportInfo);
                         }
 

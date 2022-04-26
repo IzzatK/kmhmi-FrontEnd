@@ -128,8 +128,6 @@ class ReportPanelPresenter extends Component<ReportPanelPresenterProps, ReportPa
             content: tmpValue,
         }
 
-        debugger;
-
         if (onSaveReport) {
             onSaveReport(params);
         }
