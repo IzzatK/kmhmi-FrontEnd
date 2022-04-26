@@ -90,18 +90,44 @@ export class ReportProvider extends EntityProvider<ReportInfo> {
     }
 
     update(id: string, uiRequestData: any): Promise<Nullable<ReportInfo>> {
-        return new Promise((resolve, reject) => {
-                this.sendPut(id,
-                    () => this.reportRequestConverter.convert(uiRequestData),
-                    (responseData, errorHandler) => this.reportResponseConverter.convert(responseData, errorHandler))
-                    .then(pocket => {
-                        resolve(pocket);
-                    })
-                    .catch(error => {
-                        reject(error);
-                    });
-            }
-        )
+
+        const { scope } = uiRequestData;
+
+        if (scope && scope !== "Draft") {
+            return new Promise((resolve, reject) => {
+                    this.sendPut(id,
+                        () => this.reportRequestConverter.convert(uiRequestData),
+                        (responseData, errorHandler) => this.reportResponseConverter.convert(responseData, errorHandler))
+                        .then(pocket => {
+                            this.httpService?.createPOST(`${this.baseUrl}/${id}/publish`, null)
+                                .then((data: any) => {
+                                    resolve(pocket);
+                                })
+                                .catch((error: any) => {
+                                    reject(error);
+                                })
+                        })
+                        .catch(error => {
+                            reject(error);
+                        });
+                }
+            )
+        } else {
+            return new Promise((resolve, reject) => {
+                    this.sendPut(id,
+                        () => this.reportRequestConverter.convert(uiRequestData),
+                        (responseData, errorHandler) => this.reportResponseConverter.convert(responseData, errorHandler))
+                        .then(pocket => {
+                            resolve(pocket);
+                        })
+                        .catch(error => {
+                            reject(error);
+                        });
+                }
+            )
+        }
+
+
     }
 
     remove(id: string): Promise<Nullable<ReportInfo>> {

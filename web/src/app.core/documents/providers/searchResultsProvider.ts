@@ -12,10 +12,11 @@ import {GetSearchResultsArrayRequestConverter} from "../converters/searchResults
 import {
     GetSearchResultsArrayResponseConverter
 } from "../converters/searchResults/getSearchResultsArrayResponseConverter";
+import {SearchResultInfo} from "../../../app.model";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-export class SearchResultsProvider extends EntityProvider<any> {
+export class SearchResultsProvider extends EntityProvider<SearchResultInfo> {
     baseUrl: string = `${serverUrl}/documents`;
     public static class: string = 'SearchResultsProvider';
 
@@ -45,7 +46,7 @@ export class SearchResultsProvider extends EntityProvider<any> {
         this.getSearchResultsArrayResponseConverter.reportSingleConverter = this.reportResponseConverter;
     }
 
-    getAll(uiRequestData: any): Promise<any[]> {
+    getAll(uiRequestData: any): Promise<SearchResultInfo[]> {
         return new Promise((resolve, reject) => {
             let requestData: any = this.getSearchResultsArrayRequestConverter.convert(uiRequestData, reject, { getSearchParamValue: this.getSearchParamValue});
 

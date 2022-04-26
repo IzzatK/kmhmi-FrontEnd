@@ -17,6 +17,7 @@ import {getDateWithoutTime} from "../../framework.core/extras/utils/timeUtils";
 import {StatusType} from "../../app.model";
 import {IEntityProvider} from "../../framework.core.api";
 import {IRepoItem} from "../../framework.core/services";
+import {SearchResultInfo} from "../../app.model/searchResultInfo";
 
 export class DocumentService extends Plugin implements IDocumentService {
     public static readonly class:string = 'DocumentService';
@@ -81,7 +82,7 @@ export class DocumentService extends Plugin implements IDocumentService {
                 (s) => this.userService?.getCurrentUserId()
             ],
             (documents, pocketMappers, reports, currentUserId) => {
-                let result:Record<string, any> = {};
+                let result:Record<string, SearchResultInfo> = {};
 
                 forEach(documents, (item: DocumentInfo) => {
                     const { id, isPending } = item;
@@ -96,18 +97,16 @@ export class DocumentService extends Plugin implements IDocumentService {
                     const { author_id } = item.pocket;
 
                     if (currentUserId !== author_id) {
-
+                        result[id] = item;
                     }
-                    result[id] = item;
                 })
 
                 forEach(reports, (item: ReportInfo) => {
                     const { id, author_id, scope } = item;
 
                     if (currentUserId !== author_id) {
-
+                        result[id] = item;
                     }
-                    result[id] = item;
                 })
 
 
@@ -260,7 +259,7 @@ export class DocumentService extends Plugin implements IDocumentService {
 
                 const items: IRepoItem[] = [];
 
-                forEach(responseData, (searchResult: any) => {
+                forEach(responseData, (searchResult: SearchResultInfo) => {
                     if (searchResult instanceof PocketMapper) {
                         const flattenedItems = this.flattenPocketMapper(searchResult);
                         items.push(...flattenedItems);
@@ -276,7 +275,7 @@ export class DocumentService extends Plugin implements IDocumentService {
                     items.push(...flattenedItems);
                 })
 
-                let searchResults: Record<string, any> = Object.assign({}, this.getPendingDocuments(), this.getLocalReports(), items);//TODO get pending documents, private pockets, unpublished reports
+                let searchResults: Record<string, SearchResultInfo> = Object.assign({}, this.getPendingDocuments(), this.getLocalReports(), items);//TODO get pending documents, private pockets, unpublished reports
 
                 this.setGetDocumentArrayMetadata(false)
 

@@ -11,6 +11,7 @@ export * from "./referenceType";
 export * from "./roleInfo";
 export * from "./searchBannerMenuItem";
 export * from "./searchParamInfo";
+export * from "./searchResultInfo";
 export * from "./searchResultsMenuItem";
 export * from "./sortPropertyInfo";
 export * from "./statInfo";

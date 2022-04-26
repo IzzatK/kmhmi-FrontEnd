@@ -9,7 +9,6 @@ import {
     PocketMapper,
     ReferenceInfo,
     ReferenceType,
-    ReportInfo,
     SearchResultsMenuItem,
     SortPropertyInfo
 } from "../../../app.model";
@@ -31,9 +30,9 @@ import {
     SortPropertyInfoVM
 } from "./searchResultsModel";
 import {DOCUMENT_PREVIEW_VIEW_ID} from "../systemToolbar/systemToolbarPresenter";
-import {Nullable} from "../../../framework.core/extras/utils/typeUtils";
 import SearchResultsPanelPresenter from "./presenters/searchResultsPanelPresenter";
 import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../app.core.api";
+import {SearchResultInfo} from "../../../app.model/searchResultInfo";
 
 class _SearchResultsPanelWrapper extends VisualWrapper {
     constructor() {
@@ -204,7 +203,7 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
 
             let itemVMs: Record<string, DocumentInfoVM> = {};
 
-            forEach(items, (item: any) => {
+            forEach(items, (item: SearchResultInfo) => {
 
                 if (item instanceof DocumentInfo) {
                     const {
@@ -304,7 +303,7 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
                         object_type: ObjectType.PocketInfo,
                     };
 
-                } else if (item instanceof ReportInfo) {
+                } else {
                     const {
                         id,
                         title,
@@ -316,29 +315,31 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
                         isUpdating,
                         author_id,
                     } = item;
-
-                    let displayPrivateTags: Record<string, string> = {};
-                    if (private_tag) {
-                        const current_user_id = userService.getCurrentUserId()
-                        if (private_tag[current_user_id]) {
-                            displayPrivateTags = private_tag[current_user_id];
+                    {
+                        let displayPrivateTags: Record<string, string> = {};
+                        {
+                            if (private_tag) {
+                                const current_user_id = userService.getCurrentUserId()
+                                if (private_tag[current_user_id]) {
+                                    displayPrivateTags = private_tag[current_user_id];
+                                }
+                            }
+                            itemVMs[item.id] = {
+                                id: id,
+                                author: author_id,
+                                private_tag: displayPrivateTags,
+                                public_tag: public_tag,
+                                publication_date: publication_date ? new Date(publication_date).toLocaleString().split(',')[0] : 'No Publication Date',
+                                scope: scope,
+                                title: title,
+                                upload_date: upload_date ? new Date(upload_date).toLocaleString().split(',')[0] : 'No Upload Date',
+                                uploadedBy_id: author_id,
+                                selected: id === selectedId,
+                                isUpdating: isUpdating,
+                                object_type: ObjectType.ReportInfo,
+                            };
                         }
                     }
-
-                    itemVMs[item.id] = {
-                        id: id,
-                        author: author_id,
-                        private_tag: displayPrivateTags,
-                        public_tag: public_tag,
-                        publication_date: publication_date ? new Date(publication_date).toLocaleString().split(',')[0] : 'No Publication Date',
-                        scope: scope,
-                        title: title,
-                        upload_date: upload_date ? new Date(upload_date).toLocaleString().split(',')[0] : 'No Upload Date',
-                        uploadedBy_id: author_id,
-                        selected: id === selectedId,
-                        isUpdating: isUpdating,
-                        object_type: ObjectType.ReportInfo,
-                    };
                 }
 
             })

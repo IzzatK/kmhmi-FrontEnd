@@ -1,7 +1,7 @@
 import React, {useCallback, useRef} from "react";
-import {Editable, ReactEditor, Slate, withReact,} from "slate-react";
-import {BaseEditor, createEditor, Editor, Transforms, Node, Text} from "slate";
-import {HistoryEditor, withHistory} from "slate-history";
+import {Editable, Slate, withReact,} from "slate-react";
+import {createEditor, Editor, Transforms} from "slate";
+import {withHistory} from "slate-history";
 import ComboBox from "../../../theme/widgets/comboBox/comboBox";
 import {
     ElementProps,
@@ -142,9 +142,15 @@ export function RichTextEditView(props: RichTextEditViewProps) {
                                                     const footnote_type = node[0].footnote || "";
 
                                                     if (footnote_type === "excerpt_number") {
-                                                        const id = node[0].id || "";
+                                                        const text = node[0].text;
 
-                                                        removeFootnote(editor, id);
+                                                        if (text && text !== "") {
+                                                            const id = node[0].id || "";
+
+                                                            removeFootnote(editor, id);
+                                                        } else {
+                                                            Transforms.delete(editor, {unit: "character", reverse: true});
+                                                        }
                                                     } else {
                                                         Transforms.delete(editor, {unit: "character", reverse: true});
                                                     }

@@ -167,14 +167,14 @@ class CardCollectionView extends Component<CardCollectionRendererProps, CardColl
 
                 switch (object_type) {
                     case ObjectType.ReportInfo:
-                        graphic_node = <ReportInfoSVG className={"medium-image-container"}/>
+                        graphic_node = <ReportInfoSVG className={"medium-image-container title-icon"}/>
                         break;
                     case ObjectType.PocketInfo:
-                        graphic_node = <PocketInfoSVG className={"medium-image-container"}/>
+                        graphic_node = <PocketInfoSVG className={"medium-image-container title-icon"}/>
                         break;
                     case ObjectType.DocumentInfo:
                     default:
-                        graphic_node = <DocumentInfoSVG className={"medium-image-container"}/>
+                        graphic_node = <DocumentInfoSVG className={"medium-image-container title-icon"}/>
                         break;
                 }
 
