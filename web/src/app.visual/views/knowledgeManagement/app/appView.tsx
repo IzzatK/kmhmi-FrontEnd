@@ -15,6 +15,7 @@ import {LandingPanelPresenter} from "../../../components/landingPanel/landingPan
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
 import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
 import {ReportPanelWrapper} from "../../../components/reportPanel/reportPanelWrapper";
+import {SearchGraphsPanelWrapper} from "../../../components/searchGraphsPanel/searchGraphsPanelWrapper";
 
 export class AppView extends Component<Props, AppState> {
     private interval!: NodeJS.Timer;
@@ -150,6 +151,7 @@ export class AppView extends Component<Props, AppState> {
                                         <TagsPanelWrapper/>
                                         <StatsPanelPresenter/>
                                         <PocketsPanelPresenter/>
+                                        <SearchGraphsPanelWrapper/>
                                         {
                                             permissions.canSearch ?
                                                 <SearchPresenter className={"d-flex flex-fill flex-basis-0"} style={{zIndex: '1'}}/>

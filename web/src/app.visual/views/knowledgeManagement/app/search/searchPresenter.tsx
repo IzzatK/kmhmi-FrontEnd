@@ -8,17 +8,17 @@ class Search extends VisualWrapper {
     constructor(props: any) {
         super();
 
-        this.id ='view/search';
+        this.id ='app.visual/views/search';
 
         this.view = SearchView;
 
         this.displayOptions = {
             containerId: 'system-tool-panel',
-            visible: true,
+            visible: false,
             appearClass: 'fadeIn',
             enterClass: 'fadeIn',
-            exitClass: '',
-            timeout: 0
+            // exitClass: '',
+            // timeout: 0
         };
 
         this.mapDispatchToProps = (dispatch: any) => {
@@ -29,7 +29,7 @@ class Search extends VisualWrapper {
 
         this.mapStateToProps = (state: any, props: any) => {
             return {
-                toolsVisible: displayService.getContainer('search-banner-tools').currentNodeId
+                // toolsVisible: displayService.getContainer('search-banner-tools').currentNodeId
             }
         }
     }

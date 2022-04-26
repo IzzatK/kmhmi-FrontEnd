@@ -3,7 +3,7 @@ import './searchView.css';
 
 import {SearchBannerPresenter} from "../../../../components/searchBanner/searchBannerPresenter";
 import {SearchResultsPanelWrapper} from "../../../../components/searchResultsPanel/searchResultsPanelWrapper";
-import {SearchGraphsPanelPresenter} from "../../../../components/searchGraphsPanel/searchGraphsPanelPresenter";
+import {SearchGraphsPanelWrapper} from "../../../../components/searchGraphsPanel/searchGraphsPanelWrapper";
 
 import {Props, State} from "./searchModel";
 
@@ -24,10 +24,10 @@ export class SearchView extends Component<Props, State> {
                 {/*</ServiceContext.Consumer>*/}
                 <SearchBannerPresenter />
 
-                <div className={`search-view-tools position-relative ${toolsVisible ? 'expanded': 'collapsed'}`}>
-                    {/*<SearchAdvancedPanelPresenter className={'position-absolute w-100 h-100'}/>*/}
-                    <SearchGraphsPanelPresenter/>
-                </div>
+                {/*<div className={`search-view-tools position-relative ${toolsVisible ? 'expanded': 'collapsed'}`}>*/}
+                {/*    /!*<SearchAdvancedPanelPresenter className={'position-absolute w-100 h-100'}/>*!/*/}
+                {/*    <SearchGraphsPanelWrapper/>*/}
+                {/*</div>*/}
 
                 <SearchResultsPanelWrapper className={'flex-fill'}/>
             </div>

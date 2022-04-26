@@ -20,6 +20,7 @@ import {PocketSVG} from "../app.visual/theme/svgs/pocketSVG";
 import CardCollectionView from "../app.visual/components/searchResultsPanel/views/renderers/cardCollectionView";
 import TableCollectionView from "../app.visual/components/searchResultsPanel/views/renderers/tableCollectionView";
 import ListCollectionView from "../app.visual/components/searchResultsPanel/views/renderers/listCollectionView";
+import {SearchSVG} from "../app.visual/theme/svgs/searchSVG";
 
 export class ScenarioService extends Plugin implements IScenarioService {
     public static readonly class: string = 'ScenarioService';
@@ -131,15 +132,17 @@ export class ScenarioService extends Plugin implements IScenarioService {
     }
 
     createSearchBannerTools() {
-        this.createMenuItem(SearchBannerMenuItem, 'components/searchGraphsPanel', 'Graphs', false, GraphSVG);
+        // this.createMenuItem(SearchBannerMenuItem, 'components/searchGraphsPanel', 'Graphs', false, GraphSVG);
     }
 
     createSystemTools() {
+        this.createMenuItem(SystemToolMenuItem, 'app.visual/views/search', 'Search', false, SearchSVG);
         this.createMenuItem(SystemToolMenuItem, 'app.visual/components/uploadPanel', 'Upload', false, UploadSVG);
         this.createMenuItem(SystemToolMenuItem, 'app.visual/components/tagsPanel', 'Tags', false, TagsSVG);
         // this.createMenuItem(SystemToolMenuItem, 'components/statsPanel', 'Stats', false, StatsSVG);
         this.createMenuItem(SystemToolMenuItem, 'app.visual/components/profilePanel', 'Profile', false, ProfileSVG);
         this.createMenuItem(SystemToolMenuItem, 'app.visual/components/pocketsPanel', 'Pockets', false, PocketSVG);
+        this.createMenuItem(SystemToolMenuItem, 'app.visual/components/searchGraphsPanel', 'Graphs', true, GraphSVG)
     }
 
     createSearchResultsTools() {

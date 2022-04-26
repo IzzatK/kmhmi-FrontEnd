@@ -1,6 +1,6 @@
 import {ReferenceType} from "../../../app.model";
 
-export type SearchGraphsStateProps = {
+export type SearchGraphsPanelAppStateProps = {
     className?: string;
     departmentData: StatVM[];
     purposeData: StatVM[];
@@ -10,14 +10,27 @@ export type SearchGraphsStateProps = {
     isExpanded: boolean;
 }
 
-export type SearchGraphsDispatchProps = {
+export type SearchGraphsPanelAppDispatchProps = {
     onSearchParamChanged: (id: string, value: string) => void;
 }
 
-export type SearchGraphsProps = SearchGraphsDispatchProps & SearchGraphsStateProps;
+export type SearchGraphsPanelPresenterProps = SearchGraphsPanelAppDispatchProps & SearchGraphsPanelAppStateProps;
 
-export type SearchGraphsState = {
+export type SearchGraphsPanelPresenterState = {
     isAlternate: boolean;
+}
+
+export type SearchGraphsPanelViewProps = {
+    className?: string;
+    departmentData: StatVM[];
+    purposeData: StatVM[];
+    totalUploadsData: StatVM[];
+    customTagsData: StatVM[];
+    docTypeData: StatVM[];
+    isExpanded: boolean;
+    isAlternate: boolean;
+    onSearchParamChanged: (id: string, value: string) => void;
+    onToggleAlternate: () => void;
 }
 
 export type StatVM = {

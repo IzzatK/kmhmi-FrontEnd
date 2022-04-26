@@ -1,94 +1,31 @@
 import React, {Component} from 'react';
-import './searchGraphsPanel.css';
-import ScrollBar from "../../theme/widgets/scrollBar/scrollBar";
-import {XYChart} from "../../theme/widgets/amcharts/xyChart/xyChart";
-import {WordCloud} from "../../theme/widgets/amcharts/wordCloud/wordCloud";
-import {CirclePieChart} from "../../theme/widgets/amcharts/circlePieChart/circlePieChart";
-import {DonutPieChart} from "../../theme/widgets/amcharts/donutPieChart/donutPieChart";
-import {VariableRadiusDonutPieChart} from "../../theme/widgets/amcharts/variableRadiusDonutPieChart/variableRadiusDonutPieChart";
-import {SearchGraphsState, SearchGraphsProps} from "./searchGraphsModel";
+import '../searchGraphsPanel.css';
+import ScrollBar from "../../../theme/widgets/scrollBar/scrollBar";
+import {XYChart} from "../../../theme/widgets/amcharts/xyChart/xyChart";
+import {WordCloud} from "../../../theme/widgets/amcharts/wordCloud/wordCloud";
+import {CirclePieChart} from "../../../theme/widgets/amcharts/circlePieChart/circlePieChart";
+import {DonutPieChart} from "../../../theme/widgets/amcharts/donutPieChart/donutPieChart";
+import {VariableRadiusDonutPieChart} from "../../../theme/widgets/amcharts/variableRadiusDonutPieChart/variableRadiusDonutPieChart";
+import {SearchGraphsPanelViewProps} from "../searchGraphsModel";
 
-export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGraphsState> {
-
-    mockData: any;
-
+export class SearchGraphsPanelView extends Component<SearchGraphsPanelViewProps> {
     constructor(props: any, context: any) {
         super(props, context);
-
-        this.state = {
-            isAlternate: false,
-        }
-
-        this.mockData = [
-            {
-                category: "One",
-                value1: 1,
-                value2: 5,
-                value3: 3
-            },
-            {
-                category: "Two",
-                value1: 2,
-                value2: 5,
-                value3: 3
-            },
-            {
-                category: "Three",
-                value1: 3,
-                value2: 5,
-                value3: 4
-            },
-            {
-                category: "Four",
-                value1: 4,
-                value2: 5,
-                value3: 6
-            },
-            {
-                category: "Five",
-                value1: 3,
-                value2: 5,
-                value3: 4
-            },
-            {
-                category: "Six",
-                value1: 2,
-                value2: 13,
-                value3: 1
-            }
-        ];
-    }
-
-    componentDidMount() {
-
-    }
-
-    componentDidUpdate(prevProps: Readonly<SearchGraphsProps>, prevState: Readonly<SearchGraphsState>, snapshot?: any) {
-
-    }
-
-    toggleAlternate() {
-        const { isAlternate } = this.state;
-        this.setState({
-            ...this.state,
-            isAlternate: !isAlternate,
-        })
-    }
-
-    private onSearchParamChanged(id: string, value: string) {
-        const { onSearchParamChanged } = this.props;
-
-        if (onSearchParamChanged) {
-            onSearchParamChanged(id, value);
-        }
     }
 
     render() {
         const {
-            className, departmentData, purposeData, totalUploadsData, customTagsData, docTypeData, isExpanded,
+            className,
+            departmentData,
+            purposeData,
+            totalUploadsData,
+            customTagsData,
+            docTypeData,
+            isExpanded,
+            isAlternate,
+            onSearchParamChanged,
+            onToggleAlternate
         } = this.props;
-
-        const { isAlternate } = this.state;
 
         let cn = 'search-graphs-panel d-flex flex-column py-3 px-4';
 
@@ -98,7 +35,7 @@ export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGr
 
         return (
             <div className={cn}>
-                {/*<Button className={'toggle-view-btn'} onClick={() => this.toggleAlternate()}>Toggle Alternate View</Button>*/}
+                {/*<Button className={'toggle-view-btn'} onClick={onToggleAlternate}>Toggle Alternate View</Button>*/}
                 <ScrollBar className={`graphs-grid-container ${!isExpanded ? '' : 'expanded'}`} renderTrackVertical={isExpanded} renderTrackHorizontal={!isExpanded}>
                     {
                         isAlternate &&
@@ -110,7 +47,7 @@ export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGr
                                 name={"Documents by Department"}
                                 color={'var(--variable-radius-pie-chart-header-background)'}
                                 minimized={!isExpanded}
-                                onSelect={(id: string) => this.onSearchParamChanged('department', id)}
+                                onSelect={(id: string) => onSearchParamChanged('department', id)}
                             />
                             <VariableRadiusDonutPieChart
                                 className={'span-2'}
@@ -119,7 +56,7 @@ export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGr
                                 name={"Documents by Purpose"}
                                 color={'var(--draggable-pie-chart-header-background)'}
                                 minimized={!isExpanded}
-                                onSelect={(id: string) => this.onSearchParamChanged('purpose', id)}
+                                onSelect={(id: string) => onSearchParamChanged('purpose', id)}
                             />
                             <XYChart
                                 className={''}
@@ -136,7 +73,7 @@ export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGr
                                 name={'Common Tags on Documents'}
                                 color={'var(--word-cloud-header-background)'}
                                 minimized={!isExpanded}
-                                onSelect={(id: string) => this.onSearchParamChanged('tags', id)}
+                                onSelect={(id: string) => onSearchParamChanged('tags', id)}
                             />
                             <DonutPieChart
                                 className={'span-2'}
@@ -158,7 +95,7 @@ export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGr
                                 name={"Documents by Department"}
                                 color={'var(--variable-radius-pie-chart-header-background)'}
                                 minimized={!isExpanded}
-                                onSelect={(id: string) => this.onSearchParamChanged('department', id)}
+                                onSelect={(id: string) => onSearchParamChanged('department', id)}
                             />
                             <CirclePieChart
                                 className={'span-2'}
@@ -167,7 +104,7 @@ export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGr
                                 name={"Documents by Purpose"}
                                 color={'var(--draggable-pie-chart-header-background)'}
                                 minimized={!isExpanded}
-                                onSelect={(id: string) => this.onSearchParamChanged('purpose', id)}
+                                onSelect={(id: string) => onSearchParamChanged('purpose', id)}
                             />
                             <XYChart
                                 className={''}
@@ -184,7 +121,7 @@ export class SearchGraphsPanelView extends Component<SearchGraphsProps, SearchGr
                                 name={'Common Tags on Documents'}
                                 color={'var(--word-cloud-header-background)'}
                                 minimized={!isExpanded}
-                                onSelect={(id: string) => this.onSearchParamChanged('tags', id)}
+                                onSelect={(id: string) => onSearchParamChanged('tags', id)}
                             />
                             <CirclePieChart
                                 className={'span-2'}

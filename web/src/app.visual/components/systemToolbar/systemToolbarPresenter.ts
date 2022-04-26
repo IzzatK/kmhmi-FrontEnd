@@ -53,13 +53,15 @@ class SystemToolbar extends VisualWrapper {
     onToolSelected(nextId: string) {
         let currentId = displayService.getSelectedNodeId(SYSTEM_TOOLBAR_VIEW_ID)
 
-        if (currentId === nextId) {
-            // displayService.popNode(SYSTEM_TOOLBAR_VIEW_ID);
-            displayService.pushNode('view/search');
-        }
-        else {
-            displayService.pushNode(nextId);
-        }
+        displayService.pushNode(nextId);
+
+        // if (currentId === nextId) {
+        //     displayService.popNode(SYSTEM_TOOLBAR_VIEW_ID);
+        //     // displayService.pushNode('view/search');
+        // }
+        // else {
+        //     displayService.pushNode(nextId);
+        // }
     }
 
 

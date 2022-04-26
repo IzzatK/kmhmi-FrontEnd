@@ -1,21 +1,25 @@
-import {SearchGraphsPanelView} from './searchGraphsPanelView'
 import {VisualWrapper} from "../../../framework.visual/extras/visualWrapper";
 import {createVisualConnector} from "../../../framework.visual/connectors/visualConnector";
 import {createSelector} from "@reduxjs/toolkit";
 import {ReferenceInfo, ReferenceType, StatType} from "../../../app.model";
 import {forEach, forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 import {documentService, referenceService, statService} from "../../../serviceComposition";
-import {ReferenceInfoVM, SearchGraphsDispatchProps, SearchGraphsStateProps, StatVM} from "./searchGraphsModel";
+import {
+    ReferenceInfoVM,
+    SearchGraphsPanelAppDispatchProps, SearchGraphsPanelAppStateProps,
+    StatVM
+} from "./searchGraphsModel";
+import SearchGraphsPanelPresenter from "./presenter/searchGraphsPanelPresenter";
 
-class SearchGraphsPanel extends VisualWrapper {
+class _SearchGraphsPanelWrapper extends VisualWrapper {
     constructor() {
         super();
 
-        this.id ='components/searchGraphsPanel';
+        this.id ='app.visual/components/searchGraphsPanel';
 
-        this.view = SearchGraphsPanelView;
+        this.view = SearchGraphsPanelPresenter;
 
-        this.mapStateToProps = (state: any, props: any) : SearchGraphsStateProps => {
+        this.mapStateToProps = (state: any, props: any) : SearchGraphsPanelAppStateProps => {
             return {
                 customTagsData: this.getCustomSharedTagsStatsVMs(state),
                 totalUploadsData: this.getTotalUploadsStatsVMs(state),
@@ -26,18 +30,18 @@ class SearchGraphsPanel extends VisualWrapper {
             }
         }
 
-        this.mapDispatchToProps = (): SearchGraphsDispatchProps => {
+        this.mapDispatchToProps = (dispatch: any): SearchGraphsPanelAppDispatchProps => {
             return {
                 onSearchParamChanged: this._onSearchParamsChanged
             };
         }
 
         this.displayOptions = {
-            containerId: 'search-banner-tools',
-            visible: false,
+            containerId: 'system-tool-panel',
+            visible: true,
             appearClass: 'fadeIn',
             enterClass: 'fadeIn',
-            exitClass: 'fadeOut',
+            // exitClass: 'fadeOut',
         }
     }
 
@@ -316,6 +320,6 @@ class SearchGraphsPanel extends VisualWrapper {
 }
 
 export const {
-    connectedPresenter: SearchGraphsPanelPresenter,
+    connectedPresenter: SearchGraphsPanelWrapper,
     componentId: SearchGraphsPanelId
-} = createVisualConnector(SearchGraphsPanel);
+} = createVisualConnector(_SearchGraphsPanelWrapper);

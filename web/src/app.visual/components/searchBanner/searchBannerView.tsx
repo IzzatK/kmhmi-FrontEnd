@@ -8,7 +8,7 @@ import Portal from "../../theme/widgets/portal/portal";
 import TextEdit from "../../theme/widgets/textEdit/textEdit";
 import {ArrowDownSVG} from "../../theme/svgs/arrowDownSVG";
 import {ArrowUpSVG} from "../../theme/svgs/arrowUpSVG";
-import {SearchGraphsPanelId} from "../searchGraphsPanel/searchGraphsPanelPresenter";
+import {SearchGraphsPanelId} from "../searchGraphsPanel/searchGraphsPanelWrapper";
 import {bindInstanceMethods} from "../../../framework.core/extras/utils/typeUtils";
 import {SearchBannerProps, SearchBannerState} from "./searchBannerModel";
 import {MenuItemVM} from "../../../framework.visual/model/menuItemVM";
@@ -27,7 +27,7 @@ class SearchBannerView extends Component<SearchBannerProps, SearchBannerState> {
 
     componentDidMount() {
         const { onToolSelected } = this.props;
-        onToolSelected(SearchGraphsPanelId);
+        // onToolSelected(SearchGraphsPanelId);
     }
 
     _setShowAdvanced(value: boolean) {
@@ -301,11 +301,11 @@ class SearchBannerView extends Component<SearchBannerProps, SearchBannerState> {
                                 </div>
 
                             </div>
-                            <div className={"d-flex justify-content-between"} style={{maxWidth: maxWidth}}>
-                                <div className={"d-flex h-gap-4"}>
-                                    { toolDivs }
-                                </div>
-                            </div>
+                            {/*<div className={"d-flex justify-content-between"} style={{maxWidth: maxWidth}}>*/}
+                            {/*    <div className={"d-flex h-gap-4"}>*/}
+                            {/*        { toolDivs }*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
                         </div>
                     </div>
                 </div>
