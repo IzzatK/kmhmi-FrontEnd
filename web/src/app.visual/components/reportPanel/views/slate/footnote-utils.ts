@@ -3,6 +3,7 @@ import {makeGuid} from "../../../../../framework.core/extras/utils/uniqueIdUtils
 import {forEach} from "../../../../../framework.core/extras/utils/collectionUtils";
 import {ReactEditor} from "slate-react";
 import {HistoryEditor} from "slate-history";
+import {TEXT_ALIGN_TYPE} from "./slateModel";
 
 export const withFootnotes = (editor: BaseEditor & ReactEditor & HistoryEditor) => {
     const { insertData } = editor
@@ -18,6 +19,8 @@ export const withFootnotes = (editor: BaseEditor & ReactEditor & HistoryEditor) 
             let excerpt_count = 0;
             let footnote_location = 0;
             let id = makeGuid();
+
+            let hasEndNoteHeader: boolean = false;
             if (editor.selection) {
                 let editor_child_index = 0;
 
@@ -92,6 +95,8 @@ export const withFootnotes = (editor: BaseEditor & ReactEditor & HistoryEditor) 
                                     // @ts-ignore
                                     Transforms.setNodes(editor, { footnote: "" }, {at: [editor_child_index, editor_child_child_index]})//TODO need different solution
                                 }
+                            } else if (footnote_type === "endnote_header") {
+                                hasEndNoteHeader = true;
                             }
 
                             editor_child_child_index++;
@@ -99,6 +104,26 @@ export const withFootnotes = (editor: BaseEditor & ReactEditor & HistoryEditor) 
                     }
                     editor_child_index++;
                 })
+            }
+
+            if (!hasEndNoteHeader) {
+                const endnoteHeaderNode: Node = {
+                    align: "center",
+                    children: [
+                        {
+                            // @ts-ignore
+                            footnote: 'endnote_header',
+                            text: 'Endnotes',
+                            fontSize: "18"
+                        }
+                    ]
+                }
+
+                Transforms.insertNodes(
+                    editor,
+                    endnoteHeaderNode,
+                    { at: [editor.children.length] }
+                )
             }
 
             const footnoteNode: Node = {
