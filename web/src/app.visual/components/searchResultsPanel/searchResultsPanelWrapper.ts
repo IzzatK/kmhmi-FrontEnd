@@ -13,6 +13,7 @@ import {
     SortPropertyInfo
 } from "../../../app.model";
 import {
+    authenticationService,
     authorizationService,
     displayService,
     documentService, pocketService,
@@ -87,16 +88,64 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
     }
 
     _onDownload(id: string, object_type: ObjectType) {
+        const userProfile = authenticationService.getUserProfile();
+        const token = authenticationService.getToken();
+
         switch (object_type) {
             case ObjectType.PocketInfo:
 
                 break;
             case ObjectType.ReportInfo:
 
+                const report = reportService.getReport(id);
+
+                if (userProfile && report) {
+                    const { username, id, email, firstName, lastName } = userProfile;
+                    const { original_url } = report;
+
+                    let xhr = new XMLHttpRequest;
+
+                    xhr.open( "GET", original_url || "");
+
+                    xhr.addEventListener( "load", function(){
+                        window.open(original_url);
+                    }, false);
+
+                    xhr.setRequestHeader("km-token", `bearer ${token}` );
+                    xhr.setRequestHeader("km-user-name", username );
+                    xhr.setRequestHeader("km-user-id", id );
+                    xhr.setRequestHeader("km-email", email );
+                    xhr.setRequestHeader("km-first-name", firstName );
+                    xhr.setRequestHeader("km-last-name", lastName );
+
+                    xhr.send();
+                }
                 break;
             case ObjectType.DocumentInfo:
             default:
+                const document = documentService.getDocument(id);
 
+                if (userProfile && document) {
+                    const { username, id, email, firstName, lastName } = userProfile;
+                    const { original_url } = document;
+
+                    let xhr = new XMLHttpRequest;
+
+                    xhr.open( "GET", original_url || "");
+
+                    xhr.addEventListener( "load", function(){
+                        window.open(original_url);
+                    }, false);
+
+                    xhr.setRequestHeader("km-token", `bearer ${token}` );
+                    xhr.setRequestHeader("km-user-name", username );
+                    xhr.setRequestHeader("km-user-id", id );
+                    xhr.setRequestHeader("km-email", email );
+                    xhr.setRequestHeader("km-first-name", firstName );
+                    xhr.setRequestHeader("km-last-name", lastName );
+
+                    xhr.send();
+                }
                 break;
         }
     }

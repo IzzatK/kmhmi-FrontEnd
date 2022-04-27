@@ -11,6 +11,7 @@ import {EditSVG} from "../../../theme/svgs/editSVG";
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
 import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
 import {CopyPocketSVG} from "../../../theme/svgs/copyPocketSVG";
+import {CreateReportSVG} from "../../../theme/svgs/createReportSVG";
 
 export class PocketNodeRenderer extends Component<PocketNodeRendererProps, PocketNodeRendererState> {
     constructor(props: any) {
@@ -194,19 +195,21 @@ export class PocketNodeRenderer extends Component<PocketNodeRendererProps, Pocke
                             </div>
                             :
                             <div className={`action-bar d-flex h-gap-3 ${tab !== PocketTabType.NONE && 'open'}`}>
-                                <Button text={"Create Report"} onClick={this._onCreateReport} tooltip={"Create Report"}/>
+                                <Button className={"btn-transparent"} onClick={this._onCreateReport} tooltip={"Create Report"}>
+                                    <CreateReportSVG className={"small-image-container"}/>
+                                </Button>
                                 <Button className={"btn-transparent"} onClick={this._onSettings} selected={tab === PocketTabType.EDIT} tooltip={"Edit"}>
                                     <EditSVG className={"small-image-container"}/>
                                 </Button>
-                                <Button className={"btn-transparent"} onClick={(e) => {e.stopPropagation()}} selected={tab === PocketTabType.NONE} tooltip={"Copy Pocket"}>
-                                    <CopyPocketSVG className={"small-image-container"}/>
-                                </Button>
-                                <Button className={"btn-transparent"} onClick={this._onShare} selected={tab === PocketTabType.SHARE} tooltip={"Share"}>
-                                    <ShareSVG className={"small-image-container"}/>
-                                </Button>
-                                <Button className={"btn-transparent"} onClick={this._onDownload} selected={tab === PocketTabType.DOWNLOAD} tooltip={"Download"}>
-                                    <DownloadSVG className={"small-image-container"}/>
-                                </Button>
+                                {/*<Button className={"btn-transparent"} onClick={(e) => {e.stopPropagation()}} selected={tab === PocketTabType.NONE} tooltip={"Copy Pocket"}>*/}
+                                {/*    <CopyPocketSVG className={"small-image-container"}/>*/}
+                                {/*</Button>*/}
+                                {/*<Button className={"btn-transparent"} onClick={this._onShare} selected={tab === PocketTabType.SHARE} tooltip={"Share"}>*/}
+                                {/*    <ShareSVG className={"small-image-container"}/>*/}
+                                {/*</Button>*/}
+                                {/*<Button className={"btn-transparent"} onClick={this._onDownload} selected={tab === PocketTabType.DOWNLOAD} tooltip={"Download"}>*/}
+                                {/*    <DownloadSVG className={"small-image-container"}/>*/}
+                                {/*</Button>*/}
                                 <Button className={"btn-transparent"} onClick={this._onDelete} selected={tab === PocketTabType.NONE} tooltip={"Remove"}>
                                     <RemoveSVG className={"small-image-container"}/>
                                 </Button>

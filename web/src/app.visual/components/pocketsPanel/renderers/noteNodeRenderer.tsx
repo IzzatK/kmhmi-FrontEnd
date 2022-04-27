@@ -41,9 +41,9 @@ export class NoteNodeRenderer extends Component<NoteNodeRendererProps> {
                         <div className={"title font-italic"}>{title}</div>
                     </div>
                     <div className={'action-bar d-flex h-gap-3'}>
-                        <Button className={"btn-transparent"} onClick={(e) => {e.stopPropagation()}} tooltip={"Copy to Clipboard"}>
-                            <CopySVG className={"small-image-container"}/>
-                        </Button>
+                        {/*<Button className={"btn-transparent"} onClick={(e) => {e.stopPropagation()}} tooltip={"Copy to Clipboard"}>*/}
+                        {/*    <CopySVG className={"small-image-container"}/>*/}
+                        {/*</Button>*/}
                         <Button className={"btn-transparent"} onClick={this._onRemove} tooltip={"Remove"}>
                             <RemoveSVG className={"small-image-container"}/>
                         </Button>

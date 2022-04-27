@@ -44,9 +44,9 @@ export class ReportNodeRenderer extends Component<ReportNodeRendererProps> {
                     <div className={"title font-italic font-weight-semi-bold"}>Report: {title ? title : ''}</div>
                 </div>
                 <div className={'action-bar d-flex h-gap-3'}>
-                    <Button className={"btn-transparent"} onClick={this._onDownload} tooltip={"Download"}>
-                        <DownloadSVG className={"small-image-container"}/>
-                    </Button>
+                    {/*<Button className={"btn-transparent"} onClick={this._onDownload} tooltip={"Download"}>*/}
+                    {/*    <DownloadSVG className={"small-image-container"}/>*/}
+                    {/*</Button>*/}
                     <Button className={"btn-transparent"} onClick={this._onRemove} tooltip={"Remove"}>
                         <RemoveSVG className={"small-image-container"}/>
                     </Button>

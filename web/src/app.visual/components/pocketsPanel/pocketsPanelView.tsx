@@ -115,6 +115,10 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                     if (this.props.onReportItemSelected) {
                         this.props.onReportItemSelected(nodeVM.id);
                     }
+                } else if (nodeVM.type === PocketNodeType.DOCUMENT) {
+                    if (this.props.onDocumentItemSelected) {
+                        this.props.onDocumentItemSelected(nodeVM.id);
+                    }
                 }
             }
         }
@@ -130,6 +134,12 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                 } else {
                     if (this.props.onPocketItemToggle != null) {
                         this.props.onPocketItemToggle(nodeVM.path, expanded);
+                    }
+
+                    if (nodeVM.type === PocketNodeType.DOCUMENT) {
+                        if (this.props.onDocumentItemSelected) {
+                            this.props.onDocumentItemSelected(nodeVM.id);
+                        }
                     }
                 }
             } else {
@@ -227,6 +237,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
     _onDownloadReport(id: string) {
 
     }
+
 
     _onCreatePocket() {
         if (this.props.onCreatePocket != null) {

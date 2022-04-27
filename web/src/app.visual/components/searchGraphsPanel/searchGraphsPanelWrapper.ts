@@ -3,13 +3,14 @@ import {createVisualConnector} from "../../../framework.visual/connectors/visual
 import {createSelector} from "@reduxjs/toolkit";
 import {ReferenceInfo, ReferenceType, StatType} from "../../../app.model";
 import {forEach, forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
-import {documentService, referenceService, statService} from "../../../serviceComposition";
+import {displayService, documentService, referenceService, statService} from "../../../serviceComposition";
 import {
     ReferenceInfoVM,
     SearchGraphsPanelAppDispatchProps, SearchGraphsPanelAppStateProps,
     StatVM
 } from "./searchGraphsModel";
 import SearchGraphsPanelPresenter from "./presenter/searchGraphsPanelPresenter";
+import {SearchPresenterId} from "../../views/knowledgeManagement/app/search/searchPresenter";
 
 class _SearchGraphsPanelWrapper extends VisualWrapper {
     constructor() {
@@ -61,6 +62,7 @@ class _SearchGraphsPanelWrapper extends VisualWrapper {
                 }
 
                 documentService.setSearchParam(id, Array.from(currentValues))
+                displayService.pushNode(SearchPresenterId)
             }
         }
     }

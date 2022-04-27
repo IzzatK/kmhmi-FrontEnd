@@ -27,6 +27,7 @@ export type PocketsPanelDispatchProps = {
     onCreateReport: (id: string) => void;
     onRemoveReport: (id: string, pocket_id: string) => void;
     onReportItemSelected: (id: string) => void;
+    onDocumentItemSelected: (id: string) => void;
 }
 
 export type PocketsPanelProps = PocketsPanelStateProps & PocketsPanelDispatchProps;

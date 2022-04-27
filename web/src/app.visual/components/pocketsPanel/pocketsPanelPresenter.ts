@@ -2,7 +2,15 @@ import PocketsPanelView from "./pocketsPanelView";
 import {VisualWrapper} from "../../../framework.visual";
 import {createVisualConnector} from "../../../framework.visual";
 import {createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {displayService, pocketService, reportService, selectionService, userService} from "../../../serviceComposition";
+import {
+    authenticationService,
+    displayService,
+    documentService,
+    pocketService,
+    reportService,
+    selectionService,
+    userService
+} from "../../../serviceComposition";
 import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
 import {ExcerptMapper, NoteInfo, PocketMapper, ReportInfo, ResourceMapper} from "../../../app.model";
 import {PocketNodeType} from "../../model/pocketNodeType";
@@ -10,6 +18,7 @@ import {PocketNodeVM, PocketsPanelDispatchProps, PocketsPanelStateProps, PocketU
 import {PocketParamType, ReportParamType} from "../../../app.core.api";
 import {ReportPanelId} from "../reportPanel/reportPanelWrapper";
 import React from "react";
+import {DocumentPanelId} from "../documentPanel/documentPanelPresenter";
 
 
 type PocketSliceState = {
@@ -116,8 +125,8 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                 onPocketItemSelected: (id: string) => this.onPocketItemSelected(id),
                 onPocketItemToggle: (id: string, expanded: boolean) => this.onPocketItemToggle(id, expanded),
                 onCreatePocket: (title: string) => pocketService.addOrUpdatePocket({title}),
-                onDownloadDocument(id: string): void {},
-                onDownloadPocket(id: string): void {},
+                onDownloadDocument: (id: string) => this._onDownloadDocument(id),
+                onDownloadPocket: (id: string) => this._onDownloadPocket(id),
                 onUpdatePocket: (edits: PocketUpdateParams) => _PocketsPanelPresenter._onUpdatePocket(edits),
                 onRemoveExcerpt: (id: string, pocket_id: string) => this._onRemoveExcerpt(id, pocket_id),
                 onRemoveResource: (id: string, pocket_id: string) => this._onRemoveResource(id, pocket_id),
@@ -127,7 +136,8 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                 onDelete: (id: string) => this._onRemovePocket(id),
                 onCreateReport: (id: string) => _PocketsPanelPresenter._onCreateReport(id),
                 onRemoveReport: (id: string, pocket_id: string) => this._onRemoveReport(id, pocket_id),
-                onReportItemSelected: (id: string) => this.onReportItemSelected(id)
+                onReportItemSelected: (id: string) => this._onReportItemSelected(id),
+                onDocumentItemSelected: (id: string) => this._onDocumentItemSelected(id)
             };
         }
     }
@@ -272,9 +282,17 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
         selectionService.setContext("selected-pocket-node-path", id);
     }
 
-    onReportItemSelected(id: string) {
+    _onReportItemSelected(id: string) {
         selectionService.setContext("selected-report", id);
+        selectionService.setContext("selected-document", "");
         displayService.pushNode(ReportPanelId);
+    }
+
+    _onDocumentItemSelected(id: string) {
+        selectionService.setContext("selected-document", id);
+        selectionService.setContext("selected-report", "");
+        displayService.pushNode(DocumentPanelId);
+        documentService.fetchDocument(id);
     }
 
     onPocketItemToggle(id: string, expanded: boolean) {
@@ -402,6 +420,38 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                 event.dataTransfer.setData("text/excerpt", "resource information");
             }
         }
+    }
+
+    private _onDownloadDocument(id: string) {
+        const userProfile = authenticationService.getUserProfile();
+        const token = authenticationService.getToken();
+        const document = documentService.getDocument(id);
+
+        if (userProfile && document) {
+            const { username, id, email, firstName, lastName } = userProfile;
+            const { original_url } = document;
+
+            let xhr = new XMLHttpRequest;
+
+            xhr.open( "GET", original_url || "");
+
+            xhr.addEventListener( "load", function(){
+                window.open(original_url);
+            }, false);
+
+            xhr.setRequestHeader("km-token", `bearer ${token}` );
+            xhr.setRequestHeader("km-user-name", username );
+            xhr.setRequestHeader("km-user-id", id );
+            xhr.setRequestHeader("km-email", email );
+            xhr.setRequestHeader("km-first-name", firstName );
+            xhr.setRequestHeader("km-last-name", lastName );
+
+            xhr.send();
+        }
+    }
+
+    private _onDownloadPocket(id: string) {
+
     }
 }
 
