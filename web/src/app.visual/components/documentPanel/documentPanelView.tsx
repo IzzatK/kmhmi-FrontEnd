@@ -17,7 +17,6 @@ import {
     CreateExcerptEventData, DocumentUpdateParams
 } from "./documentPanelModel";
 import {InfoSVG} from "../../theme/svgs/infoSVG";
-import Card from "../../theme/widgets/card/card";
 import CheckBox from "../../theme/widgets/checkBox/checkBox";
 import {EllipsisSVG} from "../../theme/svgs/ellipsisSVG";
 import Portal from "../../theme/widgets/portal/portal";
@@ -51,6 +50,7 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
             renderTrigger: 0,
             tmpExcerpt: {},
             zoomScale: 1,
+            moreInfoExpanded: false,
         }
 
         this.characterWidth = 8.15;//pixels
@@ -720,116 +720,99 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
             <div className={cn}>
                 <div className={'d-flex flex-fill flex-column align-items-stretch'}>
                     <div className={`header position-relative`}>
-                        <div className={`d-flex flex-column p-4 v-gap-5 position-relative ${!id && 'disabled'} `}>
-                            <div className={"d-flex flex-column v-gap-1 header-1"}>
-                                <div className={'title-grid'}>
-                                    <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end text-right label'}>Title:</div>
-                                    <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end text-right label'}>Author:</div>
+                        <div className={`d-flex flex-column p-4 position-relative`}>
+                            <div className={"d-flex flex-row v-gap-1 header-1"}>
+                                <div className={'title-grid flex-grow-1 pr-4'}>
+                                    <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end text-right'}>Title:</div>
                                     {
                                         this.getCellRenderer(tmpDocument, document, editProperties['title'])
                                     }
-                                    {
-                                        this.getCellRenderer(tmpDocument, document, editProperties['author'])
-                                    }
                                 </div>
-                                <div className={'property-grid'}>
-                                    <div className={"d-flex h-gap-5"}>
-                                        <div className={'header-1 font-weight-semi-bold align-self-center text-right label'}>Publication Date:</div>
+                                <Button className={"info-button"} onClick={() => this.setState({
+                                    ...this.state,
+                                    moreInfoExpanded: !this.state.moreInfoExpanded
+                                })}>
+                                    <div className={"d-flex info-button justify-content-start"}>
+                                        <div className={'d-flex h-gap-2 align-items-center'}>
+                                            <div className={'header-2'}>More Info</div>
+                                            <InfoSVG className={'small-image-container'}/>
+                                        </div>
+                                    </div>
+                                </Button>
+                            </div>
+                            {
+                                this.state.moreInfoExpanded &&
+                                <div className={'d-flex flex-column'}>
+
+                                    <div className={'title-grid'}>
+                                        <div className={'header-1 font-weight-semi-bold align-self-center justify-self-end text-right'}>Author:</div>
+                                        {
+                                            this.getCellRenderer(tmpDocument, document, editProperties['author'])
+                                        }
+                                        <div className={'header-1 font-weight-semi-bold align-self-center text-right'}>Publication Date:</div>
                                         {
                                             this.getCellRenderer(tmpDocument, document, editProperties['publication_date'])
                                         }
                                     </div>
-                                    <div className={"d-flex h-gap-5"}>
-                                        <div className={'header-1 font-weight-semi-bold align-self-center text-right label'}>Dept:</div>
-                                        {
-                                            this.getCellRenderer(tmpDocument, document, editProperties['department'])
-                                        }
-                                    </div>
-                                    <div className={"d-flex h-gap-5"}>
-                                        <div className={'header-1 font-weight-semi-bold align-self-center text-right label'}>Project:</div>
+
+                                    <div className={'property-grid py-4'}>
+                                        <div className={'header-1 font-weight-semi-bold align-self-center text-right'}>Project:</div>
                                         {
                                             this.getCellRenderer(tmpDocument, document, editProperties['project'])
                                         }
-                                    </div>
-                                    <div className={"d-flex h-gap-5"}>
-                                        <div className={'header-1 font-weight-semi-bold align-self-center text-right label'}>Purpose:</div>
+                                        <div className={'header-1 font-weight-semi-bold align-self-center text-right'}>Dept:</div>
+                                        {
+                                            this.getCellRenderer(tmpDocument, document, editProperties['department'])
+                                        }
+                                        <div className={'header-1 font-weight-semi-bold align-self-center text-right'}>Purpose:</div>
                                         {
                                             this.getCellRenderer(tmpDocument, document, editProperties['purpose'])
                                         }
                                     </div>
+
+                                    <div className={'sme-grid'}>
+                                        <div className={'align-self-center text-right header-3'}>Primary SME:</div>
+                                        {
+                                            this.getCellRenderer(tmpDocument, document, editProperties['primary_sme_name'])
+                                        }
+                                        <div className={'align-self-center text-right header-3'}>Phone:</div>
+                                        {
+                                            this.getCellRenderer(tmpDocument, document, editProperties['primary_sme_phone'])
+                                        }
+                                        <div className={'align-self-center text-right header-3'}>Email:</div>
+                                        {
+                                            this.getCellRenderer(tmpDocument, document, editProperties['primary_sme_email'])
+                                        }
+                                        <div className={'align-self-center text-right header-3'}>Second SME:</div>
+                                        {
+                                            this.getCellRenderer(tmpDocument, document, editProperties['secondary_sme_name'])
+                                        }
+                                        <div className={'align-self-center text-right header-3'}>Phone:</div>
+                                        {
+                                            this.getCellRenderer(tmpDocument, document, editProperties['secondary_sme_phone'])
+                                        }
+                                        <div className={'align-self-center text-right header-3'}>Email:</div>
+                                        {
+                                            this.getCellRenderer(tmpDocument, document, editProperties['secondary_sme_email'])
+                                        }
+                                    </div>
+
+                                    <div className={'info-grid pt-4 text-info overflow-hidden'}>
+                                        <div className={'align-self-center text-right header-3'}>Uploaded By:</div>
+                                        <div className={'align-self-center header-2'}>{uploaded_by}</div>
+                                        <div className={'align-self-center text-right header-3'}>Original File Name:</div>
+                                        <div className={'align-self-center header-2 overflow-hidden text-break'}>{file_name}</div>
+                                        <div className={'align-self-center text-right header-3'}>Upload Date:</div>
+                                        <div className={'align-self-center header-2'}>{upload_date?.split(",")[0]}</div>
+                                        <div className={'align-self-center text-right header-3'}>Type:</div>
+                                        <div className={'align-self-center header-2'}>{formatFileType(file_type || "")}</div>
+                                        <div className={'align-self-center text-right header-3'}>Size:</div>
+                                        <div className={'align-self-center header-2'}>{file_size}</div>
+                                    </div>
                                 </div>
-                            </div>
+                            }
 
-                            <Card className={`d-flex flex-column overflow-hidden pl-5`}
-                                  header={
-                                      <div className={"d-flex info-button justify-content-start"}>
-                                          <div className={'d-flex h-gap-3 align-items-center'}>
-                                              <InfoSVG className={'small-image-container'}/>
-                                              <div className={'header-2'}>More Info</div>
-                                          </div>
-                                      </div>
-                                  }
-                                  body={
-                                      <div className={'d-flex flex-column pt-5 text-info'}>
-                                          <div className={'info-grid'}>
-                                              <div className={'align-self-center justify-self-end header-3'}>ORIGINAL FILE NAME</div>
-                                              <div className={'align-self-center justify-self-end header-3'}>UPLOADED BY</div>
-                                              <div className={'align-self-center justify-self-end header-3'}>UPLOAD DATE</div>
-                                              <div className={'align-self-center justify-self-end header-3'}>TYPE</div>
-                                              <div className={'align-self-center justify-self-end header-3'}>SIZE</div>
-                                              <div className={'align-self-center header-2'}>{file_name}</div>
-                                              <div className={'align-self-center header-2'}>{uploaded_by}</div>
-                                              <div className={'align-self-center header-2'}>{upload_date?.split(",")[0]}</div>
-                                              <div className={'align-self-center header-2'}>{formatFileType(file_type || "")}</div>
-                                              <div className={'align-self-center header-2'}>{file_size}</div>
-                                          </div>
-
-                                          <div className={'sme-grid'}>
-                                              <div className={"d-flex h-gap-5"}>
-                                                  <div className={'align-self-center text-right header-3 label'}>PRIMARY SME</div>
-                                                  {
-                                                      this.getCellRenderer(tmpDocument, document, editProperties['primary_sme_name'])
-                                                  }
-                                              </div>
-                                              <div className={"d-flex h-gap-5"}>
-                                                  <div className={'align-self-center text-right header-3 label'}>PHONE</div>
-                                                  {
-                                                      this.getCellRenderer(tmpDocument, document, editProperties['primary_sme_phone'])
-                                                  }
-                                              </div>
-                                              <div className={"d-flex h-gap-5"}>
-                                                  <div className={'align-self-center text-right header-3 label'}>EMAIL</div>
-                                                  {
-                                                      this.getCellRenderer(tmpDocument, document, editProperties['primary_sme_email'])
-                                                  }
-                                              </div>
-                                          </div>
-
-                                          <div className={'sme-grid'}>
-                                              <div className={"d-flex h-gap-5"}>
-                                                  <div className={'align-self-center text-right header-3 label'}>SECONDARY SME</div>
-                                                  {
-                                                      this.getCellRenderer(tmpDocument, document, editProperties['secondary_sme_name'])
-                                                  }
-                                              </div>
-                                              <div className={"d-flex h-gap-5"}>
-                                                  <div className={'align-self-center text-right header-3 label'}>PHONE</div>
-                                                  {
-                                                      this.getCellRenderer(tmpDocument, document, editProperties['secondary_sme_phone'])
-                                                  }
-                                              </div>
-                                              <div className={"d-flex h-gap-5"}>
-                                                  <div className={'align-self-center text-right header-3 label'}>EMAIL</div>
-                                                  {
-                                                      this.getCellRenderer(tmpDocument, document, editProperties['secondary_sme_email'])
-                                                  }
-                                              </div>
-                                          </div>
-                                      </div>
-                                  }
-                            />
-
-                            <div className={'d-flex flex-column v-gap-4 pl-4'} >
+                            <div className={'d-flex flex-column v-gap-4 pl-4 pt-4'} >
                                 <div id={'tag-row'} className={'d-flex align-items-center justify-content-between'}>
                                     <div className={'d-flex h-gap-2 overflow-hidden'}>
                                         <GlobalSwitchButton isGlobal={isGlobal} light={false} onClick={this.toggleGlobal} className={'mr-3'}/>

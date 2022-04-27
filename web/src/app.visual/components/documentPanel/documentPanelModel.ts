@@ -37,6 +37,7 @@ export type DocumentPanelState = {
     renderTrigger: number;
     zoomScale: number;
     tmpExcerpt: Partial<CreateExcerptEventData>;
+    moreInfoExpanded: boolean;
 }
 
 export type DocumentPdfPreviewProps = {
