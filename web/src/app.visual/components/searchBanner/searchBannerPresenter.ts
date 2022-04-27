@@ -37,8 +37,8 @@ class SearchBanner extends VisualWrapper {
         this.mapDispatchToProps = () => {
             return {
                 onSearch: () => {
-                    displayService.popNode(VIEW_ID);
-                    documentService.fetchDocuments()
+                    // displayService.popNode(VIEW_ID);
+                    documentService.fetchSearchResults()
                 },
                 onSearchParamChanged: (id: string, value: string | string[] ) => documentService.setSearchParam(id, value),
                 onSearchTextChanged: (value: string) => documentService.setSearchText(value),

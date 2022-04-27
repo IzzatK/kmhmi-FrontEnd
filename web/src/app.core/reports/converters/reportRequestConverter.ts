@@ -9,7 +9,6 @@ export class ReportRequestConverter extends Converter<any, any> {
         const ReportProperties: Partial<Record<keyof ReportInfo, any>> = {
             author_id: "author_id",
             title: "title",
-            creation_date: "creation_date",
             publication_date: "publication_date",
             citation: "citation",
             content: "rte_text",
@@ -18,6 +17,7 @@ export class ReportRequestConverter extends Converter<any, any> {
             public_tag: "custom_shared_tag",
             resource_ids: "resources",
             html: "html_text",
+            uploadedBy_id: "uploaded_by",
         }
 
         let serverReport: Record<string, any> = {};

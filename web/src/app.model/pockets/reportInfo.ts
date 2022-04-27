@@ -6,7 +6,6 @@ export class ReportInfo extends WocketInfo {
 
   author_id: string =  '';
   title: string =  '';
-  creation_date: string =  '';
   publication_date: string = '';
   citation: CitationType = CitationType.MLA;
   content: any = [{children: [{ text: "" },],}];
@@ -14,6 +13,11 @@ export class ReportInfo extends WocketInfo {
   private_tag: Record<string, Record<string, string>> = {};
   public_tag: Record<string, string> = {};
   html: string = '';
+  upload_date: string = '';
+  uploadedBy_id: string = '';
+
+  preview_url: string = '';
+  original_url: string = '';
 
   resource_ids: string[] = [];
 

@@ -164,7 +164,19 @@ export const sortByProperty = (items: { [s: string]: any; } | ArrayLike<any>, so
 
     let copyItems = Object.assign([], items);
 
-    return Object.values(copyItems).sort(sortFunction);
+    let sortedItems = Object.values(copyItems).sort(sortFunction);
+
+    let result: Record<string, any> = {};
+
+    forEach(sortedItems, (item: any) => {
+        const { id } = item;
+
+        if (id) {
+            result[id] = item;
+        }
+    })
+
+    return result;
 }
 
 export const findFirstByProperty = (items: any[], propertyName: string, propertyValue: any) => {

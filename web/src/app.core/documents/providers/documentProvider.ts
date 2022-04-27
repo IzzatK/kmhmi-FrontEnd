@@ -1,14 +1,14 @@
 import {EntityProvider} from "../../common/providers/entityProvider";
 import {DocumentInfo, ParamType, ReferenceInfo, SearchParamInfo, SortPropertyInfo, TagInfo} from "../../../app.model";
 import {Nullable} from "../../../framework.core/extras/utils/typeUtils";
-import {DeleteDocumentResponseConverter} from "../converters/deleteDocumentResponseConverter";
-import {DocumentStatusResponseConverter} from "../converters/documentStatusResponseConverter";
-import {GetDocumentArrayRequestConverter} from "../converters/getDocumentArrayRequestConverter";
-import {GetDocumentArrayResponseConverter} from "../converters/getDocumentArrayResponseConverter";
-import {DocumentResponseConverter} from "../converters/documentResponseConverter";
-import {UpdateDocumentRequestConverter} from "../converters/updateDocumentRequestConverter";
-import {UploadDocumentRequestConverter} from "../converters/uploadDocumentRequestConverter";
-import {UploadDocumentResponseConverter} from "../converters/uploadDocumentResponseConverter";
+import {DeleteDocumentResponseConverter} from "../converters/documents/deleteDocumentResponseConverter";
+import {DocumentStatusResponseConverter} from "../converters/documents/documentStatusResponseConverter";
+import {DocumentResponseConverter} from "../converters/documents/documentResponseConverter";
+import {GetDocumentArrayRequestConverter} from "../converters/documents/getDocumentArrayRequestConverter";
+import {GetDocumentArrayResponseConverter} from "../converters/documents/getDocumentArrayResponseConverter";
+import {UpdateDocumentRequestConverter} from "../converters/documents/updateDocumentRequestConverter";
+import {UploadDocumentRequestConverter} from "../converters/documents/uploadDocumentRequestConverter";
+import {UploadDocumentResponseConverter} from "../converters/documents/uploadDocumentResponseConverter";
 import {StatusType} from "../../../app.model";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;

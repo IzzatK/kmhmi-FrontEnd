@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import './searchView.css';
 
 import {SearchBannerPresenter} from "../../../../components/searchBanner/searchBannerPresenter";
-import {SearchResultsPanelPresenter} from "../../../../components/searchResultsPanel/searchResultsPanelPresenter";
-import {SearchGraphsPanelPresenter} from "../../../../components/searchGraphsPanel/searchGraphsPanelPresenter";
+import {SearchResultsPanelWrapper} from "../../../../components/searchResultsPanel/searchResultsPanelWrapper";
+import {SearchGraphsPanelWrapper} from "../../../../components/searchGraphsPanel/searchGraphsPanelWrapper";
 
 import {Props, State} from "./searchModel";
 
@@ -24,12 +24,12 @@ export class SearchView extends Component<Props, State> {
                 {/*</ServiceContext.Consumer>*/}
                 <SearchBannerPresenter />
 
-                <div className={`search-view-tools position-relative ${toolsVisible ? 'expanded': 'collapsed'}`}>
-                    {/*<SearchAdvancedPanelPresenter className={'position-absolute w-100 h-100'}/>*/}
-                    <SearchGraphsPanelPresenter/>
-                </div>
+                {/*<div className={`search-view-tools position-relative ${toolsVisible ? 'expanded': 'collapsed'}`}>*/}
+                {/*    /!*<SearchAdvancedPanelPresenter className={'position-absolute w-100 h-100'}/>*!/*/}
+                {/*    <SearchGraphsPanelWrapper/>*/}
+                {/*</div>*/}
 
-                <SearchResultsPanelPresenter className={'flex-fill'}/>
+                <SearchResultsPanelWrapper className={'flex-fill'}/>
             </div>
         );
     }

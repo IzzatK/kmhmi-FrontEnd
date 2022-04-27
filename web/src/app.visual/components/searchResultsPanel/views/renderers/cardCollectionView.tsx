@@ -1,17 +1,21 @@
 import React, {Component} from 'react';
-import Card from "../../../theme/widgets/card/card";
-import ScrollBar from "../../../theme/widgets/scrollBar/scrollBar";
-import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
-import CheckBox from "../../../theme/widgets/checkBox/checkBox";
-import {TooltipPortal} from "../../../theme/widgets/tooltipPortal/tooltipPortal";
 import {
     CardCollectionRendererProps,
     CardCollectionRendererState,
     DocumentInfoVM,
-} from "../searchResultsModel";
-import Tag from "../../../theme/widgets/tag/tag";
-import {EllipsisSVG} from "../../../theme/svgs/ellipsisSVG";
-import {forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
+    ObjectType
+} from "../../searchResultsModel";
+import {forEachKVP} from "../../../../../framework.core/extras/utils/collectionUtils";
+import Tag from "../../../../theme/widgets/tag/tag";
+import {ReportInfoSVG} from "../../../../theme/svgs/reportInfoSVG";
+import {PocketInfoSVG} from "../../../../theme/svgs/pocketInfoSVG";
+import {DocumentInfoSVG} from "../../../../theme/svgs/documentInfoSVG";
+import Card from "../../../../theme/widgets/card/card";
+import {TooltipPortal} from "../../../../theme/widgets/tooltipPortal/tooltipPortal";
+import CheckBox from "../../../../theme/widgets/checkBox/checkBox";
+import {EllipsisSVG} from "../../../../theme/svgs/ellipsisSVG";
+import {LoadingIndicator} from "../../../../theme/widgets/loadingIndicator/loadingIndicator";
+import ScrollBar from "../../../../theme/widgets/scrollBar/scrollBar";
 
 class CardCollectionView extends Component<CardCollectionRendererProps, CardCollectionRendererState> {
     private resizeObserver: ResizeObserver;
@@ -75,7 +79,7 @@ class CardCollectionView extends Component<CardCollectionRendererProps, CardColl
     }
 
     render() {
-        const { className, searchResults, onDocumentSelected, ...rest } = this.props;
+        const { className, searchResults, onDocumentSelected, userLookup, ...rest } = this.props;
 
         let cn = "cards pr-4";
         if (className) {
@@ -85,13 +89,24 @@ class CardCollectionView extends Component<CardCollectionRendererProps, CardColl
         let itemDivs: any[] = [];
         if (searchResults) {
             itemDivs = searchResults.map((item: DocumentInfoVM) => {
-                const {id, author, title, upload_date, private_tag=[], public_tag=[], selected, status, isUpdating=true, publication_date } = item;
+                const {id, author, title, upload_date, private_tag=[], public_tag=[], selected, status, isUpdating=true, publication_date, object_type } = item;
 
                 this.sampleId = id;
 
                 let cn = 'position-relative result-item';
                 if (selected) {
                     cn += ' selected shadow-lg'
+                }
+
+                let author_text = author;
+                if (object_type !== ObjectType.DocumentInfo) {
+                    if (userLookup) {
+                        const author_user = userLookup[author || ""];
+
+                        if (author_user) {
+                            author_text = author_user.first_name + " " + author_user.last_name;
+                        }
+                    }
                 }
 
                 let hoverTagDivs: any[] = [];
@@ -148,13 +163,29 @@ class CardCollectionView extends Component<CardCollectionRendererProps, CardColl
                     })
                 }
 
+                let graphic_node;
+
+                switch (object_type) {
+                    case ObjectType.ReportInfo:
+                        graphic_node = <ReportInfoSVG className={"medium-image-container title-icon"}/>
+                        break;
+                    case ObjectType.PocketInfo:
+                        graphic_node = <PocketInfoSVG className={"medium-image-container title-icon"}/>
+                        break;
+                    case ObjectType.DocumentInfo:
+                    default:
+                        graphic_node = <DocumentInfoSVG className={"medium-image-container title-icon"}/>
+                        break;
+                }
+
                 return (
                     <div key={id} className={cn} draggable={true}>
-                        <Card className={'position-absolute w-100 h-100'} selected={selected} onClick={() => onDocumentSelected(id)}
+                        <Card className={'position-absolute w-100 h-100'} selected={selected} onClick={() => onDocumentSelected(id, object_type)}
                               header={
                                   <div className={"h-100 flex-fill align-self-stretch d-flex flex-column v-gap-2 p-4"}>
                                       <div className={'d-flex align-items-center'}>
                                           <div className={'d-flex h-gap-3 align-items-center w-100 overflow-hidden'}>
+                                              {graphic_node}
                                               <div className={"overflow-hidden"}>
                                                   <TooltipPortal portalContent={
                                                       <div>{title}</div>
@@ -171,12 +202,12 @@ class CardCollectionView extends Component<CardCollectionRendererProps, CardColl
                                           <div>
                                               {
                                                   author &&
-                                                  <div>{author}</div>
+                                                  <div>{author_text}</div>
                                               }
                                           </div>
                                       }>
                                           <div className={'flex-fill d-flex'}>
-                                              <div className={"overflow-hidden text-break text header-2"}>{author}</div>
+                                              <div className={"overflow-hidden text-break text header-2"}>{author_text}</div>
                                           </div>
                                       </TooltipPortal>
                                       <TooltipPortal portalContent={

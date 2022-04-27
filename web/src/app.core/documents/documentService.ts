@@ -1,24 +1,41 @@
 import {createSelector, OutputSelector} from "@reduxjs/toolkit";
-import {forEach, forEachKVP} from "../../framework.core/extras/utils/collectionUtils";
-import {DocumentInfo, MetadataInfo, MetadataType, ParamType, SearchParamInfo, SortPropertyInfo} from "../../app.model";
+import {forEach, forEachKVP, sortByProperty} from "../../framework.core/extras/utils/collectionUtils";
+import {
+    DocumentInfo, ExcerptMapper,
+    MetadataInfo,
+    MetadataType, NoteInfo,
+    ParamType,
+    PocketMapper, ReportInfo, ResourceMapper,
+    SearchParamInfo,
+    SortPropertyInfo, WocketInfo
+} from "../../app.model";
 import {Nullable} from "../../framework.core/extras/utils/typeUtils";
 
-import {IDocumentService, IUserService} from "../../app.core.api";
+import {IDocumentService, IPocketService, IReportService, IUserService} from "../../app.core.api";
 import {Plugin} from "../../framework.core/extras/plugin";
 import {getDateWithoutTime} from "../../framework.core/extras/utils/timeUtils";
 import {StatusType} from "../../app.model";
 import {IEntityProvider} from "../../framework.core.api";
+import {IRepoItem} from "../../framework.core/services";
+import {SearchResultInfo} from "../../app.model/searchResultInfo";
 
 export class DocumentService extends Plugin implements IDocumentService {
     public static readonly class:string = 'DocumentService';
     private userService: Nullable<IUserService> = null;
+    private pocketService: Nullable<IPocketService> = null;
+    private reportService: Nullable<IReportService> = null;
     private documentProvider?: Nullable<IEntityProvider<DocumentInfo>> = null;
+    private searchResultsProvider?: Nullable<IEntityProvider<any>> = null;
 
     private readonly pendingFilesRaw: Record<string, any>;
 
     getAllDocumentsSelector: OutputSelector<any, Record<string, DocumentInfo>, (res1: Record<string, DocumentInfo>, res2: any) => Record<string, DocumentInfo>>;
-    getSearchDocumentsSelector: OutputSelector<any, Record<string, DocumentInfo>, (res: Record<string, DocumentInfo>) => Record<string, DocumentInfo>>;
     getPendingDocumentsSelector: OutputSelector<any, Record<string, DocumentInfo>, (res: Record<string, DocumentInfo>) => Record<string, DocumentInfo>>;
+
+    getSearchResultsSelector: OutputSelector<any, Record<string, any>, (res1: Record<string, DocumentInfo>, res2: Record<string, PocketMapper>, res3: Record<string, ReportInfo>, res4: string | undefined) => Record<string, any>>;
+
+    getLocalPocketsSelector: OutputSelector<any, Record<string, PocketMapper>, (res1: Record<string, PocketMapper>, res2: string | undefined) => Record<string, PocketMapper>>;
+    getLocalReportsSelector: OutputSelector<any, Record<string, ReportInfo>, (res1: Record<string, ReportInfo>, res2: string | undefined) => Record<string, ReportInfo>>;
 
     constructor() {
         super();
@@ -57,18 +74,44 @@ export class DocumentService extends Plugin implements IDocumentService {
             }
         );
 
-        this.getSearchDocumentsSelector = createSelector(
-            [(s) => this.getAllDocuments()],
-            (items) => {
-                let result:Record<string, DocumentInfo> = {};
+        this.getSearchResultsSelector = createSelector(
+            [
+                (s) => this.getAllDocuments(),
+                (s) => this.pocketService?.getPocketMappers(),
+                (s) => this.reportService?.getReports(),
+                (s) => this.userService?.getCurrentUserId()
+            ],
+            (documents, pocketMappers, reports, currentUserId) => {
+                let result:Record<string, SearchResultInfo> = {};
 
-                forEach(items, (item:DocumentInfo) => {
+                forEach(documents, (item: DocumentInfo) => {
                     const { id, isPending } = item;
 
                     if (!isPending) {
                         result[id] = item;
                     }
                 });
+
+                forEach(pocketMappers, (item: PocketMapper) => {
+                    const { id } = item;
+                    const { author_id } = item.pocket;
+
+                    if (currentUserId !== author_id) {
+                        result[id] = item;
+                    }
+                })
+
+                forEach(reports, (item: ReportInfo) => {
+                    const { id, author_id } = item;
+
+                    if (currentUserId !== author_id) {
+                        result[id] = item;
+                    }
+                })
+
+                let sortValue: string = this.getSearchParam("sort")?.value || "";
+
+                result = sortByProperty(result, sortValue);
 
                 return result;
             }
@@ -90,6 +133,41 @@ export class DocumentService extends Plugin implements IDocumentService {
                 return result;
             }
         );
+
+        this.getLocalPocketsSelector = createSelector(
+            [(s) => this.pocketService?.getPocketMappers(), (s) => this.userService?.getCurrentUserId()],
+            (pocketMappers, currentUserId) => {
+                let result: Record<string, PocketMapper> = {};
+
+                forEach(pocketMappers, (item: PocketMapper) => {
+                    const { id } = item;
+                    const { author_id } = item.pocket;
+
+                    if (currentUserId && currentUserId === author_id) {
+                        result[id] = item;
+                    }
+                })
+
+                return result;
+            }
+        )
+
+        this.getLocalReportsSelector = createSelector(
+            [(s) => this.reportService?.getReports(), (s) => this.userService?.getCurrentUserId()],
+            (reports, currentUserId) => {
+                let result: Record<string, ReportInfo> = {};
+
+                forEach(reports, (item: ReportInfo) => {
+                    const { id, author_id } = item;
+
+                    if (currentUserId && currentUserId === author_id) {
+                        result[id] = item;
+                    }
+                })
+
+                return result;
+            }
+        )
     }
 
     start() {
@@ -108,16 +186,32 @@ export class DocumentService extends Plugin implements IDocumentService {
         this.userService = userService;
     }
 
+    setPocketService(pocketService: IPocketService) {
+        this.pocketService = pocketService;
+    }
+
+    setReportService(reportService: IReportService) {
+        this.reportService = reportService;
+    }
+
     getAllDocuments(): Record<string, DocumentInfo> {
         return this.getAllDocumentsSelector(super.getRepoState());
     }
 
-    getSearchDocuments(): Record<string, DocumentInfo> {
-        return this.getSearchDocumentsSelector(super.getRepoState());
+    getSearchResults(): Record<string, any> {
+        return this.getSearchResultsSelector(super.getRepoState());
     }
 
     getPendingDocuments(): Record<string, DocumentInfo> {
         return this.getPendingDocumentsSelector(super.getRepoState());
+    }
+
+    private getLocalReports(): Record<string, ReportInfo> {
+        return this.getLocalReportsSelector(super.getRepoState());
+    }
+
+    private getLocalPockets(): Record<string, PocketMapper> {
+        return this.getLocalPocketsSelector(super.getRepoState());
     }
 
     fetchDocument(id: string) {
@@ -158,6 +252,51 @@ export class DocumentService extends Plugin implements IDocumentService {
         this.addOrUpdateAllRepoItems(<DocumentInfo[]>Object.values(documents));
     }
 
+    fetchSearchResults() {
+        this.setGetDocumentArrayMetadata(true);
+
+        this.searchResultsProvider?.getAll(this.getSearchParams())
+            .then(responseData => {
+
+                const items: IRepoItem[] = [];
+
+                forEach(responseData, (searchResult: SearchResultInfo) => {
+                    if (searchResult instanceof PocketMapper) {
+                        const flattenedItems = this.flattenPocketMapper(searchResult);
+                        items.push(...flattenedItems);
+                    } else {
+                        items.push(searchResult);
+                    }
+                })
+
+                const privatePocketMappers = this.getLocalPockets();
+
+                forEach(privatePocketMappers, (pocketMapper: PocketMapper) => {
+                    const flattenedItems = this.flattenPocketMapper(pocketMapper);
+                    items.push(...flattenedItems);
+                })
+
+                let searchResults: Record<string, SearchResultInfo> = Object.assign({}, this.getPendingDocuments(), this.getLocalReports(), items);
+
+                this.setGetDocumentArrayMetadata(false)
+
+                let values: any[] = Object.values(searchResults) as unknown as any[];
+                if (values && values.length === 0) {
+                    this.setGetDocumentArrayMetadata(false, 'No Results')
+                }
+
+                this.removeAllByType(DocumentInfo.class);
+                this.removeAllByType(WocketInfo.class);
+                this.addOrUpdateAllRepoItems(values);
+
+            })
+            .catch(error => {
+                console.log(error);
+                this.setGetDocumentArrayMetadata(false,
+                    `${error}\n\nSearch Data: \n\n${JSON.stringify(error)}`)
+            });
+    }
+
     fetchDocuments() {
         this.setGetDocumentArrayMetadata(true);
 
@@ -195,7 +334,7 @@ export class DocumentService extends Plugin implements IDocumentService {
 
             this.documentProvider?.getAll(searchParams)
                 .then(responseData => {
-                    let documents: Record<string, DocumentInfo> = Object.assign({}, this.getSearchDocuments(), responseData);
+                    let documents: Record<string, DocumentInfo> = Object.assign({}, this.getSearchResults(), responseData);
 
                     let values: DocumentInfo[] = Object.values(documents) as unknown as DocumentInfo[];
 
@@ -516,6 +655,10 @@ export class DocumentService extends Plugin implements IDocumentService {
         this.documentProvider = provider;
     }
 
+    setSearchResultsProvider(provider: IEntityProvider<any>): void {
+        this.searchResultsProvider = provider;
+    }
+
     clearAllParams() {
         let items = this.getSearchParams();
 
@@ -632,5 +775,27 @@ export class DocumentService extends Plugin implements IDocumentService {
 
     getSortTypes() {
         return super.getAll<SortPropertyInfo>(SortPropertyInfo.class);
+    }
+
+    private flattenPocketMapper(pocketMapper: PocketMapper) {
+        const result = [];
+
+        result.push(pocketMapper.pocket);
+
+        forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
+            result.push(resourceMapper.resource);
+
+            forEach(resourceMapper.excerptMappers, (excerptMapper: ExcerptMapper) => {
+                result.push(excerptMapper.excerpt);
+
+                forEach(excerptMapper.notes, (note: NoteInfo) => {
+                    if (note) {
+                        result.push(note);
+                    }
+                });
+            });
+        });
+
+        return result;
     }
 }

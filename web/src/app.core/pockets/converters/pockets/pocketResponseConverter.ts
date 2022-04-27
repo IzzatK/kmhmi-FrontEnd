@@ -103,11 +103,35 @@ export class PocketResponseConverter extends Converter<any, PocketMapper> {
 
         const pocketInfo: PocketInfo = new PocketInfo(getValueOrDefault(item, 'pocket_id', getValueOrDefault(item, 'id', '')));
 
+        let public_tags: Record<string, string> = {};
+        forEach(getValueOrDefault(item, 'custom_shared_tag', []), (tag: string) => {
+            public_tags[tag] = tag;
+        });
+
+        let private_tags: Record<string, any> = {};
+        forEach(getValueOrDefault(item, 'custom_personal_tag', []), (tags: Record<string, any>) => {
+            let tagsArray: Record<string, string> = {};
+
+            if (tags['tag_id'] && Array.isArray(tags['tag_id'])) {
+                forEach(tags['tag_id'], (tag: string) => {
+                    tagsArray[tag] = tag;
+                })
+            }
+
+            private_tags[tags['user_id']] = tagsArray;
+        })
+
+        pocketInfo.private_tag = private_tags;
+        pocketInfo.public_tag = public_tags;
+
         pocketInfo.title = getValueOrDefault(item, 'title', '');
         pocketInfo.author_id = getValueOrDefault(item, 'author_id', '');
         pocketInfo.resource_ids = resourceIds;
         pocketInfo.note_ids = getValueOrDefault(item, 'note_ids', '');
         pocketInfo.report_ids = getValueOrDefault(item, 'report_ids', '');
+        pocketInfo.scope = getValueOrDefault(item, 'scope', '');
+        pocketInfo.uploadedBy_id = getValueOrDefault(item, 'uploaded_by', '');
+        pocketInfo.upload_date = getValueOrDefault(item, 'upload_date', '');
         pocketInfo.isUpdating = false;
 
         const pocketMapper = new PocketMapper(pocketInfo);

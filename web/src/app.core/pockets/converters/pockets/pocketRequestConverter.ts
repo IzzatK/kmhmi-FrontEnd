@@ -18,6 +18,10 @@ export class PocketRequestConverter extends Converter<any, any> {
             author_id: "author_id",
             note_ids: "note_ids",
             report_ids: "report_ids",
+            scope: "scope",
+            uploadedBy_id: "uploaded_by",
+            private_tag: "custom_personal_tag",
+            public_tag: "custom_shared_tag",
         }
 
         const ResourceProperties: Partial<Record<keyof ResourceInfo, string>> = {
@@ -66,7 +70,36 @@ export class PocketRequestConverter extends Converter<any, any> {
 
             if (serverPocketKey) {
                 if (itemValue !== "") {
-                    serverPocket[serverPocketKey] = itemValue;
+                    if (itemKey === "public_tag") {
+                        let tagsArray: string[] = [];
+                        forEachKVP(itemValue, (item: string) => {
+                            if (item !== "") {
+                                tagsArray.push(item);
+                            }
+                        })
+                        serverPocket[serverPocketKey] = tagsArray;
+                    } else if (itemKey === "private_tag") {
+                        let tagsArray: any[] = [];
+                        forEachKVP(itemValue, (itemKey: string, itemValue: Record<string, string>) => {
+                            let tagObject: Record<string, any> = {};
+
+                            let itemValueArray: string[] = [];
+                            if (itemValue) {
+                                forEachKVP(itemValue, (item: string) => {
+                                    itemValueArray.push(item);
+                                })
+                            }
+
+                            tagObject['tag_id'] = itemValueArray;
+                            tagObject['user_id'] = itemKey;
+
+                            tagsArray.push(tagObject);
+                        })
+                        serverPocket[serverPocketKey] = tagsArray;
+                    } else {
+                        serverPocket[serverPocketKey] = itemValue;
+                    }
+
                 }
             }
         });

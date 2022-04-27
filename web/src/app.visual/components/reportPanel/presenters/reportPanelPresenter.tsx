@@ -40,7 +40,7 @@ class ReportPanelPresenter extends Component<ReportPanelPresenterProps, ReportPa
     componentDidUpdate(prevProps: Readonly<ReportPanelPresenterProps>, prevState: Readonly<ReportPanelPresenterState>, snapshot?: any) {
         const { report } = this.props;
 
-        if (report !== prevProps.report) {
+        if (report.id !== prevProps.report.id) {
             const { id, content } = report;
 
             this.setState({
@@ -127,8 +127,6 @@ class ReportPanelPresenter extends Component<ReportPanelPresenterProps, ReportPa
             ...nextReport,
             content: tmpValue,
         }
-
-        debugger;
 
         if (onSaveReport) {
             onSaveReport(params);

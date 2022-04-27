@@ -6,6 +6,11 @@ export class PocketInfo extends WocketInfo {
 
   title: string =  '';
   author_id: string = '';
+  scope: string = '';
+  upload_date: string = '';
+  uploadedBy_id: string = '';
+  private_tag: Record<string, Record<string, string>> = {};
+  public_tag: Record<string, string> = {};
 
   resource_ids: string[] = [];
   note_ids: string[] = [];

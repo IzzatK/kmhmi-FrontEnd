@@ -1,6 +1,6 @@
-import {DocumentInfo} from "../../../app.model";
-import {Converter} from "../../common/converters/converter";
-import {forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
+import {Converter} from "../../../common/converters/converter";
+import {DocumentInfo} from "../../../../app.model";
+import {forEachKVP} from "../../../../framework.core/extras/utils/collectionUtils";
 
 export class UpdateDocumentRequestConverter extends Converter<any, any> {
 

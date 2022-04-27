@@ -3,6 +3,8 @@ import {DocumentInfo, SearchParamInfo, SortPropertyInfo} from "../../app.model";
 import {IPlugin} from "../../framework.core.api";
 import {IUserService} from "../users/iUserService";
 import {IEntityProvider} from "../../framework.core.api";
+import {IPocketService} from "../pockets/iPocketService";
+import {IReportService} from "../reports/iReportService";
 
 export interface IDocumentService extends IPlugin {
 
@@ -11,6 +13,8 @@ export interface IDocumentService extends IPlugin {
     clearSearch(): void;
 
     fetchDocuments(): void;
+
+    fetchSearchResults(): void;
 
     fetchUploadedDocuments(): void;
 
@@ -32,7 +36,13 @@ export interface IDocumentService extends IPlugin {
 
     setUserService(userService: IUserService): void;
 
+    setPocketService(pocketService: IPocketService): void;
+
+    setReportService(reportsService: IReportService): void;
+
     setDocumentProvider(provider: IEntityProvider<DocumentInfo>): void;
+
+    setSearchResultsProvider(provider: IEntityProvider<any>): void;
 
     clearAllParams(): void;
 
@@ -58,7 +68,7 @@ export interface IDocumentService extends IPlugin {
 
     getAllDocuments(): Record<string, DocumentInfo>;
 
-    getSearchDocuments(): Record<string, DocumentInfo>;
+    getSearchResults(): Record<string, any>;
 
     getPendingDocuments(): Record<string, DocumentInfo>;
 }

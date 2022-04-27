@@ -173,6 +173,8 @@ export const serialize = (node: any) => {
         return string
     }
 
+    if (!node.childred) return "";
+
     const children = node.children.map((n: any) => serialize(n)).join('')
 
     // @ts-ignore

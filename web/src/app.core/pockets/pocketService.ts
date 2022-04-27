@@ -28,7 +28,8 @@ type GetAllPocketMapperSelector = OutputSelector<any, Record<string, PocketMappe
     (res1: Record<string, PocketInfo>,
      res2: Record<string, ResourceInfo>,
      res3: Record<string, ExcerptInfo>,
-     res4: Record<string, NoteInfo>)
+     res4: Record<string, NoteInfo>,
+     res5: string | undefined)
         => (Record<string, PocketMapper>)>;
 
 export class PocketService extends Plugin implements IPocketService {
@@ -57,55 +58,58 @@ export class PocketService extends Plugin implements IPocketService {
                 (s) => this.getAll<PocketInfo>(PocketInfo.class),
                 (s) => this.getAll<ResourceInfo>(ResourceInfo.class),
                 (s) => this.getAll<ExcerptInfo>(ExcerptInfo.class),
-                (s) => this.getAll<NoteInfo>(NoteInfo.class)
+                (s) => this.getAll<NoteInfo>(NoteInfo.class),
+                (s) => this.userService?.getCurrentUserId(),
             ],
-            (pockets, resources, excerpts, notes) => {
+            (pockets, resources, excerpts, notes, currentUserId) => {
                 const pocketMappers: Record<string, PocketMapper> = {};
 
                 forEach(pockets, (pocketInfo: PocketInfo) => {
-                    const pocketMapper = new PocketMapper(pocketInfo);
+                    if (currentUserId && currentUserId === pocketInfo.author_id) {//TODO check for shared pockets as well as personal pockets
+                        const pocketMapper = new PocketMapper(pocketInfo);
 
-                    forEach(pocketInfo.resource_ids, (resourceId: string) => {
+                        forEach(pocketInfo.resource_ids, (resourceId: string) => {
 
-                        const resource: ResourceInfo = resources[resourceId];
+                            const resource: ResourceInfo = resources[resourceId];
 
-                        if (resource == null) {
-                            this.warn(`Pocket ${pocketInfo.id} refers to resource ${resourceId}, but resource ${resourceId} not found!`)
-                        }
-                        else {
+                            if (resource == null) {
+                                this.warn(`Pocket ${pocketInfo.id} refers to resource ${resourceId}, but resource ${resourceId} not found!`)
+                            }
+                            else {
 
-                            const resourceMapper = new ResourceMapper(resource);
+                                const resourceMapper = new ResourceMapper(resource);
 
-                            forEach(resource.excerptIds, (excerptId: string) => {
-                                const excerpt: ExcerptInfo = excerpts[excerptId];
+                                forEach(resource.excerptIds, (excerptId: string) => {
+                                    const excerpt: ExcerptInfo = excerpts[excerptId];
 
-                                if (excerpt == null) {
-                                    this.warn(`Resource ${resourceId} refers to excerpt ${excerptId}, but excerpt ${excerptId} not found!`)
-                                }
-                                else {
+                                    if (excerpt == null) {
+                                        this.warn(`Resource ${resourceId} refers to excerpt ${excerptId}, but excerpt ${excerptId} not found!`)
+                                    }
+                                    else {
 
-                                    const excerptMapper = new ExcerptMapper(excerpt);
+                                        const excerptMapper = new ExcerptMapper(excerpt);
 
-                                    forEach(excerpt.noteIds, (noteId: string) => {
-                                        const note: NoteInfo = notes[noteId];
+                                        forEach(excerpt.noteIds, (noteId: string) => {
+                                            const note: NoteInfo = notes[noteId];
 
-                                        if (note == null) {
-                                            this.warn(`Excerpt ${excerptId} refers to note ${noteId}, but note ${noteId} not found!`)
-                                        }
-                                        else {
-                                            excerptMapper.notes[noteId] = notes[noteId];
-                                        }
-                                    });
+                                            if (note == null) {
+                                                this.warn(`Excerpt ${excerptId} refers to note ${noteId}, but note ${noteId} not found!`)
+                                            }
+                                            else {
+                                                excerptMapper.notes[noteId] = notes[noteId];
+                                            }
+                                        });
 
-                                    resourceMapper.excerptMappers[excerptId] = excerptMapper;
-                                }
-                            });
+                                        resourceMapper.excerptMappers[excerptId] = excerptMapper;
+                                    }
+                                });
 
-                            pocketMapper.resourceMappers[resourceId] = resourceMapper;
-                        }
-                    });
+                                pocketMapper.resourceMappers[resourceId] = resourceMapper;
+                            }
+                        });
 
-                    pocketMappers[pocketInfo.id] = pocketMapper;
+                        pocketMappers[pocketInfo.id] = pocketMapper;
+                    }
                 });
 
                 return pocketMappers;

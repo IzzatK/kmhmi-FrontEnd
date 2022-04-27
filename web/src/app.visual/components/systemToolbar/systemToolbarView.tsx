@@ -29,7 +29,10 @@ class SystemToolbarView extends Component<SystemToolbarProps, SystemToolbarState
 
         return (
             <div className={cn} {...rest}>
-                <div className={'d-flex flex-column v-gap-3'}>
+                <div className={'d-flex flex-column v-gap-3 justify-content-between'}>
+
+                    {/*<div className={"border-top align-self-stretch justify-self-stretch border-muted"}/>*/}
+                    {toolbarDiv}
                     <div className={'tool-item'}>
                         <Button tooltip={docTitle} onClick={onDocumentPreviewSelected} selected={docSelected || reportSelected}>
                             <DocPreviewSVG className={'small-image-container'}/>
@@ -38,8 +41,6 @@ class SystemToolbarView extends Component<SystemToolbarProps, SystemToolbarState
                         {/*    <DocPreviewSVG className={'small-image-container'}/>*/}
                         {/*</Button>*/}
                     </div>
-                    <div className={"border-top align-self-stretch justify-self-stretch border-muted"}/>
-                    {toolbarDiv}
                 </div>
             </div>
         );

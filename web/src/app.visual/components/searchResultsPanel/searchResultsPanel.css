@@ -69,8 +69,16 @@
     -webkit-line-clamp: 1;
 }
 
+.search-results-panel .search-results .cards .result-item .card .title-icon {
+    fill: var(--search-results-card-accent-color) !important;
+}
+
 .search-results-panel .search-results .cards .result-item .card:hover .title {
     color: var(--search-results-card-hover-accent-color);
+}
+
+.search-results-panel .search-results .cards .result-item .card:hover .title-icon {
+    fill: var(--search-results-card-hover-accent-color) !important;
 }
 
 .search-results-panel .search-results .cards .result-item .card .text {
@@ -98,6 +106,10 @@
     font-weight: bold;
 }
 
+.search-results-panel .search-results .cards .result-item.selected .card .title-icon {
+    fill: var(--search-results-card-selected-accent-color) !important;
+}
+
 .search-results-panel .search-results .cards .result-item.selected .card .text {
     color: var(--search-results-card-selected-color);
 }
@@ -112,12 +124,24 @@
     -webkit-line-clamp: 1;
 }
 
+.search-results-panel .search-results .list .result-item .title-icon {
+    fill: var(--search-results-list-accent-color) !important;
+}
+
 .search-results-panel .search-results .list .result-item:hover .title {
     color: var(--search-results-list-hover-accent-color);
 }
 
+.search-results-panel .search-results .list .result-item:hover .title-icon {
+    fill: var(--search-results-list-hover-accent-color) !important;
+}
+
 .search-results-panel .search-results .list .result-item.selected .title {
     color: var(--search-results-list-selected-accent-color);
+}
+
+.search-results-panel .search-results .list .result-item.selected .title-icon {
+    fill: var(--search-results-list-selected-accent-color) !important;
 }
 
 .search-results-panel .search-results .list .result-item .text {
@@ -243,4 +267,18 @@
     bottom: 0;
     left: 0;
     margin: auto;
+}
+
+.search-results-panel .banner {
+
+}
+
+.search-results-panel .banner .text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
+.search-results-panel .banner .button {
+    fill: var(--primary-color)
 }
