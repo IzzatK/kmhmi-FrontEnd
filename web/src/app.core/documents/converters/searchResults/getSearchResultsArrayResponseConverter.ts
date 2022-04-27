@@ -44,8 +44,8 @@ export class GetSearchResultsArrayResponseConverter extends Converter<any,any[]>
 
                         if (reportInfo) {
                             reportInfo.id = getValueOrDefault(item, 'id', '');
-                            reportInfo.original_url = `${KM_API_SERVER_URL}/documents/${reportInfo.id}?format=ORIGINAL`;
-                            reportInfo.preview_url = `${KM_API_SERVER_URL}/documents/${reportInfo.id}?format=PREVIEW`;
+                            reportInfo.original_url = `${KM_API_SERVER_URL}/pockets/reports/${reportInfo.id}?format=ORIGINAL`;
+                            reportInfo.preview_url = `${KM_API_SERVER_URL}/pockets/reports/${reportInfo.id}?format=PREVIEW`;
 
                             searchResults.push(reportInfo);
                         }

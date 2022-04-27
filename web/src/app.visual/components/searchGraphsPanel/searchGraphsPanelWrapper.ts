@@ -309,12 +309,13 @@ class _SearchGraphsPanelWrapper extends VisualWrapper {
         [documentService.getSearchResults],
         (items) => {
 
-            let length = 0;
-            forEach(items, () => {
-                length++;
-            });
-
-            return (length > 0);
+            // let length = 0;
+            // forEach(items, () => {
+            //     length++;
+            // });
+            //
+            // return (length > 0);
+            return false;
         }
     );
 }

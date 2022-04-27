@@ -32,7 +32,7 @@ import {
 import {DOCUMENT_PREVIEW_VIEW_ID} from "../systemToolbar/systemToolbarPresenter";
 import SearchResultsPanelPresenter from "./presenters/searchResultsPanelPresenter";
 import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../app.core.api";
-import {SearchResultInfo} from "../../../app.model/searchResultInfo";
+import {SearchResultInfo} from "../../../app.model";
 
 class _SearchResultsPanelWrapper extends VisualWrapper {
     constructor() {
@@ -408,18 +408,21 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
     onDocumentSelected(id: string, object_type: ObjectType) {
         switch (object_type) {
             case ObjectType.DocumentInfo:
+                documentService.fetchDocument(id);
                 selectionService.setContext("selected-document", id);
                 selectionService.setContext("selected-pocket", '');
                 selectionService.setContext("selected-report", '');
                 displayService.pushNode(DocumentPanelId);
                 break;
             case ObjectType.PocketInfo:
+                pocketService.fetchPocket(id);
                 selectionService.setContext("selected-pocket", id);
                 selectionService.setContext("selected-document", '');
                 selectionService.setContext("selected-report", '');
                 displayService.popNode(DOCUMENT_PREVIEW_VIEW_ID)
                 break;
             case ObjectType.ReportInfo:
+                reportService.fetchReport(id);
                 selectionService.setContext("selected-report", id);
                 selectionService.setContext("selected-document", '');
                 selectionService.setContext("selected-pocket", '');

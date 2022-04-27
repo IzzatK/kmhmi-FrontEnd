@@ -1,5 +1,5 @@
 import {Nullable} from "../../framework.core/extras/utils/typeUtils";
-import {DocumentInfo, SearchParamInfo, SortPropertyInfo} from "../../app.model";
+import {DocumentInfo, SearchParamInfo, SearchResultInfo, SortPropertyInfo} from "../../app.model";
 import {IPlugin} from "../../framework.core.api";
 import {IUserService} from "../users/iUserService";
 import {IEntityProvider} from "../../framework.core.api";
@@ -68,7 +68,7 @@ export interface IDocumentService extends IPlugin {
 
     getAllDocuments(): Record<string, DocumentInfo>;
 
-    getSearchResults(): Record<string, any>;
+    getSearchResults(): Record<string, SearchResultInfo>;
 
     getPendingDocuments(): Record<string, DocumentInfo>;
 }

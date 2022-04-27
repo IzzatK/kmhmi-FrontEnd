@@ -31,8 +31,9 @@ export class DocumentService extends Plugin implements IDocumentService {
 
     getAllDocumentsSelector: OutputSelector<any, Record<string, DocumentInfo>, (res1: Record<string, DocumentInfo>, res2: any) => Record<string, DocumentInfo>>;
     getPendingDocumentsSelector: OutputSelector<any, Record<string, DocumentInfo>, (res: Record<string, DocumentInfo>) => Record<string, DocumentInfo>>;
+    getSearchDocumentsSelector: OutputSelector<any, Record<string, DocumentInfo>, (res: Record<string, DocumentInfo>) => Record<string, DocumentInfo>>;
 
-    getSearchResultsSelector: OutputSelector<any, Record<string, any>, (res1: Record<string, DocumentInfo>, res2: Record<string, PocketMapper>, res3: Record<string, ReportInfo>, res4: string | undefined) => Record<string, any>>;
+    getSearchResultsSelector: OutputSelector<any, Record<string, SearchResultInfo>, (res1: Record<string, DocumentInfo>, res2: Record<string, PocketMapper>, res3: Record<string, ReportInfo>, res4: string | undefined) => Record<string, SearchResultInfo>>;
 
     getLocalPocketsSelector: OutputSelector<any, Record<string, PocketMapper>, (res1: Record<string, PocketMapper>, res2: string | undefined) => Record<string, PocketMapper>>;
     getLocalReportsSelector: OutputSelector<any, Record<string, ReportInfo>, (res1: Record<string, ReportInfo>, res2: string | undefined) => Record<string, ReportInfo>>;
@@ -70,6 +71,23 @@ export class DocumentService extends Plugin implements IDocumentService {
 
                     return result;
                 }
+                return result;
+            }
+        );
+
+        this.getSearchDocumentsSelector = createSelector(
+            [(s) => this.getAllDocuments()],
+            (items) => {
+                let result:Record<string, DocumentInfo> = {};
+
+                forEach(items, (item:DocumentInfo) => {
+                    const { id, isPending } = item;
+
+                    if (!isPending) {
+                        result[id] = item;
+                    }
+                });
+
                 return result;
             }
         );
@@ -198,7 +216,11 @@ export class DocumentService extends Plugin implements IDocumentService {
         return this.getAllDocumentsSelector(super.getRepoState());
     }
 
-    getSearchResults(): Record<string, any> {
+    getSearchDocuments(): Record<string, DocumentInfo> {
+        return this.getSearchDocumentsSelector(super.getRepoState());
+    }
+
+    getSearchResults(): Record<string, SearchResultInfo> {
         return this.getSearchResultsSelector(super.getRepoState());
     }
 
@@ -216,20 +238,18 @@ export class DocumentService extends Plugin implements IDocumentService {
 
     fetchDocument(id: string) {
         this.documentProvider?.getSingle(id)
-            .then(document => {
-                if (document != null) {
+            .then((document) => {
+                if (document) {
                     const { id, status } = document;
 
                     if (status !== StatusType.ERROR) {
-                        let localDocument = this.getDocument(id);
+                        let localDocument: Nullable<DocumentInfo> = this.getDocument(id);
 
-                        let nextDocument = {
-                            ...localDocument,
-                            ...document,
-                            isPending: localDocument?.isPending ? localDocument.isPending : document.isPending
+                        if (localDocument) {
+                            document.isPending = localDocument.isPending;
                         }
 
-                        this.addOrUpdateRepoItem(nextDocument);
+                        this.addOrUpdateRepoItem<DocumentInfo>(document);
                     }
                 }
 
@@ -334,7 +354,7 @@ export class DocumentService extends Plugin implements IDocumentService {
 
             this.documentProvider?.getAll(searchParams)
                 .then(responseData => {
-                    let documents: Record<string, DocumentInfo> = Object.assign({}, this.getSearchResults(), responseData);
+                    let documents: Record<string, DocumentInfo> = Object.assign({}, this.getSearchDocuments(), responseData);
 
                     let values: DocumentInfo[] = Object.values(documents) as unknown as DocumentInfo[];
 

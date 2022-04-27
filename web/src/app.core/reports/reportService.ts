@@ -80,17 +80,10 @@ export class ReportService extends Plugin implements IReportService {
         return new Promise<Nullable<ReportInfo>>(
             ((resolve, reject) => {
                 this.reportProvider?.getSingle(id)
-                    .then(latestReport => {
-                        let localReport: any = this.getReport(id);
-
-                        let nextReport = {
-                            ...latestReport,
-                            ...localReport,
+                    .then((report) => {
+                        if (report) {
+                            this.addOrUpdateRepoItem<ReportInfo>(report);
                         }
-
-                        this.addOrUpdateRepoItem(nextReport);
-
-                        resolve(nextReport);
                     })
                     .catch(error => {
                         reject(error);

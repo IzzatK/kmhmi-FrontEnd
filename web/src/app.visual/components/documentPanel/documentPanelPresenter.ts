@@ -6,14 +6,14 @@ import {
     NoteInfo,
     ParamType,
     PocketMapper,
-    ReferenceType,
-    ResourceMapper, TagInfo
+    ReferenceType, ReportInfo,
+    ResourceMapper, TagInfo, UserInfo
 } from "../../../app.model";
 import {
     authenticationService,
     authorizationService,
     documentService, pocketService,
-    referenceService, repoService,
+    referenceService, reportService,
     selectionService, tagService,
     userService,
 } from "../../../serviceComposition";
@@ -235,16 +235,50 @@ class DocumentPanel extends VisualWrapper {
     }
 
     getSelectedDocumentId = selectionService.makeGetContext("selected-document");
+    getSelectedReportId = selectionService.makeGetContext("selected-report");
+
+    getSelectedId = createSelector(
+        [
+            (s) => this.getSelectedDocumentId(s),
+            (s) => this.getSelectedReportId(s)
+        ],
+        (selectedDocumentId, selectedReportId) => {
+
+            let result: string = "";
+
+            if (selectedDocumentId && selectedDocumentId !== "") {
+                result = selectedDocumentId;
+            } else if (selectedReportId && selectedReportId !== "") {
+                result = selectedReportId;
+            }
+
+            return result;
+        }
+    )
 
     getDocument = createSelector(
-        [(s) => this.getSelectedDocumentId(s),(s) => documentService.getAllDocuments(), (s) => userService.getCurrentUserId()], // if this changes, will re-evaluate the combiner and trigger a re-render
-        (documentId, documents: Record<string, DocumentInfo>, currentUserId: string) => {
+        [
+            (s) => this.getSelectedId(s),
+            (s) => documentService.getAllDocuments(),
+            (s) => reportService.getReports(),
+            (s) => userService.getCurrentUserId(),
+            (s) => userService.getActiveUsers(),
+        ], // if this changes, will re-evaluate the combiner and trigger a re-render
+        (
+            selectedId,
+            documents: Record<string, DocumentInfo>,
+            reports: Record<string, ReportInfo>,
+            currentUserId: string,
+            userLookup: Record<string, UserInfo>
+        ) => {
 
-            let document = documents[documentId];
+            let searchResult: DocumentInfo | ReportInfo = documents[selectedId];
 
             let itemVM: DocumentInfoVM = {};
 
-            if (document) {
+            // debugger
+
+            if (searchResult) {
                 const {
                     id,
                     author="",
@@ -276,7 +310,7 @@ class DocumentPanel extends VisualWrapper {
                     suggested_author,
                     suggested_title,
                     suggested_publication_date,
-                } = document || {};
+                } = searchResult;
 
                 let nlpComplete: boolean;
                 let showAnimation: boolean = false;
@@ -285,7 +319,7 @@ class DocumentPanel extends VisualWrapper {
                 if (uploadedBy_id === currentUserId) {
                     nlpComplete = (status === StatusType.NLP_COMPLETE);
                     if (this.documentLookup[id] !== undefined) {
-                        if (nlpComplete && this.documentLookup[id] === false) {
+                        if (nlpComplete && !this.documentLookup[id]) {
                             showAnimation = true;
                             setTimeout(() => {
                                 //TODO this is a temporary solution - if this stays around, may want to look into an animation service or something
@@ -386,6 +420,63 @@ class DocumentPanel extends VisualWrapper {
                     nlpComplete: nlpComplete,
                     showStatusBanner: showStatusBanner,
                     nlpCompleteAnimation: showAnimation,
+                }
+            } else {
+                searchResult = reports[selectedId];
+
+                if (searchResult) {
+                    const {
+                        id,
+                        author_id="",
+                        private_tag={},
+                        public_tag={},
+                        publication_date="",
+                        scope="",
+                        title="",
+                        upload_date="",
+                        uploadedBy_id="",
+                        preview_url="",
+                        original_url="",
+                        isUpdating,
+                    } = searchResult
+
+                    let displayAuthor = author_id;
+
+                    if (userLookup) {
+                        const user = userLookup[author_id];
+
+                        if (user) {
+                            displayAuthor = user.first_name + " " + user.last_name;
+                        }
+                    }
+
+                    let displayPublicationDate = new Date(publication_date).toLocaleString().split(",")[0];
+
+                    let previewAvailable = false;
+
+                    let displayPrivateTags: Record<string, string> = {};
+                    if (private_tag) {
+                        const current_user_id = userService.getCurrentUserId()
+                        if (private_tag[current_user_id]) {
+                            displayPrivateTags = private_tag[current_user_id];
+                        }
+                    }
+
+                    itemVM  = {
+                        id,
+                        author: displayAuthor,
+                        private_tag: displayPrivateTags,
+                        original_private_tag: private_tag,
+                        public_tag: public_tag,
+                        publication_date: displayPublicationDate,
+                        scope: scope,
+                        title,
+                        upload_date: upload_date ? new Date(upload_date).toLocaleString() : 'No Upload Date',
+                        uploadedBy_id: uploadedBy_id,
+                        preview_url: previewAvailable ? preview_url : '',
+                        original_url: previewAvailable ? original_url : '',
+                        isUpdating: isUpdating,
+                    }
                 }
             }
 
