@@ -229,7 +229,10 @@ class NoteRenderer extends Component<NoteRendererProps, NoteRendererState> {
             const noteVM: NoteVM = {
                 id: this.props.note.id,
                 text: this.state.text,
-                content: this.state.text
+                content: this.state.text,
+                excerpt_id: this.props.note.excerpt_id,
+                resource_id: this.props.note.resource_id,
+                pocket_id: this.props.note.pocket_id
             }
 
             this.props.onSaveNote(noteVM);

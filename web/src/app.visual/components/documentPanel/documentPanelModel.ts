@@ -144,6 +144,9 @@ export type NoteVM = {
     id: string;
     text: string;
     content: string;
+    excerpt_id: string;
+    resource_id: string;
+    pocket_id: string;
 }
 
 export type DocumentUpdateParams = Partial<Record<keyof Omit<DocumentInfo, 'className'>, string>>;
