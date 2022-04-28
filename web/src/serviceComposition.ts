@@ -60,14 +60,13 @@ import {
     TagService,
     UserProvider,
     UserService,
-    UserGuideService, SearchResultsProvider
+    UserGuideService, SearchResultsProvider, UserGuideProvider
 } from "./app.core";
 import {
     MockExcerptProvider,
     MockNoteProvider,
     MockPocketProvider,
     MockResourceProvider,
-    MockUserGuideProvider
 } from "./app.testing/canary";
 import {ScenarioService} from "./app.config/scenarioService";
 import {MockReportProvider} from "./app.testing/canary/providers/mockReportProvider";
@@ -97,7 +96,7 @@ const excerptProvider: IEntityProvider<ExcerptInfo> = new MockExcerptProvider();
 const resourceProvider: IEntityProvider<ResourceInfo> = new MockResourceProvider();
 const pocketProvider: IEntityProvider<PocketMapper> = new PocketProvider();
 const reportProvider: IEntityProvider<ReportInfo> = new ReportProvider();
-const userGuideProvider: IEntityProvider<UserGuideInfo> = new MockUserGuideProvider();
+const userGuideProvider: IEntityProvider<UserGuideInfo> = new UserGuideProvider();
 const searchResultsProvider: IEntityProvider<any> = new SearchResultsProvider();
 
 // create the application services
