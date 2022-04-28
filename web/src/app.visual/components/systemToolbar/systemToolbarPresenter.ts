@@ -1,7 +1,7 @@
 import SystemToolbarView from "./systemToolbarView";
 import {createSelector} from "@reduxjs/toolkit";
-import {VisualWrapper} from "../../../framework.visual/extras/visualWrapper";
-import {createVisualConnector} from "../../../framework.visual/connectors/visualConnector";
+import {VisualWrapper} from "../../../framework.visual";
+import {createVisualConnector} from "../../../framework.visual";
 import {DocumentPanelId} from "../documentPanel/documentPanelPresenter";
 import {DocPreviewSVG} from "../../theme/svgs/docPreviewSVG";
 import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
@@ -53,15 +53,12 @@ class SystemToolbar extends VisualWrapper {
     onToolSelected(nextId: string) {
         let currentId = displayService.getSelectedNodeId(SYSTEM_TOOLBAR_VIEW_ID)
 
-        displayService.pushNode(nextId);
-
-        // if (currentId === nextId) {
-        //     displayService.popNode(SYSTEM_TOOLBAR_VIEW_ID);
-        //     // displayService.pushNode('view/search');
-        // }
-        // else {
-        //     displayService.pushNode(nextId);
-        // }
+        if (currentId === nextId) {
+            displayService.pushNode('app.visual/views/search');
+        }
+        else {
+            displayService.pushNode(nextId);
+        }
     }
 
 

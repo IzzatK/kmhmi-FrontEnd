@@ -1,7 +1,6 @@
 import {createSelector} from "@reduxjs/toolkit";
-import SearchBannerView from "./searchBannerView";
-import {VisualWrapper} from "../../../framework.visual/extras/visualWrapper";
-import {createVisualConnector} from "../../../framework.visual/connectors/visualConnector";
+import {VisualWrapper} from "../../../framework.visual";
+import {createVisualConnector} from "../../../framework.visual";
 import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
 import {
     displayService,
@@ -11,48 +10,46 @@ import {
     tagService
 } from "../../../serviceComposition";
 import {ReferenceInfo, ReferenceType, SearchBannerMenuItem, SearchParamInfo, TagInfo} from "../../../app.model";
-import {MenuItemVM} from "../../../framework.visual/model/menuItemVM";
-import {SearchParamItemVM} from "./searchBannerModel";
+import {MenuItemVM} from "../../../framework.visual";
+import {SearchBannerAppDispatchProps, SearchBannerAppStateProps, SearchParamItemVM} from "./searchBannerModel";
+import SearchBannerPresenter from "./presenter/searchBannerPresenter";
 
 const VIEW_ID = 'search-banner-tools';
 
-class SearchBanner extends VisualWrapper {
+class _SearchBannerWrapper extends VisualWrapper {
     constructor() {
         super();
 
         this.id = 'components/searchBanner';
 
-        this.view = SearchBannerView;
+        this.view = SearchBannerPresenter;
 
-        this.mapStateToProps = (state: any) => {
+        this.mapStateToProps = (state: any): SearchBannerAppStateProps => {
 
             return {
-                tools: this.getToolVMs(state),
+                tools: this._getToolVMs(state),
                 searchText: documentService.getSearchText(),
-                searchParamsBasic: this.getSearchParamsBasicVMs(state),
-                searchParamsAdvanced: this.getSearchParamsAdvancedVMs(state)
+                searchParamsBasic: this._getSearchParamsBasicVMs(state),
+                searchParamsAdvanced: this._getSearchParamsAdvancedVMs(state)
             }
         }
 
-        this.mapDispatchToProps = () => {
+        this.mapDispatchToProps = (dispatch: any): SearchBannerAppDispatchProps => {
             return {
-                onSearch: () => {
-                    // displayService.popNode(VIEW_ID);
-                    documentService.fetchSearchResults()
-                },
-                onSearchParamChanged: (id: string, value: string | string[] ) => documentService.setSearchParam(id, value),
+                onSearch: () => {documentService.fetchSearchResults()},
+                onSearchParamChanged: (id: string, value: string | string[] ) => this._onSearchParamsChanged(id, value),
                 onSearchTextChanged: (value: string) => documentService.setSearchText(value),
-                onToolSelected: (id: string) => this.onToolSelected(id),
+                onToolSelected: (id: string) => this._onToolSelected(id),
                 onClearSearch: () => documentService.clearSearch()
             };
         }
     }
 
-    getTools = () => {
+    _getTools = () => {
         return repoService.getAll<SearchBannerMenuItem>(SearchBannerMenuItem.class);
     }
 
-    onToolSelected(nextId: string) {
+    _onToolSelected(nextId: string) {
         let currentId = displayService.getSelectedNodeId(VIEW_ID)
 
         if (currentId === nextId) {
@@ -62,9 +59,13 @@ class SearchBanner extends VisualWrapper {
         }
     }
 
+    _onSearchParamsChanged(id: string, value: string | string[]) {
+        documentService.setSearchParam(id, value);
+    }
 
-    getToolVMs = createSelector(
-        [() => displayService.getSelectedNodeId(VIEW_ID), () => this.getTools()], // if this changes, will re-evaluate the combiner and trigger a re-render
+
+    _getToolVMs = createSelector(
+        [() => displayService.getSelectedNodeId(VIEW_ID), () => this._getTools()], // if this changes, will re-evaluate the combiner and trigger a re-render
         (selectedId, items) => {
             let itemVMs: Record<string, MenuItemVM> = {};
 
@@ -83,7 +84,7 @@ class SearchBanner extends VisualWrapper {
         }
     );
 
-    createItemVM(itemVMs: Record<string, SearchParamItemVM>, item: SearchParamInfo, referenceTypes: Record<ReferenceType, Record<string, ReferenceInfo>>, publicTags: Record<string, TagInfo>) {
+    _createItemVM(itemVMs: Record<string, SearchParamItemVM>, item: SearchParamInfo, referenceTypes: Record<ReferenceType, Record<string, ReferenceInfo>>, publicTags: Record<string, TagInfo>) {
         const { id, type, value, title, dirty, options, optionsId} = item;
 
         let itemVM:SearchParamItemVM = {
@@ -124,28 +125,28 @@ class SearchBanner extends VisualWrapper {
         itemVMs[id] = itemVM;
     }
 
-    getSearchParamsBasicVMs = createSelector(
+    _getSearchParamsBasicVMs = createSelector(
         [documentService.getSearchParams, () => referenceService.getAllReferencesGroupedByType(), tagService.getAllPublicTags],
         (items, referenceTypes, publicTags) => {
             let itemVMs: Record<string, SearchParamItemVM> = {};
 
             forEach(items, (item: SearchParamInfo) => {
                 if (item.visible && !item.advanced) {
-                    this.createItemVM(itemVMs, item, referenceTypes, publicTags)
+                    this._createItemVM(itemVMs, item, referenceTypes, publicTags)
                 }
             });
             return Object.values(itemVMs);
         }
     );
 
-    getSearchParamsAdvancedVMs = createSelector(
+    _getSearchParamsAdvancedVMs = createSelector(
         [documentService.getSearchParams, referenceService.getAllReferencesGroupedByType, tagService.getAllPublicTags],
         (items, referenceTypes, publicTags) => {
             let itemVMs: Record<string, SearchParamItemVM> = {};
 
             forEach(items, (item: SearchParamInfo) => {
                 if (item.visible && item.advanced) {
-                    this.createItemVM(itemVMs, item, referenceTypes, publicTags)
+                    this._createItemVM(itemVMs, item, referenceTypes, publicTags)
                 }
             });
             return Object.values(itemVMs);
@@ -154,6 +155,6 @@ class SearchBanner extends VisualWrapper {
 }
 
 export const {
-    connectedPresenter: SearchBannerPresenter,
+    connectedPresenter: SearchBannerWrapper,
     componentId: SearchBannerId
-} = createVisualConnector(SearchBanner);
+} = createVisualConnector(_SearchBannerWrapper);

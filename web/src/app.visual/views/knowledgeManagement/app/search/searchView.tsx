@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './searchView.css';
 
-import {SearchBannerPresenter} from "../../../../components/searchBanner/searchBannerPresenter";
+import {SearchBannerWrapper} from "../../../../components/searchBanner/searchBannerWrapper";
 import {SearchResultsPanelWrapper} from "../../../../components/searchResultsPanel/searchResultsPanelWrapper";
 import {SearchGraphsPanelWrapper} from "../../../../components/searchGraphsPanel/searchGraphsPanelWrapper";
 
@@ -22,7 +22,7 @@ export class SearchView extends Component<Props, State> {
                 {/*        }*/}
                 {/*    }*/}
                 {/*</ServiceContext.Consumer>*/}
-                <SearchBannerPresenter />
+                <SearchBannerWrapper />
 
                 {/*<div className={`search-view-tools position-relative ${toolsVisible ? 'expanded': 'collapsed'}`}>*/}
                 {/*    /!*<SearchAdvancedPanelPresenter className={'position-absolute w-100 h-100'}/>*!/*/}

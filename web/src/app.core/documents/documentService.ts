@@ -748,7 +748,7 @@ export class DocumentService extends Plugin implements IDocumentService {
         }
 
         // now perform a new search
-        this.fetchDocuments();
+        this.fetchSearchResults();
     }
 
     setVisibility(id: string, visible: boolean) {

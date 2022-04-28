@@ -549,7 +549,7 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
 
     onSortSelected(id: string) {
         documentService.setSortParam(id);
-        documentService.fetchDocuments();
+        documentService.fetchSearchResults();
     }
 
     getPermissions = createSelector(

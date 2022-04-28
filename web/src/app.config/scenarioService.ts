@@ -106,15 +106,15 @@ export class ScenarioService extends Plugin implements IScenarioService {
         this.createSearchParamInfo('tags', ParamType.STRING, '', null, null, 'Tags', true, false, false);
         this.createSearchParamInfo('upload_date', ParamType.DATE_RANGE,
             {
-                start_date: getDateWithoutTime(new Date()),
-                end_date: getDateWithoutTime(new Date())
+                start_date: "",
+                end_date: ""
             },
             null, null, 'Upload Date', true, true, false);
 
         this.createSearchParamInfo('publication_date', ParamType.DATE_RANGE,
             {
-                start_date: getDateWithoutTime(new Date()),
-                end_date: getDateWithoutTime(new Date())
+                start_date: "",
+                end_date: ""
             },
             null, null, 'Publication Date', true, true, false);
         this.createSearchParamInfo('user_search_request', ParamType.STRING, '', null, null, '', false, false, false);

@@ -1,118 +1,34 @@
 import React, {Component, ReactNode} from 'react';
-import './searchBanner.css';
-import SearchBox from "../../theme/widgets/searchBox/searchBox";
-import Button from "../../theme/widgets/button/button";
-import {ParamType} from "../../../app.model";
-import ComboBox from "../../theme/widgets/comboBox/comboBox";
-import Portal from "../../theme/widgets/portal/portal";
-import TextEdit from "../../theme/widgets/textEdit/textEdit";
-import {ArrowDownSVG} from "../../theme/svgs/arrowDownSVG";
-import {ArrowUpSVG} from "../../theme/svgs/arrowUpSVG";
-import {SearchGraphsPanelId} from "../searchGraphsPanel/searchGraphsPanelWrapper";
-import {bindInstanceMethods} from "../../../framework.core/extras/utils/typeUtils";
-import {SearchBannerProps, SearchBannerState} from "./searchBannerModel";
-import {MenuItemVM} from "../../../framework.visual/model/menuItemVM";
+import '../searchBanner.css';
+import {SearchBannerViewProps} from "../searchBannerModel";
+import {MenuItemVM} from "../../../../framework.visual";
+import Button from "../../../theme/widgets/button/button";
+import ComboBox from "../../../theme/widgets/comboBox/comboBox";
+import {ParamType} from "../../../../app.model";
+import TextEdit from "../../../theme/widgets/textEdit/textEdit";
+import {ArrowDownSVG} from "../../../theme/svgs/arrowDownSVG";
+import {ArrowUpSVG} from "../../../theme/svgs/arrowUpSVG";
+import SearchBox from "../../../theme/widgets/searchBox/searchBox";
+import Portal from "../../../theme/widgets/portal/portal";
 
-class SearchBannerView extends Component<SearchBannerProps, SearchBannerState> {
-
-    constructor(props: any, context: any) {
-        super(props, context);
-
-        bindInstanceMethods(this);
-
-        this.state = {
-            showAdvanced: false
-        }
-    }
-
-    componentDidMount() {
-        const { onToolSelected } = this.props;
-        // onToolSelected(SearchGraphsPanelId);
-    }
-
-    _setShowAdvanced(value: boolean) {
-        this.setState({
-            ...this.state,
-            showAdvanced: value
-        })
-    }
-
-    _onSearchTextChanged(value: string) {
-        const { onSearchTextChanged } = this.props;
-
-        if (onSearchTextChanged) {
-            onSearchTextChanged(value);
-        }
-    }
-
-    _onTextChanged(id: string, value: string) {
-        const { onSearchParamChanged } = this.props;
-
-        if (onSearchParamChanged) {
-            onSearchParamChanged(id, value);
-        }
-    }
-
-    _onNumberChanged(id: string, value: string) {
-        const { onSearchParamChanged } = this.props;
-
-        if (onSearchParamChanged) {
-            onSearchParamChanged(id, value);
-        }
-    }
-
-    _onDateChanged(state: any, id: string, propertyId: string, propertyValue: string) {
-        const { onSearchParamChanged } = this.props;
-
-        let nextValue = {
-            ...state,
-            [propertyId]: propertyValue
-        }
-
-        if (onSearchParamChanged) {
-            onSearchParamChanged(id, nextValue);
-        }
-    }
-
-    _onTypeChanged(id: string, value: string | string[]) {
-        const { onSearchParamChanged } = this.props;
-
-        if (onSearchParamChanged) {
-            onSearchParamChanged(id, value);
-        }
-    }
-
-    _onClearSearch() {
-        const { onClearSearch } = this.props;
-
-        if (onClearSearch) {
-            onClearSearch();
-        }
-    }
-
-    _onSearch() {
-        const { onSearch } = this.props;
-
-        if (onSearch) {
-            onSearch();
-        }
-
-        this._setShowAdvanced(false);
-    }
-
-    _onDone() {
-        this._setShowAdvanced(false);
-    }
-
+class SearchBannerView extends Component<SearchBannerViewProps> {
     render() {
         const {
-            className, onSearch, onSearchTextChanged, searchText, tools, onToolSelected, onClearSearch,
-            searchParamsBasic, searchParamsAdvanced, onSearchParamChanged, ...rest
+            className,
+            onSearch,
+            onSearchTextChanged,
+            searchText,
+            tools,
+            onToolSelected,
+            onClearSearch,
+            searchParamsBasic,
+            searchParamsAdvanced,
+            onSearchParamChanged,
+            showAdvanced,
+            onDateChanged,
+            onSetShowAdvanced,
+            ...rest
         } = this.props;
-
-        const {
-            showAdvanced
-        } = this.state;
 
         let toolDivs: ReactNode[] = [];
 
@@ -154,7 +70,7 @@ class SearchBannerView extends Component<SearchBannerProps, SearchBannerState> {
             result = (
                 <ComboBox key={id} className={dirty ? 'dirty rounded-lg' : 'rounded-lg'} light={true}
                           title={cbTitle || ''} items={cbOptions} multiSelect={true} selectedItemIds={value}
-                          onSelect={(value: any) => this._onTypeChanged(id, value)}/>
+                          onSelect={(value: string | string[]) => onSearchParamChanged(id, value)}/>
             )
             return result;
         })
@@ -167,13 +83,13 @@ class SearchBannerView extends Component<SearchBannerProps, SearchBannerState> {
             switch (type) {
                 case ParamType.STRING: {
                     cellRenderer = (
-                        <TextEdit dirty={dirty} edit={true} placeholder={title || ''} name={id} value={value} onSubmit={(id: string, value: string) => this._onTextChanged(id, value)}/>
+                        <TextEdit dirty={dirty} edit={true} placeholder={title || ''} name={id} value={value} onSubmit={onSearchParamChanged}/>
                     )
                     break;
                 }
                 case ParamType.NUMBER: {
                     cellRenderer = (
-                        <TextEdit dirty={dirty} edit={true} value={value} name={id} onSubmit={(id: string, value: string) => this._onTextChanged(id, value)}/>
+                        <TextEdit dirty={dirty} edit={true} value={value} name={id} onSubmit={onSearchParamChanged}/>
                     )
                     break;
                 }
@@ -182,13 +98,13 @@ class SearchBannerView extends Component<SearchBannerProps, SearchBannerState> {
                     cellRenderer = (
                         <div className={'d-flex h-gap-4 align-items-end'}>
                             <div className={'d-flex h-gap-2 align-items-center'}>
-                                <TextEdit dirty={dirty} edit={true} type={'date'} value={start_date} onChange={(value) => this._onDateChanged(value, id, 'start_date', value)}/>
+                                <TextEdit dirty={dirty} edit={true} type={'date'} value={start_date} onChange={(value) => onDateChanged(end_date, id, 'start_date', value)}/>
                             </div>
                             <div className={'d-flex align-items-end'}>
                                 <div className={''}>to</div>
                             </div>
                             <div className={'d-flex h-gap-2 align-items-center'}>
-                                <TextEdit dirty={dirty} edit={true} type={'date'} value={end_date} onChange={(value) => this._onDateChanged(value, id, 'end_date', value)}/>
+                                <TextEdit dirty={dirty} edit={true} type={'date'} value={end_date} onChange={(value) => onDateChanged(start_date, id, 'end_date', value)}/>
                             </div>
                         </div>
                     )
@@ -213,7 +129,7 @@ class SearchBannerView extends Component<SearchBannerProps, SearchBannerState> {
                     cellRenderer = (
                         <ComboBox className={dirty ? 'dirty rounded-lg' : 'rounded-lg'} light={true}
                                   title={cbTitle || ''} items={cbOptions} multiSelect={true}
-                                  onSelect={(value: any) => this._onTypeChanged(id, value)}/>
+                                  onSelect={(value: string | string[]) => onSearchParamChanged(id, value)}/>
                     )
                     break;
                 }
@@ -257,8 +173,8 @@ class SearchBannerView extends Component<SearchBannerProps, SearchBannerState> {
                             <div className={'d-flex flex-wrap align-items-end'}>
                                 <SearchBox className={'mr-3'}
                                            style={{minWidth: maxWidth, maxWidth: maxWidth}} light={true}
-                                           onSearch={this._onSearch} text={searchText}
-                                           onTextChange={this._onSearchTextChanged}/>
+                                           onSearch={onSearch} text={searchText}
+                                           onTextChange={onSearchTextChanged}/>
                                 <div className={'d-flex h-gap-2 align-items-end mt-3'} >
                                     {basicDivs}
 
@@ -270,7 +186,7 @@ class SearchBannerView extends Component<SearchBannerProps, SearchBannerState> {
                                         exitClass={'shrinkVertical'}
                                         timeout={200}
                                         autoLayout={false}
-                                        onShouldClose={() => this._setShowAdvanced(false)}
+                                        onShouldClose={() => onSetShowAdvanced(false)}
                                         portalContent={
                                             ({}) =>
                                             <div className={'portal position-absolute'}
@@ -281,13 +197,13 @@ class SearchBannerView extends Component<SearchBannerProps, SearchBannerState> {
                                                     </div>
                                                     <div className={'d-flex flex-fill justify-content-end align-items-end'}>
                                                         <div className={'d-flex flex-fill justify-content-end align-items-end footer p-4'}>
-                                                            <Button light={true} onClick={this._onDone}>Done</Button>
+                                                            <Button light={true} onClick={() => onSetShowAdvanced(false)}>Done</Button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         }>
-                                        <Button className={'combo-box-button'} orientation={"horizontal"} onClick={() => this._setShowAdvanced(!showAdvanced)}>
+                                        <Button className={'combo-box-button'} orientation={"horizontal"} onClick={() => onSetShowAdvanced(!showAdvanced)}>
                                             <div className={"flex-fill"}>More</div>
                                             <div className={"d-flex align-items-center tiny-image-container combo-box-arrow pe-none"}>{arrowSVG}</div>
                                         </Button>
@@ -295,7 +211,7 @@ class SearchBannerView extends Component<SearchBannerProps, SearchBannerState> {
 
                                 </div>
                                 <div className={'ml-3 mt-3 exclude-item'}>
-                                    <Button className={'combo-box-button'} onClick={this._onClearSearch}>
+                                    <Button className={'combo-box-button'} onClick={onClearSearch}>
                                         <div className={"header-3 flex-fill"}>Clear</div>
                                     </Button>
                                 </div>
