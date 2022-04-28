@@ -5,8 +5,10 @@ import {Nullable} from "../../../framework.core/extras/utils/typeUtils";
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 export class UserGuideProvider extends EntityProvider<UserGuideInfo> {
-    baseUrl: string = `${serverUrl}/userGuide`;
+    baseUrl: string = `${serverUrl}/guides`;
     public static class: string = 'UserGuideProvider';
+
+    userGuideInfo: UserGuideInfo = new UserGuideInfo("userGuideInfoId");
 
     // TODO: declare converters
 
@@ -22,9 +24,25 @@ export class UserGuideProvider extends EntityProvider<UserGuideInfo> {
     }
 
     getSingle(id: string): Promise<Nullable<UserGuideInfo>> {
+        const me = this;
+        let docName: string = "KM%20User%20Management.pdf";
+        // let docName: string = "KM%20Upload%20Manager.pdf";
+        // let docName: string = "KM%20Search.pdf";
+
         return new Promise((resolve, reject) => {
-            // me.userGuideInfo.preview_url = "http://18.253.49.141:5000/KMAPI/documents/c3871ce4-38ba-4189-9d5e-e1678a048edf?format=PREVIEW";
-            // resolve(me.userGuideInfo);
+            me.userGuideInfo.preview_url = `${this.baseUrl}/${docName}`
+            resolve(me.userGuideInfo);
         });
+
+        // return new Promise((resolve, reject) => {
+        //     super.sendGetSingle(id,
+        //         (responseData, errorHandler) => this.userGuideResponseConverter.convert(responseData, errorHandler))
+        //         .then(data => {
+        //             resolve(data);
+        //         })
+        //         .catch(error => {
+        //             reject(error);
+        //         });
+        // });
     }
 }
