@@ -93,13 +93,36 @@ class DocumentPanel extends VisualWrapper {
     }
 
     _onSaveNote(note: NoteVM) {
-        // pocketService.addOrUpdateNote({
-        //     id: note.id,
-        //     text: note.text,
-        //     content: note.content
-        // })
+        const { id, excerpt_id, resource_id, pocket_id, text, content } = note;
 
-        // pocketService.addNoteAndExcerptToPocket(noteParams, excerptParams, resourceParams, pocketParams);
+        const excerptParams: ExcerptParamType = {
+            id: excerpt_id
+        };
+
+        let noteParams: NoteParamType;
+
+        if (id !== "null") {
+            noteParams = {
+                id,
+                text,
+                content
+            }
+        } else {
+            noteParams = {
+                text,
+                content
+            }
+        }
+
+        const resourceParams: ResourceParamType = {
+            id: resource_id,
+        }
+
+        const pocketParams: PocketParamType = {
+            id: pocket_id
+        }
+
+        pocketService.addNoteAndExcerptToPocket(noteParams, excerptParams, resourceParams, pocketParams);
     }
 
     _createExcerpt(params: CreateExcerptEventData) {
@@ -511,9 +534,12 @@ class DocumentPanel extends VisualWrapper {
                         forEach(resourceMapper.excerptMappers, (excerptMapper: ExcerptMapper) => {
 
                             const noteVM: NoteVM = {
-                                id: 'null',
+                                id: "null",
                                 content: "",
-                                text: ""
+                                text: "",
+                                excerpt_id: excerptMapper.id,
+                                resource_id: resourceMapper.id,
+                                pocket_id: pocketMapper.id
                             }
 
                             if (excerptMapper.excerpt.noteIds.length > 0) {

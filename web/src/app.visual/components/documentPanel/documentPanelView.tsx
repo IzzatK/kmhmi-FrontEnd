@@ -237,7 +237,6 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
 
             onUpdateDocument(updatedDocument);
         }
-
     }
 
     removeDocument() {
