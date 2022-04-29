@@ -136,23 +136,28 @@ export const sortByProperty = (items: { [s: string]: any; } | ArrayLike<any>, so
             const utc2 = Date.UTC(bElement.getFullYear(), bElement.getMonth(), bElement.getDate());
             result = Math.floor((utc2 - utc1) / _MS_PER_DAY);
         }
-        else if (aElement && bElement) {
-            if (Array.isArray(aElement)) {
-                aElement = aElement[0];
-            }
-
-            if (Array.isArray(bElement)) {
-                bElement = bElement[0];
+        else {
+            if (aElement && bElement) {
+                if (Array.isArray(aElement)) {
+                    aElement = aElement[0];
+                }
+                if (Array.isArray(bElement)) {
+                    bElement = bElement[0];
+                }
             }
 
             if (aElement && bElement) {
                 result = aElement.localeCompare(bElement);
-            } else {
+            }
+            else if (!aElement && !bElement) {
+                result = 0;
+            }
+            else if (!aElement) {
+                result = 1;
+            }
+            else { // !bElement
                 result = -1;
             }
-        }
-        else {
-            result = -1;
         }
 
         if (direction === "descending") {
