@@ -160,9 +160,9 @@ export class DocumentProvider extends EntityProvider<DocumentInfo> {
 
                 this.getSingle(id)
                     .then(document => {
-                        if (document != null) {
+                        if (document) {
                             super.sendDelete(id,
-                                (responseData, errorHandler) => this.documentResponseConverter.convert(responseData, errorHandler))
+                                (responseData, errorHandler) => this.documentStatusResponseConverter.convert(responseData, errorHandler))
                                 .then(data => {
                                     if (data.id === document.id) {
                                         resolve(document);
