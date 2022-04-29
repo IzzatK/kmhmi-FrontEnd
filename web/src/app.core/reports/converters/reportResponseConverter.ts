@@ -2,6 +2,7 @@ import {Converter} from "../../common/converters/converter";
 import {CitationType, ReportInfo} from "../../../app.model";
 import {getValueOrDefault} from "../../../framework.core/extras/utils/typeUtils";
 import {forEach, forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
+import {KM_API_SERVER_URL} from "../../../app.config/config";
 
 export class ReportResponseConverter extends Converter<any, ReportInfo> {
     convert(fromData: any, reject?: any, options?: any): ReportInfo {
@@ -74,6 +75,9 @@ export class ReportResponseConverter extends Converter<any, ReportInfo> {
                 break;
         }
         reportInfo.citation = citation;
+
+        reportInfo.original_url = `${KM_API_SERVER_URL}/pockets/reports/${reportInfo.id}?format=ORIGINAL`;
+        reportInfo.preview_url = `${KM_API_SERVER_URL}/pockets/reports/${reportInfo.id}?format=PREVIEW`;
 
         reportInfo.isUpdating = false;
 

@@ -11,7 +11,7 @@ export const getValueOrDefault = (object: any, propertyName: string, defaultValu
         }
     }
     else {
-        console.log(`Property <${propertyName}> does not exist in object: ${JSON.stringify(object)}`);
+        // console.log(`Property <${propertyName}> does not exist in object: ${JSON.stringify(object)}`);
     }
     return result;
 }

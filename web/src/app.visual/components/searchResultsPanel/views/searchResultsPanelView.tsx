@@ -152,18 +152,18 @@ class SearchResultsPanelView extends Component<SearchResultsPanelViewProps> {
                                         <DownloadSVG className={"small-image-container"}/>
                                     </Button>
                                 }
-                                <Button className={"bg-transparent"} tooltip={"Copy"} onClick={() => onCopy(selectedDocument.id, selectedDocument.object_type)}>
-                                    <CopyPocketSVG className={"small-image-container"}/>
-                                </Button>
-                                {
-                                    permissions.canModify &&
-                                    <Button className={"bg-transparent"} tooltip={"Edit"} onClick={() => onEdit(selectedDocument.id, selectedDocument.object_type)}>
-                                        <EditSVG className={"small-image-container"}/>
-                                    </Button>
-                                }
-                                <Button className={"bg-transparent"} tooltip={"Share"} onClick={() => onShare(selectedDocument.id, selectedDocument.object_type)}>
-                                    <ShareSVG className={"small-image-container"}/>
-                                </Button>
+                                {/*<Button className={"bg-transparent"} tooltip={"Copy"} onClick={() => onCopy(selectedDocument.id, selectedDocument.object_type)}>*/}
+                                {/*    <CopyPocketSVG className={"small-image-container"}/>*/}
+                                {/*</Button>*/}
+                                {/*{*/}
+                                {/*    permissions.canModify &&*/}
+                                {/*    <Button className={"bg-transparent"} tooltip={"Edit"} onClick={() => onEdit(selectedDocument.id, selectedDocument.object_type)}>*/}
+                                {/*        <EditSVG className={"small-image-container"}/>*/}
+                                {/*    </Button>*/}
+                                {/*}*/}
+                                {/*<Button className={"bg-transparent"} tooltip={"Share"} onClick={() => onShare(selectedDocument.id, selectedDocument.object_type)}>*/}
+                                {/*    <ShareSVG className={"small-image-container"}/>*/}
+                                {/*</Button>*/}
                                 {
                                     permissions.canDelete &&
                                     <Button className={"bg-transparent"} tooltip={"Delete"} onClick={() => onDelete(selectedDocument.id, selectedDocument.object_type)}>

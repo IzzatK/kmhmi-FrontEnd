@@ -239,6 +239,30 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
         }
     }
 
+    onPublishDocument() {
+        const { onUpdateDocument, document } = this.props;
+        const { tmpDocument, isPrivate} = this.state;
+        const { id, scope } = document;
+
+        if (onUpdateDocument) {
+            let updatedDocument = Object.assign({}, tmpDocument);
+
+            updatedDocument['id'] = id;
+
+            if (isPrivate) {
+                if (scope !== "Private") {
+                    updatedDocument['scope'] = "Public";
+                }
+            } else {
+                if (scope !== "Public") {
+                    updatedDocument['scope'] = "Private";
+                }
+            }
+
+            onUpdateDocument(updatedDocument);
+        }
+    }
+
     removeDocument() {
         const { onRemoveDocument, document } = this.props;
         const { id } = document || {};
@@ -331,11 +355,11 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
             isPrivate: !isPrivate,
         });
 
-        if (isPrivate) {
-            this.onTmpDocumentChanged('scope', "Public");
-        } else {
-            this.onTmpDocumentChanged('scope', "Private");
-        }
+        // if (isPrivate) {
+        //     this.onTmpDocumentChanged('scope', "Public");
+        // } else {
+        //     this.onTmpDocumentChanged('scope', "Private");
+        // }
     }
 
     _onSubmitTags() {
@@ -698,7 +722,8 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
             file_size,
             status,
             nlpComplete,
-            showStatusBanner
+            showStatusBanner,
+            scope
         } = document || {};
 
         const {
@@ -713,6 +738,12 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
         let cn = "document-panel d-flex";
         if (className) {
             cn += ` ${className}`;
+        }
+
+        let disablePublish = false;
+
+        if (scope === "Draft" && !tmpDocument["department"]) {
+            disablePublish = true;
         }
 
         return (
@@ -873,27 +904,14 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
                                 </div>
                         }
                     </div>
-                    <CSSTransition
-                        in={showStatusBanner}
-                        timeout={300}
-                        classNames={getClassNames('fadeIn', 'fadeIn', 'slideRightOut') }>
-                        <div>
-                            {
-                                showStatusBanner &&
-                                <div className={"d-flex align-items-center py-3 px-5 bg-advisory display-4 h-gap-3"}>
-                                    <div>{nlpComplete ? "Processing Complete" : "Auto-Populating Fields"}</div>
-                                    {
-                                        nlpComplete === true &&
-                                        <CheckMarkSVG className={"nano-image-container fill-primary"}/>
-                                    }
-                                    {
-                                        nlpComplete !== true &&
-                                        <LoadingIndicator size={Size.nano} className={"nlp-loader"}/>
-                                    }
-                                </div>
-                            }
-                        </div>
-                    </CSSTransition>
+                    {/*<CSSTransition*/}
+                    {/*    in={showStatusBanner}*/}
+                    {/*    timeout={300}*/}
+                    {/*    classNames={getClassNames('fadeIn', 'fadeIn', 'slideRightOut') }>*/}
+                    {/*    <div>*/}
+                    {/*        */}
+                    {/*    </div>*/}
+                    {/*</CSSTransition>*/}
                     {
                         ((permissions.canModify || permissions.canDelete) && Object.keys(document).length > 0) &&
                         <div className={'d-flex align-items-end justify-content-between h-gap-2 bg-selected py-3 px-5'}>
@@ -906,18 +924,32 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
                                     </div>
                                 }
                             </div>
+                            {
+                                showStatusBanner &&
+                                <div className={"d-flex align-items-center display-4 h-gap-3"}>
+                                    <div>{nlpComplete ? "Processing Complete" : "Auto-Populating Fields"}</div>
+                                    {
+                                        nlpComplete === true &&
+                                        <CheckMarkSVG className={"nano-image-container fill-primary"}/>
+                                    }
+                                    {
+                                        nlpComplete !== true &&
+                                        <LoadingIndicator size={Size.nano} className={"nlp-loader"}/>
+                                    }
+                                </div>
+                            }
                             <div className={'d-flex h-gap-2 align-items-center'}>
                                 {
                                     permissions.canDelete &&
                                     <Button light={true} text={'DELETE'} onClick={this.removeDocument}/>
                                 }
                                 {
-                                    permissions.canModify && isDirty &&
+                                    ((permissions.canModify && isDirty) || scope === "Draft") &&
                                     <Button
                                         light={true}
-                                        disabled={!isDirty}
+                                        disabled={disablePublish}
                                         text={'PUBLISH'}
-                                        onClick={this.updateDocument}/>
+                                        onClick={this.onPublishDocument}/>
                                 }
                             </div>
                         </div>

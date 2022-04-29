@@ -7,6 +7,7 @@ import {ReportStatusResponseConverter} from "../converters/reportStatusResponseC
 import {GetReportArrayRequestConverter} from "../converters/getReportArrayRequestConverter";
 import {GetReportArrayResponseConverter} from "../converters/getReportArrayResponseConverter";
 import {CreateReportRequestConverter} from "../converters/createReportRequestConverter";
+import {DocumentUpdateParams} from "../../../app.visual/components/documentPanel/documentPanelModel";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -98,10 +99,19 @@ export class ReportProvider extends EntityProvider<ReportInfo> {
                     this.sendPut(id,
                         () => this.reportRequestConverter.convert(uiRequestData),
                         (responseData, errorHandler) => this.reportResponseConverter.convert(responseData, errorHandler))
-                        .then(pocket => {
+                        .then(report => {
                             this.httpService?.createPOST(`${this.baseUrl}/${id}/publish`, null)
                                 .then((data: any) => {
-                                    resolve(pocket);
+
+                                    // const { id:type } = data;
+                                    //
+                                    // const params: DocumentUpdateParams = {
+                                    //     id,
+                                    //     scope
+                                    // }
+                                    //
+                                    // debugger;
+                                    resolve(report);
                                 })
                                 .catch((error: any) => {
                                     reject(error);

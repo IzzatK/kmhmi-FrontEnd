@@ -114,12 +114,9 @@ class ReportPanelPresenter extends Component<ReportPanelPresenterProps, ReportPa
         const { onSaveReport } = this.props;
         const { tmpReport, tmpValue, editor } = this.state;
 
-        // console.log(JSON.stringify(editor.children))
-        // console.log(serialize(editor));
-
         let nextReport: ReportUpdateParams = {
             ...tmpReport,
-            ["html"]: serialize(editor),
+            html: serialize(editor),
             scope: "Public",
         };
 

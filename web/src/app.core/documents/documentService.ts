@@ -105,6 +105,8 @@ export class DocumentService extends Plugin implements IDocumentService {
                 forEach(documents, (item: DocumentInfo) => {
                     const { id, isPending } = item;
 
+                    console.log(JSON.stringify(item))
+
                     if (!isPending) {
                         result[id] = item;
                     }
@@ -112,20 +114,20 @@ export class DocumentService extends Plugin implements IDocumentService {
 
                 forEach(pocketMappers, (item: PocketMapper) => {
                     const { id } = item;
-                    const { author_id } = item.pocket;
+                    const { scope, author_id } = item.pocket;
 
-                    if (currentUserId !== author_id) {
+                    if (currentUserId !== author_id && scope !== "Draft") {
                         result[id] = item;
                     }
                 })
 
-                forEach(reports, (item: ReportInfo) => {
-                    const { id, author_id } = item;
-
-                    if (currentUserId !== author_id) {
-                        result[id] = item;
-                    }
-                })
+                // forEach(reports, (item: ReportInfo) => {
+                //     const { id, scope } = item;
+                //
+                //     if (scope !== "Draft") {
+                //         result[id] = item;
+                //     }
+                // })
 
                 let sortValue: string = this.getSearchParam("sort")?.value || "";
 
@@ -420,6 +422,8 @@ export class DocumentService extends Plugin implements IDocumentService {
                     department,
                 }
             }
+
+            debugger
         }
 
         let mergedDocumentInfo = {

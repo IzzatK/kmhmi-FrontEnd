@@ -173,28 +173,31 @@ export const serialize = (node: any) => {
         return string
     }
 
-    if (!node.childred) return "";
+    // if (!node.children) return "";
 
-    const children = node.children.map((n: any) => serialize(n)).join('')
+    if (node.children) {
+        const children = node.children.map((n: any) => serialize(n)).join('')
 
-    // @ts-ignore
-    if (node.align) {
-        return `<div style={{textAlign: ${node.align}}}>${children}</div>`
+        // @ts-ignore
+        if (node.align) {
+            return `<div style={{textAlign: ${node.align}}}>${children}</div>`
+        }
+
+        switch (node.type) {
+            case 'bulleted':
+                return `<ul>${children}</ul>`
+            case 'numbered':
+                return `<ol>${children}</ol>`
+            case 'list-item':
+                return `<li>${children}</li>`
+            case 'quote':
+                return `<blockquote><p>${children}</p></blockquote>`
+            case 'link':
+                return `<a href="${escapeHtml(node.url)}">${children}</a>`
+            case 'paragraph':
+            default:
+                return `<p>${children}</p>`
+        }
     }
 
-    switch (node.type) {
-        case 'bulleted':
-            return `<ul>${children}</ul>`
-        case 'numbered':
-            return `<ol>${children}</ol>`
-        case 'list-item':
-            return `<li>${children}</li>`
-        case 'quote':
-            return `<blockquote><p>${children}</p></blockquote>`
-        case 'link':
-            return `<a href="${escapeHtml(node.url)}">${children}</a>`
-        case 'paragraph':
-        default:
-            return `<p>${children}</p>`
-    }
 }

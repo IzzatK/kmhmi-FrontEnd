@@ -176,12 +176,12 @@ class UploadPanelView extends Component<UploadPanelProps, UploadPanelState> {
                                                       <Button className={'p-2 reject'} onClick={() => this._setPopupVisible(true)}>
                                                           <RemoveSVG className={"small-image-container"}/>
                                                       </Button>
-                                                      {
-                                                          status !== "FAILED" &&
-                                                          <Button className={'p-2 accept'} onClick={() => this._onApproved(id)}>
-                                                              <ApproveSVG className={"small-image-container"}/>
-                                                          </Button>
-                                                      }
+                                                      {/*{*/}
+                                                      {/*    status !== "FAILED" &&*/}
+                                                      {/*    <Button className={'p-2 accept'} onClick={() => this._onApproved(id)}>*/}
+                                                      {/*        <ApproveSVG className={"small-image-container"}/>*/}
+                                                      {/*    </Button>*/}
+                                                      {/*}*/}
                                                   </div>
                                               }
                                           </div>

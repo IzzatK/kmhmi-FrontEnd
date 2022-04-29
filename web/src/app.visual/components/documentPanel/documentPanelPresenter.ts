@@ -496,8 +496,8 @@ class DocumentPanel extends VisualWrapper {
                         title,
                         upload_date: upload_date ? new Date(upload_date).toLocaleString() : 'No Upload Date',
                         uploadedBy_id: uploadedBy_id,
-                        preview_url: previewAvailable ? preview_url : '',
-                        original_url: previewAvailable ? original_url : '',
+                        preview_url: preview_url,
+                        original_url: original_url,
                         isUpdating: isUpdating,
                     }
                 }
