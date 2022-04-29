@@ -8,22 +8,20 @@ export class UploadDocumentResponseConverter extends Converter<any, ResponseStat
         const { detail, status: statusObject, title, type:id } = fromData;
         const { stage, status:upload_status, version } = statusObject;
 
-        let status = StatusType.PROCESSING;
+        let status: StatusType;
 
         switch (stage) {
-            case 0:
+            case stage < 10:
                 status = StatusType.CREATED;
                 break;
-            case 10:
+            case stage < 20:
                 status = StatusType.PDF_AVAILABLE;
                 break;
-            case 20:
+            case stage < 30:
                 status = StatusType.SEARCHABLE;
                 break;
-            case 30:
-                status = StatusType.NLP_COMPLETE;
-                break;
             default:
+                status = StatusType.NLP_COMPLETE;
                 break;
         }
 

@@ -280,8 +280,10 @@ class NoteRenderer extends Component<NoteRendererProps, NoteRendererState> {
                                 </div>
                             </div>
                             :
-                            <div className={'p-4 pb-1'}>
-                                <Button text={'Note'} onClick={this._editNote}/>
+                            <div className={"note d-flex"}>
+                                <Button className={"rounded"} onClick={this._editNote}>
+                                    <NoteSVG className={"small-image-container"}/>
+                                </Button>
                             </div>
                     }
                 </div>
