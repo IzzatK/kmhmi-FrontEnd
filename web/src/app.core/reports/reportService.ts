@@ -167,16 +167,15 @@ export class ReportService extends Plugin implements IReportService {
                         author_id,
                     }
                 }
+                
+                let reportCopy = Object.assign(ReportInfo, report);
+
+                reportCopy.isUpdating = true
+
+                this.addOrUpdateRepoItem<ReportInfo>(reportCopy)
             }
 
-            let mergedReport = {
-                ...modifiedReport,
-                isUpdating: true
-            }
-
-            this.addOrUpdateRepoItem(mergedReport)
-
-            this.reportProvider?.update(id, mergedReport)
+            this.reportProvider?.update(id, modifiedReport)
                 .then(report => {
                     if (report != null) {
                         this.addOrUpdateRepoItem(report);

@@ -58,3 +58,7 @@
     min-width: 6rem;
 }
 
+.report-panel .loader {
+    background: transparent;
+    justify-content: end !important;
+}

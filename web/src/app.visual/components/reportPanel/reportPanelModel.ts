@@ -48,6 +48,7 @@ export type ReportInfoVM = {
     content?: any;
     html?: string;
     scope?: string;
+    isUpdating?: boolean;
 }
 
 export type CitationVM = {

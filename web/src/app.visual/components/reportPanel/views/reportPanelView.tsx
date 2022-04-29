@@ -4,12 +4,14 @@ import {ReportPanelViewProps} from "../reportPanelModel";
 import Button from "../../../theme/widgets/button/button";
 import TextEdit from "../../../theme/widgets/textEdit/textEdit";
 import {RichTextEditView} from "./richTextEditView";
+import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
+import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
 
 class ReportPanelView extends Component<ReportPanelViewProps> {
     render() {
         const { className, report, tmpReport, tmpValue, excerpts, citations, onTmpReportChanged, onSaveReport, onReportValueChanged, onPublishReport } = this.props;
 
-        const { id, pocketId, authorId, title, date, citation } = report || {};
+        const { id, pocketId, authorId, title, date, citation, isUpdating } = report || {};
         const { id: tmpId, author_id: tmpAuthorId, title: tmpTitle, publication_date: tmpDate, citation: tmpCitation } = tmpReport;
 
         let cn = "report-panel d-flex flex-column";
@@ -96,16 +98,27 @@ class ReportPanelView extends Component<ReportPanelViewProps> {
                     {
                         id &&
                         <div className={'d-flex align-items-center justify-content-end h-gap-2 bg-selected py-3 px-5'}>
-                            <Button
-                                light={true}
-                                text={'Publish'}
-                                onClick={onPublishReport}
-                            />
-                            <Button
-                                light={true}
-                                text={'Save'}
-                                onClick={onSaveReport}
-                            />
+                            {
+                                !isUpdating &&
+                                <Button
+                                    light={true}
+                                    text={'Publish'}
+                                    onClick={onPublishReport}
+                                />
+                            }
+                            {
+                                !isUpdating &&
+                                <Button
+                                    light={true}
+                                    text={'Save'}
+                                    onClick={onSaveReport}
+                                />
+                            }
+                            {
+                                isUpdating &&
+                                <LoadingIndicator size={Size.nano} className={"loader"}/>
+                            }
+
                         </div>
                     }
                 </div>

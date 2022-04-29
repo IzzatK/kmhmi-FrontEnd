@@ -422,8 +422,6 @@ export class DocumentService extends Plugin implements IDocumentService {
                     department,
                 }
             }
-
-            debugger
         }
 
         let mergedDocumentInfo = {

@@ -299,8 +299,6 @@ class DocumentPanel extends VisualWrapper {
 
             let itemVM: DocumentInfoVM = {};
 
-            // debugger
-
             if (searchResult) {
                 const {
                     id,

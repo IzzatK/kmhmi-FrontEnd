@@ -88,10 +88,10 @@ class _ReportPanelWrapper extends VisualWrapper {
                     title,
                     publication_date,
                     content,
-                    scope
+                    scope,
+                    isUpdating
                 }
             }
-
 
             return itemVM;
         }

@@ -109,8 +109,7 @@ export class ReportProvider extends EntityProvider<ReportInfo> {
                                     //     id,
                                     //     scope
                                     // }
-                                    //
-                                    // debugger;
+
                                     resolve(report);
                                 })
                                 .catch((error: any) => {
