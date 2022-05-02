@@ -1,9 +1,16 @@
-import {VisualWrapper} from "../../../framework.visual/extras/visualWrapper";
-import {createVisualConnector} from "../../../framework.visual/connectors/visualConnector";
+import {VisualWrapper} from "../../../framework.visual";
+import {createVisualConnector} from "../../../framework.visual";
 import {createSelector} from "@reduxjs/toolkit";
 import {ReferenceInfo, ReferenceType, StatType} from "../../../app.model";
 import {forEach, forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
-import {displayService, documentService, referenceService, statService} from "../../../serviceComposition";
+import {
+    authorizationService,
+    displayService,
+    documentService,
+    referenceService,
+    statService,
+    userService
+} from "../../../serviceComposition";
 import {
     ReferenceInfoVM,
     SearchGraphsPanelAppDispatchProps, SearchGraphsPanelAppStateProps,
@@ -11,6 +18,7 @@ import {
 } from "./searchGraphsModel";
 import SearchGraphsPanelPresenter from "./presenter/searchGraphsPanelPresenter";
 import {SearchPresenterId} from "../../views/knowledgeManagement/app/search/searchPresenter";
+import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../app.core.api";
 
 class _SearchGraphsPanelWrapper extends VisualWrapper {
     constructor() {
@@ -47,22 +55,26 @@ class _SearchGraphsPanelWrapper extends VisualWrapper {
     }
 
     _onSearchParamsChanged(id:string, value: string) {
-        switch (id) {
-            default: {
-                documentService.clearSearch();
-                let searchParam = documentService.getSearchParam(id);
+        const currentUserId = userService.getCurrentUserId();
 
-                let currentValues = new Set<string>(searchParam?.value || []);
+        if (authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.GET, currentUserId, currentUserId)) {
+            switch (id) {
+                default: {
+                    documentService.clearSearch();
+                    let searchParam = documentService.getSearchParam(id);
 
-                if (currentValues.has(value)) {
-                    currentValues.delete(value);
+                    let currentValues = new Set<string>(searchParam?.value || []);
+
+                    if (currentValues.has(value)) {
+                        currentValues.delete(value);
+                    }
+                    else {
+                        currentValues.add(value);
+                    }
+
+                    documentService.setSearchParam(id, Array.from(currentValues))
+                    displayService.pushNode(SearchPresenterId)
                 }
-                else {
-                    currentValues.add(value);
-                }
-
-                documentService.setSearchParam(id, Array.from(currentValues))
-                displayService.pushNode(SearchPresenterId)
             }
         }
     }
