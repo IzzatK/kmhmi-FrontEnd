@@ -388,7 +388,7 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
         if (excerpt) {
             const { text } = excerpt;
 
-            event.dataTransfer.setData("text/plain", text);
+            event.dataTransfer.setData("text/plain", "\"" + text + "\"");
             event.dataTransfer.setData("text/excerpt/excerpt_id", id);
 
             if (resource) {

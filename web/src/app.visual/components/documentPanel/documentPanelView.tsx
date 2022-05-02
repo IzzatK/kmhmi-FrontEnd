@@ -917,7 +917,7 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
                         <div className={'d-flex align-items-end justify-content-between h-gap-2 bg-advisory py-3 px-5'}>
                             <div className={'d-flex h-gap-2 align-items-center'}>
                                 {
-                                    permissions.canModify &&
+                                    ((permissions.canModify && isDirty) || scope === "Draft") &&
                                     <div className={"d-flex h-gap-2 pr-3"}>
                                         <div className={"text-primary display-4 font-weight-light"}>Publish as Private</div>
                                         <CheckBox light={true} selected={isPrivate} onClick={() => this._toggleIsPrivate()}/>

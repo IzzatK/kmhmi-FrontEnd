@@ -69,7 +69,8 @@ function TagsPanelView(props: TagsPanelViewProps) {
             return (
                 <div>
                     <Portal
-                        isOpen={selectedTag === id}
+                        // isOpen={selectedTag === id}
+                        isOpen={false}
                         zIndex={9999}
                         enterClass={'growVertical'}
                         exitClass={'shrinkVertical'}

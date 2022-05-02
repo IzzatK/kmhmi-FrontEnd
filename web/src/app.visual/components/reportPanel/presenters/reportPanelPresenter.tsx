@@ -43,6 +43,8 @@ class ReportPanelPresenter extends Component<ReportPanelPresenterProps, ReportPa
         if (report.id !== prevProps.report.id) {
             const { id, content } = report;
 
+            this._onSaveReport();
+
             this.setState({
                 ...this.state,
                 tmpReport: { id },

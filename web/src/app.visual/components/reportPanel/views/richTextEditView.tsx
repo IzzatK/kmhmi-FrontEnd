@@ -108,9 +108,9 @@ export function RichTextEditView(props: RichTextEditViewProps) {
                             {/*<SubscriptInput />*/}
                         </div>
                         {/*<Button text={"Footnote"} onClick={() => insertFootnote(editor)}/>*/}
-                        <div className={'d-flex'}>
-                            <ComboBox items={citation} title={'MLA'}/>
-                        </div>
+                        {/*<div className={'d-flex'}>*/}
+                        {/*    <ComboBox items={citation} title={'MLA'}/>*/}
+                        {/*</div>*/}
                     </div>
                 </div>
 
