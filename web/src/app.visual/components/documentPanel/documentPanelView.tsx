@@ -914,7 +914,7 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
                     {/*</CSSTransition>*/}
                     {
                         ((permissions.canModify || permissions.canDelete) && Object.keys(document).length > 0) &&
-                        <div className={'d-flex align-items-end justify-content-between h-gap-2 bg-selected py-3 px-5'}>
+                        <div className={'d-flex align-items-end justify-content-between h-gap-2 bg-advisory py-3 px-5'}>
                             <div className={'d-flex h-gap-2 align-items-center'}>
                                 {
                                     permissions.canModify &&
