@@ -2,9 +2,9 @@ import SystemBannerView from './systemBannerView'
 import {VisualWrapper} from "../../../framework.visual/extras/visualWrapper";
 import {createVisualConnector} from "../../../framework.visual/connectors/visualConnector";
 import {
-    authenticationService, displayService,
+    authenticationService,
     documentService,
-    referenceService, selectionService,
+    referenceService, userGuideService,
     userService
 } from "../../../serviceComposition";
 import {ReferenceType, UserInfo} from "../../../app.model";
@@ -12,7 +12,7 @@ import {makeGuid} from "../../../framework.core/extras/utils/uniqueIdUtils";
 import {createSelector} from "@reduxjs/toolkit";
 import {forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 import {RoleVM} from "./systemBannerModel";
-import {UserGuidePanelId} from "../userGuidePanel/userGuidePanelWrapper";
+import {UserGuideInfoVM} from "../userGuidePanel/userGuidePanelModel";
 
 export const DOCUMENT_PREVIEW_VIEW_ID = 'document-preview-panel';
 
@@ -81,23 +81,43 @@ class SystemBanner extends VisualWrapper {
         documentService.clearSearch();
     }
 
+    getHelpDocument = () => {
+        let userGuide = userGuideService.getUserGuide();
+        let userGuideVM: UserGuideInfoVM = {
+            preview_url: userGuide?.preview_url
+        }
+        return userGuideVM;
+    };
+
     onShowHelp = () => {
-        let currentId = displayService.getSelectedNodeId(DOCUMENT_PREVIEW_VIEW_ID);
-        console.log(currentId);
+        let userProfile = authenticationService.getUserProfile();
+        let username = userProfile.username;
+        let id = userProfile.id;
+        let email = userProfile.email;
+        let firstName = userProfile.firstName;
+        let lastName = userProfile.lastName;
 
-        if (currentId === UserGuidePanelId) {
-            displayService.popNode(DOCUMENT_PREVIEW_VIEW_ID);
-        }
-        else {
-            displayService.pushNode(UserGuidePanelId);
-        }
+        let helpDocument = this.getHelpDocument();
+        let preview_url = helpDocument.preview_url;
 
-        if (selectionService.getContext("selected-report") !== '') {
-            selectionService.setContext("selected-report", '');
-        }
-        if (selectionService.getContext("selected-document") !== '') {
-            selectionService.setContext("selected-document", '');
-        }
+        let token = authenticationService.getToken();
+
+        let xhr = new XMLHttpRequest;
+
+        xhr.open( "GET", preview_url || "");
+
+        xhr.addEventListener( "load", function(){
+            window.open(preview_url);
+        }, false);
+
+        xhr.setRequestHeader("km-token", `bearer ${token}` );
+        xhr.setRequestHeader("km-user-name", username );
+        xhr.setRequestHeader("km-user-id", id );
+        xhr.setRequestHeader("km-email", email );
+        xhr.setRequestHeader("km-first-name", firstName );
+        xhr.setRequestHeader("km-last-name", lastName );
+
+        xhr.send();
     }
 }
 
