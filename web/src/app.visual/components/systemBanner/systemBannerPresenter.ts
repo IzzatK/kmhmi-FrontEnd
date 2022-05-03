@@ -11,8 +11,7 @@ import {ReferenceType, UserInfo} from "../../../app.model";
 import {makeGuid} from "../../../framework.core/extras/utils/uniqueIdUtils";
 import {createSelector} from "@reduxjs/toolkit";
 import {forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
-import {RoleVM} from "./systemBannerModel";
-import {UserGuideInfoVM} from "../userGuidePanel/userGuidePanelModel";
+import {RoleVM, UserGuideInfoVM} from "./systemBannerModel";
 
 export const DOCUMENT_PREVIEW_VIEW_ID = 'document-preview-panel';
 
@@ -39,6 +38,8 @@ class SystemBanner extends VisualWrapper {
                 onShowHelp: () => this.onShowHelp(),
             };
         }
+
+        userGuideService.fetchUserGuide();
     }
 
     getRoleVM = createSelector(
@@ -83,10 +84,7 @@ class SystemBanner extends VisualWrapper {
 
     getHelpDocument = () => {
         let userGuide = userGuideService.getUserGuide();
-        let userGuideVM: UserGuideInfoVM = {
-            preview_url: userGuide?.preview_url
-        }
-        return userGuideVM;
+        return userGuide?.preview_url;
     };
 
     onShowHelp = () => {
@@ -97,8 +95,7 @@ class SystemBanner extends VisualWrapper {
         let firstName = userProfile.firstName;
         let lastName = userProfile.lastName;
 
-        let helpDocument = this.getHelpDocument();
-        let preview_url = helpDocument.preview_url;
+        let preview_url = this.getHelpDocument();
 
         let token = authenticationService.getToken();
 

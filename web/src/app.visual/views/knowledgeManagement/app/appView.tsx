@@ -5,7 +5,6 @@ import {DocumentPanelPresenter} from "../../../components/documentPanel/document
 import {UploadPanelPresenter} from "../../../components/uploadPanel/uploadPanelPresenter";
 import {ProfilePanelPresenter} from "../../../components/profilePanel/profilePanelPresenter";
 import {TagsPanelWrapper} from "../../../components/tagsPanel/tagsPanelWrapper";
-import {UserGuidePanelWrapper} from "../../../components/userGuidePanel/userGuidePanelWrapper";
 import {StatsPanelPresenter} from "../../../components/statsPanel/statsPanelPresenter";
 import {PocketsPanelPresenter} from "../../../components/pocketsPanel/pocketsPanelPresenter";
 import {SystemToolbarPresenter} from "../../../components/systemToolbar/systemToolbarPresenter";
@@ -122,7 +121,7 @@ export class AppView extends Component<Props, AppState> {
     }
 
     render() {
-        const {className, currentSystemTool, isDocumentVisible, isReportVisible, isHelpVisible, permissions, isAuthorized, isAuthorizing, ...rest} = this.props;
+        const {className, currentSystemTool, isDocumentVisible, isReportVisible, permissions, isAuthorized, isAuthorizing, ...rest} = this.props;
         const { documentPreviewPanelWidth, showPreview } = this.state;
 
         let cn = `${className ? className : ''} d-flex h-100`;
@@ -166,14 +165,13 @@ export class AppView extends Component<Props, AppState> {
                                         }
                                     </div>
 
-                                    <div className={(isDocumentVisible || isReportVisible || isHelpVisible) ? `view-container system-tools-panel flex-fill slideRightIn-active position-relative ${documentPreviewPanelWidth}` : 'view-container slideRightOut-active'}>
+                                    <div className={(isDocumentVisible || isReportVisible) ? `view-container system-tools-panel flex-fill slideRightIn-active position-relative ${documentPreviewPanelWidth}` : 'view-container slideRightOut-active'}>
                                         {
-                                            (isDocumentVisible || isReportVisible || isHelpVisible) &&
+                                            (isDocumentVisible || isReportVisible) &&
                                             <div className={"position-absolute h-100"} style={{cursor: 'e-resize', width: '1rem', left: 0, top: 0, zIndex: '10'}} onMouseDown={(e) => this._onMouseDown(e)} onMouseLeave={(e) => this._onMouseLeave(e)}/>
                                         }
                                         <DocumentPanelPresenter className={'flex-fill'} style={{zIndex: '9'}}/>
                                         <ReportPanelWrapper className={'flex-fill'} style={{zIndex: '9'}}/>
-                                        <UserGuidePanelWrapper className={'flex-fill'} style={{zIndex: '9'}}/>
                                     </div>
 
                                     {

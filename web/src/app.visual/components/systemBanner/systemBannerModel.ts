@@ -20,3 +20,7 @@ export type RoleVM = {
     id: string;
     title: string;
 }
+
+export type UserGuideInfoVM = {
+    preview_url?: string;
+}
