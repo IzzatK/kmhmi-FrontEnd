@@ -2,9 +2,12 @@ import {VisualWrapper} from "../../../framework.visual";
 import LoginPanelView from "./loginPanelView";
 import {LoginPanelDispatchProps, LoginPanelStateProps, UserInfoVM} from "./loginPanelModel";
 import {createVisualConnector} from "../../../framework.visual";
-import {authenticationService, authorizationService} from "../../../serviceComposition";
-import {UserInfo} from "../../../app.model";
+import {authenticationService, authorizationService, referenceService} from "../../../serviceComposition";
+import {ReferenceType, UserInfo} from "../../../app.model";
 import {makeGuid} from "../../../framework.core/extras/utils/uniqueIdUtils";
+import {createSelector} from "@reduxjs/toolkit";
+import {DepartmentVM} from "../profilePanel/profilePanelModel";
+import {forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 
 class LoginPanel extends VisualWrapper {
     constructor() {
@@ -16,7 +19,8 @@ class LoginPanel extends VisualWrapper {
 
         this.mapStateToProps = (state: any, props: any): LoginPanelStateProps => {
             return {
-                dodWarningAccepted: authorizationService.isDodWarningAccepted()
+                dodWarningAccepted: authorizationService.isDodWarningAccepted(),
+                departments: this.getDepartmentVMs(state),
             };
         }
 
@@ -52,9 +56,25 @@ class LoginPanel extends VisualWrapper {
         user.email_address = userVM.email || '';
         user.phone_number = userVM.phone || '';
         user.registration_reason = userVM.registration_reason || '';
+        user.department = userVM.department || '';
 
         authenticationService.register(user);
     }
+
+    getDepartmentVMs = createSelector(
+        [() => referenceService.getAllReferences(ReferenceType.DEPARTMENT)],
+        (departments) => {
+            let itemVMs: Record<string, DepartmentVM> = {};
+
+            forEachKVP(departments, (itemKey: string, itemValue: DepartmentVM) => {
+                itemVMs[itemKey] = {
+                    ...itemValue
+                };
+            })
+
+            return itemVMs;
+        }
+    )
 }
 
 export const {

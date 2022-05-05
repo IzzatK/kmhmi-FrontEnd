@@ -1,6 +1,7 @@
 export type LoginPanelStateProps = {
     className?: string;
     dodWarningAccepted: boolean;
+    departments?: Record<string, DepartmentVM>;
 }
 
 export type LoginPanelDispatchProps = {
@@ -23,5 +24,10 @@ export type UserInfoVM = {
     last_name: string;
     email: string;
     phone: string;
+    department: string;
     registration_reason: string;
+}
+
+export type DepartmentVM = {
+    title: string;
 }

@@ -41,6 +41,7 @@ export class CreateUserRequestConverter extends Converter<any,any>{
             email_address: getTextValueOrDefault(nameOf<UserInfo>('email_address'), ''),
             phone_number: getTextValueOrDefault(nameOf<UserInfo>('phone_number'), ''),
             registration_reason: getTextValueOrDefault(nameOf<UserInfo>('registration_reason'), ''),
+            dept_id: parseInt(getTextValueOrDefault(nameOf<UserInfo>('department'), '')),
         }
 
         return serverUser;

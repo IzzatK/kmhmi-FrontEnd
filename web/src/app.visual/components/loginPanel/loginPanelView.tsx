@@ -5,6 +5,7 @@ import {bindInstanceMethods, nameOf} from "../../../framework.core/extras/utils/
 import Button from "../../theme/widgets/button/button";
 import TextEdit from "../../theme/widgets/textEdit/textEdit";
 import TextArea from "../../theme/widgets/textEdit/textArea";
+import ComboBox from "../../theme/widgets/comboBox/comboBox";
 
 class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
     constructor(props: any, context: any) {
@@ -19,6 +20,7 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
                 last_name: '',
                 email: '',
                 phone: '',
+                department: '',
                 registration_reason: '',
             },
             warning: "",
@@ -69,6 +71,7 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
             "last_name": "",
             "email": "",
             "phone": "",
+            "registration_reason": "",
         }
 
         if (!/^[0-9]{10}/im.test(dod_id)) {
@@ -109,7 +112,7 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
             errorMessages["email"] = "Email must be a valid email address";
         }
 
-        if (!/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im.test(phone)) {
+        if (phone !== "" && !/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im.test(phone)) {
             pass = false;
             failedFields += `${failedFields !== "" ? "," : ""} Phone`;
             if (!focus) {
@@ -132,7 +135,7 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
                 onRegister(tmpUser);
             }
         } else {
-            warning = "Please fill out the required fields:";
+            warning = "Please correct the following fields:";
         }
 
         this._setWarnings(warning + failedFields, errorMessages);
@@ -175,7 +178,7 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
     }
 
     render() {
-        const { className, dodWarningAccepted } = this.props;
+        const { className, dodWarningAccepted, departments } = this.props;
 
         const { tmpUser, warning, errorMessages } = this.state;
 
@@ -186,8 +189,14 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
 
         let disableButton = false;
 
-        if (tmpUser["dod_id"] === "" || tmpUser["first_name"] === "" || tmpUser["last_name"] === "" || tmpUser["email"] === "" || tmpUser["phone"] === "") {
+        if (tmpUser["dod_id"] === "" || tmpUser["first_name"] === "" || tmpUser["last_name"] === "" ||
+            tmpUser["email"] === "" || tmpUser["department"] === "" || tmpUser["registration_reason"] === "") {
             disableButton = true;
+        }
+
+        let departmentTitle = 'Select Department';
+        if (departments && departments[tmpUser.department]) {
+            departmentTitle = departments[tmpUser.department].title;
         }
 
         return (
@@ -227,27 +236,36 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
                                 <div className={"d-flex flex-column shadow-lg"}>
                                     <div className={"d-flex flex-column popup v-gap-5"}>
                                         <div className={"text-selected font-weight-semi-bold px-5 pt-5"}>
-                                            <div>New user</div>
+                                            <div>New User</div>
                                         </div>
                                         <div className={"info px-5 display-3"}>New to the Dashboard? Submit your information below to request authorization</div>
                                         <div className={"v-gap-5"}>
                                             <div className={'register-grid px-5'}>
                                                 <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
+                                                    <div className={"required-field"}>*</div>
                                                     <div>DoD ID:</div>
                                                 </div>
                                                 <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
+                                                    <div className={"required-field"}>*</div>
                                                     <div>First Name:</div>
                                                 </div>
                                                 <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
+                                                    <div className={"required-field"}>*</div>
                                                     <div>Last Name:</div>
                                                 </div>
                                                 <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
+                                                    <div className={"required-field"}>*</div>
                                                     <div>Email:</div>
                                                 </div>
                                                 <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
                                                     <div>Phone:</div>
                                                 </div>
                                                 <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
+                                                    <div className={"required-field"}>*</div>
+                                                    <div>Department:</div>
+                                                </div>
+                                                <div className={"d-flex align-self-center justify-self-end h-gap-1 display-3 font-weight-semi-bold"}>
+                                                    <div className={"required-field"}>*</div>
                                                     <div>Reason:</div>
                                                 </div>
                                                 <TextEdit
@@ -283,6 +301,12 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
                                                     name={nameOf<UserInfoVM>("phone")}
                                                     placeholder={""}
                                                     onChange={(value) => this.onTmpUserChanged("phone", value)}/>
+                                                <ComboBox
+                                                    id={"department"}
+                                                    onSelect={(value: string) => this.onTmpUserChanged("department", value)}
+                                                    title={departmentTitle}
+                                                    items={departments}
+                                                />
                                                 <TextArea
                                                     id={"registration_reason"}
                                                     value={tmpUser.registration_reason}
@@ -299,7 +323,7 @@ class LoginPanelView extends Component<LoginPanelProps, LoginPanelState> {
                                             </div>
                                         </div>
 
-                                        <div className={"display-3 ml-5 pl-5"}>*All fields are required</div>
+                                        <div className={"display-3 ml-5 pl-5 required-field"}>* Required fields</div>
                                     </div>
 
                                     <div className={"d-flex justify-content-end py-4 pr-5 bg-advisory align-items-center h-gap-3"}>
