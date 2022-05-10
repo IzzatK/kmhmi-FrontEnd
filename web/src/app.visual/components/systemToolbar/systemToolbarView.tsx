@@ -29,10 +29,11 @@ class SystemToolbarView extends Component<SystemToolbarProps, SystemToolbarState
 
         return (
             <div className={cn} {...rest}>
-                <div className={'d-flex flex-column v-gap-3 justify-content-between'}>
+                <div className={'d-flex flex-column v-gap-3'}>
 
                     {/*<div className={"border-top align-self-stretch justify-self-stretch border-muted"}/>*/}
                     {toolbarDiv}
+                    <div className={"border-top mx-2"}/>
                     <div className={'tool-item'}>
                         <Button tooltip={docTitle} onClick={onDocumentPreviewSelected} selected={docSelected || reportSelected}>
                             <DocPreviewSVG className={'small-image-container'}/>
