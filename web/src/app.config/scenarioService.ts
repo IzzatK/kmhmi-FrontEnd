@@ -142,7 +142,6 @@ export class ScenarioService extends Plugin implements IScenarioService {
         // this.createMenuItem(SystemToolMenuItem, 'components/statsPanel', 'Stats', false, StatsSVG);
         this.createMenuItem(SystemToolMenuItem, 'app.visual/components/profilePanel', 'Profile', false, ProfileSVG);
         this.createMenuItem(SystemToolMenuItem, 'app.visual/components/pocketsPanel', 'Pockets', false, PocketSVG);
-        this.createMenuItem(SystemToolMenuItem, 'app.visual/components/searchGraphsPanel', 'Graphs', true, GraphSVG)
     }
 
     createSearchResultsTools() {

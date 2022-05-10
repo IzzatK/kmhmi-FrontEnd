@@ -2,7 +2,7 @@ import SystemBannerView from './systemBannerView'
 import {VisualWrapper} from "../../../framework.visual/extras/visualWrapper";
 import {createVisualConnector} from "../../../framework.visual/connectors/visualConnector";
 import {
-    authenticationService,
+    authenticationService, displayService,
     documentService,
     referenceService, userGuideService,
     userService
@@ -80,6 +80,7 @@ class SystemBanner extends VisualWrapper {
 
     onReturnHome = () => {
         documentService.clearSearch();
+        displayService.pushNode('app.visual/components/searchGraphsPanel');
     }
 
     getHelpDocument = () => {
