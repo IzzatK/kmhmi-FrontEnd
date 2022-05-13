@@ -14,7 +14,6 @@ import {LandingPanelPresenter} from "../../../components/landingPanel/landingPan
 import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
 import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
 import {ReportPanelWrapper} from "../../../components/reportPanel/reportPanelWrapper";
-import {SearchGraphsPanelWrapper} from "../../../components/searchGraphsPanel/searchGraphsPanelWrapper";
 
 export class AppView extends Component<Props, AppState> {
     private interval!: NodeJS.Timer;
@@ -150,19 +149,7 @@ export class AppView extends Component<Props, AppState> {
                                         <TagsPanelWrapper/>
                                         <StatsPanelPresenter/>
                                         <PocketsPanelPresenter/>
-                                        <SearchGraphsPanelWrapper/>
-                                        {
-                                            permissions.canSearch ?
-                                                <SearchPresenter className={"d-flex flex-fill flex-basis-0"} style={{zIndex: '1'}}/>
-                                                :
-                                                <div className={"d-flex flex-fill align-items-center justify-content-center"}>
-                                                    {
-                                                        !permissions.isAuthorizing &&
-                                                        <div className={'display-1 text-secondary'}>You do not have search permissions
-                                                        </div>
-                                                    }
-                                                </div>
-                                        }
+                                        <SearchPresenter permissions={permissions} className={"d-flex flex-fill flex-basis-0"} style={{zIndex: '1'}}/>
                                     </div>
 
                                     <div className={(isDocumentVisible || isReportVisible) ? `view-container system-tools-panel flex-fill slideRightIn-active position-relative ${documentPreviewPanelWidth}` : 'view-container slideRightOut-active'}>

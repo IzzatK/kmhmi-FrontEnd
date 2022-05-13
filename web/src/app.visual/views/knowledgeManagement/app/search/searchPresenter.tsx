@@ -14,7 +14,7 @@ class Search extends VisualWrapper {
 
         this.displayOptions = {
             containerId: 'system-tool-panel',
-            visible: false,
+            visible: true,
             appearClass: 'fadeIn',
             enterClass: 'fadeIn',
             // exitClass: '',

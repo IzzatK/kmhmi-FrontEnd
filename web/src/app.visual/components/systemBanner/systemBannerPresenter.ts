@@ -80,7 +80,7 @@ class SystemBanner extends VisualWrapper {
 
     onReturnHome = () => {
         documentService.clearSearch();
-        displayService.pushNode('app.visual/components/searchGraphsPanel');
+        displayService.pushNode('app.visual/views/search');
     }
 
     getHelpDocument = () => {
