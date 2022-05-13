@@ -1,8 +1,9 @@
 import {PocketNodeType} from "../../model/pocketNodeType";
 import {PocketInfo} from "../../../app.model";
 import React from "react";
+import {PayloadAction} from "@reduxjs/toolkit";
 
-export type PocketsPanelStateProps = {
+export type PocketsPanelAppStateProps = {
     className?: string;
     data: PocketNodeVM[];
     selectionPath: string;
@@ -10,9 +11,9 @@ export type PocketsPanelStateProps = {
     searchText: string;
 }
 
-export type PocketsPanelDispatchProps = {
+export type PocketsPanelAppDispatchProps = {
     onPocketItemSelected: (id: string) => void;
-    onPocketItemToggle: (id: string, expanded: boolean) => void;
+    onPocketItemToggle: (id: string, expanded: boolean, type?: string) => void;
     onCreatePocket: (title: string) => void;
     onUpdatePocket: (edits: PocketUpdateParams) => void;
     onDownloadDocument: (id: string) => void;
@@ -28,11 +29,35 @@ export type PocketsPanelDispatchProps = {
     onRemoveReport: (id: string, pocket_id: string) => void;
     onReportItemSelected: (id: string) => void;
     onDocumentItemSelected: (id: string) => void;
+    onAddNote: () => void;
 }
 
-export type PocketsPanelProps = PocketsPanelStateProps & PocketsPanelDispatchProps;
+export type PocketsPanelPresenterProps = PocketsPanelAppStateProps & PocketsPanelAppDispatchProps;
 
-export type PocketsPanelState = {
+export type PocketsPanelPresenterState = {
+    selectedNode: any;
+    editPocketId: string;
+}
+
+export type PocketsPanelViewProps = {
+    className: string;
+    data: PocketNodeVM[];
+    selectionPath: string;
+    expandedPaths: string[];
+    selectedNode: any;
+    onCreatePocket: (title: string) => void;
+    cellContentRenderer: (node: PocketNodeVM) => JSX.Element;
+    onNodeToggle: (nodeVM: any, expanded: boolean) => void;
+    onNodeSelected: (nodeVM: any) => void;
+    onCreateReport: (id: string, pocket_id: string) => void;
+    onEditPocket: (id: string) => void;
+    onDeletePocket: (id: string) => void;
+    onDownloadDocument: (id: string) => void;
+    onRemoveResource: (id: string, pocket_id: string) => void;
+    onRemoveExcerpt: (id: string, pocket_id: string) => void;
+    onRemoveNote: (id: string, pocket_id: string) => void;
+    onAddNote: (id: string, pocket_id: string) => void;
+    onRemoveReport: (id: string, pocket_id: string) => void;
 }
 
 export type NodeRendererProps = {
@@ -41,6 +66,7 @@ export type NodeRendererProps = {
     className?: string;
     title?: string;
     isUpdating?: boolean;
+    selected: boolean;
 }
 
 export type PocketNodeRendererProps = NodeRendererProps &
@@ -53,6 +79,7 @@ export type PocketNodeRendererProps = NodeRendererProps &
         searchText: string;
         onDelete: () => void;
         onCreateReport: () => void;
+        isEdit: boolean;
     }
 
 export type ResourceNodeRendererProps = NodeRendererProps &
@@ -89,7 +116,6 @@ export enum PocketTabType {
     NONE,
     SHARE,
     DOWNLOAD,
-    REPORT,
     EDIT,
 }
 
@@ -103,4 +129,14 @@ export type PocketNodeVM = {
     pocket_id: string,
     resource_id?: string;
     isUpdating: boolean,
+    selected: boolean;
 }
+
+export type PocketSliceState = {
+    expandedPaths: string[]
+}
+
+export type PocketCaseReducers =  {
+    addExpandedPath: (state: PocketSliceState, action: PayloadAction<string>) => void;
+    removeExpandedPath: (state:PocketSliceState, action:PayloadAction<string>) => void;
+};

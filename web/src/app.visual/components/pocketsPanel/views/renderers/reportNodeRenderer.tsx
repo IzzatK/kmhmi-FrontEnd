@@ -1,9 +1,9 @@
 import React, {Component} from "react";
-import {ReportNodeRendererProps} from "../pocketsPanelModel";
-import Button from "../../../theme/widgets/button/button";
-import {DownloadSVG} from "../../../theme/svgs/downloadSVG";
-import {RemoveSVG} from "../../../theme/svgs/removeSVG";
-import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
+import {bindInstanceMethods} from "../../../../../framework.core/extras/utils/typeUtils";
+import Button from "../../../../theme/widgets/button/button";
+import {RemoveSVG} from "../../../../theme/svgs/removeSVG";
+import {ReportNodeRendererProps} from "../../pocketsPanelModel";
+import CheckBox from "../../../../theme/widgets/checkBox/checkBox";
 
 export class ReportNodeRenderer extends Component<ReportNodeRendererProps> {
     constructor(props: any) {
@@ -31,7 +31,7 @@ export class ReportNodeRenderer extends Component<ReportNodeRendererProps> {
     }
 
     render() {
-        const {className, title } = this.props;
+        const {className, title, selected } = this.props;
 
         let cn = 'report-node light d-flex justify-content-between';
         if (className) {
@@ -40,17 +40,18 @@ export class ReportNodeRenderer extends Component<ReportNodeRendererProps> {
 
         return (
             <div className={cn}>
+                <CheckBox selected={selected} disabled={true}/>
                 <div className={"d-flex flex-row v-gap-2 justify-content-center align-items-center"}>
                     <div className={"title font-italic font-weight-semi-bold"}>Report: {title ? title : ''}</div>
                 </div>
-                <div className={'action-bar d-flex h-gap-3'}>
-                    {/*<Button className={"btn-transparent"} onClick={this._onDownload} tooltip={"Download"}>*/}
-                    {/*    <DownloadSVG className={"small-image-container"}/>*/}
-                    {/*</Button>*/}
-                    <Button className={"btn-transparent"} onClick={this._onRemove} tooltip={"Remove"}>
-                        <RemoveSVG className={"small-image-container"}/>
-                    </Button>
-                </div>
+                {/*<div className={'action-bar d-flex h-gap-3'}>*/}
+                {/*    /!*<Button className={"btn-transparent"} onClick={this._onDownload} tooltip={"Download"}>*!/*/}
+                {/*    /!*    <DownloadSVG className={"small-image-container"}/>*!/*/}
+                {/*    /!*</Button>*!/*/}
+                {/*    <Button className={"btn-transparent"} onClick={this._onRemove} tooltip={"Remove"}>*/}
+                {/*        <RemoveSVG className={"small-image-container"}/>*/}
+                {/*    </Button>*/}
+                {/*</div>*/}
             </div>
         )
     }

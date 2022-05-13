@@ -1,29 +1,40 @@
-import React, {Component} from 'react';
-import './pocketsPanel.css';
-import '../../theme/stylesheets/panel.css';
-import ScrollBar from "../../theme/widgets/scrollBar/scrollBar";
-import TreeView from "../../theme/widgets/treeView/treeView";
-import {bindInstanceMethods} from "../../../framework.core/extras/utils/typeUtils";
-import Button from "../../theme/widgets/button/button";
-import {PocketNodeVM, PocketsPanelProps, PocketUpdateParams} from "./pocketsPanelModel";
-import {PocketNodeRenderer} from "./renderers/pocketNodeRenderer";
-import {ExcerptNodeRenderer} from "./renderers/excerptNodeRenderer";
-import {NoteNodeRenderer} from "./renderers/noteNodeRenderer";
-import {ResourceNodeRenderer} from "./renderers/resourceNodeRenderer";
-import {PocketNodeType} from "../../model/pocketNodeType";
-import {PlusSVG} from "../../theme/svgs/plusSVG";
-import {ReportNodeRenderer} from "./renderers/reportNodeRenderer";
+import React, {Component} from "react";
+import PocketsPanelView from "../views/pocketsPanelView";
+import {
+    PocketNodeVM,
+    PocketsPanelPresenterProps,
+    PocketsPanelPresenterState,
+    PocketUpdateParams
+} from "../pocketsPanelModel";
+import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
+import {PocketNodeType} from "../../../model/pocketNodeType";
+import {PocketNodeRenderer} from "../views/renderers/pocketNodeRenderer";
+import {ResourceNodeRenderer} from "../views/renderers/resourceNodeRenderer";
+import {ExcerptNodeRenderer} from "../views/renderers/excerptNodeRenderer";
+import {NoteNodeRenderer} from "../views/renderers/noteNodeRenderer";
+import {ReportNodeRenderer} from "../views/renderers/reportNodeRenderer";
 
-class PocketsPanelView extends Component<PocketsPanelProps> {
+export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps, PocketsPanelPresenterState> {
     constructor(props: any, context: any) {
         super(props, context);
+
+        this.state = {
+            selectedNode: undefined,
+            editPocketId: "",
+        }
 
         bindInstanceMethods(this);
     }
 
-    getCellContentRenderer(node: PocketNodeVM): JSX.Element {
+    _getCellContentRenderer(node: PocketNodeVM): JSX.Element {
         const { searchText } = this.props;
-        const { id, path, title, pocket_id, isUpdating, resource_id } = node;
+        const { editPocketId, selectedNode } = this.state;
+        const { id, path, title, pocket_id, isUpdating, resource_id, selected } = node;
+
+        let selectedId = "";
+        if (selectedNode) {
+            selectedId = selectedNode.id;
+        }
 
         let renderer: JSX.Element;
 
@@ -41,9 +52,11 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                         searchText={searchText}
                         onSearch={this._onSearch}
                         onSearchTextChanged={this._onSearchTextChanged}
-                        onDelete={() => this._deletePocket(id)}
+                        onDelete={() => this._onDeletePocket(id)}
                         isUpdating={isUpdating}
                         onCreateReport={() => this._onCreateReport(id)}
+                        isEdit={id === editPocketId}
+                        selected={id === selectedId}
                     />
                 )
                 break;
@@ -57,6 +70,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                         onDownload={this._onDownloadDocument}
                         onRemove={(id: string) => this._onRemoveResource(id, pocket_id)}
                         isUpdating={isUpdating}
+                        selected={id === selectedId}
                     />
                 )
                 break;
@@ -69,6 +83,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                         onRemove={(id: string) => this._onRemoveExcerpt(id, pocket_id)}
                         isUpdating={isUpdating}
                         onAddExcerptToReport={(event: React.DragEvent<HTMLDivElement>, id: string) => this._onAddExcerptToReport(event, id, resource_id || "")}
+                        selected={id === selectedId}
                     />
                 )
                 break;
@@ -80,6 +95,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                         title={title}
                         onRemove={(id: string) => this._onRemoveNote(id, pocket_id)}
                         isUpdating={isUpdating}
+                        selected={id === selectedId}
                     />
                 )
                 break;
@@ -91,6 +107,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
                         title={title}
                         onDownload={this._onDownloadReport}
                         onRemove={(id: string) => this._onRemoveReport(id, pocket_id)}
+                        selected={id === selectedId}
                     />
                 )
                 break;
@@ -104,50 +121,73 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         return renderer;
     }
 
-    private _onNodeSelected(nodeVM: any) {
-        if (this.props.onPocketItemSelected != null) {
-            this.props.onPocketItemSelected(nodeVM?.path || '');
+    _onNodeSelected(nodeVM: any) {
+        //right now this method doesn't do anything
+        const { onPocketItemSelected, onReportItemSelected, onDocumentItemSelected } = this.props;
+
+        if (onPocketItemSelected) {
+            onPocketItemSelected(nodeVM?.path || '');
         }
 
         if (nodeVM) {
             if (nodeVM.type) {
                 if (nodeVM.type === PocketNodeType.REPORT) {
-                    if (this.props.onReportItemSelected) {
-                        this.props.onReportItemSelected(nodeVM.id);
+                    if (onReportItemSelected) {
+                        onReportItemSelected(nodeVM.id);
                     }
                 } else if (nodeVM.type === PocketNodeType.DOCUMENT) {
-                    if (this.props.onDocumentItemSelected) {
-                        this.props.onDocumentItemSelected(nodeVM.id);
+                    if (onDocumentItemSelected) {
+                        onDocumentItemSelected(nodeVM.id);
                     }
                 }
             }
         }
     }
 
-    private _onNodeToggle(nodeVM: any, expanded: boolean) {
+    _setSelectedNode(selectedNode: any) {
+        this.setState({
+            ...this.state,
+            selectedNode
+        })
+    }
+
+    _onNodeToggle(nodeVM: any, expanded: boolean) {
+        const { onReportItemSelected, onPocketItemToggle, onDocumentItemSelected } = this.props;
+
+        console.log("expanded=" + expanded)
+
         if (nodeVM) {
             if (nodeVM.type) {
                 if (nodeVM.type === PocketNodeType.REPORT) {
-                    if (this.props.onReportItemSelected) {
-                        this.props.onReportItemSelected(nodeVM.id);
+                    if (onReportItemSelected) {
+                        onReportItemSelected(nodeVM.id);
                     }
                 } else {
-                    if (this.props.onPocketItemToggle != null) {
-                        this.props.onPocketItemToggle(nodeVM.path, expanded);
+                    if (onPocketItemToggle != null) {
+                        onPocketItemToggle(nodeVM.path, expanded, nodeVM.type);
                     }
 
                     if (nodeVM.type === PocketNodeType.DOCUMENT) {
-                        if (this.props.onDocumentItemSelected) {
-                            this.props.onDocumentItemSelected(nodeVM.id);
+                        if (onDocumentItemSelected) {
+                            onDocumentItemSelected(nodeVM.id);
                         }
                     }
                 }
             } else {
-                if (this.props.onPocketItemToggle != null) {
-                    this.props.onPocketItemToggle(nodeVM.path, expanded);
+                if (onPocketItemToggle != null) {
+                    onPocketItemToggle(nodeVM.path, expanded);
                 }
             }
+
+            this._setSelectedNode(expanded ? nodeVM : "");
         }
+    }
+
+    _onEditPocket(id: string) {
+        this.setState({
+            ...this.state,
+            editPocketId: id,
+        })
     }
 
     _onSharePocket(id: string) {
@@ -168,6 +208,8 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         if (onUpdatePocket) {
             onUpdatePocket(edits);
         }
+
+        this._onEditPocket("");
     }
 
     _onAddExcerptToReport(event: React.DragEvent<HTMLDivElement>, id: string, resource_id: string) {
@@ -178,7 +220,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         }
     }
 
-    private _deletePocket(id: string) {
+    _onDeletePocket(id: string) {
         const { onDelete } = this.props;
 
         if (onDelete) {
@@ -186,7 +228,7 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         }
     }
 
-    private _onCreateReport(id: string) {
+    _onCreateReport(id: string) {
         const { onCreateReport } = this.props;
 
         if (onCreateReport) {
@@ -240,8 +282,10 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
 
 
     _onCreatePocket() {
-        if (this.props.onCreatePocket != null) {
-            this.props.onCreatePocket('New Pocket')
+        const { onCreatePocket } = this.props;
+
+        if (onCreatePocket) {
+            onCreatePocket('New Pocket')
         }
     }
 
@@ -261,39 +305,45 @@ class PocketsPanelView extends Component<PocketsPanelProps> {
         }
     }
 
-    render() {
-        const { className, data, selectionPath, expandedPaths } = this.props;
+    _onAddNote() {
+        const { onAddNote } = this.props;
 
-        let cn = "d-flex position-absolute w-100 h-100 align-items-center justify-content-center";
-
-        if (className) {
-            cn += ` ${className}`;
+        if (onAddNote) {
+            onAddNote();
         }
+    }
+
+    render() {
+        const {
+            className="",
+            data,
+            selectionPath,
+            expandedPaths,
+        } = this.props;
+
+        const { selectedNode } = this.state;
 
         return (
-            <div className={cn}>
-                <div className={'system-tool-panel pockets-panel flex-fill h-100 p-4 d-flex flex-column'}>
-                    <div className={"d-flex justify-content-between px-3"}>
-                        <Button className={"bg-transparent"} onClick={this._onCreatePocket}>
-                            <div>Create Pocket</div>
-                            <PlusSVG className={"nano-image-container"}/>
-                        </Button>
-                    </div>
-                    <div className={'flex-fill'}>
-                        <ScrollBar className={'flex-fill'} renderTrackHorizontal={false}>
-                            <TreeView selectionPath={selectionPath}
-                                      expandedPaths={expandedPaths}
-                                      onSelected={this._onNodeSelected}
-                                      onToggle={this._onNodeToggle}
-                                      rootNodes={data}
-                                      showDisclosure={false}
-                                      cellContentRenderer={this.getCellContentRenderer}/>
-                        </ScrollBar>
-                    </div>
-                </div>
-            </div>
+            <PocketsPanelView
+                className={className}
+                data={data}
+                selectionPath={selectionPath}
+                expandedPaths={expandedPaths}
+                selectedNode={selectedNode}
+                onCreatePocket={this._onCreatePocket}
+                cellContentRenderer={this._getCellContentRenderer}
+                onNodeToggle={this._onNodeToggle}
+                onNodeSelected={this._onNodeSelected}
+                onCreateReport={this._onCreatePocket}
+                onEditPocket={this._onEditPocket}
+                onDeletePocket={this._onDeletePocket}
+                onDownloadDocument={this._onDownloadDocument}
+                onRemoveResource={this._onRemoveResource}
+                onRemoveExcerpt={this._onRemoveExcerpt}
+                onRemoveNote={this._onRemoveNote}
+                onAddNote={this._onAddNote}
+                onRemoveReport={this._onRemoveReport}
+            />
         );
     }
 }
-
-export default PocketsPanelView;

@@ -6,7 +6,7 @@ import {UploadPanelPresenter} from "../../../components/uploadPanel/uploadPanelP
 import {ProfilePanelPresenter} from "../../../components/profilePanel/profilePanelPresenter";
 import {TagsPanelWrapper} from "../../../components/tagsPanel/tagsPanelWrapper";
 import {StatsPanelPresenter} from "../../../components/statsPanel/statsPanelPresenter";
-import {PocketsPanelPresenter} from "../../../components/pocketsPanel/pocketsPanelPresenter";
+import {PocketsPanelWrapper} from "../../../components/pocketsPanel/pocketsPanelWrapper";
 import {SystemToolbarPresenter} from "../../../components/systemToolbar/systemToolbarPresenter";
 import {pocketService, referenceService, statService, tagService} from "../../../../serviceComposition";
 import {ReferenceType} from "../../../../app.model";
@@ -149,7 +149,7 @@ export class AppView extends Component<Props, AppState> {
                                         <ProfilePanelPresenter/>
                                         <TagsPanelWrapper/>
                                         <StatsPanelPresenter/>
-                                        <PocketsPanelPresenter/>
+                                        <PocketsPanelWrapper/>
                                         <SearchGraphsPanelWrapper/>
                                         {
                                             permissions.canSearch ?

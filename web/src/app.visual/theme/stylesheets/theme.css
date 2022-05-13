@@ -7,6 +7,7 @@ body > * {
     --app-bleach: #F0F0F0;
     --app-whiteSmoke: #EAEAEA;
     --app-silver: #BABABA;
+    -a: #DFDFDF;
     --app-suvaGrey: #959595;
     --app-shuttleGrey: #5D636B;
     --app-vulcan: #3B3D44;
@@ -51,25 +52,25 @@ body > * {
     /* Logout Panel */
 
     /* Pockets Panel */
-    --pocket-node-dark-color: var(--app-whiteSmoke);
-    --pocket-node-dark-background: var(--app-black);
+    --pocket-node-dark-color: var(--app-shuttleGrey);
+    --pocket-node-dark-background: var(--app-silver);
     --pocket-node-dark-border-color: transparent;
-    --pocket-node-dark-hover-color: var(--app-whiteSmoke);
-    --pocket-node-dark-hover-background: var(--app-black);
+    --pocket-node-dark-hover-color: var(--app-shuttleGrey);
+    --pocket-node-dark-hover-background: var(--app-silver);
     --pocket-node-dark-hover-border-color: var(--app-whiteSmoke);
-    --pocket-node-dark-selected-color: var(--app-whiteSmoke);
-    --pocket-node-dark-selected-background: var(--app-black);
-    --pocket-node-dark-selected-border-color: var(--app-whiteSmoke);
+    --pocket-node-dark-selected-color: var(--app-shuttleGrey);
+    --pocket-node-dark-selected-background: var(--app-silver);
+    --pocket-node-dark-selected-border-color: var(--app-shuttleGrey);
 
     --pocket-node-dark-button-fill: var(--app-suvaGrey);
     --pocket-node-dark-button-hover-fill: var(--app-white);
     --pocket-node-dark-button-selected-fill: var(--app-bleach);
 
-    --pocket-node-light-color: var(--app-bunker);
+    --pocket-node-light-color: var(--app-shuttleGrey);
     --pocket-node-light-background: var(--app-bleach);
-    --pocket-node-light-hover-color: var(--app-bunker);
+    --pocket-node-light-hover-color: var(--app-shuttleGrey);
     --pocket-node-light-hover-background: var(--app-white);
-    --pocket-node-light-selected-color: var(--app-bunker);
+    --pocket-node-light-selected-color: var(--app-shuttleGrey);
     --pocket-node-light-selected-background: var(--app-white);
 
     --pocket-node-light-button-fill: var(--app-blackRussian);

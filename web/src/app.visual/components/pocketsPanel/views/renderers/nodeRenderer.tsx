@@ -1,6 +1,6 @@
-import React, {Component} from "react";
-import {NodeRendererProps} from "../pocketsPanelModel";
-import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
+import {Component} from "react";
+import {NodeRendererProps} from "../../pocketsPanelModel";
+import {bindInstanceMethods} from "../../../../../framework.core/extras/utils/typeUtils";
 
 export class NodeRenderer extends Component<NodeRendererProps> {
     constructor(props: any) {

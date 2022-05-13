@@ -22,7 +22,7 @@
 }
 
 .tree-view ul.tree-node-children {
-    margin-left: 1.0rem;
+    /*margin-left: 1.0rem;*/
 }
 
 .tree-view ul.tree-node-children-enter {
