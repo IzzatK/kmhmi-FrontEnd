@@ -14,6 +14,7 @@ import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
 import {ExcerptMapper, NoteInfo, PocketMapper, ResourceMapper} from "../../../app.model";
 import {PocketNodeType} from "../../model/pocketNodeType";
 import {
+    NoteVM,
     PocketCaseReducers,
     PocketNodeVM,
     PocketSliceState,
@@ -32,7 +33,6 @@ import {ReportPanelId} from "../reportPanel/reportPanelWrapper";
 import React from "react";
 import {PocketsPanelPresenter} from "./presenters/pocketsPanelPresenter";
 import {DocumentInfoVM, ObjectType} from "../searchResultsPanel/searchResultsModel";
-import {NoteVM} from "../documentPanel/documentPanelModel";
 
 class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseReducers> {
     constructor() {
@@ -140,7 +140,7 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
                 onRemoveReport: (id: string, pocket_id: string) => this._onRemoveReport(id, pocket_id),
                 onReportItemSelected: (id: string) => this._onReportItemSelected(id),
                 onDocumentItemSelected: (id: string) => this._onDocumentItemSelected(id),
-                onAddNote: () => {}
+                onAddNote: (note: NoteVM) => this._onSaveNote(note),
             };
         }
     }
@@ -278,6 +278,8 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
                                 content: '',
                                 childNodes: [],
                                 pocket_id: pocket.id,
+                                resource_id: resource.id,
+                                excerpt_id: excerpt.id,
                                 isUpdating: pocket.isUpdating,
                                 selected: note.id === selectedNoteId,
                             }
@@ -522,6 +524,7 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
     }
 
     _onSaveNote(note: NoteVM) {
+        debugger;
         const { id, excerpt_id, resource_id, pocket_id, text, content } = note;
 
         const excerptParams: ExcerptParamType = {

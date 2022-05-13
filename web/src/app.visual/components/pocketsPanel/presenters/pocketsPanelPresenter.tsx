@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import PocketsPanelView from "../views/pocketsPanelView";
 import {
+    NoteUpdateParams,
+    NoteVM,
     PocketNodeVM,
     PocketsPanelPresenterProps,
     PocketsPanelPresenterState,
@@ -21,6 +23,7 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
         this.state = {
             selectedNode: undefined,
             editPocketId: "",
+            editNoteId: "",
         }
 
         bindInstanceMethods(this);
@@ -28,8 +31,8 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
 
     _getCellContentRenderer(node: PocketNodeVM): JSX.Element {
         const { searchText } = this.props;
-        const { editPocketId, selectedNode } = this.state;
-        const { id, path, title, pocket_id, isUpdating, resource_id, selected } = node;
+        const { editPocketId, selectedNode, editNoteId } = this.state;
+        const { id, path, title, pocket_id, isUpdating, resource_id, excerpt_id, selected } = node;
 
         let selectedId = "";
         if (selectedNode) {
@@ -96,6 +99,11 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
                         onRemove={(id: string) => this._onRemoveNote(id, pocket_id)}
                         isUpdating={isUpdating}
                         selected={id === selectedId}
+                        isEdit={id === editNoteId}
+                        onSave={this._onSaveNote}
+                        pocket_id={pocket_id}
+                        resource_id={resource_id}
+                        excerpt_id={excerpt_id}
                     />
                 )
                 break;
@@ -190,6 +198,13 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
         })
     }
 
+    _onEditNote(id: string) {
+        this.setState({
+            ...this.state,
+            editNoteId: id,
+        })
+    }
+
     _onSharePocket(id: string) {
         //open share ui
     }
@@ -210,6 +225,16 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
         }
 
         this._onEditPocket("");
+    }
+
+    _onSaveNote(noteVM: NoteVM) {
+        const { onAddNote } = this.props;
+
+        if (onAddNote) {
+            onAddNote(noteVM);
+        }
+
+        this._onEditNote("");
     }
 
     _onAddExcerptToReport(event: React.DragEvent<HTMLDivElement>, id: string, resource_id: string) {
@@ -305,11 +330,20 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
         }
     }
 
-    _onAddNote() {
+    _onAddNote(id: string, resource_id: string, pocket_id: string) {
         const { onAddNote } = this.props;
 
+        let noteVM: NoteVM = {
+            id: "null",
+            text: "New Note",
+            content: "New Note",
+            excerpt_id: id,
+            resource_id,
+            pocket_id
+        }
+
         if (onAddNote) {
-            onAddNote();
+            onAddNote(noteVM);
         }
     }
 
@@ -343,6 +377,7 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
                 onRemoveNote={this._onRemoveNote}
                 onAddNote={this._onAddNote}
                 onRemoveReport={this._onRemoveReport}
+                onEditNote={this._onEditNote}
             />
         );
     }

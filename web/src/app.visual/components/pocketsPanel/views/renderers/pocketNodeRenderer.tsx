@@ -160,7 +160,7 @@ export class PocketNodeRenderer extends Component<PocketNodeRendererProps, Pocke
 
 
     render() {
-        const { className, title, isUpdating, selected } = this.props;
+        const { className, title, isUpdating, selected, isEdit } = this.props;
         const { tab } = this.state;
 
         let cn = 'pocket-node dark d-flex flex-column';
@@ -174,7 +174,7 @@ export class PocketNodeRenderer extends Component<PocketNodeRendererProps, Pocke
                     <CheckBox selected={selected} disabled={true}/>
                     <div className={"d-flex flex-row v-gap-2 justify-content-center align-items-center"}>
                         {
-                            tab === PocketTabType.EDIT ?
+                            isEdit ?
                                 <TextEdit
                                     name={'title'}
                                     value={title}

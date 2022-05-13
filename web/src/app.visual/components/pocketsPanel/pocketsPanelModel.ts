@@ -1,5 +1,5 @@
 import {PocketNodeType} from "../../model/pocketNodeType";
-import {PocketInfo} from "../../../app.model";
+import {NoteInfo, PocketInfo} from "../../../app.model";
 import React from "react";
 import {PayloadAction} from "@reduxjs/toolkit";
 
@@ -29,7 +29,7 @@ export type PocketsPanelAppDispatchProps = {
     onRemoveReport: (id: string, pocket_id: string) => void;
     onReportItemSelected: (id: string) => void;
     onDocumentItemSelected: (id: string) => void;
-    onAddNote: () => void;
+    onAddNote: (note: NoteVM) => void;
 }
 
 export type PocketsPanelPresenterProps = PocketsPanelAppStateProps & PocketsPanelAppDispatchProps;
@@ -37,6 +37,7 @@ export type PocketsPanelPresenterProps = PocketsPanelAppStateProps & PocketsPane
 export type PocketsPanelPresenterState = {
     selectedNode: any;
     editPocketId: string;
+    editNoteId: string;
 }
 
 export type PocketsPanelViewProps = {
@@ -56,7 +57,8 @@ export type PocketsPanelViewProps = {
     onRemoveResource: (id: string, pocket_id: string) => void;
     onRemoveExcerpt: (id: string, pocket_id: string) => void;
     onRemoveNote: (id: string, pocket_id: string) => void;
-    onAddNote: (id: string, pocket_id: string) => void;
+    onAddNote: (id: string, excerpt_id: string, resource_id: string, pocket_id: string) => void;
+    onEditNote: (id: string) => void;
     onRemoveReport: (id: string, pocket_id: string) => void;
 }
 
@@ -67,6 +69,9 @@ export type NodeRendererProps = {
     title?: string;
     isUpdating?: boolean;
     selected: boolean;
+    resource_id?: string;
+    excerpt_id?: string;
+    pocket_id?: string;
 }
 
 export type PocketNodeRendererProps = NodeRendererProps &
@@ -103,12 +108,20 @@ export type ExcerptNodeRendererProps = NodeRendererProps &
 export type NoteNodeRendererProps = NodeRendererProps &
     {
         onRemove: (id: string) => void;
+        onSave: (note: NoteVM) => void;
+        isEdit: boolean;
     }
+
+export type NoteNodeRenderState = {
+    edits: NoteUpdateParams
+}
 
 export type PocketNodeRendererState = {
     tab: PocketTabType,
     edits: PocketUpdateParams
 }
+
+export type NoteUpdateParams = Partial<Record<keyof Omit<NoteInfo, 'type' | 'childNodes' | 'path'>, string>>
 
 export type PocketUpdateParams = Partial<Record<keyof Omit<PocketInfo, 'type' | 'childNodes' | 'path'>, string>>;
 
@@ -128,6 +141,7 @@ export type PocketNodeVM = {
     childNodes: PocketNodeVM[],
     pocket_id: string,
     resource_id?: string;
+    excerpt_id?: string;
     isUpdating: boolean,
     selected: boolean;
 }
@@ -140,3 +154,12 @@ export type PocketCaseReducers =  {
     addExpandedPath: (state: PocketSliceState, action: PayloadAction<string>) => void;
     removeExpandedPath: (state:PocketSliceState, action:PayloadAction<string>) => void;
 };
+
+export type NoteVM = {
+    id: string;
+    text: string;
+    content: string;
+    excerpt_id: string;
+    resource_id: string;
+    pocket_id: string;
+}
