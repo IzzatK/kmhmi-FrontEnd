@@ -33,7 +33,7 @@ export class ExcerptNodeRenderer extends Component<ExcerptNodeRendererProps> {
     render() {
         const { className, title, selected } = this.props;
 
-        let cn = 'excerpt-node light d-flex h-gap-3';
+        let cn = 'excerpt-node light d-flex h-gap-3 align-items-center';
         if (className) {
             cn += ` ${className}`;
         }

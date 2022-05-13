@@ -14,22 +14,29 @@ export type PocketsPanelAppStateProps = {
 export type PocketsPanelAppDispatchProps = {
     onPocketItemSelected: (id: string) => void;
     onPocketItemToggle: (id: string, expanded: boolean, type?: string) => void;
-    onCreatePocket: (title: string) => void;
-    onUpdatePocket: (edits: PocketUpdateParams) => void;
-    onDownloadDocument: (id: string) => void;
-    onDownloadPocket: (id: string) => void;
-    onRemoveNote: (id: string, pocket_id: string) => void;
-    onRemoveExcerpt: (id: string, pocket_id: string) => void;
-    onRemoveResource: (id: string, pocket_id: string) => void;
-    onAddExcerptToReport: (event: React.DragEvent<HTMLDivElement>, id: string, resource_id: string) => void;
+    onReportItemSelected: (report_id: string) => void;
+    onResourceItemSelected: (resource_id: string) => void;
+
     onSearchTextChanged: (value: string) => void;
     onSearch: () => void;
-    onDelete: (id: string) => void;
-    onCreateReport: (id: string) => void;
-    onRemoveReport: (id: string, pocket_id: string) => void;
-    onReportItemSelected: (id: string) => void;
-    onDocumentItemSelected: (id: string) => void;
-    onAddNote: (note: NoteVM) => void;
+
+    onCreatePocket: (title: string) => void;
+    onUpdatePocket: (edits: PocketUpdateParams) => void;
+    onDownloadPocket: (pocket_id: string) => void;
+    onDeletePocket: (pocket_id: string) => void;
+
+    onDeleteResource: (resource_id: string, pocket_id: string) => void;
+    onDownloadResource: (resource_id: string) => void;
+
+    onDeleteExcerpt: (excerpt_id: string, pocket_id: string) => void;
+    onAddExcerptToReport: (event: React.DragEvent<HTMLDivElement>, id: string, resource_id: string) => void;
+
+    onDeleteNote: (note_id: string, pocket_id: string, resource_id?: string, excerpt_id?: string) => void;
+
+    onCreateReport: (pocket_id: string) => void;
+    onDeleteReport: (report_id: string, pocket_id: string) => void;
+
+    onAddNote: (noteVM: NoteVM) => void;
 }
 
 export type PocketsPanelPresenterProps = PocketsPanelAppStateProps & PocketsPanelAppDispatchProps;
@@ -42,75 +49,82 @@ export type PocketsPanelPresenterState = {
 
 export type PocketsPanelViewProps = {
     className: string;
-    data: PocketNodeVM[];
     selectionPath: string;
     expandedPaths: string[];
+    data: PocketNodeVM[];
     selectedNode: any;
-    onCreatePocket: (title: string) => void;
+
     cellContentRenderer: (node: PocketNodeVM) => JSX.Element;
     onNodeToggle: (nodeVM: any, expanded: boolean) => void;
     onNodeSelected: (nodeVM: any) => void;
-    onCreateReport: (id: string, pocket_id: string) => void;
-    onEditPocket: (id: string) => void;
-    onDeletePocket: (id: string) => void;
-    onDownloadDocument: (id: string) => void;
-    onRemoveResource: (id: string, pocket_id: string) => void;
-    onRemoveExcerpt: (id: string, pocket_id: string) => void;
-    onRemoveNote: (id: string, pocket_id: string) => void;
-    onAddNote: (id: string, excerpt_id: string, resource_id: string, pocket_id: string) => void;
-    onEditNote: (id: string) => void;
-    onRemoveReport: (id: string, pocket_id: string) => void;
+
+
+    onCreatePocket: () => void;
+    onEditPocket: (pocket_id: string) => void;
+    onDeletePocket: (pocket_id: string) => void;
+
+    onCreateReport: (pocket_id: string) => void;
+    onDeleteReport: (report_id: string, pocket_id: string) => void;
+
+    onDownloadResource: (resource_id: string) => void;
+    onDeleteResource: (resource_id: string, pocket_id: string) => void;
+
+
+    onDeleteExcerpt: (excerpt_id: string, pocket_id: string) => void;
+
+    onDeleteNote: (note_id: string, pocket_id: string, resource_id?: string, excerpt_id?: string) => void;
+    onEditNote: (note_id: string, pocket_id: string, resource_id?: string, excerpt_id?: string) => void;
+
+    onAddNoteToExcerpt: (excerpt_id: string, resource_id: string, pocket_id: string) => void;
+    onAddNoteToResource: (resource_id: string, pocket_id: string) => void;
+    onAddNoteToPocket: (pocket_id: string) => void;
 }
 
 export type NodeRendererProps = {
     id: string;
     path: string;
-    className?: string;
-    title?: string;
-    isUpdating?: boolean;
     selected: boolean;
+
+    className?: string;
+    isUpdating?: boolean;
+    title?: string;
     resource_id?: string;
     excerpt_id?: string;
-    pocket_id?: string;
+    pocket_id: string;
 }
 
-export type PocketNodeRendererProps = NodeRendererProps &
-    {
-        onShare: (id: string) => void;
-        onDownload: (id: string) => void;
-        onSave: (edits: PocketUpdateParams) => void;
-        onSearchTextChanged: (value: string) => void;
-        onSearch: () => void;
-        searchText: string;
-        onDelete: () => void;
-        onCreateReport: () => void;
-        isEdit: boolean;
-    }
+export type PocketNodeRendererProps = NodeRendererProps & {
+    onShare: (id: string) => void;
+    onDownload: (id: string) => void;
+    onSave: (edits: PocketUpdateParams) => void;
+    onSearchTextChanged: (value: string) => void;
+    onSearch: () => void;
+    searchText: string;
+    onDelete: () => void;
+    onCreateReport: () => void;
+    isEdit: boolean;
+}
 
-export type ResourceNodeRendererProps = NodeRendererProps &
-    {
-        onDownload: (id: string) => void;
-        onRemove: (id: string) => void;
-    }
+export type ResourceNodeRendererProps = NodeRendererProps & {
+    onDownload: (id: string) => void;
+    onRemove: (id: string) => void;
+}
 
-export type ReportNodeRendererProps = NodeRendererProps &
-    {
-        onDownload: (id: string) => void;
-        onRemove: (id: string) => void;
-    }
+export type ReportNodeRendererProps = NodeRendererProps & {
+    onDownload: (id: string) => void;
+    onRemove: (id: string) => void;
+}
 
-export type ExcerptNodeRendererProps = NodeRendererProps &
-    {
-        onRemove: (id: string) => void;
-        onAddExcerptToReport: (event: React.DragEvent<HTMLDivElement>, id: string) => void;
-    }
+export type ExcerptNodeRendererProps = NodeRendererProps & {
+    onRemove: (id: string) => void;
+    onAddExcerptToReport: (event: React.DragEvent<HTMLDivElement>, id: string) => void;
+}
 
-export type NoteNodeRendererProps = NodeRendererProps &
-    {
-        onRemove: (id: string) => void;
-        onSave: (note: NoteVM) => void;
-        isEdit: boolean;
-    }
+export type NoteNodeRendererProps = NodeRendererProps & {
+    onRemove: (id: string) => void;
+    onSave: (note: NoteVM) => void;
+    isEdit: boolean;
+}
 
 export type NoteNodeRenderState = {
     edits: NoteUpdateParams
@@ -159,7 +173,7 @@ export type NoteVM = {
     id: string;
     text: string;
     content: string;
-    excerpt_id: string;
-    resource_id: string;
+    excerpt_id?: string;
+    resource_id?: string;
     pocket_id: string;
 }

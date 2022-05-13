@@ -57,9 +57,9 @@ export class NoteNodeRenderer extends Component<NoteNodeRendererProps, NoteNodeR
             id,
             content: value,
             text: value,
-            excerpt_id: excerpt_id || "",
-            resource_id: resource_id || "",
-            pocket_id: pocket_id || ""
+            excerpt_id,
+            resource_id,
+            pocket_id,
         }
 
 
@@ -93,7 +93,7 @@ export class NoteNodeRenderer extends Component<NoteNodeRendererProps, NoteNodeR
     render() {
         const {className, title, selected, isEdit } = this.props;
 
-        let cn = 'note-node light d-flex h-gap-3';
+        let cn = 'note-node light d-flex h-gap-3 align-items-center';
         if (className) {
             cn += ` ${className}`;
         }

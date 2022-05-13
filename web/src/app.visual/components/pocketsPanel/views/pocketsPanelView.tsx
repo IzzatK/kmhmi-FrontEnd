@@ -28,13 +28,15 @@ class PocketsPanelView extends Component<PocketsPanelViewProps> {
             onCreateReport,
             onEditPocket,
             onDeletePocket,
-            onDownloadDocument,
-            onRemoveResource,
-            onRemoveExcerpt,
-            onRemoveNote,
-            onAddNote,
+            onDownloadResource,
+            onDeleteResource,
+            onDeleteExcerpt,
+            onDeleteNote,
+            onAddNoteToExcerpt,
+            onAddNoteToResource,
+            onAddNoteToPocket,
             onEditNote,
-            onRemoveReport,
+            onDeleteReport,
         } = this.props;
 
         let cn = "d-flex position-absolute w-100 h-100 align-items-center justify-content-center";
@@ -48,12 +50,14 @@ class PocketsPanelView extends Component<PocketsPanelViewProps> {
         let showOptionsBar = true;
 
         if (selectedNode) {
-            // debugger;
             switch (selectedNode.type) {
                 case "POCKET":
                     optionsDiv = (
                         <div className={`action-bar d-flex h-gap-3`}>
-                            <Button className={"btn-transparent"} onClick={() => onCreateReport(selectedNode.id, selectedNode.pocket_id)} tooltip={"Create Report"}>
+                            <Button className={"btn-transparent"} onClick={() => onAddNoteToPocket(selectedNode.id)} tooltip={"Add Note"}>
+                                <AddNoteSVG className={"small-image-container"}/>
+                            </Button>
+                            <Button className={"btn-transparent"} onClick={() => onCreateReport(selectedNode.pocket_id)} tooltip={"Create Report"}>
                                 <CreateReportSVG className={"small-image-container"}/>
                             </Button>
                             <Button className={"btn-transparent"} onClick={() => onEditPocket(selectedNode.id)} tooltip={"Edit"}>
@@ -77,10 +81,13 @@ class PocketsPanelView extends Component<PocketsPanelViewProps> {
                 case "DOCUMENT":
                     optionsDiv = (
                         <div className={'action-bar d-flex h-gap-3'}>
-                            <Button className={"btn-transparent"} onClick={() => onDownloadDocument(selectedNode.id)} tooltip={"Download"}>
+                            <Button className={"btn-transparent"} onClick={() => onAddNoteToResource(selectedNode.pocket_id, selectedNode.id)} tooltip={"Add Note"}>
+                                <AddNoteSVG className={"small-image-container"}/>
+                            </Button>
+                            <Button className={"btn-transparent"} onClick={() => onDownloadResource(selectedNode.id)} tooltip={"Download"}>
                                 <DownloadSVG className={"small-image-container"}/>
                             </Button>
-                            <Button className={"btn-transparent"} onClick={() => onRemoveResource(selectedNode.id, selectedNode.pocket_id)} tooltip={"Remove"}>
+                            <Button className={"btn-transparent"} onClick={() => onDeleteResource(selectedNode.id, selectedNode.pocket_id)} tooltip={"Remove"}>
                                 <TrashSVG className={"small-image-container"}/>
                             </Button>
                         </div>
@@ -88,14 +95,14 @@ class PocketsPanelView extends Component<PocketsPanelViewProps> {
                     break;
                 case "EXCERPT":
                     optionsDiv = (
-                        <div className={'action-bar h-gap-3'}>
+                        <div className={'action-bar d-flex h-gap-3'}>
                             {/*<Button className={"btn-transparent"} onClick={(e) => {e.stopPropagation()}} tooltip={"Copy to Clipboard"}>*/}
                             {/*    <CopySVG className={"small-image-container"}/>*/}
                             {/*</Button>*/}
-                            <Button className={"btn-transparent"} onClick={() => onAddNote(selectedNode.id, selectedNode.excerpt_id, selectedNode.resource_id, selectedNode.pocket_id)} tooltip={"Add Note"}>
+                            <Button className={"btn-transparent"} onClick={() => onAddNoteToExcerpt(selectedNode.pocket_id, selectedNode.resource_id, selectedNode.id)} tooltip={"Add Note"}>
                                 <AddNoteSVG className={"small-image-container"}/>
                             </Button>
-                            <Button className={"btn-transparent"} onClick={() => onRemoveExcerpt(selectedNode.id, selectedNode.pocket_id)} tooltip={"Delete"}>
+                            <Button className={"btn-transparent"} onClick={() => onDeleteExcerpt(selectedNode.id, selectedNode.pocket_id)} tooltip={"Delete"}>
                                 <TrashSVG className={"small-image-container"}/>
                             </Button>
                         </div>
@@ -107,11 +114,11 @@ class PocketsPanelView extends Component<PocketsPanelViewProps> {
                             {/*<Button className={"btn-transparent"} onClick={(e) => {e.stopPropagation()}} tooltip={"Copy to Clipboard"}>*/}
                             {/*    <CopySVG className={"small-image-container"}/>*/}
                             {/*</Button>*/}
-                            <Button className={"btn-transparent"} onClick={() => onEditNote(selectedNode.id)} tooltip={"Edit"}>
+                            <Button className={"btn-transparent"} onClick={() => onEditNote(selectedNode.id, selectedNode.pocket_id, selectedNode.resource_id, selectedNode.excerpt_id)} tooltip={"Edit"}>
                                 <EditSVG className={"small-image-container"}/>
                             </Button>
-                            <Button className={"btn-transparent"} onClick={() => onRemoveNote(selectedNode.id, selectedNode.pocket_id)} tooltip={"Delete"}>
-                                <RemoveSVG className={"small-image-container"}/>
+                            <Button className={"btn-transparent"} onClick={() => onDeleteNote(selectedNode.id, selectedNode.pocket_id, selectedNode.resource_id, selectedNode.excerpt_id)} tooltip={"Delete"}>
+                                <TrashSVG className={"small-image-container"}/>
                             </Button>
                         </div>
                     );
@@ -122,8 +129,8 @@ class PocketsPanelView extends Component<PocketsPanelViewProps> {
                             {/*<Button className={"btn-transparent"} onClick={this._onDownload} tooltip={"Download"}>*/}
                             {/*    <DownloadSVG className={"small-image-container"}/>*/}
                             {/*</Button>*/}
-                            <Button className={"btn-transparent"} onClick={() => onRemoveReport(selectedNode.id, selectedNode.pocket_id)} tooltip={"Delete"}>
-                                <RemoveSVG className={"small-image-container"}/>
+                            <Button className={"btn-transparent"} onClick={() => onDeleteReport(selectedNode.id, selectedNode.pocket_id)} tooltip={"Delete"}>
+                                <TrashSVG className={"small-image-container"}/>
                             </Button>
                         </div>
                     );
@@ -140,7 +147,7 @@ class PocketsPanelView extends Component<PocketsPanelViewProps> {
             <div className={cn}>
                 <div className={'system-tool-panel pockets-panel flex-fill h-100 p-4 d-flex flex-column'}>
                     <div className={"d-flex justify-content-between px-3"}>
-                        <Button className={"bg-transparent"} onClick={() => onCreatePocket}>
+                        <Button className={"bg-transparent"} onClick={onCreatePocket}>
                             <div>Create Pocket</div>
                             <PlusSVG className={"nano-image-container"}/>
                         </Button>

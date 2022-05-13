@@ -33,6 +33,7 @@ import {ReportPanelId} from "../reportPanel/reportPanelWrapper";
 import React from "react";
 import {PocketsPanelPresenter} from "./presenters/pocketsPanelPresenter";
 import {DocumentInfoVM, ObjectType} from "../searchResultsPanel/searchResultsModel";
+import {DocumentPanelId} from "../documentPanel/documentPanelPresenter";
 
 class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseReducers> {
     constructor() {
@@ -127,19 +128,19 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
                 onPocketItemSelected: (id: string) => this.onPocketItemSelected(id),
                 onPocketItemToggle: (id: string, expanded: boolean, type: string | undefined) => this.onPocketItemToggle(id, expanded, type),
                 onCreatePocket: (title: string) => pocketService.addOrUpdatePocket({title}),
-                onDownloadDocument: (id: string) => this._onDownloadDocument(id),
+                onDownloadResource: (id: string) => this._onDownloadDocument(id),
                 onDownloadPocket: (id: string) => this._onDownloadPocket(id),
                 onUpdatePocket: (edits: PocketUpdateParams) => _PocketsPanelWrapper._onUpdatePocket(edits),
-                onRemoveExcerpt: (id: string, pocket_id: string) => this._onRemoveExcerpt(id, pocket_id),
-                onRemoveResource: (id: string, pocket_id: string) => this._onRemoveResource(id, pocket_id),
-                onRemoveNote: (id: string, pocket_id: string) => this._onRemoveNote(id, pocket_id),
+                onDeleteExcerpt: (id: string, pocket_id: string) => this._onRemoveExcerpt(id, pocket_id),
+                onDeleteResource: (id: string, pocket_id: string) => this._onRemoveResource(id, pocket_id),
+                onDeleteNote: (id: string, pocket_id: string) => this._onRemoveNote(id, pocket_id),
                 onSearch: () => userService.fetchUsers(),
                 onSearchTextChanged: (value: string) => userService.setSearchText(value),
-                onDelete: (id: string) => this._onRemovePocket(id),
+                onDeletePocket: (id: string) => this._onRemovePocket(id),
                 onCreateReport: (id: string) => _PocketsPanelWrapper._onCreateReport(id),
-                onRemoveReport: (id: string, pocket_id: string) => this._onRemoveReport(id, pocket_id),
+                onDeleteReport: (id: string, pocket_id: string) => this._onRemoveReport(id, pocket_id),
                 onReportItemSelected: (id: string) => this._onReportItemSelected(id),
-                onDocumentItemSelected: (id: string) => this._onDocumentItemSelected(id),
+                onResourceItemSelected: (id: string) => this._onDocumentItemSelected(id),
                 onAddNote: (note: NoteVM) => this._onSaveNote(note),
             };
         }
@@ -215,8 +216,6 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
         ) => {
             let nodeVMs: Record<string, PocketNodeVM> = {};
 
-            // debugger;
-
             forEach(pocketMappers, (pocketMapper: PocketMapper) => {
                 const pocket = pocketMapper.pocket;
 
@@ -234,6 +233,22 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
                     selected: pocket.id === selectedPocketId,
                 }
 
+                forEach(pocketMapper.notes, (note: NoteInfo) => {
+                    const notePath = `${pocketPath}/${note.id}`;
+
+                    nodeVMs[notePath] = {
+                        id: note.id,
+                        type: PocketNodeType.NOTE,
+                        path: notePath,
+                        title: note.text,
+                        content: '',
+                        childNodes: [],
+                        pocket_id: pocket.id,
+                        isUpdating: pocket.isUpdating,
+                        selected: note.id === selectedNoteId,
+                    }
+                })
+
                 forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
                     const resource = resourceMapper.resource;
                     const resourcePath = `${pocketPath}/${resource.id}`;
@@ -249,6 +264,23 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
                         isUpdating: pocket.isUpdating,
                         selected: resource.id === selectedDocumentId,
                     }
+
+                    forEach(resourceMapper.notes, (note: NoteInfo) => {
+                        const notePath = `${resourcePath}/${note.id}`;
+
+                        nodeVMs[notePath] = {
+                            id: note.id,
+                            type: PocketNodeType.NOTE,
+                            path: notePath,
+                            title: note.text,
+                            content: '',
+                            childNodes: [],
+                            pocket_id: pocket.id,
+                            resource_id: resource.id,
+                            isUpdating: pocket.isUpdating,
+                            selected: note.id === selectedNoteId,
+                        }
+                    })
 
                     forEach(resourceMapper.excerptMappers, (excerptMapper: ExcerptMapper) => {
                         const excerpt = excerptMapper.excerpt;
@@ -326,9 +358,9 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
 
     _onDocumentItemSelected(id: string) {
         selectionService.setContext("selected-document", id);
-        // selectionService.setContext("selected-report", "");
-        // displayService.pushNode(DocumentPanelId);
-        // documentService.fetchDocument(id);
+        selectionService.setContext("selected-report", "");
+        displayService.pushNode(DocumentPanelId);
+        documentService.fetchDocument(id);
     }
 
     onPocketItemToggle(id: string, expanded: boolean, type: string | undefined) {
@@ -351,7 +383,6 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
                         selectionService.setContext("selected-pocket", expanded ? selectedId : "");
                         break;
                     case "EXCERPT":
-                        // debugger;
                         if (selectedIdArray.length > 3) {
                             selectedId = selectedIdArray[3]
                         }
@@ -524,37 +555,86 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
     }
 
     _onSaveNote(note: NoteVM) {
-        debugger;
         const { id, excerpt_id, resource_id, pocket_id, text, content } = note;
 
-        const excerptParams: ExcerptParamType = {
-            id: excerpt_id
-        };
+        if (excerpt_id) {
+            const excerptParams: ExcerptParamType = {
+                id: excerpt_id
+            };
 
-        let noteParams: NoteParamType;
+            let noteParams: NoteParamType;
 
-        if (id !== "null") {
-            noteParams = {
-                id,
-                text,
-                content
+            if (id !== "null") {
+                noteParams = {
+                    id,
+                    text,
+                    content
+                }
+            } else {
+                noteParams = {
+                    text,
+                    content
+                }
             }
+
+            const resourceParams: ResourceParamType = {
+                id: resource_id,
+            }
+
+            const pocketParams: PocketParamType = {
+                id: pocket_id
+            }
+
+            pocketService.addNoteAndExcerptToPocket(noteParams, excerptParams, resourceParams, pocketParams);
+        } else  if (resource_id) {
+            let noteParams: NoteParamType;
+
+            if (id !== "null") {
+                noteParams = {
+                    id,
+                    text,
+                    content
+                }
+            } else {
+                noteParams = {
+                    text,
+                    content
+                }
+            }
+
+            const resourceParams: ResourceParamType = {
+                id: resource_id,
+            }
+
+            const pocketParams: PocketParamType = {
+                id: pocket_id
+            }
+
+            pocketService.addNoteToResource(noteParams, resourceParams, pocketParams)
         } else {
-            noteParams = {
-                text,
-                content
+            let noteParams: NoteParamType;
+
+            if (id !== "null") {
+                noteParams = {
+                    id,
+                    text,
+                    content
+                }
+            } else {
+                noteParams = {
+                    text,
+                    content
+                }
             }
+
+            const pocketParams: PocketParamType = {
+                id: pocket_id
+            }
+
+            pocketService.addNoteToPocket(noteParams, pocketParams)
         }
 
-        const resourceParams: ResourceParamType = {
-            id: resource_id,
-        }
 
-        const pocketParams: PocketParamType = {
-            id: pocket_id
-        }
-
-        pocketService.addNoteAndExcerptToPocket(noteParams, excerptParams, resourceParams, pocketParams);
     }
 }
 

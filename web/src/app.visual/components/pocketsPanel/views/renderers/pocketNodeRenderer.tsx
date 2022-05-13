@@ -10,6 +10,7 @@ import {Size} from "../../../../theme/widgets/loadingIndicator/loadingIndicatorM
 import {CreateReportSVG} from "../../../../theme/svgs/createReportSVG";
 import {EditSVG} from "../../../../theme/svgs/editSVG";
 import CheckBox from "../../../../theme/widgets/checkBox/checkBox";
+import {PocketSVG} from "../../../../theme/svgs/pocketSVG";
 
 export class PocketNodeRenderer extends Component<PocketNodeRendererProps, PocketNodeRendererState> {
     constructor(props: any) {
@@ -170,8 +171,11 @@ export class PocketNodeRenderer extends Component<PocketNodeRendererProps, Pocke
 
         return (
             <div className={cn}>
-                <div className={'pocket-header d-flex justify-content-between'}>
+                <div className={'pocket-header d-flex h-gap-3 align-items-center'}>
                     <CheckBox selected={selected} disabled={true}/>
+                    <Button className={"btn-transparent"} disabled={true}>
+                        <PocketSVG className={"small-image-container"}/>
+                    </Button>
                     <div className={"d-flex flex-row v-gap-2 justify-content-center align-items-center"}>
                         {
                             isEdit ?

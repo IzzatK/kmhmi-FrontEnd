@@ -5,6 +5,7 @@ import {RemoveSVG} from "../../../../theme/svgs/removeSVG";
 import {ResourceNodeRendererProps} from "../../pocketsPanelModel";
 import {DownloadSVG} from "../../../../theme/svgs/downloadSVG";
 import CheckBox from "../../../../theme/widgets/checkBox/checkBox";
+import {DocumentInfoSVG} from "../../../../theme/svgs/documentInfoSVG";
 
 export class ResourceNodeRenderer extends Component<ResourceNodeRendererProps> {
     constructor(props: any) {
@@ -34,7 +35,7 @@ export class ResourceNodeRenderer extends Component<ResourceNodeRendererProps> {
     render() {
         const {className, title, selected } = this.props;
 
-        let cn = 'resource-node light d-flex justify-content-between';
+        let cn = 'resource-node light d-flex h-gap-3 align-items-center';
         if (className) {
             cn += ` ${className}`;
         }
@@ -42,6 +43,9 @@ export class ResourceNodeRenderer extends Component<ResourceNodeRendererProps> {
         return (
             <div className={cn}>
                 <CheckBox selected={selected} disabled={true}/>
+                <Button className={"btn-transparent"} disabled={true}>
+                    <DocumentInfoSVG className={"small-image-container"}/>
+                </Button>
                 <div className={"d-flex flex-row v-gap-2 justify-content-center align-items-center"}>
                     <div className={"title"}>{title ? title : ''}</div>
                 </div>

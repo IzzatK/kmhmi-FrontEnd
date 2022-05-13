@@ -60,6 +60,9 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
                         onCreateReport={() => this._onCreateReport(id)}
                         isEdit={id === editPocketId}
                         selected={id === selectedId}
+                        pocket_id={pocket_id}
+                        resource_id={resource_id}
+                        excerpt_id={excerpt_id}
                     />
                 )
                 break;
@@ -74,6 +77,9 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
                         onRemove={(id: string) => this._onRemoveResource(id, pocket_id)}
                         isUpdating={isUpdating}
                         selected={id === selectedId}
+                        pocket_id={pocket_id}
+                        resource_id={resource_id}
+                        excerpt_id={excerpt_id}
                     />
                 )
                 break;
@@ -87,6 +93,9 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
                         isUpdating={isUpdating}
                         onAddExcerptToReport={(event: React.DragEvent<HTMLDivElement>, id: string) => this._onAddExcerptToReport(event, id, resource_id || "")}
                         selected={id === selectedId}
+                        pocket_id={pocket_id}
+                        resource_id={resource_id}
+                        excerpt_id={excerpt_id}
                     />
                 )
                 break;
@@ -116,6 +125,7 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
                         onDownload={this._onDownloadReport}
                         onRemove={(id: string) => this._onRemoveReport(id, pocket_id)}
                         selected={id === selectedId}
+                        pocket_id={pocket_id}
                     />
                 )
                 break;
@@ -131,7 +141,7 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
 
     _onNodeSelected(nodeVM: any) {
         //right now this method doesn't do anything
-        const { onPocketItemSelected, onReportItemSelected, onDocumentItemSelected } = this.props;
+        const { onPocketItemSelected, onReportItemSelected, onResourceItemSelected } = this.props;
 
         if (onPocketItemSelected) {
             onPocketItemSelected(nodeVM?.path || '');
@@ -144,8 +154,8 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
                         onReportItemSelected(nodeVM.id);
                     }
                 } else if (nodeVM.type === PocketNodeType.DOCUMENT) {
-                    if (onDocumentItemSelected) {
-                        onDocumentItemSelected(nodeVM.id);
+                    if (onResourceItemSelected) {
+                        onResourceItemSelected(nodeVM.id);
                     }
                 }
             }
@@ -160,7 +170,7 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
     }
 
     _onNodeToggle(nodeVM: any, expanded: boolean) {
-        const { onReportItemSelected, onPocketItemToggle, onDocumentItemSelected } = this.props;
+        const { onReportItemSelected, onPocketItemToggle, onResourceItemSelected } = this.props;
 
         console.log("expanded=" + expanded)
 
@@ -176,8 +186,8 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
                     }
 
                     if (nodeVM.type === PocketNodeType.DOCUMENT) {
-                        if (onDocumentItemSelected) {
-                            onDocumentItemSelected(nodeVM.id);
+                        if (onResourceItemSelected) {
+                            onResourceItemSelected(nodeVM.id);
                         }
                     }
                 }
@@ -246,10 +256,10 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
     }
 
     _onDeletePocket(id: string) {
-        const { onDelete } = this.props;
+        const { onDeletePocket } = this.props;
 
-        if (onDelete) {
-            onDelete(id);
+        if (onDeletePocket) {
+            onDeletePocket(id);
         }
     }
 
@@ -262,42 +272,42 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
     }
 
     _onDownloadDocument(id: string) {
-        const { onDownloadDocument } = this.props;
+        const { onDownloadResource } = this.props;
 
-        if (onDownloadDocument) {
-            onDownloadDocument(id)
+        if (onDownloadResource) {
+            onDownloadResource(id)
         }
     }
 
     _onRemoveResource(id: string, pocket_id: string) {
-        const { onRemoveResource } = this.props;
+        const { onDeleteResource } = this.props;
 
-        if (onRemoveResource) {
-            onRemoveResource(id, pocket_id);
+        if (onDeleteResource) {
+            onDeleteResource(id, pocket_id);
         }
     }
 
     _onRemoveExcerpt(id: string, pocket_id: string) {
-        const { onRemoveExcerpt } = this.props;
+        const { onDeleteExcerpt } = this.props;
 
-        if (onRemoveExcerpt) {
-            onRemoveExcerpt(id, pocket_id);
+        if (onDeleteExcerpt) {
+            onDeleteExcerpt(id, pocket_id);
         }
     }
 
     _onRemoveNote(id: string, pocket_id: string) {
-        const { onRemoveNote } = this.props;
+        const { onDeleteNote } = this.props;
 
-        if (onRemoveNote) {
-            onRemoveNote(id, pocket_id);
+        if (onDeleteNote) {
+            onDeleteNote(id, pocket_id);
         }
     }
 
     _onRemoveReport(id: string, pocket_id: string) {
-        const { onRemoveReport } = this.props;
+        const { onDeleteReport } = this.props;
 
-        if (onRemoveReport) {
-            onRemoveReport(id, pocket_id);
+        if (onDeleteReport) {
+            onDeleteReport(id, pocket_id);
         }
     }
 
@@ -330,14 +340,14 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
         }
     }
 
-    _onAddNote(id: string, resource_id: string, pocket_id: string) {
+    _onAddNote(pocket_id: string, resource_id?: string, excerpt_id?: string) {
         const { onAddNote } = this.props;
 
         let noteVM: NoteVM = {
             id: "null",
             text: "New Note",
             content: "New Note",
-            excerpt_id: id,
+            excerpt_id,
             resource_id,
             pocket_id
         }
@@ -368,15 +378,17 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
                 cellContentRenderer={this._getCellContentRenderer}
                 onNodeToggle={this._onNodeToggle}
                 onNodeSelected={this._onNodeSelected}
-                onCreateReport={this._onCreatePocket}
+                onCreateReport={this._onCreateReport}
                 onEditPocket={this._onEditPocket}
                 onDeletePocket={this._onDeletePocket}
-                onDownloadDocument={this._onDownloadDocument}
-                onRemoveResource={this._onRemoveResource}
-                onRemoveExcerpt={this._onRemoveExcerpt}
-                onRemoveNote={this._onRemoveNote}
-                onAddNote={this._onAddNote}
-                onRemoveReport={this._onRemoveReport}
+                onDownloadResource={this._onDownloadDocument}
+                onDeleteResource={this._onRemoveResource}
+                onDeleteExcerpt={this._onRemoveExcerpt}
+                onDeleteNote={this._onRemoveNote}
+                onAddNoteToExcerpt={this._onAddNote}
+                onAddNoteToPocket={this._onAddNote}
+                onAddNoteToResource={this._onAddNote}
+                onDeleteReport={this._onRemoveReport}
                 onEditNote={this._onEditNote}
             />
         );

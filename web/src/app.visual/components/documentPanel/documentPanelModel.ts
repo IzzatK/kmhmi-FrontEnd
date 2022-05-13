@@ -100,6 +100,7 @@ export type DocumentInfoVM = {
     original_private_tag?: Record<string, Record<string, string>>;
     nlpCompleteAnimation?: boolean;
     showStatusBanner?: boolean;
+    canEditScope?: boolean;
 }
 
 export type EditPropertyVM = {

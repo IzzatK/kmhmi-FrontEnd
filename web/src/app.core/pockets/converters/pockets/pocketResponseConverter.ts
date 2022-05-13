@@ -157,9 +157,17 @@ export class PocketResponseConverter extends Converter<any, PocketMapper> {
                 }
             });
 
+            forEach(resource.note_ids, (noteId: string) => {
+                resourceMapper.notes[noteId] = noteInfos[noteId];
+            });
+
             if (pocketMapper.resourceMappers) {
                 pocketMapper.resourceMappers[resourceId] = resourceMapper;
             }
+        });
+
+        forEach(pocketInfo.note_ids, (noteId: string) => {
+            pocketMapper.notes[noteId] = noteInfos[noteId];
         });
 
         return pocketMapper;
