@@ -44,14 +44,6 @@ class _SearchGraphsPanelWrapper extends VisualWrapper {
                 onSearchParamChanged: this._onSearchParamsChanged
             };
         }
-
-        this.displayOptions = {
-            containerId: 'system-tool-panel',
-            visible: true,
-            appearClass: 'fadeIn',
-            enterClass: 'fadeIn',
-            // exitClass: 'fadeOut',
-        }
     }
 
     _onSearchParamsChanged(id:string, value: string) {
@@ -323,13 +315,12 @@ class _SearchGraphsPanelWrapper extends VisualWrapper {
         [documentService.getSearchResults],
         (items) => {
 
-            // let length = 0;
-            // forEach(items, () => {
-            //     length++;
-            // });
-            //
-            // return (length > 0);
-            return false;
+            let length = 0;
+            forEach(items, () => {
+                length++;
+            });
+
+            return (length > 0);
         }
     );
 }

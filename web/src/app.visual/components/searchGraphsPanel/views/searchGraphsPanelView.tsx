@@ -34,6 +34,7 @@ export class SearchGraphsPanelView extends Component<SearchGraphsPanelViewProps>
         }
 
         return (
+            isExpanded &&
             <div className={cn}>
                 {/*<Button className={'toggle-view-btn'} onClick={onToggleAlternate}>Toggle Alternate View</Button>*/}
                 <ScrollBar className={`graphs-grid-container ${!isExpanded ? '' : 'expanded'}`} renderTrackVertical={isExpanded} renderTrackHorizontal={!isExpanded}>
