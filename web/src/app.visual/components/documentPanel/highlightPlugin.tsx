@@ -115,6 +115,7 @@ export function renderHighlightContent(pluginProps: RenderHighlightContentProps,
                     name={"note"}
                     onChange={ updateTmpNote }
                     value={noteText}
+                    placeholder={"Type Note here"}
                 />
             </div>
             <div className={"d-flex justify-content-end bg-selected p-3 h-gap-3"}>

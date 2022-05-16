@@ -523,8 +523,6 @@ export class PocketService extends Plugin implements IPocketService {
                 if (note) {
                     excerptParams.authorId = authorId;
 
-                    debugger
-
                     this.addOrUpdateExcerpt(excerptParams)
                         .then(excerpt => {
                             if (excerpt) {
@@ -544,7 +542,6 @@ export class PocketService extends Plugin implements IPocketService {
 
                                             if (resourceMapper.resource.id === resourceParams.id) {
                                                 forEach(resourceMapper.excerptMappers, (excerptMapper: ExcerptMapper) => {
-                                                    debugger;
                                                     if (excerptMapper.excerpt.id === excerpt.id) {
                                                         excerptMapper.excerpt.noteIds.push(note.id)
                                                     }
@@ -812,8 +809,6 @@ export class PocketService extends Plugin implements IPocketService {
                         if (pocketMapper) {
                             let resource: any = null;
 
-                            debugger;
-
                             // check if the source is already included in a resource for this pocket
                             forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
                                 if (resourceMapper.resource.id === resourceParams.id) {
@@ -917,6 +912,80 @@ export class PocketService extends Plugin implements IPocketService {
                 });
 
                 modifiedPocketMapper.resourceMappers[itemKey] = modifiedResourceMapper;
+            });
+
+            this.pocketProvider?.update(pocket_id, modifiedPocketMapper)
+                .then(pocketMapper => {
+                    if (pocketMapper) {
+                        const noteInfo = this.getNote(note_id);
+
+                        if (noteInfo) {
+                            this.removeAllById(NoteInfo.class, note_id);
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    }
+
+    removeNoteFromResource(note_id: string, pocket_id: string) {
+        const pocketMapper = this.getPocketMapper(pocket_id);
+
+        if (pocketMapper) {
+            const modifiedPocketMapper: PocketMapper = new PocketMapper(pocketMapper.pocket);
+
+            forEachKVP(pocketMapper.resourceMappers, (itemKey: string, resourceMapper: ResourceMapper) => {
+                const modifiedResourceMapper: ResourceMapper = new ResourceMapper(resourceMapper.resource);
+
+                modifiedResourceMapper.resource.note_ids = [];
+
+                forEachKVP(resourceMapper.notes, (itemKey: string, noteInfo: NoteInfo) => {
+
+                    if (itemKey !== note_id) {
+                        modifiedResourceMapper.notes[itemKey] = noteInfo;
+                        modifiedResourceMapper.resource.note_ids.push(itemKey);
+                    } else {
+                        delete modifiedResourceMapper.notes[itemKey];
+                    }
+                });
+
+                modifiedPocketMapper.resourceMappers[itemKey] = modifiedResourceMapper;
+            });
+
+            this.pocketProvider?.update(pocket_id, modifiedPocketMapper)
+                .then(pocketMapper => {
+                    if (pocketMapper) {
+                        const noteInfo = this.getNote(note_id);
+
+                        if (noteInfo) {
+                            this.removeAllById(NoteInfo.class, note_id);
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    }
+
+    removeNoteFromPocket(note_id: string, pocket_id: string) {
+        const pocketMapper = this.getPocketMapper(pocket_id);
+
+        if (pocketMapper) {
+            const modifiedPocketMapper: PocketMapper = new PocketMapper(pocketMapper.pocket);
+
+            modifiedPocketMapper.pocket.note_ids = [];
+
+            forEachKVP(pocketMapper.notes, (itemKey: string, noteInfo: NoteInfo) => {
+
+                if (itemKey !== note_id) {
+                    modifiedPocketMapper.notes[itemKey] = noteInfo;
+                    modifiedPocketMapper.pocket.note_ids.push(itemKey);
+                } else {
+                    delete modifiedPocketMapper.notes[itemKey];
+                }
             });
 
             this.pocketProvider?.update(pocket_id, modifiedPocketMapper)

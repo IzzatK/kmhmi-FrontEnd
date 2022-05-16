@@ -133,7 +133,9 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
                 onUpdatePocket: (edits: PocketUpdateParams) => _PocketsPanelWrapper._onUpdatePocket(edits),
                 onDeleteExcerpt: (id: string, pocket_id: string) => this._onRemoveExcerpt(id, pocket_id),
                 onDeleteResource: (id: string, pocket_id: string) => this._onRemoveResource(id, pocket_id),
-                onDeleteNote: (id: string, pocket_id: string) => this._onRemoveNote(id, pocket_id),
+                onDeleteNoteFromExcerpt: (id: string, pocket_id: string) => this._onRemoveNoteFromExcerpt(id, pocket_id),
+                onDeleteNoteFromResource: (id: string, pocket_id: string) => this._onRemoveNoteFromResource(id, pocket_id),
+                onDeleteNoteFromPocket: (id: string, pocket_id: string) => this._onRemoveNoteFromPocket(id, pocket_id),
                 onSearch: () => userService.fetchUsers(),
                 onSearchTextChanged: (value: string) => userService.setSearchText(value),
                 onDeletePocket: (id: string) => this._onRemovePocket(id),
@@ -436,8 +438,16 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
         void pocketService.removeExcerptFromResource(id, pocket_id);
     }
 
-    private _onRemoveNote(id: string, pocket_id: string) {
+    private _onRemoveNoteFromExcerpt(id: string, pocket_id: string) {
         void pocketService.removeNoteFromExcerpt(id, pocket_id);
+    }
+
+    private _onRemoveNoteFromResource(id: string, pocket_id: string) {
+        void pocketService.removeNoteFromResource(id, pocket_id);
+    }
+
+    private _onRemoveNoteFromPocket(id: string, pocket_id: string) {
+        void pocketService.removeNoteFromPocket(id, pocket_id);
     }
 
     private _onRemoveResource(id: string, pocket_id: string) {

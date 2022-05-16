@@ -295,11 +295,21 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
         }
     }
 
-    _onRemoveNote(id: string, pocket_id: string) {
-        const { onDeleteNote } = this.props;
+    _onRemoveNote(note_id: string, pocket_id: string, resource_id?: string, excerpt_id?: string) {
+        const { onDeleteNoteFromExcerpt, onDeleteNoteFromResource, onDeleteNoteFromPocket } = this.props;
 
-        if (onDeleteNote) {
-            onDeleteNote(id, pocket_id);
+        if (excerpt_id) {
+            if (onDeleteNoteFromExcerpt) {
+                onDeleteNoteFromExcerpt(note_id, pocket_id);
+            }
+        } else if (resource_id) {
+            if (onDeleteNoteFromResource) {
+                onDeleteNoteFromResource(note_id, pocket_id);
+            }
+        } else {
+            if (onDeleteNoteFromPocket) {
+                onDeleteNoteFromPocket(note_id, pocket_id);
+            }
         }
     }
 

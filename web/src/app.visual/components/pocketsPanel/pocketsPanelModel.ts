@@ -31,7 +31,9 @@ export type PocketsPanelAppDispatchProps = {
     onDeleteExcerpt: (excerpt_id: string, pocket_id: string) => void;
     onAddExcerptToReport: (event: React.DragEvent<HTMLDivElement>, id: string, resource_id: string) => void;
 
-    onDeleteNote: (note_id: string, pocket_id: string, resource_id?: string, excerpt_id?: string) => void;
+    onDeleteNoteFromExcerpt: (note_id: string, pocket_id: string) => void;
+    onDeleteNoteFromResource: (note_id: string, pocket_id: string) => void;
+    onDeleteNoteFromPocket: (note_id: string, pocket_id: string) => void;
 
     onCreateReport: (pocket_id: string) => void;
     onDeleteReport: (report_id: string, pocket_id: string) => void;
