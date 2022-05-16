@@ -104,6 +104,34 @@ export class PocketRequestConverter extends Converter<any, any> {
             }
         });
 
+        if (pocketMapper.notes) {
+            forEachKVP(pocketMapper.notes, (itemKey: string, note: any) => {
+
+                let serverNote: Record<string, string> = {};
+
+                let requiredFields: Record<string, string> = {};
+                requiredFields["rte_text"] = "";
+
+                forEachKVP(note, (itemKey: keyof NoteInfo, itemValue: any) => {
+                    let serverNoteKey = NoteProperties[itemKey]?.toString();
+
+                    if (serverNoteKey) {
+                        if (itemValue !== "") {
+                            serverNote[serverNoteKey] = itemValue;
+                        }
+                    }
+                });
+
+                forEachKVP(requiredFields, (itemKey: string, itemValue: boolean) => {
+                    if (!serverNote[itemKey]) {
+                        serverNote[itemKey] = "";
+                    }
+                })
+
+                serverNotes.push(serverNote);
+            });
+        }
+
         if (pocketMapper.resourceMappers) {
             forEachKVP(pocketMapper.resourceMappers, (itemKey: string, resourceMapper: any) => {
                 let serverResource: Record<string, string> = {};
@@ -124,6 +152,34 @@ export class PocketRequestConverter extends Converter<any, any> {
                         }
                     }
                 });
+
+                if (resourceMapper.notes) {
+                    forEachKVP(resourceMapper.notes, (itemKey: string, note: any) => {
+
+                        let serverNote: Record<string, string> = {};
+
+                        let requiredFields: Record<string, string> = {};
+                        requiredFields["rte_text"] = "";
+
+                        forEachKVP(note, (itemKey: keyof NoteInfo, itemValue: any) => {
+                            let serverNoteKey = NoteProperties[itemKey]?.toString();
+
+                            if (serverNoteKey) {
+                                if (itemValue !== "") {
+                                    serverNote[serverNoteKey] = itemValue;
+                                }
+                            }
+                        });
+
+                        forEachKVP(requiredFields, (itemKey: string, itemValue: boolean) => {
+                            if (!serverNote[itemKey]) {
+                                serverNote[itemKey] = "";
+                            }
+                        })
+
+                        serverNotes.push(serverNote);
+                    });
+                }
 
                 serverResources.push(serverResource);
                 serverSources.push(serverSource);

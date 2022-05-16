@@ -63,9 +63,13 @@ export interface IPocketService extends IPlugin {
     /*********** begin multi-part methods *************************/
     addNoteAndExcerptToPocket(noteParams: NoteParamType, excerptParams: ExcerptParamType, resourceParams: ResourceParamType, pocketParams: PocketParamType): void;
     addExcerptToPocket(excerptParams: ExcerptParamType, resourceParams: ResourceParamType, pocketParams: PocketParamType): void;
+    addNoteToPocket(noteParams: NoteParamType, pocketParams: PocketParamType): void;
+    addNoteToResource(noteParams: NoteParamType, resourceParams: ResourceParamType, pocketParams: PocketParamType): void;
     addResourceToPocket(resourceParams: ResourceParamType, pocketParams: PocketParamType): void;
 
     removeNoteFromExcerpt(note_id: string, pocket_id: string): void;
+    removeNoteFromResource(note_id: string, pocket_id: string): void;
+    removeNoteFromPocket(note_id: string, pocket_id: string): void;
     removeExcerptFromResource(excerpt_id: string, pocket_id: string): void;
     removeResourceFromPocket(resource_id: string, pocket_id: string): void;
     /*********** end multi-part methods *************************/

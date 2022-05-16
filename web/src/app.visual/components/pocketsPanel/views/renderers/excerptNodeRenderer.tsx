@@ -1,10 +1,10 @@
 import React, {Component} from "react";
-import {ExcerptNodeRendererProps} from "../pocketsPanelModel";
-import Button from "../../../theme/widgets/button/button";
-import {RemoveSVG} from "../../../theme/svgs/removeSVG";
-import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
-import {CopySVG} from "../../../theme/svgs/copySVG";
-import {ExcerptSVG} from "../../../theme/svgs/excerptSVG";
+import {ExcerptNodeRendererProps} from "../../pocketsPanelModel";
+import {bindInstanceMethods} from "../../../../../framework.core/extras/utils/typeUtils";
+import Button from "../../../../theme/widgets/button/button";
+import {ExcerptSVG} from "../../../../theme/svgs/excerptSVG";
+import {RemoveSVG} from "../../../../theme/svgs/removeSVG";
+import CheckBox from "../../../../theme/widgets/checkBox/checkBox";
 
 export class ExcerptNodeRenderer extends Component<ExcerptNodeRendererProps> {
     constructor(props: any) {
@@ -31,15 +31,16 @@ export class ExcerptNodeRenderer extends Component<ExcerptNodeRendererProps> {
     }
 
     render() {
-        const { className, title } = this.props;
+        const { className, title, selected } = this.props;
 
-        let cn = 'excerpt-node light d-flex h-gap-3';
+        let cn = 'excerpt-node light d-flex h-gap-3 align-items-center';
         if (className) {
             cn += ` ${className}`;
         }
 
         return (
             <div draggable={true} className={cn} onDragStart={(e) => this._onDragStart(e)}>
+                <CheckBox selected={selected} disabled={true}/>
                 <Button className={"btn-transparent"} disabled={true}>
                     <ExcerptSVG className={"small-image-container"}/>
                 </Button>
@@ -47,14 +48,14 @@ export class ExcerptNodeRenderer extends Component<ExcerptNodeRendererProps> {
                     <div className={"d-flex flex-row v-gap-2 justify-content-center align-items-center"}>
                         <div className={"title font-italic"}>{title}</div>
                     </div>
-                    <div className={'action-bar h-gap-3'}>
-                        {/*<Button className={"btn-transparent"} onClick={(e) => {e.stopPropagation()}} tooltip={"Copy to Clipboard"}>*/}
-                        {/*    <CopySVG className={"small-image-container"}/>*/}
-                        {/*</Button>*/}
-                        <Button className={"btn-transparent"} onClick={this._onRemove} tooltip={"Remove"}>
-                            <RemoveSVG className={"small-image-container"}/>
-                        </Button>
-                    </div>
+                    {/*<div className={'action-bar h-gap-3'}>*/}
+                    {/*    /!*<Button className={"btn-transparent"} onClick={(e) => {e.stopPropagation()}} tooltip={"Copy to Clipboard"}>*!/*/}
+                    {/*    /!*    <CopySVG className={"small-image-container"}/>*!/*/}
+                    {/*    /!*</Button>*!/*/}
+                    {/*    <Button className={"btn-transparent"} onClick={this._onRemove} tooltip={"Remove"}>*/}
+                    {/*        <RemoveSVG className={"small-image-container"}/>*/}
+                    {/*    </Button>*/}
+                    {/*</div>*/}
                 </div>
 
             </div>

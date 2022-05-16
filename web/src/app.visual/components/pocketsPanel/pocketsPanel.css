@@ -2,7 +2,7 @@
 }
 
 .pockets-panel .tree-node .tree-node-graphic .tree-node-content .action-bar {
-    padding-left: 1rem;
+    /*padding-left: 1rem;*/
     opacity: 0;
     display: flex;
     align-items: center;
@@ -36,7 +36,7 @@
 }
 
 .pockets-panel .tree-view ul.tree-node-children {
-    margin: 0 1rem;
+    /*margin: 0 1rem;*/
 }
 
 .pockets-panel .tree-view ul li.tree-node > .tree-node-graphic:before {
@@ -60,13 +60,13 @@
     min-height: 5.61rem;
     padding: 1rem;
     background: var(--pocket-node-dark-background);
-    border: 0.1rem solid var(--pocket-node-dark-border-color);
+    /*border: 0.1rem solid var(--pocket-node-dark-border-color);*/
     --tree-view-primary-color: var(--pocket-node-dark-color);
 }
 
 .pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .dark .pocket-header:hover {
     background: var(--pocket-node-dark-hover-background);
-    border: 0.1rem solid var(--pocket-node-dark-hover-border-color);
+    /*border: 0.1rem solid var(--pocket-node-dark-hover-border-color);*/
     --tree-view-primary-color: var(--pocket-node-dark-hover-color);
 }
 
@@ -137,4 +137,22 @@
 
 .pockets-panel .tree-view .tree-node > .tree-node-graphic > .tree-node-content > .report-node .title {
     color: var(--pocket-node-report-color);
+}
+
+.pockets-panel .tree-node-children-container {
+    /*background: rgba(234, 234, 234, 0.3);*/
+}
+
+.pockets-panel .banner {
+
+}
+
+.pockets-panel .banner .text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
+.pockets-panel .banner .button {
+    fill: var(--primary-color)
 }

@@ -53,6 +53,10 @@ class ReportPanelPresenter extends Component<ReportPanelPresenterProps, ReportPa
         }
     }
 
+    componentWillUnmount() {
+        this._onSaveReport();
+    }
+
     _onTmpReportChanged(name: string, value: any) {
         const { tmpReport } = this.state;
         const { report } = this.props;

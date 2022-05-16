@@ -1,4 +1,3 @@
-import PocketsPanelView from "./pocketsPanelView";
 import {VisualWrapper} from "../../../framework.visual";
 import {createVisualConnector} from "../../../framework.visual";
 import {createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
@@ -12,33 +11,37 @@ import {
     userService
 } from "../../../serviceComposition";
 import {forEach} from "../../../framework.core/extras/utils/collectionUtils";
-import {ExcerptMapper, NoteInfo, PocketMapper, ReportInfo, ResourceMapper} from "../../../app.model";
+import {ExcerptMapper, NoteInfo, PocketMapper, ResourceMapper} from "../../../app.model";
 import {PocketNodeType} from "../../model/pocketNodeType";
-import {PocketNodeVM, PocketsPanelDispatchProps, PocketsPanelStateProps, PocketUpdateParams} from "./pocketsPanelModel";
-import {PocketParamType, ReportParamType} from "../../../app.core.api";
+import {
+    NoteVM,
+    PocketCaseReducers,
+    PocketNodeVM,
+    PocketSliceState,
+    PocketsPanelAppDispatchProps,
+    PocketsPanelAppStateProps,
+    PocketUpdateParams
+} from "./pocketsPanelModel";
+import {
+    ExcerptParamType,
+    NoteParamType,
+    PocketParamType,
+    ReportParamType,
+    ResourceParamType
+} from "../../../app.core.api";
 import {ReportPanelId} from "../reportPanel/reportPanelWrapper";
 import React from "react";
+import {PocketsPanelPresenter} from "./presenters/pocketsPanelPresenter";
+import {DocumentInfoVM, ObjectType} from "../searchResultsPanel/searchResultsModel";
 import {DocumentPanelId} from "../documentPanel/documentPanelPresenter";
 
-
-type PocketSliceState = {
-    expandedPaths: string[]
-}
-
-type PocketCaseReducers =  {
-    addExpandedPath: (state: PocketSliceState, action: PayloadAction<string>) => void;
-    removeExpandedPath: (state:PocketSliceState, action:PayloadAction<string>) => void;
-};
-
-
-class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseReducers> {
-
+class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseReducers> {
     constructor() {
         super();
 
         this.id ='app.visual/components/pocketsPanel';
 
-        this.view = PocketsPanelView;
+        this.view = PocketsPanelPresenter;
 
         this.displayOptions = {
             containerId: 'system-tool-panel',
@@ -110,7 +113,7 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
             },
         });
 
-        this.mapStateToProps = (state: any, props: any): PocketsPanelStateProps => {
+        this.mapStateToProps = (state: any, props: any): PocketsPanelAppStateProps => {
             return {
                 data: this.getPocketTree(state),
                 selectionPath: this.getSelectedPocketNodePath(state),
@@ -119,25 +122,28 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
             }
         }
 
-        this.mapDispatchToProps = (dispatch: any): PocketsPanelDispatchProps => {
+        this.mapDispatchToProps = (dispatch: any): PocketsPanelAppDispatchProps => {
             return {
-                onAddExcerptToReport: (event: React.DragEvent<HTMLDivElement>, id: string, report_id: string) => this._onAddExcerptToReport(event, id, report_id),
-                onPocketItemSelected: (id: string) => this.onPocketItemSelected(id),
-                onPocketItemToggle: (id: string, expanded: boolean) => this.onPocketItemToggle(id, expanded),
+                onAddExcerptToReport: (event: React.DragEvent<HTMLDivElement>, excerpt_id: string, report_id: string) => this._onAddExcerptToReport(event, excerpt_id, report_id),
+                onPocketItemSelected: (pocket_id: string) => this.onPocketItemSelected(pocket_id),
+                onPocketItemToggle: (id: string, expanded: boolean, type: string | undefined) => this.onPocketItemToggle(id, expanded, type),
                 onCreatePocket: (title: string) => pocketService.addOrUpdatePocket({title}),
-                onDownloadDocument: (id: string) => this._onDownloadDocument(id),
-                onDownloadPocket: (id: string) => this._onDownloadPocket(id),
-                onUpdatePocket: (edits: PocketUpdateParams) => _PocketsPanelPresenter._onUpdatePocket(edits),
-                onRemoveExcerpt: (id: string, pocket_id: string) => this._onRemoveExcerpt(id, pocket_id),
-                onRemoveResource: (id: string, pocket_id: string) => this._onRemoveResource(id, pocket_id),
-                onRemoveNote: (id: string, pocket_id: string) => this._onRemoveNote(id, pocket_id),
+                onDownloadResource: (resource_id: string) => this._onDownloadDocument(resource_id),
+                onDownloadPocket: (pocket_id: string) => this._onDownloadPocket(pocket_id),
+                onUpdatePocket: (edits: PocketUpdateParams) => _PocketsPanelWrapper._onUpdatePocket(edits),
+                onDeleteExcerpt: (excerpt_id: string, pocket_id: string) => this._onRemoveExcerpt(excerpt_id, pocket_id),
+                onDeleteResource: (resource_id: string, pocket_id: string) => this._onRemoveResource(resource_id, pocket_id),
+                onDeleteNoteFromExcerpt: (note_id: string, pocket_id: string) => this._onRemoveNoteFromExcerpt(note_id, pocket_id),
+                onDeleteNoteFromResource: (note_id: string, pocket_id: string) => this._onRemoveNoteFromResource(note_id, pocket_id),
+                onDeleteNoteFromPocket: (note_id: string, pocket_id: string) => this._onRemoveNoteFromPocket(note_id, pocket_id),
                 onSearch: () => userService.fetchUsers(),
                 onSearchTextChanged: (value: string) => userService.setSearchText(value),
-                onDelete: (id: string) => this._onRemovePocket(id),
-                onCreateReport: (id: string) => _PocketsPanelPresenter._onCreateReport(id),
-                onRemoveReport: (id: string, pocket_id: string) => this._onRemoveReport(id, pocket_id),
-                onReportItemSelected: (id: string) => this._onReportItemSelected(id),
-                onDocumentItemSelected: (id: string) => this._onDocumentItemSelected(id)
+                onDeletePocket: (pocket_id: string) => this._onRemovePocket(pocket_id),
+                onCreateReport: (pocket_id: string) => _PocketsPanelWrapper._onCreateReport(pocket_id),
+                onDeleteReport: (report_id: string, pocket_id: string) => this._onRemoveReport(report_id, pocket_id),
+                onReportItemSelected: (report_id: string) => this._onReportItemSelected(report_id),
+                onResourceItemSelected: (resource_id: string) => this._onDocumentItemSelected(resource_id),
+                onAddNote: (note: NoteVM) => this._onSaveNote(note),
             };
         }
     }
@@ -183,9 +189,33 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
             })
     }
 
+    getSelectedPocketNodePath = selectionService.makeGetContext("selected-pocket-node-path");
+
+    getSelectedPocket = selectionService.makeGetContext("selected-pocket");
+    getSelectedDocument = selectionService.makeGetContext("selected-document");
+    getSelectedExcerpt = selectionService.makeGetContext("selected-excerpt");
+    getSelectedNote = selectionService.makeGetContext("selected-note");
+    getSelectedReport = selectionService.makeGetContext("selected-report");
+
     getPocketNodeVMs = createSelector(
-        [() => pocketService.getPocketMappers(), () => reportService.getReports()],
-        (pocketMappers, reportInfos) => {
+        [
+            () => pocketService.getPocketMappers(),
+            () => reportService.getReports(),
+            (s) => this.getSelectedPocket(s),
+            (s) => this.getSelectedDocument(s),
+            (s) => this.getSelectedExcerpt(s),
+            (s) => this.getSelectedNote(s),
+            (s) => this.getSelectedReport(s),
+        ],
+        (
+            pocketMappers,
+            reportInfos,
+            selectedPocketId,
+            selectedDocumentId,
+            selectedExcerptId,
+            selectedNoteId,
+            selectedReportId,
+        ) => {
             let nodeVMs: Record<string, PocketNodeVM> = {};
 
             forEach(pocketMappers, (pocketMapper: PocketMapper) => {
@@ -202,7 +232,24 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                     childNodes: [],
                     pocket_id: pocket.id,
                     isUpdating: pocket.isUpdating,
+                    selected: pocket.id === selectedPocketId,
                 }
+
+                forEach(pocketMapper.notes, (note: NoteInfo) => {
+                    const notePath = `${pocketPath}/${note.id}`;
+
+                    nodeVMs[notePath] = {
+                        id: note.id,
+                        type: PocketNodeType.NOTE,
+                        path: notePath,
+                        title: note.text,
+                        content: '',
+                        childNodes: [],
+                        pocket_id: pocket.id,
+                        isUpdating: pocket.isUpdating,
+                        selected: note.id === selectedNoteId,
+                    }
+                })
 
                 forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
                     const resource = resourceMapper.resource;
@@ -217,7 +264,26 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                         childNodes: [],
                         pocket_id: pocket.id,
                         isUpdating: pocket.isUpdating,
+                        selected: resource.id === selectedDocumentId,
+                        source_id: resource.source_id,
                     }
+
+                    forEach(resourceMapper.notes, (note: NoteInfo) => {
+                        const notePath = `${resourcePath}/${note.id}`;
+
+                        nodeVMs[notePath] = {
+                            id: note.id,
+                            type: PocketNodeType.NOTE,
+                            path: notePath,
+                            title: note.text,
+                            content: '',
+                            childNodes: [],
+                            pocket_id: pocket.id,
+                            resource_id: resource.id,
+                            isUpdating: pocket.isUpdating,
+                            selected: note.id === selectedNoteId,
+                        }
+                    })
 
                     forEach(resourceMapper.excerptMappers, (excerptMapper: ExcerptMapper) => {
                         const excerpt = excerptMapper.excerpt;
@@ -233,6 +299,7 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                             pocket_id: pocket.id,
                             isUpdating: pocket.isUpdating,
                             resource_id: resource.id,
+                            selected: excerpt.id === selectedExcerptId,
                         }
 
                         forEach(excerptMapper.notes, (note: NoteInfo) => {
@@ -246,7 +313,10 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                                 content: '',
                                 childNodes: [],
                                 pocket_id: pocket.id,
+                                resource_id: resource.id,
+                                excerpt_id: excerpt.id,
                                 isUpdating: pocket.isUpdating,
+                                selected: note.id === selectedNoteId,
                             }
                         })
 
@@ -267,6 +337,7 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
                             childNodes: [],
                             pocket_id: pocket.id,
                             isUpdating: reportInfo.isUpdating || false,
+                            selected: reportInfo.id === selectedReportId,
                         }
                     }
                 })
@@ -276,28 +347,60 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
         }
     );
 
-    getSelectedPocketNodePath = selectionService.makeGetContext("selected-pocket-node-path");
 
-    onPocketItemSelected(id: string) {
-        selectionService.setContext("selected-pocket-node-path", id);
+
+    onPocketItemSelected(pocket_id: string) {
+        selectionService.setContext("selected-pocket-node-path", pocket_id);
     }
 
-    _onReportItemSelected(id: string) {
-        selectionService.setContext("selected-report", id);
+    _onReportItemSelected(report_id: string) {
+        selectionService.setContext("selected-report", report_id);
         selectionService.setContext("selected-document", "");
         displayService.pushNode(ReportPanelId);
     }
 
-    _onDocumentItemSelected(id: string) {
-        // selectionService.setContext("selected-document", id);
-        // selectionService.setContext("selected-report", "");
-        // displayService.pushNode(DocumentPanelId);
-        // documentService.fetchDocument(id);
+    _onDocumentItemSelected(document_id: string) {
+        selectionService.setContext("selected-document", document_id);
+        selectionService.setContext("selected-report", "");
+        displayService.pushNode(DocumentPanelId);
+        documentService.fetchDocument(document_id);
     }
 
-    onPocketItemToggle(id: string, expanded: boolean) {
+    onPocketItemToggle(id: string, expanded: boolean, type: string | undefined) {
         if (expanded) {
             this.sendEvent(this.model?.actions.addExpandedPath(id));
+            selectionService.setContext("selected-pocket-node-path", id);
+
+            let selectedId = id;
+
+            let selectedIdArray = id.split("/");
+            // console.log(expanded)
+
+            if (type) {
+                switch (type) {
+                    case "POCKET":
+                        if (selectedIdArray.length > 1) {
+                            selectedId = selectedIdArray[1]
+                        }
+                        // console.log(expanded ? selectedId : "")
+                        selectionService.setContext("selected-pocket", expanded ? selectedId : "");
+                        break;
+                    case "EXCERPT":
+                        if (selectedIdArray.length > 3) {
+                            selectedId = selectedIdArray[3]
+                        }
+                        selectionService.setContext("selected-excerpt", expanded ? selectedId : "");
+                        break;
+                    case "NOTE":
+                        if (selectedIdArray.length > 4) {
+                            selectedId = selectedIdArray[4]
+                        }
+                        selectionService.setContext("selected-note", expanded ? selectedId : "");
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
         else {
             this.sendEvent(this.model?.actions.removeExpandedPath(id));
@@ -336,8 +439,16 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
         void pocketService.removeExcerptFromResource(id, pocket_id);
     }
 
-    private _onRemoveNote(id: string, pocket_id: string) {
+    private _onRemoveNoteFromExcerpt(id: string, pocket_id: string) {
         void pocketService.removeNoteFromExcerpt(id, pocket_id);
+    }
+
+    private _onRemoveNoteFromResource(id: string, pocket_id: string) {
+        void pocketService.removeNoteFromResource(id, pocket_id);
+    }
+
+    private _onRemoveNoteFromPocket(id: string, pocket_id: string) {
+        void pocketService.removeNoteFromPocket(id, pocket_id);
     }
 
     private _onRemoveResource(id: string, pocket_id: string) {
@@ -380,8 +491,8 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
 
     }
 
-    private _onAddExcerptToReport(event: React.DragEvent<HTMLDivElement>, id: string, resource_id: string) {
-        const excerpt = pocketService.getExcerpt(id);
+    private _onAddExcerptToReport(event: React.DragEvent<HTMLDivElement>, excerpt_id: string, resource_id: string) {
+        const excerpt = pocketService.getExcerpt(excerpt_id);
 
         const resource = pocketService.getResource(resource_id);
 
@@ -389,7 +500,7 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
             const { text } = excerpt;
 
             event.dataTransfer.setData("text/plain", "\"" + text + "\"");
-            event.dataTransfer.setData("text/excerpt/excerpt_id", id);
+            event.dataTransfer.setData("text/excerpt/excerpt_id", excerpt_id);
 
             if (resource) {
                 const { source_author, title, source_publication_date} = resource;
@@ -422,10 +533,10 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
         }
     }
 
-    private _onDownloadDocument(id: string) {
+    private _onDownloadDocument(document_id: string) {
         const userProfile = authenticationService.getUserProfile();
         const token = authenticationService.getToken();
-        const document = documentService.getDocument(id);
+        const document = documentService.getDocument(document_id);
 
         if (userProfile && document) {
             const { username, id, email, firstName, lastName } = userProfile;
@@ -453,9 +564,92 @@ class _PocketsPanelPresenter extends VisualWrapper<PocketSliceState, PocketCaseR
     private _onDownloadPocket(id: string) {
 
     }
+
+    _onSaveNote(note: NoteVM) {
+        const { id, excerpt_id, resource_id, pocket_id, text, content } = note;
+
+        if (excerpt_id) {
+            const excerptParams: ExcerptParamType = {
+                id: excerpt_id
+            };
+
+            let noteParams: NoteParamType;
+
+            if (id !== "null") {
+                noteParams = {
+                    id,
+                    text,
+                    content
+                }
+            } else {
+                noteParams = {
+                    text,
+                    content
+                }
+            }
+
+            const resourceParams: ResourceParamType = {
+                id: resource_id,
+            }
+
+            const pocketParams: PocketParamType = {
+                id: pocket_id
+            }
+
+            pocketService.addNoteAndExcerptToPocket(noteParams, excerptParams, resourceParams, pocketParams);
+        } else  if (resource_id) {
+            let noteParams: NoteParamType;
+
+            if (id !== "null") {
+                noteParams = {
+                    id,
+                    text,
+                    content
+                }
+            } else {
+                noteParams = {
+                    text,
+                    content
+                }
+            }
+
+            const resourceParams: ResourceParamType = {
+                id: resource_id,
+            }
+
+            const pocketParams: PocketParamType = {
+                id: pocket_id
+            }
+
+            pocketService.addNoteToResource(noteParams, resourceParams, pocketParams)
+        } else {
+            let noteParams: NoteParamType;
+
+            if (id !== "null") {
+                noteParams = {
+                    id,
+                    text,
+                    content
+                }
+            } else {
+                noteParams = {
+                    text,
+                    content
+                }
+            }
+
+            const pocketParams: PocketParamType = {
+                id: pocket_id
+            }
+
+            pocketService.addNoteToPocket(noteParams, pocketParams)
+        }
+
+
+    }
 }
 
 export const {
-    connectedPresenter: PocketsPanelPresenter,
+    connectedPresenter: PocketsPanelWrapper,
     componentId: PocketsPanelId
-} = createVisualConnector(_PocketsPanelPresenter);
+} = createVisualConnector(_PocketsPanelWrapper);

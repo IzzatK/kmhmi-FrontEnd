@@ -1,17 +1,16 @@
 import React, {Component} from "react";
-import {PocketNodeRendererProps, PocketNodeRendererState, PocketTabType} from "../pocketsPanelModel";
-import Button from "../../../theme/widgets/button/button";
-import {ShareSVG} from "../../../theme/svgs/shareSVG";
-import {DownloadSVG} from "../../../theme/svgs/downloadSVG";
-import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
-import TextEdit from "../../../theme/widgets/textEdit/textEdit";
-import SearchBox from "../../../theme/widgets/searchBox/searchBox";
-import {RemoveSVG} from "../../../theme/svgs/removeSVG";
-import {EditSVG} from "../../../theme/svgs/editSVG";
-import {LoadingIndicator} from "../../../theme/widgets/loadingIndicator/loadingIndicator";
-import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
-import {CopyPocketSVG} from "../../../theme/svgs/copyPocketSVG";
-import {CreateReportSVG} from "../../../theme/svgs/createReportSVG";
+import {bindInstanceMethods} from "../../../../../framework.core/extras/utils/typeUtils";
+import Button from "../../../../theme/widgets/button/button";
+import {RemoveSVG} from "../../../../theme/svgs/removeSVG";
+import {PocketNodeRendererProps, PocketNodeRendererState, PocketTabType} from "../../pocketsPanelModel";
+import SearchBox from "../../../../theme/widgets/searchBox/searchBox";
+import TextEdit from "../../../../theme/widgets/textEdit/textEdit";
+import {LoadingIndicator} from "../../../../theme/widgets/loadingIndicator/loadingIndicator";
+import {Size} from "../../../../theme/widgets/loadingIndicator/loadingIndicatorModel";
+import {CreateReportSVG} from "../../../../theme/svgs/createReportSVG";
+import {EditSVG} from "../../../../theme/svgs/editSVG";
+import CheckBox from "../../../../theme/widgets/checkBox/checkBox";
+import {PocketSVG} from "../../../../theme/svgs/pocketSVG";
 
 export class PocketNodeRenderer extends Component<PocketNodeRendererProps, PocketNodeRendererState> {
     constructor(props: any) {
@@ -162,7 +161,7 @@ export class PocketNodeRenderer extends Component<PocketNodeRendererProps, Pocke
 
 
     render() {
-        const { className, title, isUpdating } = this.props;
+        const { className, title, isUpdating, selected, isEdit } = this.props;
         const { tab } = this.state;
 
         let cn = 'pocket-node dark d-flex flex-column';
@@ -172,10 +171,14 @@ export class PocketNodeRenderer extends Component<PocketNodeRendererProps, Pocke
 
         return (
             <div className={cn}>
-                <div className={'pocket-header d-flex justify-content-between'}>
+                <div className={'pocket-header d-flex h-gap-3 align-items-center'}>
+                    <CheckBox selected={selected} disabled={true}/>
+                    <Button className={"btn-transparent"} disabled={true}>
+                        <PocketSVG className={"small-image-container"}/>
+                    </Button>
                     <div className={"d-flex flex-row v-gap-2 justify-content-center align-items-center"}>
                         {
-                            tab === PocketTabType.EDIT ?
+                            isEdit ?
                                 <TextEdit
                                     name={'title'}
                                     value={title}
@@ -189,31 +192,31 @@ export class PocketNodeRenderer extends Component<PocketNodeRendererProps, Pocke
                         }
                     </div>
                     {
-                        isUpdating ?
+                        isUpdating &&
                             <div className={"d-flex"}>
                                 <LoadingIndicator className={"mr-4"} size={Size.nano}/>
                             </div>
-                            :
-                            <div className={`action-bar d-flex h-gap-3 ${tab !== PocketTabType.NONE && 'open'}`}>
-                                <Button className={"btn-transparent"} onClick={this._onCreateReport} tooltip={"Create Report"}>
-                                    <CreateReportSVG className={"small-image-container"}/>
-                                </Button>
-                                <Button className={"btn-transparent"} onClick={this._onSettings} selected={tab === PocketTabType.EDIT} tooltip={"Edit"}>
-                                    <EditSVG className={"small-image-container"}/>
-                                </Button>
-                                {/*<Button className={"btn-transparent"} onClick={(e) => {e.stopPropagation()}} selected={tab === PocketTabType.NONE} tooltip={"Copy Pocket"}>*/}
-                                {/*    <CopyPocketSVG className={"small-image-container"}/>*/}
-                                {/*</Button>*/}
-                                {/*<Button className={"btn-transparent"} onClick={this._onShare} selected={tab === PocketTabType.SHARE} tooltip={"Share"}>*/}
-                                {/*    <ShareSVG className={"small-image-container"}/>*/}
-                                {/*</Button>*/}
-                                {/*<Button className={"btn-transparent"} onClick={this._onDownload} selected={tab === PocketTabType.DOWNLOAD} tooltip={"Download"}>*/}
-                                {/*    <DownloadSVG className={"small-image-container"}/>*/}
-                                {/*</Button>*/}
-                                <Button className={"btn-transparent"} onClick={this._onDelete} selected={tab === PocketTabType.NONE} tooltip={"Remove"}>
-                                    <RemoveSVG className={"small-image-container"}/>
-                                </Button>
-                            </div>
+                            // :
+                            // <div className={`action-bar d-flex h-gap-3 ${tab !== PocketTabType.NONE && 'open'}`}>
+                            //     <Button className={"btn-transparent"} onClick={this._onCreateReport} tooltip={"Create Report"}>
+                            //         <CreateReportSVG className={"small-image-container"}/>
+                            //     </Button>
+                            //     <Button className={"btn-transparent"} onClick={this._onSettings} selected={tab === PocketTabType.EDIT} tooltip={"Edit"}>
+                            //         <EditSVG className={"small-image-container"}/>
+                            //     </Button>
+                            //     {/*<Button className={"btn-transparent"} onClick={(e) => {e.stopPropagation()}} selected={tab === PocketTabType.NONE} tooltip={"Copy Pocket"}>*/}
+                            //     {/*    <CopyPocketSVG className={"small-image-container"}/>*/}
+                            //     {/*</Button>*/}
+                            //     {/*<Button className={"btn-transparent"} onClick={this._onShare} selected={tab === PocketTabType.SHARE} tooltip={"Share"}>*/}
+                            //     {/*    <ShareSVG className={"small-image-container"}/>*/}
+                            //     {/*</Button>*/}
+                            //     {/*<Button className={"btn-transparent"} onClick={this._onDownload} selected={tab === PocketTabType.DOWNLOAD} tooltip={"Download"}>*/}
+                            //     {/*    <DownloadSVG className={"small-image-container"}/>*/}
+                            //     {/*</Button>*/}
+                            //     <Button className={"btn-transparent"} onClick={this._onDelete} selected={tab === PocketTabType.NONE} tooltip={"Remove"}>
+                            //         <RemoveSVG className={"small-image-container"}/>
+                            //     </Button>
+                            // </div>
                     }
                 </div>
 

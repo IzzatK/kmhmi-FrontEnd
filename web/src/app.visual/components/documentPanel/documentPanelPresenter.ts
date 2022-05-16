@@ -337,7 +337,10 @@ class DocumentPanel extends VisualWrapper {
                 let showAnimation: boolean = false;
                 let showStatusBanner: boolean;
 
+                let canEditScope: boolean = false;
+
                 if (uploadedBy_id === currentUserId) {
+                    canEditScope = true;
                     nlpComplete = (status === StatusType.NLP_COMPLETE);
                     if (this.documentLookup[id] !== undefined) {
                         if (nlpComplete && !this.documentLookup[id]) {
@@ -438,8 +441,9 @@ class DocumentPanel extends VisualWrapper {
                     original_url: previewAvailable ? original_url : '',
                     isUpdating: isUpdating,
                     isPending: isPending,
-                    nlpComplete: nlpComplete,
-                    showStatusBanner: showStatusBanner,
+                    nlpComplete,
+                    canEditScope,
+                    showStatusBanner,
                     nlpCompleteAnimation: showAnimation,
                 }
             } else {

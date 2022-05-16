@@ -804,8 +804,20 @@ export class DocumentService extends Plugin implements IDocumentService {
 
         result.push(pocketMapper.pocket);
 
+        forEach(pocketMapper.notes, (note: NoteInfo) => {
+            if (note) {
+                result.push(note);
+            }
+        });
+
         forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
             result.push(resourceMapper.resource);
+
+            forEach(resourceMapper.notes, (note: NoteInfo) => {
+                if (note) {
+                    result.push(note);
+                }
+            });
 
             forEach(resourceMapper.excerptMappers, (excerptMapper: ExcerptMapper) => {
                 result.push(excerptMapper.excerpt);

@@ -68,6 +68,17 @@ export class PocketService extends Plugin implements IPocketService {
                     if (currentUserId && currentUserId === pocketInfo.author_id) {//TODO check for shared pockets as well as personal pockets
                         const pocketMapper = new PocketMapper(pocketInfo);
 
+                        forEach(pocketInfo.note_ids, (noteId: string) => {
+                            const note: NoteInfo = notes[noteId];
+
+                            if (note == null) {
+                                this.warn(`Pocket ${pocketInfo.id} refers to note ${noteId}, but note ${noteId} not found!`)
+                            }
+                            else {
+                                pocketMapper.notes[noteId] = notes[noteId];
+                            }
+                        });
+
                         forEach(pocketInfo.resource_ids, (resourceId: string) => {
 
                             const resource: ResourceInfo = resources[resourceId];
@@ -78,6 +89,17 @@ export class PocketService extends Plugin implements IPocketService {
                             else {
 
                                 const resourceMapper = new ResourceMapper(resource);
+
+                                forEach(resource.note_ids, (noteId: string) => {
+                                    const note: NoteInfo = notes[noteId];
+
+                                    if (note == null) {
+                                        this.warn(`Resource ${resourceId} refers to note ${noteId}, but note ${noteId} not found!`)
+                                    }
+                                    else {
+                                        resourceMapper.notes[noteId] = notes[noteId];
+                                    }
+                                });
 
                                 forEach(resource.excerptIds, (excerptId: string) => {
                                     const excerpt: ExcerptInfo = excerpts[excerptId];
@@ -398,8 +420,20 @@ export class PocketService extends Plugin implements IPocketService {
 
         result.push(pocketMapper.pocket);
 
+        forEach(pocketMapper.notes, (note: NoteInfo) => {
+            if (note) {
+                result.push(note);
+            }
+        });
+
         forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
             result.push(resourceMapper.resource);
+
+            forEach(resourceMapper.notes, (note: NoteInfo) => {
+                if (note) {
+                    result.push(note);
+                }
+            });
 
             forEach(resourceMapper.excerptMappers, (excerptMapper: ExcerptMapper) => {
                 result.push(excerptMapper.excerpt);
@@ -488,12 +522,12 @@ export class PocketService extends Plugin implements IPocketService {
             .then(note => {
                 if (note) {
                     excerptParams.authorId = authorId;
-                    excerptParams.noteIds = [];
-                    excerptParams.noteIds.push(note.id);
 
                     this.addOrUpdateExcerpt(excerptParams)
                         .then(excerpt => {
                             if (excerpt) {
+
+
                                 if (pocketParams.id) {
                                     let pocketMapper = this.getPocketMapper(pocketParams.id);
 
@@ -504,6 +538,14 @@ export class PocketService extends Plugin implements IPocketService {
                                         forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
                                             if (resourceMapper.resource.source_id === resourceParams.source_id) {
                                                 resource = this.getResource(resourceMapper.resource.id);
+                                            }
+
+                                            if (resourceMapper.resource.id === resourceParams.id) {
+                                                forEach(resourceMapper.excerptMappers, (excerptMapper: ExcerptMapper) => {
+                                                    if (excerptMapper.excerpt.id === excerpt.id) {
+                                                        excerptMapper.excerpt.noteIds.push(note.id)
+                                                    }
+                                                });
                                             }
                                         });
 
@@ -690,6 +732,92 @@ export class PocketService extends Plugin implements IPocketService {
             });
     }
 
+    addNoteToPocket(noteParams: NoteParamType, pocketParams: PocketParamType) {
+        const authorId = this.userService?.getCurrentUserId() || "";
+
+        noteParams.author_id = authorId;
+        pocketParams.author_id = authorId;
+
+        this.addOrUpdateNote(noteParams)
+            .then(note => {
+                if (note) {
+                    if (pocketParams.id) {
+                        let pocketMapper = this.getPocketMapper(pocketParams.id);
+
+                        if (pocketMapper) {
+
+                            pocketMapper.notes[note.id] = note;
+                            pocketMapper.pocket.note_ids.push(note.id);
+
+                            this.pocketProvider?.update(pocketMapper.id, pocketMapper)
+                                .then(pocketMapper => {
+                                    if (pocketMapper) {
+                                        const items:IRepoItem[] = [];
+
+                                        const flattenedItems = this.flattenPocketMapper(pocketMapper);
+                                        items.push(...flattenedItems);
+
+                                        this.addOrUpdateAllRepoItems(items);
+                                    }
+                                })
+                                .catch(error => {
+                                    console.log(error);
+                                });
+                        }
+                    }
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    addNoteToResource(noteParams: NoteParamType, resourceParams: ResourceParamType, pocketParams: PocketParamType) {
+        const authorId = this.userService?.getCurrentUserId() || "";
+
+        noteParams.author_id = authorId;
+        pocketParams.author_id = authorId;
+
+        this.addOrUpdateNote(noteParams)
+            .then(note => {
+                if (note) {
+                    if (pocketParams.id) {
+                        let pocketMapper = this.getPocketMapper(pocketParams.id);
+
+                        if (pocketMapper) {
+                            let resource: any = null;
+
+                            // check if the source is already included in a resource for this pocket
+                            forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
+                                if (resourceMapper.resource.id === resourceParams.id) {
+                                    resource = this.getResource(resourceMapper.resource.id);
+                                    resourceMapper.notes[note.id] = note;
+                                    resource.note_ids.push(note.id);
+                                }
+                            });
+
+                            if (resource !== null) {
+                                this.pocketProvider?.update(pocketParams.id, pocketMapper)
+                                    .then(pocketMapper => {
+                                        if (pocketMapper) {
+                                            const items:IRepoItem[] = [];
+
+                                            const flattenedItems = this.flattenPocketMapper(pocketMapper);
+                                            items.push(...flattenedItems);
+
+                                            this.addOrUpdateAllRepoItems(items);
+                                        }
+                                    })
+                            }
+                        }
+                    }
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
     addResourceToPocket(resourceParams: ResourceParamType, pocketParams: PocketParamType): void {
 
         const authorId = this.userService?.getCurrentUserId() || "";
@@ -848,6 +976,80 @@ export class PocketService extends Plugin implements IPocketService {
                 });
 
                 modifiedPocketMapper.resourceMappers[itemKey] = modifiedResourceMapper;
+            });
+
+            this.pocketProvider?.update(pocket_id, modifiedPocketMapper)
+                .then(pocketMapper => {
+                    if (pocketMapper) {
+                        const noteInfo = this.getNote(note_id);
+
+                        if (noteInfo) {
+                            this.removeAllById(NoteInfo.class, note_id);
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    }
+
+    removeNoteFromResource(note_id: string, pocket_id: string) {
+        const pocketMapper = this.getPocketMapper(pocket_id);
+
+        if (pocketMapper) {
+            const modifiedPocketMapper: PocketMapper = new PocketMapper(pocketMapper.pocket);
+
+            forEachKVP(pocketMapper.resourceMappers, (itemKey: string, resourceMapper: ResourceMapper) => {
+                const modifiedResourceMapper: ResourceMapper = new ResourceMapper(resourceMapper.resource);
+
+                modifiedResourceMapper.resource.note_ids = [];
+
+                forEachKVP(resourceMapper.notes, (itemKey: string, noteInfo: NoteInfo) => {
+
+                    if (itemKey !== note_id) {
+                        modifiedResourceMapper.notes[itemKey] = noteInfo;
+                        modifiedResourceMapper.resource.note_ids.push(itemKey);
+                    } else {
+                        delete modifiedResourceMapper.notes[itemKey];
+                    }
+                });
+
+                modifiedPocketMapper.resourceMappers[itemKey] = modifiedResourceMapper;
+            });
+
+            this.pocketProvider?.update(pocket_id, modifiedPocketMapper)
+                .then(pocketMapper => {
+                    if (pocketMapper) {
+                        const noteInfo = this.getNote(note_id);
+
+                        if (noteInfo) {
+                            this.removeAllById(NoteInfo.class, note_id);
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    }
+
+    removeNoteFromPocket(note_id: string, pocket_id: string) {
+        const pocketMapper = this.getPocketMapper(pocket_id);
+
+        if (pocketMapper) {
+            const modifiedPocketMapper: PocketMapper = new PocketMapper(pocketMapper.pocket);
+
+            modifiedPocketMapper.pocket.note_ids = [];
+
+            forEachKVP(pocketMapper.notes, (itemKey: string, noteInfo: NoteInfo) => {
+
+                if (itemKey !== note_id) {
+                    modifiedPocketMapper.notes[itemKey] = noteInfo;
+                    modifiedPocketMapper.pocket.note_ids.push(itemKey);
+                } else {
+                    delete modifiedPocketMapper.notes[itemKey];
+                }
             });
 
             this.pocketProvider?.update(pocket_id, modifiedPocketMapper)
