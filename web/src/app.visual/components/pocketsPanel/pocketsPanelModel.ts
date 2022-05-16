@@ -47,6 +47,7 @@ export type PocketsPanelPresenterState = {
     selectedNode: any;
     editPocketId: string;
     editNoteId: string;
+    showPopup: boolean;
 }
 
 export type PocketsPanelViewProps = {
@@ -55,31 +56,27 @@ export type PocketsPanelViewProps = {
     expandedPaths: string[];
     data: PocketNodeVM[];
     selectedNode: any;
+    showPopup: boolean;
 
     cellContentRenderer: (node: PocketNodeVM) => JSX.Element;
     onNodeToggle: (nodeVM: any, expanded: boolean) => void;
     onNodeSelected: (nodeVM: any) => void;
-
+    setShowPopup: (showPopup: boolean) => void;
 
     onCreatePocket: () => void;
     onEditPocket: (pocket_id: string) => void;
-    onDeletePocket: (pocket_id: string) => void;
 
     onCreateReport: (pocket_id: string) => void;
-    onDeleteReport: (report_id: string, pocket_id: string) => void;
 
     onDownloadResource: (resource_id: string) => void;
-    onDeleteResource: (resource_id: string, pocket_id: string) => void;
 
-
-    onDeleteExcerpt: (excerpt_id: string, pocket_id: string) => void;
-
-    onDeleteNote: (note_id: string, pocket_id: string, resource_id?: string, excerpt_id?: string) => void;
     onEditNote: (note_id: string, pocket_id: string, resource_id?: string, excerpt_id?: string) => void;
 
     onAddNoteToExcerpt: (excerpt_id: string, resource_id: string, pocket_id: string) => void;
     onAddNoteToResource: (resource_id: string, pocket_id: string) => void;
     onAddNoteToPocket: (pocket_id: string) => void;
+
+    onDelete: () => void;
 }
 
 export type NodeRendererProps = {
