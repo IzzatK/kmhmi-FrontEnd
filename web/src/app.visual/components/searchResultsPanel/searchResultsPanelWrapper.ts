@@ -157,18 +157,26 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
         const resourceParams: ResourceParamType = {
             source_id: id
         }
-        const pocketParams: PocketParamType = {
-            id: pocketId
-        }
 
-        switch (object_type) {
-            case ObjectType.PocketInfo:
-                break;
-            case ObjectType.ReportInfo:
-            case ObjectType.DocumentInfo:
-            default:
+        if (object_type !== ObjectType.PocketInfo) {
+            if (pocketId !== "") {
+                const pocketParams: PocketParamType = {
+                    id: pocketId
+                }
+
                 pocketService.addResourceToPocket(resourceParams, pocketParams);
-                break;
+            } else {
+                pocketService.addOrUpdatePocket({title: "New Pocket"})
+                    .then(pocketMapper => {
+                        if (pocketMapper) {
+                            const pocketParams: PocketParamType = {
+                                id: pocketMapper.id
+                            }
+
+                            pocketService.addResourceToPocket(resourceParams, pocketParams);
+                        }
+                    })
+            }
         }
     }
 
@@ -589,13 +597,14 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
     )
 
     getPockets = createSelector(
-        [() => pocketService.getPocketInfos()],
-        (items) => {
+        [() => pocketService.getPocketMappers()],
+        (pocketMappers) => {
             let itemVMs: Record<string, PocketVM> = {};
 
-            forEachKVP(items, (itemKey: string, itemValue: PocketVM) => {
+            forEachKVP(pocketMappers, (itemKey: string, itemValue: PocketMapper) => {
                 itemVMs[itemKey] = {
-                    ...itemValue
+                    ["id"]: itemValue.pocket.id,
+                    ["title"]: itemValue.pocket.title,
                 };
             })
 

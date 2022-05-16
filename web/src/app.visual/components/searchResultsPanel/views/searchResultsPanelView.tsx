@@ -119,7 +119,7 @@ class SearchResultsPanelView extends Component<SearchResultsPanelViewProps, Sear
 
                 if (pocketId) {
                     pocketItems.push(
-                        <div onClick={() => {
+                        <div className={"d-flex p-3 cursor-pointer"} onClick={() => {
                             onAddToPocket(selectedDocument.id, selectedDocument.object_type, pocketId);
                             this._setShowAddToPocket(false);
                         }}>
@@ -199,15 +199,16 @@ class SearchResultsPanelView extends Component<SearchResultsPanelViewProps, Sear
                                     portalContent={
                                         ({}) =>
                                             <div className={`w-100 search-results-portal`}>
-                                                <ul className={"w-100 list-items header-3 v-gap-2 p-3"}>
-                                                    <div onClick={() => {
-                                                        // onAddToPocket(selectedDocument.id, selectedDocument.object_type, pocketId);
+                                                <ul className={"w-100 list-items header-3"}>
+                                                    {pocketItems}
+                                                    <div className={"d-flex h-gap-1 align-items-center p-3 cursor-pointer"} onClick={() => {
+                                                        onAddToPocket(selectedDocument.id, selectedDocument.object_type, "");
                                                         this._setShowAddToPocket(false);
                                                     }}>
                                                         <PocketSVG className={"nano-image-container fill-primary"}/>
-                                                        Create Pocket
+                                                        <div>Create Pocket</div>
+
                                                     </div>
-                                                    {pocketItems}
                                                 </ul>
                                             </div>
                                     }>
