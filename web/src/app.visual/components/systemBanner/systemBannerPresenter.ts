@@ -108,12 +108,12 @@ class SystemBanner extends VisualWrapper {
             window.open(preview_url);
         }, false);
 
-        xhr.setRequestHeader("km-token", `bearer ${token}` );
-        xhr.setRequestHeader("km-user-name", username );
-        xhr.setRequestHeader("km-user-id", id );
-        xhr.setRequestHeader("km-email", email );
-        xhr.setRequestHeader("km-first-name", firstName );
-        xhr.setRequestHeader("km-last-name", lastName );
+        xhr.setRequestHeader("Authorization", `bearer ${token}` );
+        // xhr.setRequestHeader("km-user-name", username );
+        // xhr.setRequestHeader("km-user-id", id );
+        // xhr.setRequestHeader("km-email", email );
+        // xhr.setRequestHeader("km-first-name", firstName );
+        // xhr.setRequestHeader("km-last-name", lastName );
 
         xhr.send();
     }
