@@ -187,7 +187,7 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
 
                     if (nodeVM.type === PocketNodeType.DOCUMENT) {
                         if (onResourceItemSelected) {
-                            onResourceItemSelected(nodeVM.id);
+                            onResourceItemSelected(nodeVM.source_id);
                         }
                     }
                 }

@@ -12,7 +12,7 @@ export type PocketsPanelAppStateProps = {
 }
 
 export type PocketsPanelAppDispatchProps = {
-    onPocketItemSelected: (id: string) => void;
+    onPocketItemSelected: (pocket_id: string) => void;
     onPocketItemToggle: (id: string, expanded: boolean, type?: string) => void;
     onReportItemSelected: (report_id: string) => void;
     onResourceItemSelected: (resource_id: string) => void;
@@ -160,6 +160,7 @@ export type PocketNodeVM = {
     excerpt_id?: string;
     isUpdating: boolean,
     selected: boolean;
+    source_id?: string;
 }
 
 export type PocketSliceState = {
