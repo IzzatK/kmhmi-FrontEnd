@@ -282,3 +282,8 @@
 .search-results-panel .banner .button {
     fill: var(--primary-color)
 }
+
+.search-results-portal {
+    transform: translateY(calc(-100% - 40px));
+    min-width: 13.8rem;
+}

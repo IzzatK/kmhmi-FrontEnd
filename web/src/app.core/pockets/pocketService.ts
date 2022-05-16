@@ -522,18 +522,7 @@ export class PocketService extends Plugin implements IPocketService {
                                                     }
                                                 })
                                         } else {
-                                            if (resourceParams.source_id) {
-                                                if (this.documentService) {
-                                                    const document = this.documentService.getDocument(resourceParams.source_id);
-                                                    if (document !== null) {
-                                                        resourceParams.source_title = document.title || document.file_name || '';
-                                                        resourceParams.source_author = JSON.stringify(document.author) || '';
-                                                        resourceParams.source_publication_date = document.publication_date || '';
-                                                        resourceParams.source_version = '';
-                                                        resourceParams.title = document.title || document.file_name || '';
-                                                    }
-                                                }
-                                            }
+                                            this._setResourceParamsFromDocument(resourceParams);
 
                                             resourceParams.excerptIds = [];
                                             resourceParams.excerptIds.push(excerpt.id);
@@ -652,18 +641,7 @@ export class PocketService extends Plugin implements IPocketService {
                                 //         }
                                 //     })
                             } else {
-                                if (resourceParams.source_id) {
-                                    if (this.documentService) {
-                                        const document = this.documentService.getDocument(resourceParams.source_id);
-                                        if (document !== null) {
-                                            resourceParams.source_title = document.title || document.file_name || '';
-                                            resourceParams.source_author = JSON.stringify(document.author) || '';
-                                            resourceParams.source_publication_date = document.publication_date || '';
-                                            resourceParams.source_version = '';
-                                            resourceParams.title = document.title || document.file_name || '';
-                                        }
-                                    }
-                                }
+                                this._setResourceParamsFromDocument(resourceParams);
 
                                 resourceParams.excerptIds = [];
                                 resourceParams.excerptIds.push(excerpt.id);
@@ -710,6 +688,92 @@ export class PocketService extends Plugin implements IPocketService {
             .catch(error => {
                 console.log(error);
             });
+    }
+
+    addResourceToPocket(resourceParams: ResourceParamType, pocketParams: PocketParamType): void {
+
+        const authorId = this.userService?.getCurrentUserId() || "";
+
+        pocketParams.author_id = authorId;
+
+        this.addOrUpdateResource(resourceParams)
+            .then(resource => {
+                if (resource) {
+                    if (pocketParams.id) {
+                        let pocketMapper = this.getPocketMapper(pocketParams.id);
+
+                        if (pocketMapper) {
+                            let resource: any = null;
+
+                            // check if the source is already included in a resource for this pocket
+                            forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
+                                if (resourceMapper.resource.source_id === resourceParams.source_id) {
+                                    resource = this.getResource(resourceMapper.resource.id);
+                                }
+                            });
+
+                            if (resource !== null) {
+                                // resource is already in the pocket, do nothing
+                            }
+                            else {
+                                this._setResourceParamsFromDocument(resourceParams);
+
+                                resourceParams.excerptIds = [];
+                                resourceParams.author_id = authorId;
+
+                                resource = this.addOrUpdateResource(resourceParams)
+                                    .then(resource => {
+                                        if (resource) {
+                                            if (pocketMapper) {
+                                                // let excerptMapper: ExcerptMapper = new ExcerptMapper(excerpt);
+
+                                                let resourceMapper: ResourceMapper = new ResourceMapper(resource);
+                                                // resourceMapper.excerptMappers[excerpt.id] = excerptMapper;
+
+                                                pocketMapper.resourceMappers[resource.id] = resourceMapper;
+
+                                                this.pocketProvider?.update(pocketMapper.id, pocketMapper)
+                                                    .then(pocketMapper => {
+                                                        if (pocketMapper) {
+                                                            const items:IRepoItem[] = [];
+
+                                                            const flattenedItems = this.flattenPocketMapper(pocketMapper);
+                                                            items.push(...flattenedItems);
+
+                                                            this.addOrUpdateAllRepoItems(items);
+                                                        }
+                                                    })
+                                                    .catch(error => {
+                                                        console.log(error);
+                                                    });
+                                            }
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.log(error);
+                                    });
+                            }
+                        }
+                    }
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+    }
+
+    _setResourceParamsFromDocument(resourceParams: ResourceParamType): void {
+        if (resourceParams.source_id) {
+            if (this.documentService) {
+                const document = this.documentService.getDocument(resourceParams.source_id);
+                if (document !== null) {
+                    resourceParams.source_title = document.title || document.file_name || '';
+                    resourceParams.source_author = JSON.stringify(document.author) || '';
+                    resourceParams.source_publication_date = document.publication_date || '';
+                    resourceParams.source_version = '';
+                    resourceParams.title = document.title || document.file_name || '';
+                }
+            }
+        }
     }
 
     removeExcerptFromResource(excerpt_id: string, pocket_id: string): void {

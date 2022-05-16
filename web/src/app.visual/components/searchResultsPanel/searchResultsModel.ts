@@ -13,6 +13,7 @@ export type SearchResultsPanelAppStateProps = {
     userLookup?: Record<string, UserInfo>;
     selectedDocument?: DocumentInfoVM | undefined;
     permissions: PermissionsVM;
+    pockets: Record<string, PocketVM>;
 }
 
 export type SearchResultsPanelAppDispatchProps = {
@@ -21,6 +22,7 @@ export type SearchResultsPanelAppDispatchProps = {
     onSortSelected: (id: string) => void;
     onDownload: (id: string, object_type: ObjectType) => void;
     onDelete: (id: string, object_type: ObjectType) => void;
+    onAddToPocket: (id: string, object_type: ObjectType, pocketId: string) => void;
 }
 
 export type SearchResultsPanelPresenterProps = SearchResultsPanelAppStateProps & SearchResultsPanelAppDispatchProps & MetaDataVM;
@@ -43,6 +45,7 @@ export type SearchResultsPanelViewProps = {
     errorMessage?: string;
     pageWidth: PageWidth;
     permissions: PermissionsVM;
+    pockets: Record<string, PocketVM>;
     onDocumentSelected: (id: string, object_type: ObjectType) => void;
     onResultViewSelected: (id: string) => void;
     onSortSelected: (id: string) => void;
@@ -51,6 +54,11 @@ export type SearchResultsPanelViewProps = {
     onEdit: (id: string, object_type: ObjectType) => void;
     onShare: (id: string, object_type: ObjectType) => void;
     onDelete: (id: string, object_type: ObjectType) => void;
+    onAddToPocket: (id: string, object_type: ObjectType, pocketId: string) => void;
+}
+
+export type SearchResultsPanelViewState = {
+    showAddToPocket: boolean;
 }
 
 export type ResultsRendererProps = {
@@ -157,4 +165,9 @@ export type PermissionsVM = {
     canDelete: boolean,
     canDownload: boolean,
     canModify: boolean
+}
+
+export type PocketVM = {
+    id: string;
+    title: string;
 }

@@ -25,14 +25,14 @@ import {
 import {MenuItemVM} from "../../../framework.visual";
 import {
     DocumentInfoVM,
-    ObjectType,
+    ObjectType, PocketVM,
     ReferenceInfoVM, SearchResultsPanelAppDispatchProps,
     SearchResultsPanelAppStateProps,
     SortPropertyInfoVM
 } from "./searchResultsModel";
 import {DOCUMENT_PREVIEW_VIEW_ID} from "../systemToolbar/systemToolbarPresenter";
 import SearchResultsPanelPresenter from "./presenters/searchResultsPanelPresenter";
-import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../app.core.api";
+import {PERMISSION_ENTITY, PERMISSION_OPERATOR, PocketParamType, ResourceParamType} from "../../../app.core.api";
 import {SearchResultInfo} from "../../../app.model";
 
 class _SearchResultsPanelWrapper extends VisualWrapper {
@@ -55,6 +55,7 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
                 userLookup: userService.getActiveUsers(),
                 selectedDocument: this.getSelectedDocumentVM(state),
                 permissions: this.getPermissions(state),
+                pockets: this.getPockets(state),
             };
         }
 
@@ -65,6 +66,7 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
                 onSortSelected: (id: string) => this.onSortSelected(id),
                 onDelete: (id: string, object_type: ObjectType) => this._onDelete(id, object_type),
                 onDownload: (id: string, object_type: ObjectType) => this._onDownload(id, object_type),
+                onAddToPocket: (id: string, object_type: ObjectType, pocketId: string) => this._onAddToPocket(id, object_type, pocketId),
             };
         }
 
@@ -146,6 +148,26 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
 
                     xhr.send();
                 }
+                break;
+        }
+    }
+
+    _onAddToPocket(id: string, object_type: ObjectType, pocketId: string) {
+
+        const resourceParams: ResourceParamType = {
+            source_id: id
+        }
+        const pocketParams: PocketParamType = {
+            id: pocketId
+        }
+
+        switch (object_type) {
+            case ObjectType.PocketInfo:
+                break;
+            case ObjectType.ReportInfo:
+            case ObjectType.DocumentInfo:
+            default:
+                pocketService.addResourceToPocket(resourceParams, pocketParams);
                 break;
         }
     }
@@ -563,6 +585,21 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
                 canDownload: authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.DOWNLOAD, currentUserId, uploadedBy),
                 canModify: authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.MODIFY, currentUserId, uploadedBy)
             }
+        }
+    )
+
+    getPockets = createSelector(
+        [() => pocketService.getPocketInfos()],
+        (items) => {
+            let itemVMs: Record<string, PocketVM> = {};
+
+            forEachKVP(items, (itemKey: string, itemValue: PocketVM) => {
+                itemVMs[itemKey] = {
+                    ...itemValue
+                };
+            })
+
+            return itemVMs;
         }
     )
 }
