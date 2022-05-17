@@ -12,7 +12,7 @@ import {
     AuthorizationService,
     PermissionProvider,
     ReferenceService,
-    UserProvider, UserService
+    UserProvider,
 } from "../../src/app.core";
 import {appDataStore, userService} from "../../src/serviceComposition";
 import {PermissionInfo} from "../../src/app.model";
@@ -83,16 +83,4 @@ describe("userService Test Setup", () => {
     it("userService is not null", () => {
         expect(userService).not.toBeNull();
     });
-})
-
-describe("getSingle", () => {
-    let users: UserService[];
-
-    beforeAll(() => {
-        return userService.fetchUser("NULL").then(data => {
-            // DO-WORK
-        });
-
-    });
-
 })
