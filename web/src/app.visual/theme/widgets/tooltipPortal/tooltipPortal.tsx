@@ -1,7 +1,7 @@
 import React from "react";
 import Portal from "../portal/portal";
 import {bindInstanceMethods} from "../../../../framework.core/extras/utils/typeUtils";
-import {TooltipPortalProps, TooltipPortalState} from './tooltipPortalModel';
+import {TooltipPortalProps, TooltipPortalState, TooltipPosition} from './tooltipPortalModel';
 import './tooltipPortal.css';
 
 export class TooltipPortal extends  React.Component<TooltipPortalProps, TooltipPortalState> {
@@ -42,17 +42,41 @@ export class TooltipPortal extends  React.Component<TooltipPortalProps, TooltipP
     }
 
     render() {
-        const { className, portalContent, children, light, ...rest } = this.props;
+        const { className, portalContent, children, light, position=TooltipPosition.BOTTOM, isButton, ...rest } = this.props;
 
         const { isShowing } = this.state;
 
-        let cn = "tooltip-portal shadow-lg text-wrap p-4 header-3";
+        let cn = "tooltip-portal shadow-lg p-4 header-3";
 
         if (className) {
             cn += ` ${className}`;
         }
+
+        if (isButton) {
+            cn += `d-flex text-nowrap justify-content-center header-3`
+        } else {
+            cn += `text-wrap`
+        }
+
+
         if (light) {
             cn += ` light`;
+        }
+
+        switch (position) {
+            case TooltipPosition.TOP:
+                cn += ` top`;
+                break;
+            case TooltipPosition.LEFT:
+                cn += ` left`;
+                break;
+            case TooltipPosition.RIGHT:
+                cn += ` right`;
+                break;
+            case TooltipPosition.BOTTOM:
+            default:
+                cn += ` bottom`;
+                break;
         }
 
         return (

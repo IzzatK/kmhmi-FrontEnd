@@ -1,7 +1,7 @@
 import {Plugin} from "../../framework.core/extras/plugin";
 import {IReportService, ReportParamType} from "../../app.core.api";
 import {IEntityProvider, ISelectionService} from "../../framework.core.api";
-import {ReportInfo} from "../../app.model";
+import {DocumentInfo, ReportInfo} from "../../app.model";
 import {Nullable} from "../../framework.core/extras/utils/typeUtils";
 import {createSelector, Selector} from "@reduxjs/toolkit";
 import {IUserService} from "../../app.core.api";
@@ -15,6 +15,7 @@ export class ReportService extends Plugin implements IReportService {
 
     private readonly getAllReportsSelector: Selector<any, Record<string, ReportInfo>>;
     private reportProvider: Nullable<IEntityProvider<ReportInfo>> = null;
+    private publishedReportProvider: Nullable<IEntityProvider<DocumentInfo>> = null;
 
     constructor() {
         super();
@@ -54,6 +55,10 @@ export class ReportService extends Plugin implements IReportService {
 
     setReportProvider(provider: IEntityProvider<ReportInfo>): void {
         this.reportProvider = provider;
+    }
+
+    setPublishedReportProvider(provider: IEntityProvider<DocumentInfo>): void {
+        this.publishedReportProvider = provider;
     }
 
     setUserService(service: IUserService): void {
@@ -129,7 +134,7 @@ export class ReportService extends Plugin implements IReportService {
     }
 
     updateReport(modifiedReport: any): void {
-        const { id } = modifiedReport;
+        const { id, scope } = modifiedReport;
 
         if (id) {
             const report = this.getReport(id);
@@ -167,7 +172,7 @@ export class ReportService extends Plugin implements IReportService {
                         author_id,
                     }
                 }
-                
+
                 let reportCopy = Object.assign(ReportInfo, report);
 
                 reportCopy.isUpdating = true
@@ -185,6 +190,65 @@ export class ReportService extends Plugin implements IReportService {
                     console.log(error);
                 });
         }
+    }
+
+    publishReport(modifiedReport: any): Promise<Nullable<DocumentInfo>> {
+        return new Promise<Nullable<DocumentInfo>>((resolve, reject) => {
+            const { id } = modifiedReport;
+
+            if (id) {
+                const report = this.getReport(id);
+
+                if (report) {
+                    const { private_tag:original_private_tag, author_id } = report;
+
+                    if (modifiedReport.hasOwnProperty('private_tag')) {
+                        let total_private_tag: Record<string, Record<string, string>> = {};
+
+                        let currentUserId = this.userService?.getCurrentUserId();
+
+                        if (original_private_tag) {
+                            forEachKVP(original_private_tag, (itemKey: string, itemValue: Record<string, string>) => {
+                                if (itemKey !== currentUserId) {
+                                    total_private_tag[itemKey] = itemValue;
+                                }
+                            })
+                        }
+
+                        if (currentUserId) {
+                            total_private_tag[currentUserId] = modifiedReport['private_tag'];
+                        }
+
+                        modifiedReport = {
+                            ...modifiedReport,
+                            private_tag: total_private_tag,
+                        }
+                    }
+
+                    //populate required fields
+                    if (!modifiedReport['author_id']) {
+                        modifiedReport = {
+                            ...modifiedReport,
+                            author_id,
+                        }
+                    }
+
+                    let reportCopy = Object.assign(ReportInfo, report);
+
+                    reportCopy.isUpdating = true
+
+                    this.addOrUpdateRepoItem<ReportInfo>(reportCopy)
+                }
+
+                this.publishedReportProvider?.update(id, modifiedReport)
+                    .then(document => {
+                        resolve(document)
+                    })
+                    .catch(error => {
+                        reject(error);
+                    });
+            }
+        })
     }
 
     createReport(params: ReportParamType): Promise<Nullable<ReportInfo>> {

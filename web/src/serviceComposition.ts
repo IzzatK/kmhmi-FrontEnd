@@ -70,6 +70,7 @@ import {
 } from "./app.testing/canary";
 import {ScenarioService} from "./app.config/scenarioService";
 import {MockReportProvider} from "./app.testing/canary/providers/mockReportProvider";
+import {PublishedReportProvider} from "./app.core/reports/providers/publishedReportProvider";
 
 
 
@@ -96,6 +97,7 @@ const excerptProvider: IEntityProvider<ExcerptInfo> = new MockExcerptProvider();
 const resourceProvider: IEntityProvider<ResourceInfo> = new MockResourceProvider();
 const pocketProvider: IEntityProvider<PocketMapper> = new PocketProvider();
 const reportProvider: IEntityProvider<ReportInfo> = new ReportProvider();
+const publishedReportProvider: IEntityProvider<DocumentInfo> = new PublishedReportProvider();
 const userGuideProvider: IEntityProvider<UserGuideInfo> = new UserGuideProvider();
 const searchResultsProvider: IEntityProvider<any> = new SearchResultsProvider();
 
@@ -218,6 +220,11 @@ reportProvider.setRepositoryService(repoService);
 reportProvider.setHttpService(httpService);
 reportProvider.start();
 
+publishedReportProvider.setLogService(logService);
+publishedReportProvider.setRepositoryService(repoService);
+publishedReportProvider.setHttpService(httpService);
+publishedReportProvider.start();
+
 // user guide
 userGuideProvider.setLogService(logService);
 userGuideProvider.setRepositoryService(repoService);
@@ -297,6 +304,7 @@ reportService.setRepositoryService(repoService);
 reportService.setSelectionService(selectionService);
 reportService.setUserService(userService);
 reportService.setReportProvider(reportProvider);
+reportService.setPublishedReportProvider(publishedReportProvider);
 reportService.start();
 // user guide service
 userGuideService.setLogService(logService);

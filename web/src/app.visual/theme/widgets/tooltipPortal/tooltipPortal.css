@@ -4,6 +4,10 @@
     color: var(--tooltip-color);
 }
 
+.tooltip-portal.top {
+    margin-top: -8rem;
+}
+
 .tooltip-portal.light {
     background: var(--light-tooltip-bg-color);
     color: var(--light-tooltip-color);
@@ -20,6 +24,16 @@
     border-color: transparent transparent var(--tooltip-bg-color) transparent;
 }
 
+.tooltip-portal.top.portal::after {
+    top: 100%;
+    left: 1.75rem;
+    border-color: var(--tooltip-bg-color) transparent transparent transparent;
+}
+
 .tooltip-portal.light.portal::after {
     border-color: transparent transparent var(--light-tooltip-bg-color) transparent;
+}
+
+.tooltip-portal.light.top.portal::after {
+    border-color: var(--light-tooltip-bg-color) transparent transparent transparent;
 }

@@ -17,6 +17,7 @@ import {DownloadSVG} from "../../../theme/svgs/downloadSVG";
 import {TrashSVG} from "../../../theme/svgs/trashSVG";
 import {PocketSVG} from "../../../theme/svgs/pocketSVG";
 import Portal from "../../../theme/widgets/portal/portal";
+import {TooltipPosition} from "../../../theme/widgets/tooltipPortal/tooltipPortalModel";
 
 class SearchResultsPanelView extends Component<SearchResultsPanelViewProps, SearchResultsPanelViewState> {
     constructor(props: any) {
@@ -212,31 +213,31 @@ class SearchResultsPanelView extends Component<SearchResultsPanelViewProps, Sear
                                                 </ul>
                                             </div>
                                     }>
-                                    <Button className={"bg-transparent"} tooltip={"Add to pocket"} onClick={() => this._setShowAddToPocket(!showAddToPocket)}>
+                                    <Button className={"bg-transparent"} tooltip={"Add to pocket"} onClick={() => this._setShowAddToPocket(!showAddToPocket)} tooltipPosition={TooltipPosition.TOP}>
                                         <PocketSVG className={"small-image-container"}/>
                                     </Button>
                                 </Portal>
                                 {
                                     permissions.canDownload &&
-                                    <Button className={"bg-transparent"} tooltip={"Download"} onClick={() => onDownload(selectedDocument.id, selectedDocument.object_type)}>
+                                    <Button className={"bg-transparent"} tooltip={"Download"} onClick={() => onDownload(selectedDocument.id, selectedDocument.object_type)} tooltipPosition={TooltipPosition.TOP}>
                                         <DownloadSVG className={"small-image-container"}/>
                                     </Button>
                                 }
-                                {/*<Button className={"bg-transparent"} tooltip={"Copy"} onClick={() => onCopy(selectedDocument.id, selectedDocument.object_type)}>*/}
+                                {/*<Button className={"bg-transparent"} tooltip={"Copy"} onClick={() => onCopy(selectedDocument.id, selectedDocument.object_type)} tooltipPosition={TooltipPosition.TOP}>*/}
                                 {/*    <CopyPocketSVG className={"small-image-container"}/>*/}
                                 {/*</Button>*/}
                                 {/*{*/}
                                 {/*    permissions.canModify &&*/}
-                                {/*    <Button className={"bg-transparent"} tooltip={"Edit"} onClick={() => onEdit(selectedDocument.id, selectedDocument.object_type)}>*/}
+                                {/*    <Button className={"bg-transparent"} tooltip={"Edit"} onClick={() => onEdit(selectedDocument.id, selectedDocument.object_type)} tooltipPosition={TooltipPosition.TOP}>*/}
                                 {/*        <EditSVG className={"small-image-container"}/>*/}
                                 {/*    </Button>*/}
                                 {/*}*/}
-                                {/*<Button className={"bg-transparent"} tooltip={"Share"} onClick={() => onShare(selectedDocument.id, selectedDocument.object_type)}>*/}
+                                {/*<Button className={"bg-transparent"} tooltip={"Share"} onClick={() => onShare(selectedDocument.id, selectedDocument.object_type)} tooltipPosition={TooltipPosition.TOP}>*/}
                                 {/*    <ShareSVG className={"small-image-container"}/>*/}
                                 {/*</Button>*/}
                                 {
                                     permissions.canDelete &&
-                                    <Button className={"bg-transparent"} tooltip={"Delete"} onClick={() => onDelete(selectedDocument.id, selectedDocument.object_type)}>
+                                    <Button className={"bg-transparent"} tooltip={"Delete"} onClick={() => onDelete(selectedDocument.id, selectedDocument.object_type)} tooltipPosition={TooltipPosition.TOP}>
                                         <TrashSVG className={"small-image-container"}/>
                                     </Button>
                                 }
