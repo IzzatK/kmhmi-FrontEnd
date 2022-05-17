@@ -1,4 +1,5 @@
 import React from "react";
+import {TooltipPosition} from "../tooltipPortal/tooltipPortalModel";
 
 export enum Justify_Content {
     justify_content_start = 'justify-content-start',
@@ -21,6 +22,7 @@ export type ButtonProps = {
     tooltip?: string;
     light?: boolean;
     highlight?: boolean;
+    tooltipPosition?: TooltipPosition;
 }
 
 export type ButtonState = {

@@ -1,7 +1,7 @@
 import {VisualWrapper} from "../../../framework.visual";
 import {createVisualConnector} from "../../../framework.visual";
 import {CitationType, ReportInfo} from "../../../app.model";
-import {reportService, selectionService} from "../../../serviceComposition";
+import {displayService, documentService, reportService, selectionService} from "../../../serviceComposition";
 import ReportPanelPresenter from "./presenters/reportPanelPresenter";
 import {
     ReportInfoVM,
@@ -11,6 +11,8 @@ import {
 } from "./reportPanelModel";
 import {ReportParamType} from "../../../app.core.api";
 import {createSelector} from "@reduxjs/toolkit";
+import {DocumentPanelId} from "../documentPanel/documentPanelPresenter";
+import {UploadPanelId} from "../uploadPanel/uploadPanelPresenter";
 
 class _ReportPanelWrapper extends VisualWrapper {
     constructor() {
@@ -57,7 +59,49 @@ class _ReportPanelWrapper extends VisualWrapper {
             ...edits
         }
 
-        reportService.updateReport(params);
+        const { scope } = edits;
+
+        if (scope && scope !== "Draft") {
+            reportService.publishReport(params)
+                .then(document => {
+                    if (document) {
+                        const { id } = document;
+
+                        selectionService.setContext("selected-document", id);
+                        selectionService.setContext("selected-report", "");
+                        displayService.pushNode(DocumentPanelId);
+                        displayService.pushNode(UploadPanelId);
+
+                        documentService.fetchDocument(id);
+
+                        const updatedDocument = documentService.getDocument(id);
+
+                        if (!updatedDocument) {
+                            setTimeout(() => {
+                                documentService.fetchDocument(id);
+
+                                const updatedDocument = documentService.getDocument(id);
+
+                                if (!updatedDocument) {
+                                    setTimeout(() => {
+                                        documentService.fetchDocument(id);
+
+                                        const updatedDocument = documentService.getDocument(id);
+
+                                        if (!updatedDocument) {
+                                            setTimeout(() => {
+                                                documentService.fetchDocument(id);
+                                            }, 5000);
+                                        }
+                                    }, 3000);
+                                }
+                            }, 1000);
+                        }
+                    }
+                })
+        } else {
+            reportService.updateReport(params);
+        }
     }
 
     _getSelectedReportId = selectionService.makeGetContext("selected-report");

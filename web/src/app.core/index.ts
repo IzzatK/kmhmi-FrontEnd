@@ -54,6 +54,7 @@ export * from "./reports/converters/getReportArrayResponseConverter";
 export * from "./reports/converters/reportRequestConverter";
 export * from "./reports/converters/reportResponseConverter";
 export * from "./reports/converters/reportStatusResponseConverter";
+export * from "./reports/providers/publishedReportProvider";
 export * from "./reports/providers/reportProvider";
 export * from "./stats/statService";
 export * from "./stats/converters/getStatsRequestConverter";

@@ -87,7 +87,9 @@ class SearchResultsPanelPresenter extends Component<SearchResultsPanelPresenterP
             selectedDocument,
             onDownload,
             onDelete,
-            permissions
+            onAddToPocket,
+            permissions,
+            pockets
         } = this.props;
         const {
             pageWidth
@@ -115,7 +117,9 @@ class SearchResultsPanelPresenter extends Component<SearchResultsPanelPresenterP
                 onEdit={this._onEdit}
                 onShare={this._onShare}
                 onDelete={onDelete}
+                onAddToPocket={onAddToPocket}
                 permissions={permissions}
+                pockets={pockets}
             />
         );
     }

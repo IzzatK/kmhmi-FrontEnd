@@ -24,6 +24,7 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
             selectedNode: undefined,
             editPocketId: "",
             editNoteId: "",
+            showPopup: false,
         }
 
         bindInstanceMethods(this);
@@ -187,7 +188,7 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
 
                     if (nodeVM.type === PocketNodeType.DOCUMENT) {
                         if (onResourceItemSelected) {
-                            onResourceItemSelected(nodeVM.id);
+                            onResourceItemSelected(nodeVM.source_id);
                         }
                     }
                 }
@@ -295,11 +296,21 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
         }
     }
 
-    _onRemoveNote(id: string, pocket_id: string) {
-        const { onDeleteNote } = this.props;
+    _onRemoveNote(note_id: string, pocket_id: string, resource_id?: string, excerpt_id?: string) {
+        const { onDeleteNoteFromExcerpt, onDeleteNoteFromResource, onDeleteNoteFromPocket } = this.props;
 
-        if (onDeleteNote) {
-            onDeleteNote(id, pocket_id);
+        if (excerpt_id) {
+            if (onDeleteNoteFromExcerpt) {
+                onDeleteNoteFromExcerpt(note_id, pocket_id);
+            }
+        } else if (resource_id) {
+            if (onDeleteNoteFromResource) {
+                onDeleteNoteFromResource(note_id, pocket_id);
+            }
+        } else {
+            if (onDeleteNoteFromPocket) {
+                onDeleteNoteFromPocket(note_id, pocket_id);
+            }
         }
     }
 
@@ -357,6 +368,43 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
         }
     }
 
+    _setShowPopup(showPopup: boolean) {
+        this.setState({
+            ...this.state,
+            showPopup
+        })
+    }
+
+    _onDelete() {
+        const { selectedNode } = this.state;
+
+        if (selectedNode) {
+            const { type } = selectedNode;
+
+            switch (type) {
+                case "POCKET":
+                    this._onDeletePocket(selectedNode.id)
+                    break;
+                case "DOCUMENT":
+                    this._onRemoveResource(selectedNode.id, selectedNode.pocket_id)
+                    break;
+                case "EXCERPT":
+                    this._onRemoveExcerpt(selectedNode.id, selectedNode.pocket_id)
+                    break;
+                case "NOTE":
+                    this._onRemoveNote(selectedNode.id, selectedNode.pocket_id, selectedNode.resource_id, selectedNode.excerpt_id)
+                    break;
+                case "REPORT":
+                    this._onRemoveReport(selectedNode.id, selectedNode.pocket_id)
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        this._setShowPopup(false);
+    }
+
     render() {
         const {
             className="",
@@ -365,7 +413,7 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
             expandedPaths,
         } = this.props;
 
-        const { selectedNode } = this.state;
+        const { selectedNode, showPopup } = this.state;
 
         return (
             <PocketsPanelView
@@ -380,16 +428,14 @@ export class PocketsPanelPresenter extends Component<PocketsPanelPresenterProps,
                 onNodeSelected={this._onNodeSelected}
                 onCreateReport={this._onCreateReport}
                 onEditPocket={this._onEditPocket}
-                onDeletePocket={this._onDeletePocket}
                 onDownloadResource={this._onDownloadDocument}
-                onDeleteResource={this._onRemoveResource}
-                onDeleteExcerpt={this._onRemoveExcerpt}
-                onDeleteNote={this._onRemoveNote}
                 onAddNoteToExcerpt={this._onAddNote}
                 onAddNoteToPocket={this._onAddNote}
                 onAddNoteToResource={this._onAddNote}
-                onDeleteReport={this._onRemoveReport}
                 onEditNote={this._onEditNote}
+                showPopup={showPopup}
+                setShowPopup={this._setShowPopup}
+                onDelete={this._onDelete}
             />
         );
     }

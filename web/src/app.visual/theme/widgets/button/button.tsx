@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import './button.css';
 import {TooltipPortal} from "../tooltipPortal/tooltipPortal";
 import {ButtonProps, ButtonState, Justify_Content} from "./buttonModel";
+import {TooltipPosition} from "../tooltipPortal/tooltipPortalModel";
 
 class Button extends Component<ButtonProps, ButtonState> {
 
@@ -20,6 +21,7 @@ class Button extends Component<ButtonProps, ButtonState> {
             tooltip,
             light,
             highlight,
+            tooltipPosition=TooltipPosition.BOTTOM,
         } = this.props;
 
         let cn = 'button user-select-none d-flex align-items-center rounded h-gap-2 p-2 header-3';
@@ -62,7 +64,7 @@ class Button extends Component<ButtonProps, ButtonState> {
         return (
             tooltip ?
                 (
-                    <TooltipPortal light={true} portalContent={
+                    <TooltipPortal position={tooltipPosition} light={true} isButton={true} portalContent={
                         tooltip &&
                         <div>{tooltip}</div>
                     }>

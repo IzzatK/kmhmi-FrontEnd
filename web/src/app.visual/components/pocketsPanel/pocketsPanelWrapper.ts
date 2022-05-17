@@ -124,23 +124,25 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
 
         this.mapDispatchToProps = (dispatch: any): PocketsPanelAppDispatchProps => {
             return {
-                onAddExcerptToReport: (event: React.DragEvent<HTMLDivElement>, id: string, report_id: string) => this._onAddExcerptToReport(event, id, report_id),
-                onPocketItemSelected: (id: string) => this.onPocketItemSelected(id),
+                onAddExcerptToReport: (event: React.DragEvent<HTMLDivElement>, excerpt_id: string, report_id: string) => this._onAddExcerptToReport(event, excerpt_id, report_id),
+                onPocketItemSelected: (pocket_id: string) => this.onPocketItemSelected(pocket_id),
                 onPocketItemToggle: (id: string, expanded: boolean, type: string | undefined) => this.onPocketItemToggle(id, expanded, type),
                 onCreatePocket: (title: string) => pocketService.addOrUpdatePocket({title}),
-                onDownloadResource: (id: string) => this._onDownloadDocument(id),
-                onDownloadPocket: (id: string) => this._onDownloadPocket(id),
+                onDownloadResource: (resource_id: string) => this._onDownloadDocument(resource_id),
+                onDownloadPocket: (pocket_id: string) => this._onDownloadPocket(pocket_id),
                 onUpdatePocket: (edits: PocketUpdateParams) => _PocketsPanelWrapper._onUpdatePocket(edits),
-                onDeleteExcerpt: (id: string, pocket_id: string) => this._onRemoveExcerpt(id, pocket_id),
-                onDeleteResource: (id: string, pocket_id: string) => this._onRemoveResource(id, pocket_id),
-                onDeleteNote: (id: string, pocket_id: string) => this._onRemoveNote(id, pocket_id),
+                onDeleteExcerpt: (excerpt_id: string, pocket_id: string) => this._onRemoveExcerpt(excerpt_id, pocket_id),
+                onDeleteResource: (resource_id: string, pocket_id: string) => this._onRemoveResource(resource_id, pocket_id),
+                onDeleteNoteFromExcerpt: (note_id: string, pocket_id: string) => this._onRemoveNoteFromExcerpt(note_id, pocket_id),
+                onDeleteNoteFromResource: (note_id: string, pocket_id: string) => this._onRemoveNoteFromResource(note_id, pocket_id),
+                onDeleteNoteFromPocket: (note_id: string, pocket_id: string) => this._onRemoveNoteFromPocket(note_id, pocket_id),
                 onSearch: () => userService.fetchUsers(),
                 onSearchTextChanged: (value: string) => userService.setSearchText(value),
-                onDeletePocket: (id: string) => this._onRemovePocket(id),
-                onCreateReport: (id: string) => _PocketsPanelWrapper._onCreateReport(id),
-                onDeleteReport: (id: string, pocket_id: string) => this._onRemoveReport(id, pocket_id),
-                onReportItemSelected: (id: string) => this._onReportItemSelected(id),
-                onResourceItemSelected: (id: string) => this._onDocumentItemSelected(id),
+                onDeletePocket: (pocket_id: string) => this._onRemovePocket(pocket_id),
+                onCreateReport: (pocket_id: string) => _PocketsPanelWrapper._onCreateReport(pocket_id),
+                onDeleteReport: (report_id: string, pocket_id: string) => this._onRemoveReport(report_id, pocket_id),
+                onReportItemSelected: (report_id: string) => this._onReportItemSelected(report_id),
+                onResourceItemSelected: (resource_id: string) => this._onDocumentItemSelected(resource_id),
                 onAddNote: (note: NoteVM) => this._onSaveNote(note),
             };
         }
@@ -263,6 +265,7 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
                         pocket_id: pocket.id,
                         isUpdating: pocket.isUpdating,
                         selected: resource.id === selectedDocumentId,
+                        source_id: resource.source_id,
                     }
 
                     forEach(resourceMapper.notes, (note: NoteInfo) => {
@@ -346,21 +349,21 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
 
 
 
-    onPocketItemSelected(id: string) {
-        selectionService.setContext("selected-pocket-node-path", id);
+    onPocketItemSelected(pocket_id: string) {
+        selectionService.setContext("selected-pocket-node-path", pocket_id);
     }
 
-    _onReportItemSelected(id: string) {
-        selectionService.setContext("selected-report", id);
+    _onReportItemSelected(report_id: string) {
+        selectionService.setContext("selected-report", report_id);
         selectionService.setContext("selected-document", "");
         displayService.pushNode(ReportPanelId);
     }
 
-    _onDocumentItemSelected(id: string) {
-        selectionService.setContext("selected-document", id);
+    _onDocumentItemSelected(document_id: string) {
+        selectionService.setContext("selected-document", document_id);
         selectionService.setContext("selected-report", "");
         displayService.pushNode(DocumentPanelId);
-        documentService.fetchDocument(id);
+        documentService.fetchDocument(document_id);
     }
 
     onPocketItemToggle(id: string, expanded: boolean, type: string | undefined) {
@@ -436,8 +439,16 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
         void pocketService.removeExcerptFromResource(id, pocket_id);
     }
 
-    private _onRemoveNote(id: string, pocket_id: string) {
+    private _onRemoveNoteFromExcerpt(id: string, pocket_id: string) {
         void pocketService.removeNoteFromExcerpt(id, pocket_id);
+    }
+
+    private _onRemoveNoteFromResource(id: string, pocket_id: string) {
+        void pocketService.removeNoteFromResource(id, pocket_id);
+    }
+
+    private _onRemoveNoteFromPocket(id: string, pocket_id: string) {
+        void pocketService.removeNoteFromPocket(id, pocket_id);
     }
 
     private _onRemoveResource(id: string, pocket_id: string) {
@@ -480,8 +491,8 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
 
     }
 
-    private _onAddExcerptToReport(event: React.DragEvent<HTMLDivElement>, id: string, resource_id: string) {
-        const excerpt = pocketService.getExcerpt(id);
+    private _onAddExcerptToReport(event: React.DragEvent<HTMLDivElement>, excerpt_id: string, resource_id: string) {
+        const excerpt = pocketService.getExcerpt(excerpt_id);
 
         const resource = pocketService.getResource(resource_id);
 
@@ -489,7 +500,7 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
             const { text } = excerpt;
 
             event.dataTransfer.setData("text/plain", "\"" + text + "\"");
-            event.dataTransfer.setData("text/excerpt/excerpt_id", id);
+            event.dataTransfer.setData("text/excerpt/excerpt_id", excerpt_id);
 
             if (resource) {
                 const { source_author, title, source_publication_date} = resource;
@@ -522,10 +533,10 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
         }
     }
 
-    private _onDownloadDocument(id: string) {
+    private _onDownloadDocument(document_id: string) {
         const userProfile = authenticationService.getUserProfile();
         const token = authenticationService.getToken();
-        const document = documentService.getDocument(id);
+        const document = documentService.getDocument(document_id);
 
         if (userProfile && document) {
             const { username, id, email, firstName, lastName } = userProfile;
@@ -539,12 +550,12 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
                 window.open(original_url);
             }, false);
 
-            xhr.setRequestHeader("km-token", `bearer ${token}` );
-            xhr.setRequestHeader("km-user-name", username );
-            xhr.setRequestHeader("km-user-id", id );
-            xhr.setRequestHeader("km-email", email );
-            xhr.setRequestHeader("km-first-name", firstName );
-            xhr.setRequestHeader("km-last-name", lastName );
+            xhr.setRequestHeader("Authorization", `bearer ${token}` );
+            // xhr.setRequestHeader("km-user-name", username );
+            // xhr.setRequestHeader("km-user-id", id );
+            // xhr.setRequestHeader("km-email", email );
+            // xhr.setRequestHeader("km-first-name", firstName );
+            // xhr.setRequestHeader("km-last-name", lastName );
 
             xhr.send();
         }

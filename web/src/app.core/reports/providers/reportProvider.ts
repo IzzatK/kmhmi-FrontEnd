@@ -7,7 +7,6 @@ import {ReportStatusResponseConverter} from "../converters/reportStatusResponseC
 import {GetReportArrayRequestConverter} from "../converters/getReportArrayRequestConverter";
 import {GetReportArrayResponseConverter} from "../converters/getReportArrayResponseConverter";
 import {CreateReportRequestConverter} from "../converters/createReportRequestConverter";
-import {DocumentUpdateParams} from "../../../app.visual/components/documentPanel/documentPanelModel";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -92,51 +91,18 @@ export class ReportProvider extends EntityProvider<ReportInfo> {
 
     update(id: string, uiRequestData: any): Promise<Nullable<ReportInfo>> {
 
-        const { scope } = uiRequestData;
-
-        if (scope && scope !== "Draft") {
-            return new Promise((resolve, reject) => {
-                    this.sendPut(id,
-                        () => this.reportRequestConverter.convert(uiRequestData),
-                        (responseData, errorHandler) => this.reportResponseConverter.convert(responseData, errorHandler))
-                        .then(report => {
-                            this.httpService?.createPOST(`${this.baseUrl}/${id}/publish`, null)
-                                .then((data: any) => {
-
-                                    // const { id:type } = data;
-                                    //
-                                    // const params: DocumentUpdateParams = {
-                                    //     id,
-                                    //     scope
-                                    // }
-
-                                    resolve(report);
-                                })
-                                .catch((error: any) => {
-                                    reject(error);
-                                })
-                        })
-                        .catch(error => {
-                            reject(error);
-                        });
-                }
-            )
-        } else {
-            return new Promise((resolve, reject) => {
-                    this.sendPut(id,
-                        () => this.reportRequestConverter.convert(uiRequestData),
-                        (responseData, errorHandler) => this.reportResponseConverter.convert(responseData, errorHandler))
-                        .then(pocket => {
-                            resolve(pocket);
-                        })
-                        .catch(error => {
-                            reject(error);
-                        });
-                }
-            )
-        }
-
-
+        return new Promise((resolve, reject) => {
+                this.sendPut(id,
+                    () => this.reportRequestConverter.convert(uiRequestData),
+                    (responseData, errorHandler) => this.reportResponseConverter.convert(responseData, errorHandler))
+                    .then(pocket => {
+                        resolve(pocket);
+                    })
+                    .catch(error => {
+                        reject(error);
+                    });
+            }
+        )
     }
 
     remove(id: string): Promise<Nullable<ReportInfo>> {

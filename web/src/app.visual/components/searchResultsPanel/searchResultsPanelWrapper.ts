@@ -25,14 +25,14 @@ import {
 import {MenuItemVM} from "../../../framework.visual";
 import {
     DocumentInfoVM,
-    ObjectType,
+    ObjectType, PocketVM,
     ReferenceInfoVM, SearchResultsPanelAppDispatchProps,
     SearchResultsPanelAppStateProps,
     SortPropertyInfoVM
 } from "./searchResultsModel";
 import {DOCUMENT_PREVIEW_VIEW_ID} from "../systemToolbar/systemToolbarPresenter";
 import SearchResultsPanelPresenter from "./presenters/searchResultsPanelPresenter";
-import {PERMISSION_ENTITY, PERMISSION_OPERATOR} from "../../../app.core.api";
+import {PERMISSION_ENTITY, PERMISSION_OPERATOR, PocketParamType, ResourceParamType} from "../../../app.core.api";
 import {SearchResultInfo} from "../../../app.model";
 
 class _SearchResultsPanelWrapper extends VisualWrapper {
@@ -55,6 +55,7 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
                 userLookup: userService.getActiveUsers(),
                 selectedDocument: this.getSelectedDocumentVM(state),
                 permissions: this.getPermissions(state),
+                pockets: this.getPockets(state),
             };
         }
 
@@ -65,6 +66,7 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
                 onSortSelected: (id: string) => this.onSortSelected(id),
                 onDelete: (id: string, object_type: ObjectType) => this._onDelete(id, object_type),
                 onDownload: (id: string, object_type: ObjectType) => this._onDownload(id, object_type),
+                onAddToPocket: (id: string, object_type: ObjectType, pocketId: string) => this._onAddToPocket(id, object_type, pocketId),
             };
         }
 
@@ -111,12 +113,12 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
                         window.open(original_url);
                     }, false);
 
-                    xhr.setRequestHeader("km-token", `bearer ${token}` );
-                    xhr.setRequestHeader("km-user-name", username );
-                    xhr.setRequestHeader("km-user-id", id );
-                    xhr.setRequestHeader("km-email", email );
-                    xhr.setRequestHeader("km-first-name", firstName );
-                    xhr.setRequestHeader("km-last-name", lastName );
+                    xhr.setRequestHeader("Authorization", `bearer ${token}` );
+                    // xhr.setRequestHeader("km-user-name", username );
+                    // xhr.setRequestHeader("km-user-id", id );
+                    // xhr.setRequestHeader("km-email", email );
+                    // xhr.setRequestHeader("km-first-name", firstName );
+                    // xhr.setRequestHeader("km-last-name", lastName );
 
                     xhr.send();
                 }
@@ -137,16 +139,44 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
                         window.open(original_url);
                     }, false);
 
-                    xhr.setRequestHeader("km-token", `bearer ${token}` );
-                    xhr.setRequestHeader("km-user-name", username );
-                    xhr.setRequestHeader("km-user-id", id );
-                    xhr.setRequestHeader("km-email", email );
-                    xhr.setRequestHeader("km-first-name", firstName );
-                    xhr.setRequestHeader("km-last-name", lastName );
+                    xhr.setRequestHeader("Authorization", `bearer ${token}` );
+                    // xhr.setRequestHeader("km-user-name", username );
+                    // xhr.setRequestHeader("km-user-id", id );
+                    // xhr.setRequestHeader("km-email", email );
+                    // xhr.setRequestHeader("km-first-name", firstName );
+                    // xhr.setRequestHeader("km-last-name", lastName );
 
                     xhr.send();
                 }
                 break;
+        }
+    }
+
+    _onAddToPocket(id: string, object_type: ObjectType, pocketId: string) {
+
+        const resourceParams: ResourceParamType = {
+            source_id: id
+        }
+
+        if (object_type !== ObjectType.PocketInfo) {
+            if (pocketId !== "") {
+                const pocketParams: PocketParamType = {
+                    id: pocketId
+                }
+
+                pocketService.addResourceToPocket(resourceParams, pocketParams);
+            } else {
+                pocketService.addOrUpdatePocket({title: "New Pocket"})
+                    .then(pocketMapper => {
+                        if (pocketMapper) {
+                            const pocketParams: PocketParamType = {
+                                id: pocketMapper.id
+                            }
+
+                            pocketService.addResourceToPocket(resourceParams, pocketParams);
+                        }
+                    })
+            }
         }
     }
 
@@ -563,6 +593,22 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
                 canDownload: authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.DOWNLOAD, currentUserId, uploadedBy),
                 canModify: authorizationService.hasPermission(PERMISSION_ENTITY.DOCUMENT, PERMISSION_OPERATOR.MODIFY, currentUserId, uploadedBy)
             }
+        }
+    )
+
+    getPockets = createSelector(
+        [() => pocketService.getPocketMappers()],
+        (pocketMappers) => {
+            let itemVMs: Record<string, PocketVM> = {};
+
+            forEachKVP(pocketMappers, (itemKey: string, itemValue: PocketMapper) => {
+                itemVMs[itemKey] = {
+                    ["id"]: itemValue.pocket.id,
+                    ["title"]: itemValue.pocket.title,
+                };
+            })
+
+            return itemVMs;
         }
     )
 }

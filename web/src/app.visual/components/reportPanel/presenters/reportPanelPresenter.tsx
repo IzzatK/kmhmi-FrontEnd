@@ -22,7 +22,7 @@ class ReportPanelPresenter extends Component<ReportPanelPresenterProps, ReportPa
                     ],
                 },
             ],
-            editor: {},
+            editor: {"children":[{"children":[{"text":""}]}],"operations":[],"selection":null,"marks":null,"history":{"undos":[],"redos":[]}},
         }
     }
 
