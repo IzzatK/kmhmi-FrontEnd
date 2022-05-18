@@ -343,6 +343,145 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
                 })
             });
 
+            // forEach(pocketMappers, (pocketMapper: PocketMapper) => {
+            //     const pocket = pocketMapper.pocket;
+            //
+            //     let pocketNodeChildNodes: PocketNodeVM[] = [];
+            //
+            //     forEach(pocketMapper.notes, (note: NoteInfo) => {
+            //         const notePath = `${pocketPath}/${note.id}`;
+            //
+            //         let nodeVM: PocketNodeVM = {
+            //             id: note.id,
+            //             type: PocketNodeType.NOTE,
+            //             path: notePath,
+            //             title: note.text,
+            //             content: '',
+            //             childNodes: [],
+            //             pocket_id: pocket.id,
+            //             isUpdating: pocket.isUpdating,
+            //             selected: note.id === selectedNoteId,
+            //         }
+            //
+            //         pocketNodeChildNodes.push(nodeVM)
+            //     })
+            //
+            //     forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
+            //         const resource = resourceMapper.resource;
+            //         const resourcePath = `${pocketPath}/${resource.id}`;
+            //
+            //         let nodeVM: PocketNodeVM = {
+            //             id: resource.id,
+            //             type: PocketNodeType.DOCUMENT,
+            //             path: resourcePath,
+            //             title: resource.source_title || '',
+            //             content: '',
+            //             childNodes: [],
+            //             pocket_id: pocket.id,
+            //             isUpdating: pocket.isUpdating,
+            //             selected: resource.id === selectedDocumentId,
+            //             source_id: resource.source_id,
+            //         }
+            //
+            //         pocketNodeChildNodes.push(nodeVM)
+            //
+            //         forEach(resourceMapper.notes, (note: NoteInfo) => {
+            //             const notePath = `${resourcePath}/${note.id}`;
+            //
+            //             let nodeVM: PocketNodeVM = {
+            //                 id: note.id,
+            //                 type: PocketNodeType.NOTE,
+            //                 path: notePath,
+            //                 title: note.text,
+            //                 content: '',
+            //                 childNodes: [],
+            //                 pocket_id: pocket.id,
+            //                 resource_id: resource.id,
+            //                 isUpdating: pocket.isUpdating,
+            //                 selected: note.id === selectedNoteId,
+            //             }
+            //
+            //             pocketNodeChildNodes.push(nodeVM)
+            //         })
+            //
+            //         forEach(resourceMapper.excerptMappers, (excerptMapper: ExcerptMapper) => {
+            //             const excerpt = excerptMapper.excerpt;
+            //             const excerptPath = `${resourcePath}/${excerpt.id}`;
+            //
+            //             let nodeVM: PocketNodeVM = {
+            //                 id: excerpt.id,
+            //                 type: PocketNodeType.EXCERPT,
+            //                 path: excerptPath,
+            //                 title: excerpt.text || '',
+            //                 content: '',
+            //                 childNodes: [],
+            //                 pocket_id: pocket.id,
+            //                 isUpdating: pocket.isUpdating,
+            //                 resource_id: resource.id,
+            //                 selected: excerpt.id === selectedExcerptId,
+            //             }
+            //
+            //             pocketNodeChildNodes.push(nodeVM)
+            //
+            //             forEach(excerptMapper.notes, (note: NoteInfo) => {
+            //                 const notePath = `${excerptPath}/${note.id}`;
+            //
+            //                 let nodeVM: PocketNodeVM = {
+            //                     id: note.id,
+            //                     type: PocketNodeType.NOTE,
+            //                     path: notePath,
+            //                     title: note.text,
+            //                     content: '',
+            //                     childNodes: [],
+            //                     pocket_id: pocket.id,
+            //                     resource_id: resource.id,
+            //                     excerpt_id: excerpt.id,
+            //                     isUpdating: pocket.isUpdating,
+            //                     selected: note.id === selectedNoteId,
+            //                 }
+            //
+            //                 pocketNodeChildNodes.push(nodeVM)
+            //             })
+            //
+            //         })
+            //     });
+            //
+            //     forEach(pocket.report_ids, (report_id: string) => {
+            //         if (reportInfos[report_id]) {
+            //             const reportInfo = reportInfos[report_id];
+            //             const reportPath = `/${pocket.id}/${reportInfo.id}`;
+            //
+            //             let nodeVM: PocketNodeVM = {
+            //                 id: reportInfo.id,
+            //                 type: PocketNodeType.REPORT,
+            //                 path: reportPath,
+            //                 title: reportInfo.title,
+            //                 content: '',
+            //                 childNodes: [],
+            //                 pocket_id: pocket.id,
+            //                 isUpdating: reportInfo.isUpdating || false,
+            //                 selected: reportInfo.id === selectedReportId,
+            //             }
+            //
+            //             pocketNodeChildNodes.push(nodeVM)
+            //         }
+            //     })
+            //
+            //     // add the pocket
+            //     const pocketPath = `/${pocket.id}`;
+            //     nodeVMs[pocketPath] = {
+            //         id: pocket.id,
+            //         type: PocketNodeType.POCKET,
+            //         path: `/${pocket.id}`,
+            //         title: pocket.title || '',
+            //         content: '',
+            //         childNodes: pocketNodeChildNodes,
+            //         pocket_id: pocket.id,
+            //         isUpdating: pocket.isUpdating,
+            //         selected: pocket.id === selectedPocketId,
+            //     }
+            // });
+
             return nodeVMs;
         }
     );
@@ -534,28 +673,30 @@ class _PocketsPanelWrapper extends VisualWrapper<PocketSliceState, PocketCaseRed
     }
 
     private _onDownloadDocument(document_id: string) {
-        const userProfile = authenticationService.getUserProfile();
         const token = authenticationService.getToken();
         const document = documentService.getDocument(document_id);
 
-        if (userProfile && document) {
-            const { username, id, email, firstName, lastName } = userProfile;
+        if (document) {
             const { original_url } = document;
 
-            let xhr = new XMLHttpRequest;
+            let xhr = new XMLHttpRequest();
 
             xhr.open( "GET", original_url || "");
 
-            xhr.addEventListener( "load", function(){
-                window.open(original_url);
-            }, false);
-
             xhr.setRequestHeader("Authorization", `bearer ${token}` );
-            // xhr.setRequestHeader("km-user-name", username );
-            // xhr.setRequestHeader("km-user-id", id );
-            // xhr.setRequestHeader("km-email", email );
-            // xhr.setRequestHeader("km-first-name", firstName );
-            // xhr.setRequestHeader("km-last-name", lastName );
+
+            xhr.responseType = "blob";
+            xhr.onload = function () {
+                //Create a Blob from the PDF Stream
+                const file = new Blob([xhr.response], { type: "application/pdf" });
+                //Build a URL from the file
+                const fileURL = URL.createObjectURL(file);
+                //Open the URL on new Window
+                const pdfWindow = window.open();
+                if (pdfWindow) {
+                    pdfWindow.location.href = fileURL;
+                }
+            };
 
             xhr.send();
         }
