@@ -77,23 +77,31 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
     _onDelete(id: string, object_type: ObjectType) {
         switch (object_type) {
             case ObjectType.PocketInfo:
-                selectionService.setContext("selected-pocket", "");
+                if (id === selectionService.getContext("selected-pocket")) {
+                    selectionService.setContext("selected-pocket", "");
+                }
+
                 pocketService.removePocket(id);
                 break;
             case ObjectType.ReportInfo:
-                selectionService.setContext("selected-report", "");
+                if (id === selectionService.getContext("selected-report")) {
+                    selectionService.setContext("selected-report", "");
+                }
+
                 reportService.removeReport(id)
                 break;
             case ObjectType.DocumentInfo:
             default:
-                selectionService.setContext("selected-document", "");
+                if (id === selectionService.getContext("selected-document")) {
+                    selectionService.setContext("selected-document", "");
+                }
+
                 documentService.removeDocument(id);
                 break;
         }
     }
 
     _onDownload(id: string, object_type: ObjectType) {
-        const userProfile = authenticationService.getUserProfile();
         const token = authenticationService.getToken();
 
         switch (object_type) {
@@ -104,24 +112,27 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
 
                 const report = reportService.getReport(id);
 
-                if (userProfile && report) {
-                    const { username, id, email, firstName, lastName } = userProfile;
+                if (report) {
                     const { original_url } = report;
 
                     let xhr = new XMLHttpRequest();
 
                     xhr.open( "GET", original_url || "");
 
-                    xhr.addEventListener( "load", function(){
-                        window.open(original_url);
-                    }, false);
-
                     xhr.setRequestHeader("Authorization", `bearer ${token}` );
-                    // xhr.setRequestHeader("km-user-name", username );
-                    // xhr.setRequestHeader("km-user-id", id );
-                    // xhr.setRequestHeader("km-email", email );
-                    // xhr.setRequestHeader("km-first-name", firstName );
-                    // xhr.setRequestHeader("km-last-name", lastName );
+
+                    xhr.responseType = "blob";
+                    xhr.onload = function () {
+                        //Create a Blob from the PDF Stream
+                        const file = new Blob([xhr.response], { type: "application/pdf" });
+                        //Build a URL from the file
+                        const fileURL = URL.createObjectURL(file);
+                        //Open the URL on new Window
+                        const pdfWindow = window.open();
+                        if (pdfWindow) {
+                            pdfWindow.location.href = fileURL;
+                        }
+                    };
 
                     xhr.send();
                 }
@@ -130,39 +141,27 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
             default:
                 const documentInfo = documentService.getDocument(id);
 
-                if (userProfile && documentInfo) {
-                    const { username, id, email, firstName, lastName } = userProfile;
+                if (documentInfo) {
                     const { original_url } = documentInfo;
 
                     let xhr = new XMLHttpRequest();
 
                     xhr.open( "GET", original_url || "", true);
 
-                    xhr.addEventListener( "load", function(){
-                        window.open(original_url);
-                    }, false);
-
                     xhr.setRequestHeader("Authorization", `bearer ${token}` );
-                    // xhr.setRequestHeader("km-user-name", username );
-                    // xhr.setRequestHeader("km-user-id", id );
-                    // xhr.setRequestHeader("km-email", email );
-                    // xhr.setRequestHeader("km-first-name", firstName );
-                    // xhr.setRequestHeader("km-last-name", lastName );
 
-                    // xhr.responseType = "blob";
-                    // xhr.onload = function () {
-                    //     //Convert the Byte Data to BLOB object.
-                    //     let blob = new Blob([xhr.response], { type: "application/octetstream" });
-                    //
-                    //     let url = window.URL || window.webkitURL;
-                    //     let link = url.createObjectURL(blob);
-                    //     let a = document.createElement("a");
-                    //     a.setAttribute("download", original_url);
-                    //     a.setAttribute("href", link);
-                    //     document.body.appendChild(a);
-                    //     a.click();
-                    //     document.body.removeChild(a);
-                    // };
+                    xhr.responseType = "blob";
+                    xhr.onload = function () {
+                        //Create a Blob from the PDF Stream
+                        const file = new Blob([xhr.response], { type: "application/pdf" });
+                        //Build a URL from the file
+                        const fileURL = URL.createObjectURL(file);
+                        //Open the URL on new Window
+                        const pdfWindow = window.open();
+                        if (pdfWindow) {
+                            pdfWindow.location.href = fileURL;
+                        }
+                    };
 
                     xhr.send();
                 }

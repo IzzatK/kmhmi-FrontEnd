@@ -95,8 +95,6 @@ export class DocumentResponseConverter extends Converter<any, DocumentInfo>{
         if (Object.keys(statusObject).length !== 0) {
             const { stage, status:upload_status, version } = statusObject;
 
-            debugger;
-
             if (stage <= 10) {
                 status = StatusType.CREATED;
             } else if (stage <= 20) {

@@ -83,7 +83,10 @@ class DocumentPanel extends VisualWrapper {
     }
 
     _onRemoveDocument(id: string) {
-        selectionService.setContext("selected-document", "");
+        if (id === selectionService.getContext("selected-document")) {
+            selectionService.setContext("selected-document", "");
+        }
+
         documentService.removeDocument(id)
     }
 

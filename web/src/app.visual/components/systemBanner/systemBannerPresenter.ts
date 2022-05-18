@@ -89,13 +89,6 @@ class SystemBanner extends VisualWrapper {
     };
 
     onShowHelp = () => {
-        let userProfile = authenticationService.getUserProfile();
-        let username = userProfile.username;
-        let id = userProfile.id;
-        let email = userProfile.email;
-        let firstName = userProfile.firstName;
-        let lastName = userProfile.lastName;
-
         let preview_url = this.getHelpDocument();
 
         let token = authenticationService.getToken();
@@ -104,16 +97,20 @@ class SystemBanner extends VisualWrapper {
 
         xhr.open( "GET", preview_url || "", true);
 
-        xhr.addEventListener( "load", function(){
-            window.open(preview_url);
-        }, false);
-
         xhr.setRequestHeader("Authorization", `bearer ${token}` );
-        // xhr.setRequestHeader("km-user-name", username );
-        // xhr.setRequestHeader("km-user-id", id );
-        // xhr.setRequestHeader("km-email", email );
-        // xhr.setRequestHeader("km-first-name", firstName );
-        // xhr.setRequestHeader("km-last-name", lastName );
+
+        xhr.responseType = "blob";
+        xhr.onload = function () {
+            //Create a Blob from the PDF Stream
+            const file = new Blob([xhr.response], { type: "application/pdf" });
+            //Build a URL from the file
+            const fileURL = URL.createObjectURL(file);
+            //Open the URL on new Window
+            const pdfWindow = window.open();
+            if (pdfWindow) {
+                pdfWindow.location.href = fileURL;
+            }
+        };
 
         xhr.send();
     }
