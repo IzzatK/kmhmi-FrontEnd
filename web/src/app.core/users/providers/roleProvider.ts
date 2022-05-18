@@ -6,6 +6,9 @@ import { GetSingleRoleResponseConverter } from "../converters/roles/getSingleRol
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 export class RoleProvider extends EntityProvider<RoleInfo> {
+    static getSingle() {
+        throw new Error("Method not implemented.");
+    }
 
     baseUrl: string = `${serverUrl}/users/-role-function`;
     public static class: string = 'RoleProvider';
