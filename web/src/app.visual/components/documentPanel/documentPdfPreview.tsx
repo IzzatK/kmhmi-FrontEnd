@@ -62,7 +62,7 @@ function DocumentPdfPreview(props: DocumentPdfPreviewProps) {
         let firstName = userProfile.firstName;
         let lastName = userProfile.lastName;
 
-        let xhr = new XMLHttpRequest;
+        let xhr = new XMLHttpRequest();
 
         xhr.open( "GET", original_url || "");
 

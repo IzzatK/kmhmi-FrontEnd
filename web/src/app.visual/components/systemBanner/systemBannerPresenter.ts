@@ -100,9 +100,9 @@ class SystemBanner extends VisualWrapper {
 
         let token = authenticationService.getToken();
 
-        let xhr = new XMLHttpRequest;
+        let xhr = new XMLHttpRequest();
 
-        xhr.open( "GET", preview_url || "");
+        xhr.open( "GET", preview_url || "", true);
 
         xhr.addEventListener( "load", function(){
             window.open(preview_url);

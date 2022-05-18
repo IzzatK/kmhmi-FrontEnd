@@ -33,9 +33,9 @@ export class PublishedReportProvider extends EntityProvider<DocumentInfo> {
                     (responseData, errorHandler) => this.reportStatusResponseConverter.convert(responseData, errorHandler))
                     .then(report => {
                         this.httpService?.createPOST(`${this.baseUrl}/${id}/publish`, null)
-                            .then((data: any) => {
+                            .then(status => {
 
-                                const { type:id } = data;
+                                const { type:id } = status;
 
                                 const document = new DocumentInfo(id);
 

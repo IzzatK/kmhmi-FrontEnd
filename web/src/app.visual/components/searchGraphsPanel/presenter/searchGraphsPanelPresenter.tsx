@@ -30,6 +30,9 @@ class SearchGraphsPanelPresenter extends Component<SearchGraphsPanelPresenterPro
             docTypeData,
             isExpanded,
             onSearchParamChanged,
+            isLoading,
+            hasError,
+            errorMessage
         } = this.props;
 
         const { isAlternate } = this.state;
@@ -46,6 +49,9 @@ class SearchGraphsPanelPresenter extends Component<SearchGraphsPanelPresenterPro
                 isExpanded={isExpanded}
                 isAlternate={isAlternate}
                 onToggleAlternate={this._onToggleAlternate}
+                isLoading={isLoading}
+                hasError={hasError}
+                errorMessage={errorMessage}
             />
         );
     }

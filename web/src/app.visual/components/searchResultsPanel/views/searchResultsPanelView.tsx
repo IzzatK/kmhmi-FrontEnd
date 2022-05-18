@@ -169,20 +169,18 @@ class SearchResultsPanelView extends Component<SearchResultsPanelViewProps, Sear
                     </CSSTransition>
                     {
                         isLoading &&
-                        <div className={"position-absolute exclude-item mr-4"} style={{top: '0', right: '0', bottom: '0', left:'0'}}>
+                        <div className={"position-absolute w-100 h-100 d-flex flex-fill"} style={{top: '0', right: '0', bottom: '0', left:'0'}}>
                             <LoadingIndicator/>
                         </div>
                     }
                     {
-                        hasError &&
-                        <div className={"position-absolute exclude-item mr-4"} style={{top: '0', right: '0', bottom: '0', left:'0'}}>
-                            <div className={'w-100 h-100 d-flex flex-fill align-items-center justify-content-center text-secondary'}>
-                                <div className={'text-pre-wrap'} > {errorMessage}</div>
-                            </div>
+                        (hasError || errorMessage) &&
+                        <div className={'w-100 h-100 d-flex flex-fill align-items-center justify-content-center text-secondary display-1 text-pre-wrap pb-5'}>
+                            {errorMessage}
                         </div>
                     }
                     {
-                        selectedDocument &&
+                        (selectedDocument && selectedDocument.scope !== "Draft") &&
                         <div className={"banner bg-selected d-flex justify-content-between w-100 mt-0 py-2 px-4 h-gap-3"}>
                             <div className={"d-flex h-gap-2 align-items-center overflow-hidden text-primary"}>
                                 <div className={"text text-break overflow-hidden text-nowrap font-weight-semi-bold display-4"}>{selectedDocument.title}</div>

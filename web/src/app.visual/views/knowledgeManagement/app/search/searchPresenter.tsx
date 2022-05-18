@@ -1,8 +1,7 @@
 import React from 'react';
-import {displayService} from "../../../../../serviceComposition";
-import {VisualWrapper} from '../../../../../framework.visual/extras/visualWrapper';
+import {VisualWrapper} from '../../../../../framework.visual';
 import {SearchView} from "./searchView";
-import {createVisualConnector} from "../../../../../framework.visual/connectors/visualConnector";
+import {createVisualConnector} from "../../../../../framework.visual";
 
 class Search extends VisualWrapper {
     constructor(props: any) {
@@ -17,8 +16,6 @@ class Search extends VisualWrapper {
             visible: true,
             appearClass: 'fadeIn',
             enterClass: 'fadeIn',
-            // exitClass: '',
-            // timeout: 0
         };
 
         this.mapDispatchToProps = (dispatch: any) => {
@@ -29,7 +26,7 @@ class Search extends VisualWrapper {
 
         this.mapStateToProps = (state: any, props: any) => {
             return {
-                // toolsVisible: displayService.getContainer('search-banner-tools').currentNodeId
+
             }
         }
     }

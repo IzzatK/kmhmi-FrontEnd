@@ -523,6 +523,8 @@ export class PocketService extends Plugin implements IPocketService {
                 if (note) {
                     excerptParams.authorId = authorId;
 
+                    excerptParams.noteIds = [note.id];
+
                     this.addOrUpdateExcerpt(excerptParams)
                         .then(excerpt => {
                             if (excerpt) {
@@ -538,14 +540,12 @@ export class PocketService extends Plugin implements IPocketService {
                                         forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
                                             if (resourceMapper.resource.source_id === resourceParams.source_id) {
                                                 resource = this.getResource(resourceMapper.resource.id);
-                                            }
 
-                                            if (resourceMapper.resource.id === resourceParams.id) {
-                                                forEach(resourceMapper.excerptMappers, (excerptMapper: ExcerptMapper) => {
-                                                    if (excerptMapper.excerpt.id === excerpt.id) {
-                                                        excerptMapper.excerpt.noteIds.push(note.id)
-                                                    }
-                                                });
+                                                // forEach(resourceMapper.excerptMappers, (excerptMapper: ExcerptMapper) => {
+                                                //     if (excerptMapper.excerpt.id === excerpt.id) {
+                                                //         excerptMapper.excerpt.noteIds.push(note.id)
+                                                //     }
+                                                // });
                                             }
                                         });
 

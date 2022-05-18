@@ -1,7 +1,7 @@
 import {VisualWrapper} from "../../../framework.visual";
 import {createVisualConnector} from "../../../framework.visual";
 import {createSelector} from "@reduxjs/toolkit";
-import {ReferenceInfo, ReferenceType, StatType} from "../../../app.model";
+import {MetadataType, ReferenceInfo, ReferenceType, StatType} from "../../../app.model";
 import {forEach, forEachKVP} from "../../../framework.core/extras/utils/collectionUtils";
 import {
     authorizationService,
@@ -25,6 +25,8 @@ class _SearchGraphsPanelWrapper extends VisualWrapper {
         super();
 
         this.id ='app.visual/components/searchGraphsPanel';
+
+        this.metadataId = MetadataType.DOCUMENTS_GET_ARRAY;
 
         this.view = SearchGraphsPanelPresenter;
 
