@@ -250,13 +250,15 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
             updatedDocument['id'] = id;
 
             if (isPrivate) {
-                if (scope !== "Private") {
-                    updatedDocument['scope'] = "Public";
-                }
+                // if (scope !== "Private") {
+                //     updatedDocument['scope'] = "Public";
+                // }
+                updatedDocument['scope'] = "Private";
             } else {
-                if (scope !== "Public") {
-                    updatedDocument['scope'] = "Private";
-                }
+                // if (scope === "Public") {
+                //     updatedDocument['scope'] = "Private";
+                // }
+                updatedDocument['scope'] = "Public";
             }
 
             onUpdateDocument(updatedDocument);
@@ -350,16 +352,18 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
     _toggleIsPrivate() {
         const { isPrivate } = this.state;
 
+        const newIsPrivate = !isPrivate;
+
         this.setState({
             ...this.state,
-            isPrivate: !isPrivate,
+            isPrivate: newIsPrivate,
+        }, () => {
+            if (newIsPrivate) {
+                this.onTmpDocumentChanged('scope', "Private");
+            } else {
+                this.onTmpDocumentChanged('scope', "Public");
+            }
         });
-
-        // if (isPrivate) {
-        //     this.onTmpDocumentChanged('scope', "Public");
-        // } else {
-        //     this.onTmpDocumentChanged('scope', "Private");
-        // }
     }
 
     _onSubmitTags() {
@@ -918,7 +922,7 @@ export default class DocumentPanelView extends Component<DocumentPanelProps, Doc
                         <div className={'d-flex align-items-end justify-content-between h-gap-2 bg-advisory py-3 px-5'}>
                             <div className={'d-flex h-gap-2 align-items-center'}>
                                 {
-                                    (((permissions.canModify && isDirty) || scope === "Draft") && canEditScope) &&
+                                    ((permissions.canModify || scope === "Draft") && canEditScope) &&
                                     <div className={"d-flex h-gap-2 pr-3"}>
                                         <div className={"text-primary display-4 font-weight-light"}>Publish as Private</div>
                                         <CheckBox light={true} selected={isPrivate} onClick={() => this._toggleIsPrivate()}/>
