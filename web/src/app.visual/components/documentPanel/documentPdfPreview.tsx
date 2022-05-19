@@ -59,7 +59,7 @@ function DocumentPdfPreview(props: DocumentPdfPreviewProps) {
 
         let xhr = new XMLHttpRequest();
 
-        xhr.open( "GET", original_url || "");
+        xhr.open( "GET", preview_url || "");
 
         xhr.setRequestHeader("Authorization", `bearer ${token}` );
 

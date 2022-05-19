@@ -113,11 +113,11 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
                 const report = reportService.getReport(id);
 
                 if (report) {
-                    const { original_url } = report;
+                    const { preview_url } = report;
 
                     let xhr = new XMLHttpRequest();
 
-                    xhr.open( "GET", original_url || "");
+                    xhr.open( "GET", preview_url || "");
 
                     xhr.setRequestHeader("Authorization", `bearer ${token}` );
 
@@ -142,11 +142,11 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
                 const documentInfo = documentService.getDocument(id);
 
                 if (documentInfo) {
-                    const { original_url } = documentInfo;
+                    const { preview_url } = documentInfo;
 
                     let xhr = new XMLHttpRequest();
 
-                    xhr.open( "GET", original_url || "", true);
+                    xhr.open( "GET", preview_url || "", true);
 
                     xhr.setRequestHeader("Authorization", `bearer ${token}` );
 
