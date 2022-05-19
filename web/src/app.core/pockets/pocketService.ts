@@ -523,12 +523,28 @@ export class PocketService extends Plugin implements IPocketService {
                 if (note) {
                     excerptParams.authorId = authorId;
 
-                    excerptParams.noteIds = [note.id];
+                    let excerptInfo = this.getExcerpt(excerptParams?.id || "")
+
+                    if (excerptInfo) {
+                        excerptParams.noteIds = excerptInfo.noteIds;
+
+                        let containsNote = false;
+                        forEach(excerptInfo.noteIds, (note_id: string) => {
+                            if (note_id === note.id) {
+                                containsNote = true;
+                            }
+                        })
+
+                        if (!containsNote) {
+                            excerptParams.noteIds.push(note.id)
+                        }
+                    } else {
+                        excerptParams.noteIds = [note.id];
+                    }
 
                     this.addOrUpdateExcerpt(excerptParams)
                         .then(excerpt => {
                             if (excerpt) {
-
 
                                 if (pocketParams.id) {
                                     let pocketMapper = this.getPocketMapper(pocketParams.id);
@@ -538,20 +554,31 @@ export class PocketService extends Plugin implements IPocketService {
 
                                         // check if the source is already included in a resource for this pocket
                                         forEach(pocketMapper.resourceMappers, (resourceMapper: ResourceMapper) => {
-                                            if (resourceMapper.resource.source_id === resourceParams.source_id) {
+                                            if (resourceMapper.resource.id === resourceParams.id) {
                                                 resource = this.getResource(resourceMapper.resource.id);
 
-                                                // forEach(resourceMapper.excerptMappers, (excerptMapper: ExcerptMapper) => {
-                                                //     if (excerptMapper.excerpt.id === excerpt.id) {
-                                                //         excerptMapper.excerpt.noteIds.push(note.id)
-                                                //     }
-                                                // });
+                                                if (resource) {
+                                                    let containsExcerpt = false;
+
+                                                    forEach(resourceMapper.excerptMappers, (excerptMapper: ExcerptMapper) => {
+                                                        if (excerptMapper.excerpt.id === excerpt.id) {
+                                                            excerptMapper.notes[note.id] = note;
+                                                            containsExcerpt = true;
+                                                        }
+                                                    });
+
+                                                    if (!containsExcerpt) {
+                                                        let excerptMapper: ExcerptMapper = new ExcerptMapper(excerpt);
+                                                        excerptMapper.notes[note.id] = note;
+
+                                                        resourceMapper.excerptMappers[excerpt.id] = excerptMapper;
+                                                        resourceMapper.resource.excerptIds.push(excerpt.id);
+                                                    }
+                                                }
                                             }
                                         });
 
-                                        if (resource !== null) {
-                                            resource.excerptIds.push(excerpt.id);
-
+                                        if (resource) {
                                             this.pocketProvider?.update(pocketParams.id, pocketMapper)
                                                 .then(pocketMapper => {
                                                     if (pocketMapper) {
@@ -564,6 +591,7 @@ export class PocketService extends Plugin implements IPocketService {
                                                     }
                                                 })
                                         } else {
+                                            //adding new resource to pocket => ergo new excerpt and new note
                                             this._setResourceParamsFromDocument(resourceParams);
 
                                             resourceParams.excerptIds = [];
