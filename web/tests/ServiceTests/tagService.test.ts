@@ -1,5 +1,4 @@
 import {
-    IEntityProvider,
     IFetchAdapter,
     IHttpService,
     ILogService,
@@ -18,13 +17,8 @@ import {
     UserProvider
 } from "../../src/app.core";
 import {NodeFetchAdapter} from "../../src/framework.core/networking/nodeFetchAdapter";
-import {
-    appDataStore,
-    authenticationService,
-    authorizationService,
-    logService,
-    repoService
-} from "../../src/serviceComposition";
+
+    const tagService: ITagService = new TagService();
 
 beforeAll(() => {
     const logService: ILogService = new LogService();
@@ -37,7 +31,6 @@ beforeAll(() => {
     const permissionProvider: PermissionProvider = new PermissionProvider();
 
     // service
-    const tagService: ITagService = new TagService();
     const httpService: IHttpService = new HttpService();
     const fetchAdapter: IFetchAdapter = new NodeFetchAdapter();
     const authenticationService: IAuthenticationService = new AuthenticationService();
@@ -75,7 +68,7 @@ beforeAll(() => {
     authenticationService.setAppDataStore(appDataStore);
     authenticationService.setAuthorizationService(authorizationService);
     authenticationService.start();
-// authorization service
+    // authorization service
     authorizationService.setLogService(logService);
     authorizationService.setRepositoryService(repoService);
     authorizationService.setPermissionProvider(permissionProvider);
@@ -83,4 +76,10 @@ beforeAll(() => {
     authorizationService.setAppDataStore(appDataStore);
     authorizationService.setAuthenticationService(authenticationService);
     authorizationService.start();
+})
+
+describe("Test Setup", () => {
+    it("Tests that tagService is not null", () => {
+        expect(tagService).not.toBeNull();
+    })
 })

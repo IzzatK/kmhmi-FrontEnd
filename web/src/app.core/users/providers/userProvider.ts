@@ -11,6 +11,7 @@ import {EntityProvider} from "../../common/providers/entityProvider";
 import {IUserProvider} from "../../../app.core.api";
 import {RoleInfo} from "../../../app.model";
 import {IEntityProvider} from "../../../framework.core.api";
+import {RoleProvider} from "./roleProvider";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -51,7 +52,8 @@ export class UserProvider extends EntityProvider<UserInfo> implements IUserProvi
     }
 
     private roleProvider: Nullable<IEntityProvider<RoleInfo>> = null;
-    setRoleProvider(provider: IEntityProvider<RoleInfo>) {
+
+    setRoleProvider(provider: RoleProvider): void {
         this.roleProvider = provider;
     }
 

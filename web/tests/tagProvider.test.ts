@@ -18,7 +18,6 @@ import {IAuthenticationService, IAuthorizationService, IUserProvider} from "../s
 import {AppDataStore} from "../src/framework.core/redux/reduxStore";
 import {PermissionInfo, RoleInfo, StatInfo, TagInfo, TagType} from "../src/app.model";
 import {NodeFetchAdapter} from "../src/framework.core/networking/nodeFetchAdapter";
-import tag from "../src/app.visual/theme/widgets/tag/tag";
 
 
 const tagProvider: IEntityProvider<TagInfo> = new TagProvider();

@@ -18,6 +18,7 @@ import {AppDataStore} from "../src/framework.core/redux/reduxStore";
 import {UserGuideInfo} from "../src/app.model";
 import {NodeFetchAdapter} from "../src/framework.core/networking/nodeFetchAdapter";
 
+const userGuideProvider: IEntityProvider<UserGuideInfo>= new UserGuideProvider();
 
 beforeAll(() => {
     const repoService: IRepositoryService = new RepositoryService();
@@ -27,7 +28,6 @@ beforeAll(() => {
     const fetchAdapter: IFetchAdapter = new NodeFetchAdapter();
 
     // Providers
-    const userGuideProvider: IEntityProvider<UserGuideInfo>= new UserGuideProvider();
     const userProvider: IUserProvider = new UserProvider();
     const permissionProvider: PermissionProvider = new PermissionProvider();
 
@@ -73,4 +73,10 @@ beforeAll(() => {
     authorizationService.setAppDataStore(appDataStore);
     authorizationService.setAuthenticationService(authenticationService);
     authorizationService.start();
+})
+
+describe("Test Setup", () => {
+    it("userGuideProvider is not Null", () => {
+        expect(userGuideProvider).not.toBeNull();
+    })
 })
