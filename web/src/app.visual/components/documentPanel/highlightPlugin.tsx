@@ -267,26 +267,26 @@ class NoteRenderer extends Component<NoteRendererProps, NoteRendererState> {
         return (
             <div className={'position-relative d-block justify-content-center'} >
                 <div className={'position-absolute d-flex justify-content-center'} style={{bottom: 0, left: 0, right: 0}}>
-                    {
-                        expanded ?
-                            <div className={'position-relative p-4 pb-2 shadow-lg d-flex flex-column justify-content-center v-gap-3 bg-primary border-muted border'}>
-                                <TextEdit
-                                    className={"p-0"}
-                                    name={"note"}
-                                    onChange={this._onUpdateNote}
-                                    value={text}/>
-                                <div className={'d-flex h-gap-3'}>
-                                    <Button text={'Cancel'} onClick={this._onCancelNote}/>
-                                    <Button text={'Save'} onClick={this._onSaveNote}/>
-                                </div>
-                            </div>
-                            :
-                            <div className={"note d-flex"}>
-                                <Button className={"rounded"} onClick={this._editNote}>
-                                    <NoteSVG className={"small-image-container"}/>
-                                </Button>
-                            </div>
-                    }
+                    {/*{*/}
+                    {/*    expanded ?*/}
+                    {/*        <div className={'position-relative p-4 pb-2 shadow-lg d-flex flex-column justify-content-center v-gap-3 bg-primary border-muted border'}>*/}
+                    {/*            <TextEdit*/}
+                    {/*                className={"p-0"}*/}
+                    {/*                name={"note"}*/}
+                    {/*                onChange={this._onUpdateNote}*/}
+                    {/*                value={text}/>*/}
+                    {/*            <div className={'d-flex h-gap-3'}>*/}
+                    {/*                <Button text={'Cancel'} onClick={this._onCancelNote}/>*/}
+                    {/*                <Button text={'Save'} onClick={this._onSaveNote}/>*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*        :*/}
+                    {/*        <div className={"note d-flex"}>*/}
+                    {/*            <Button className={"rounded"} onClick={this._editNote}>*/}
+                    {/*                <NoteSVG className={"small-image-container"}/>*/}
+                    {/*            </Button>*/}
+                    {/*        </div>*/}
+                    {/*}*/}
                 </div>
             </div>
         )

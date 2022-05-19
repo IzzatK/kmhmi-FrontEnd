@@ -309,8 +309,6 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
                 selectionService.setContext("selected-document", "");
             }
 
-            console.log(length)
-
             forEach(items, (item: SearchResultInfo) => {
 
                 if (item instanceof DocumentInfo) {

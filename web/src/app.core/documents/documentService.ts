@@ -105,7 +105,7 @@ export class DocumentService extends Plugin implements IDocumentService {
                 forEach(documents, (item: DocumentInfo) => {
                     const { id, isPending } = item;
 
-                    console.log(JSON.stringify(item))
+                    // console.log(JSON.stringify(item))
 
                     if (!isPending) {
                         result[id] = item;
