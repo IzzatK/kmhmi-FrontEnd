@@ -242,6 +242,13 @@ export class ReportService extends Plugin implements IReportService {
 
                 this.publishedReportProvider?.update(id, modifiedReport)
                     .then(document => {
+                        //update local report since provider is returning document object, not updated report
+                        let reportCopy = Object.assign(ReportInfo, report, modifiedReport);
+
+                        reportCopy.isUpdating = false;
+
+                        this.addOrUpdateRepoItem<ReportInfo>(reportCopy)
+
                         resolve(document)
                     })
                     .catch(error => {

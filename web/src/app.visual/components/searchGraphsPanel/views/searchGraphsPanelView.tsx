@@ -24,7 +24,10 @@ export class SearchGraphsPanelView extends Component<SearchGraphsPanelViewProps>
             isExpanded,
             isAlternate,
             onSearchParamChanged,
-            onToggleAlternate
+            onToggleAlternate,
+            isLoading,
+            hasError,
+            errorMessage
         } = this.props;
 
         let cn = 'search-graphs-panel d-flex flex-column py-3 px-4';
@@ -34,7 +37,7 @@ export class SearchGraphsPanelView extends Component<SearchGraphsPanelViewProps>
         }
 
         return (
-            isExpanded &&
+            (isExpanded && !isLoading && !hasError && !errorMessage) &&
             <div className={cn}>
                 {/*<Button className={'toggle-view-btn'} onClick={onToggleAlternate}>Toggle Alternate View</Button>*/}
                 <ScrollBar className={`graphs-grid-container ${!isExpanded ? '' : 'expanded'}`} renderTrackVertical={isExpanded} renderTrackHorizontal={!isExpanded}>

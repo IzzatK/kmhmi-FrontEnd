@@ -62,7 +62,7 @@ const slateElementPlugins: ISlateElementPlugin[] = [
 ]
 
 export function RichTextEditView(props: RichTextEditViewProps) {
-    const { value, onReportValueChanged } = props;
+    const { value, onReportValueChanged, editor: editorProp, onSetEditor } = props;
 
     const editorRef = useRef<Editor>()
     if (!editorRef.current) {
@@ -79,6 +79,12 @@ export function RichTextEditView(props: RichTextEditViewProps) {
     if (editor && value) {
         if (editor.children) {
             editor.children = value;
+        }
+
+        if (editorProp.children !== value) {
+            if (onSetEditor) {
+                onSetEditor(editor);
+            }
         }
     }
 

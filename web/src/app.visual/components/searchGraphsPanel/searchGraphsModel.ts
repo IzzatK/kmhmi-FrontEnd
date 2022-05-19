@@ -1,4 +1,5 @@
 import {ReferenceType} from "../../../app.model";
+import {MetaDataVM} from "../../../framework.visual";
 
 export type SearchGraphsPanelAppStateProps = {
     className?: string;
@@ -14,7 +15,7 @@ export type SearchGraphsPanelAppDispatchProps = {
     onSearchParamChanged: (id: string, value: string) => void;
 }
 
-export type SearchGraphsPanelPresenterProps = SearchGraphsPanelAppDispatchProps & SearchGraphsPanelAppStateProps;
+export type SearchGraphsPanelPresenterProps = SearchGraphsPanelAppDispatchProps & SearchGraphsPanelAppStateProps & MetaDataVM;
 
 export type SearchGraphsPanelPresenterState = {
     isAlternate: boolean;
@@ -29,6 +30,9 @@ export type SearchGraphsPanelViewProps = {
     docTypeData: StatVM[];
     isExpanded: boolean;
     isAlternate: boolean;
+    isLoading?: boolean;
+    hasError?: boolean;
+    errorMessage?: string;
     onSearchParamChanged: (id: string, value: string) => void;
     onToggleAlternate: () => void;
 }

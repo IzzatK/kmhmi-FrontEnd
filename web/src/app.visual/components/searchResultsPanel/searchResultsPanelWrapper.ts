@@ -77,20 +77,31 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
     _onDelete(id: string, object_type: ObjectType) {
         switch (object_type) {
             case ObjectType.PocketInfo:
+                if (id === selectionService.getContext("selected-pocket")) {
+                    selectionService.setContext("selected-pocket", "");
+                }
+
                 pocketService.removePocket(id);
                 break;
             case ObjectType.ReportInfo:
-                reportService.removeReport(id);
+                if (id === selectionService.getContext("selected-report")) {
+                    selectionService.setContext("selected-report", "");
+                }
+
+                reportService.removeReport(id)
                 break;
             case ObjectType.DocumentInfo:
             default:
+                if (id === selectionService.getContext("selected-document")) {
+                    selectionService.setContext("selected-document", "");
+                }
+
                 documentService.removeDocument(id);
                 break;
         }
     }
 
     _onDownload(id: string, object_type: ObjectType) {
-        const userProfile = authenticationService.getUserProfile();
         const token = authenticationService.getToken();
 
         switch (object_type) {
@@ -101,50 +112,56 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
 
                 const report = reportService.getReport(id);
 
-                if (userProfile && report) {
-                    const { username, id, email, firstName, lastName } = userProfile;
-                    const { original_url } = report;
+                if (report) {
+                    const { preview_url } = report;
 
-                    let xhr = new XMLHttpRequest;
+                    let xhr = new XMLHttpRequest();
 
-                    xhr.open( "GET", original_url || "");
-
-                    xhr.addEventListener( "load", function(){
-                        window.open(original_url);
-                    }, false);
+                    xhr.open( "GET", preview_url || "");
 
                     xhr.setRequestHeader("Authorization", `bearer ${token}` );
-                    // xhr.setRequestHeader("km-user-name", username );
-                    // xhr.setRequestHeader("km-user-id", id );
-                    // xhr.setRequestHeader("km-email", email );
-                    // xhr.setRequestHeader("km-first-name", firstName );
-                    // xhr.setRequestHeader("km-last-name", lastName );
+
+                    xhr.responseType = "blob";
+                    xhr.onload = function () {
+                        //Create a Blob from the PDF Stream
+                        const file = new Blob([xhr.response], { type: "application/pdf" });
+                        //Build a URL from the file
+                        const fileURL = URL.createObjectURL(file);
+                        //Open the URL on new Window
+                        const pdfWindow = window.open();
+                        if (pdfWindow) {
+                            pdfWindow.location.href = fileURL;
+                        }
+                    };
 
                     xhr.send();
                 }
                 break;
             case ObjectType.DocumentInfo:
             default:
-                const document = documentService.getDocument(id);
+                const documentInfo = documentService.getDocument(id);
 
-                if (userProfile && document) {
-                    const { username, id, email, firstName, lastName } = userProfile;
-                    const { original_url } = document;
+                if (documentInfo) {
+                    const { preview_url } = documentInfo;
 
-                    let xhr = new XMLHttpRequest;
+                    let xhr = new XMLHttpRequest();
 
-                    xhr.open( "GET", original_url || "");
-
-                    xhr.addEventListener( "load", function(){
-                        window.open(original_url);
-                    }, false);
+                    xhr.open( "GET", preview_url || "", true);
 
                     xhr.setRequestHeader("Authorization", `bearer ${token}` );
-                    // xhr.setRequestHeader("km-user-name", username );
-                    // xhr.setRequestHeader("km-user-id", id );
-                    // xhr.setRequestHeader("km-email", email );
-                    // xhr.setRequestHeader("km-first-name", firstName );
-                    // xhr.setRequestHeader("km-last-name", lastName );
+
+                    xhr.responseType = "blob";
+                    xhr.onload = function () {
+                        //Create a Blob from the PDF Stream
+                        const file = new Blob([xhr.response], { type: "application/pdf" });
+                        //Build a URL from the file
+                        const fileURL = URL.createObjectURL(file);
+                        //Open the URL on new Window
+                        const pdfWindow = window.open();
+                        if (pdfWindow) {
+                            pdfWindow.location.href = fileURL;
+                        }
+                    };
 
                     xhr.send();
                 }
@@ -281,6 +298,16 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
             })
 
             let itemVMs: Record<string, DocumentInfoVM> = {};
+
+            let length = 0;
+            forEach(items, () => {
+                length++;
+                return;
+            })
+
+            if (length === 0) {
+                selectionService.setContext("selected-document", "");
+            }
 
             forEach(items, (item: SearchResultInfo) => {
 
@@ -439,42 +466,45 @@ class _SearchResultsPanelWrapper extends VisualWrapper {
                 const document = documentService.getDocument(selectedDocumentId);
 
                 if (document) {
-                    const { id, title, file_name, author, uploadedBy_id } = document;
+                    const { id, title, file_name, author, uploadedBy_id, scope } = document;
 
                     result = {
                         id,
                         title: title ? title : file_name,
                         author,
                         object_type: ObjectType.DocumentInfo,
-                        uploadedBy_id
+                        uploadedBy_id,
+                        scope,
                     }
                 }
             } else if (selectedPocketId && selectedPocketId !== "") {
                 const pocket = pocketService.getPocketInfo(selectedPocketId);
 
                 if (pocket) {
-                    const { id, title, author_id, uploadedBy_id } = pocket;
+                    const { id, title, author_id, uploadedBy_id, scope } = pocket;
 
                     result = {
                         id,
                         title,
                         author: author_id,
                         object_type: ObjectType.PocketInfo,
-                        uploadedBy_id
+                        uploadedBy_id,
+                        scope
                     }
                 }
             } else if (selectedReportId && selectedReportId !== "") {
                 const report = reportService.getReport(selectedReportId);
 
                 if (report) {
-                    const { id, title, author_id, uploadedBy_id } = report;
+                    const { id, title, author_id, uploadedBy_id, scope } = report;
 
                     result = {
                         id,
                         title: title,
                         author: author_id,
                         object_type: ObjectType.ReportInfo,
-                        uploadedBy_id
+                        uploadedBy_id,
+                        scope
                     }
                 }
 

@@ -34,7 +34,7 @@ class UploadPanel extends VisualWrapper {
             }
         }
 
-        this.mapDispatchToProps = () => {
+        this.mapDispatchToProps = (dispatch: any) => {
             return {
                 onPendingDocumentAdded: (fileList: PendingDocumentVM[]) => documentService.startUpload(fileList),
                 onPendingDocumentRemoved: (id: string) => this._removePendingDocument(id),
@@ -57,6 +57,10 @@ class UploadPanel extends VisualWrapper {
 
     _removePendingDocument(id: string) {
         documentService.removePendingFile(id)
+
+        if (id === selectionService.getContext("selected-document")) {
+            selectionService.setContext("selected-document", "")
+        }
     }
 
     _cancelUpload(id: string) {

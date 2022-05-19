@@ -145,6 +145,7 @@ export type DocumentInfoVM = {
     isUpdating?: boolean;
     isPending?: boolean;
     selected?: boolean;
+    scope?: string;
     object_type: ObjectType;
 }
 

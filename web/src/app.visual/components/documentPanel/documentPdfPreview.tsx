@@ -56,26 +56,25 @@ function DocumentPdfPreview(props: DocumentPdfPreviewProps) {
     });
 
     const _download = () => {
-        let username = userProfile.username;
-        let id = userProfile.id;
-        let email = userProfile.email;
-        let firstName = userProfile.firstName;
-        let lastName = userProfile.lastName;
 
-        let xhr = new XMLHttpRequest;
+        let xhr = new XMLHttpRequest();
 
-        xhr.open( "GET", original_url || "");
-
-        xhr.addEventListener( "load", function(){
-            window.open(original_url);
-        }, false);
+        xhr.open( "GET", preview_url || "");
 
         xhr.setRequestHeader("Authorization", `bearer ${token}` );
-        // xhr.setRequestHeader("km-user-name", username );
-        // xhr.setRequestHeader("km-user-id", id );
-        // xhr.setRequestHeader("km-email", email );
-        // xhr.setRequestHeader("km-first-name", firstName );
-        // xhr.setRequestHeader("km-last-name", lastName );
+
+        xhr.responseType = "blob";
+        xhr.onload = function () {
+            //Create a Blob from the PDF Stream
+            const file = new Blob([xhr.response], { type: "application/pdf" });
+            //Build a URL from the file
+            const fileURL = URL.createObjectURL(file);
+            //Open the URL on new Window
+            const pdfWindow = window.open();
+            if (pdfWindow) {
+                pdfWindow.location.href = fileURL;
+            }
+        };
 
         xhr.send();
     }

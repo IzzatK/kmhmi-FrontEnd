@@ -10,19 +10,16 @@ export class UploadDocumentResponseConverter extends Converter<any, ResponseStat
 
         let status: StatusType;
 
-        switch (stage) {
-            case stage < 10:
-                status = StatusType.CREATED;
-                break;
-            case stage < 20:
-                status = StatusType.PDF_AVAILABLE;
-                break;
-            case stage < 30:
-                status = StatusType.SEARCHABLE;
-                break;
-            default:
-                status = StatusType.NLP_COMPLETE;
-                break;
+        if (stage <= 10) {
+            status = StatusType.CREATED;
+        } else if (stage <= 20) {
+            status = StatusType.PDF_AVAILABLE;
+        } else if (stage <= 30) {
+            status = StatusType.SEARCHABLE;
+        } else if (stage > 30) {
+            status = StatusType.NLP_COMPLETE;
+        } else {
+            status = StatusType.PROCESSING;
         }
 
         return {

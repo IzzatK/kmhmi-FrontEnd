@@ -72,7 +72,7 @@ class DocumentPanel extends VisualWrapper {
         this.mapDispatchToProps = (): DocumentPanelDispatchProps => {
             return {
                 onUpdateDocument: (edits: DocumentUpdateParams) => this._onUpdateDocument(edits),
-                onRemoveDocument: (id: string) => documentService.removeDocument(id),
+                onRemoveDocument: (id: string) => this._onRemoveDocument(id),
                 onCreateExcerpt: (params: CreateExcerptEventData) => this._createExcerpt(params),
                 onSaveNote: (note) => this._onSaveNote(note)
             };
@@ -80,6 +80,14 @@ class DocumentPanel extends VisualWrapper {
 
         this.pollingForNLPStatus = false;
         this.documentLookup = {};
+    }
+
+    _onRemoveDocument(id: string) {
+        if (id === selectionService.getContext("selected-document")) {
+            selectionService.setContext("selected-document", "");
+        }
+
+        documentService.removeDocument(id)
     }
 
     _onUpdateDocument(edits: DocumentUpdateParams) {
@@ -393,7 +401,7 @@ class DocumentPanel extends VisualWrapper {
                         setTimeout(() => {
                             this.pollingForNLPStatus = false;
                             documentService.fetchDocument(id);
-                        }, 10000);
+                        }, 3000);
                     }
 
                     this.pollingForNLPStatus = true;

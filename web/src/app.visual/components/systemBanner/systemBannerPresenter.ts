@@ -4,7 +4,7 @@ import {createVisualConnector} from "../../../framework.visual/connectors/visual
 import {
     authenticationService, displayService,
     documentService,
-    referenceService, userGuideService,
+    referenceService, selectionService, userGuideService,
     userService
 } from "../../../serviceComposition";
 import {ReferenceType, UserInfo} from "../../../app.model";
@@ -81,6 +81,10 @@ class SystemBanner extends VisualWrapper {
     onReturnHome = () => {
         documentService.clearSearch();
         displayService.pushNode('app.visual/views/search');
+        selectionService.setContext("selected-document", "");
+        selectionService.setContext("selected-report", "");
+        selectionService.setContext("selected-pocket", "");
+        displayService.popNode(DOCUMENT_PREVIEW_VIEW_ID);
     }
 
     getHelpDocument = () => {
@@ -89,31 +93,28 @@ class SystemBanner extends VisualWrapper {
     };
 
     onShowHelp = () => {
-        let userProfile = authenticationService.getUserProfile();
-        let username = userProfile.username;
-        let id = userProfile.id;
-        let email = userProfile.email;
-        let firstName = userProfile.firstName;
-        let lastName = userProfile.lastName;
-
         let preview_url = this.getHelpDocument();
 
         let token = authenticationService.getToken();
 
-        let xhr = new XMLHttpRequest;
+        let xhr = new XMLHttpRequest();
 
-        xhr.open( "GET", preview_url || "");
-
-        xhr.addEventListener( "load", function(){
-            window.open(preview_url);
-        }, false);
+        xhr.open( "GET", preview_url || "", true);
 
         xhr.setRequestHeader("Authorization", `bearer ${token}` );
-        // xhr.setRequestHeader("km-user-name", username );
-        // xhr.setRequestHeader("km-user-id", id );
-        // xhr.setRequestHeader("km-email", email );
-        // xhr.setRequestHeader("km-first-name", firstName );
-        // xhr.setRequestHeader("km-last-name", lastName );
+
+        xhr.responseType = "blob";
+        xhr.onload = function () {
+            //Create a Blob from the PDF Stream
+            const file = new Blob([xhr.response], { type: "application/pdf" });
+            //Build a URL from the file
+            const fileURL = URL.createObjectURL(file);
+            //Open the URL on new Window
+            const pdfWindow = window.open();
+            if (pdfWindow) {
+                pdfWindow.location.href = fileURL;
+            }
+        };
 
         xhr.send();
     }
