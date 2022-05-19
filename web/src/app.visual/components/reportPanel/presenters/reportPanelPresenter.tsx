@@ -61,6 +61,8 @@ class ReportPanelPresenter extends Component<ReportPanelPresenterProps, ReportPa
         const { tmpReport } = this.state;
         const { report } = this.props;
 
+        debugger;
+
         if (report) {
             let nextReport: ReportUpdateParams = {
                 ...tmpReport,
@@ -136,9 +138,16 @@ class ReportPanelPresenter extends Component<ReportPanelPresenterProps, ReportPa
         }
     }
 
+    _setEditor(editor: Editor) {
+        this.setState({
+            ...this.state,
+            editor
+        })
+    }
+
     render() {
         const { report, citations, excerpts } = this.props;
-        const { tmpReport, tmpValue } = this.state;
+        const { tmpReport, tmpValue, editor } = this.state;
 
         return (
             <ReportPanelView
@@ -151,6 +160,8 @@ class ReportPanelPresenter extends Component<ReportPanelPresenterProps, ReportPa
                 tmpReport={tmpReport}
                 tmpValue={tmpValue}
                 onPublishReport={this._onPublishReport}
+                editor={editor}
+                onSetEditor={this._setEditor}
             />
         )
     }

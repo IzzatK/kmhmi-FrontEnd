@@ -9,9 +9,9 @@ import {Size} from "../../../theme/widgets/loadingIndicator/loadingIndicatorMode
 
 class ReportPanelView extends Component<ReportPanelViewProps> {
     render() {
-        const { className, report, tmpReport, tmpValue, excerpts, citations, onTmpReportChanged, onSaveReport, onReportValueChanged, onPublishReport } = this.props;
+        const { className, report, tmpReport, tmpValue, excerpts, citations, onTmpReportChanged, onSaveReport, onReportValueChanged, onPublishReport, editor, onSetEditor } = this.props;
 
-        const { id, pocketId, authorId, title, date, citation, isUpdating } = report || {};
+        const { id, pocketId, authorId, title, publication_date, citation, isUpdating } = report || {};
         const { id: tmpId, author_id: tmpAuthorId, title: tmpTitle, publication_date: tmpDate, citation: tmpCitation } = tmpReport;
 
         let cn = "report-panel d-flex flex-column";
@@ -22,7 +22,7 @@ class ReportPanelView extends Component<ReportPanelViewProps> {
         let originalTitle = title || "";
         let titleValue = tmpTitle || originalTitle;
 
-        let originalDate = date || "";
+        let originalDate = publication_date || "";
         let dateValue = tmpDate || originalDate;
 
         let citationTitle: string;
@@ -62,10 +62,11 @@ class ReportPanelView extends Component<ReportPanelViewProps> {
                                     className={'text-field'}
                                     type={'date'}
                                     placeholder={'Date goes here'}
-                                    name={'date'}
+                                    name={'publication_date'}
                                     value={dateValue}
                                     // disable={id === undefined}
                                     // edit={id !== undefined}
+                                    onChange={(value: string) => onTmpReportChanged("publication_date", value)}
                                     onSubmit={onTmpReportChanged}
                                 />
                             </div>
@@ -85,6 +86,8 @@ class ReportPanelView extends Component<ReportPanelViewProps> {
                                 <RichTextEditView
                                     value={tmpValue}
                                     onReportValueChanged={onReportValueChanged}
+                                    editor={editor}
+                                    onSetEditor={onSetEditor}
                                 />
                                 // :
                                 // <div

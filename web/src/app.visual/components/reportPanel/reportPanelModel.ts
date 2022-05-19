@@ -30,11 +30,15 @@ export type ReportPanelViewProps = {
     onReportValueChanged: (value: any, editor: Editor) => void;
     onSaveReport: () => void;
     onPublishReport: () => void;
+    editor: Editor
+    onSetEditor: (editor: Editor) => void;
 }
 
 export type RichTextEditViewProps = {
     value: any;
+    editor: Editor;
     onReportValueChanged: (value: any, editor: Editor) => void;
+    onSetEditor: (editor: Editor) => void;
 }
 
 export type ReportInfoVM = {
