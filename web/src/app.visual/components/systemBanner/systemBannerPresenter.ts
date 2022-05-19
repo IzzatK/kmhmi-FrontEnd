@@ -4,7 +4,7 @@ import {createVisualConnector} from "../../../framework.visual/connectors/visual
 import {
     authenticationService, displayService,
     documentService,
-    referenceService, userGuideService,
+    referenceService, selectionService, userGuideService,
     userService
 } from "../../../serviceComposition";
 import {ReferenceType, UserInfo} from "../../../app.model";
@@ -81,6 +81,10 @@ class SystemBanner extends VisualWrapper {
     onReturnHome = () => {
         documentService.clearSearch();
         displayService.pushNode('app.visual/views/search');
+        selectionService.setContext("selected-document", "");
+        selectionService.setContext("selected-report", "");
+        selectionService.setContext("selected-pocket", "");
+        displayService.popNode(DOCUMENT_PREVIEW_VIEW_ID);
     }
 
     getHelpDocument = () => {
