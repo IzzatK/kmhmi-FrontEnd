@@ -41,4 +41,6 @@ server {
     location /api/ {
         proxy_pass              $KM_API_URL;
     }
+
+    client_max_body_size 128M;
 }
