@@ -14,6 +14,8 @@ server {
 
     root /usr/share/nginx/html;
 
+    client_max_body_size 128M;
+
     ssl_certificate_key /etc/x509/https/key.pem;
     ssl_certificate /etc/x509/https/cert.pem;
 
@@ -42,5 +44,4 @@ server {
         proxy_pass              $KM_API_URL;
     }
 
-    client_max_body_size 128M;
 }
