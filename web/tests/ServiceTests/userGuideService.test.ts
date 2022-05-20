@@ -12,6 +12,8 @@ import {AppDataStore} from "../../src/framework.core/redux/reduxStore";
 import {IAuthenticationService, IAuthorizationService, IUserProvider} from "../../src/app.core.api";
 import {NodeFetchAdapter} from "../../src/framework.core/networking/nodeFetchAdapter";
 
+const userGuideService: UserGuideService = new UserGuideService();
+
 beforeAll(() => {
 
     const appDataStore: IStorage = new AppDataStore();
@@ -26,7 +28,6 @@ beforeAll(() => {
     // Services
     const authenticationService: IAuthenticationService = new AuthenticationService();
     const authorizationService: IAuthorizationService = new AuthorizationService();
-    const userGuideService: UserGuideService = new UserGuideService();
     const httpService: IHttpService = new HttpService();
     const logService: ILogService = new LogService();
     const repoService: IRepositoryService = new RepositoryService();
@@ -82,4 +83,10 @@ beforeAll(() => {
     authorizationService.setAppDataStore(appDataStore);
     authorizationService.setAuthenticationService(authenticationService);
     authorizationService.start();
+})
+
+describe("Test Setup", () => {
+    it("userGuideService is not null", () => {
+        expect(userGuideService).not.toBeNull();
+    })
 })

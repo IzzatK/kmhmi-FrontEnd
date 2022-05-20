@@ -3,19 +3,28 @@ import {
     IHttpService,
     ILogService,
     IRepositoryService,
-    ISelectionService
+    ISelectionService, IStorage
 } from "../../src/framework.core.api";
 import {HttpService, LogService, RepositoryService, SelectionService} from "../../src/framework.core/services";
-import {IAuthenticationService, IAuthorizationService, IReferenceService, IUserProvider} from "../../src/app.core.api";
+import {
+    IAuthenticationService,
+    IAuthorizationService,
+    IReferenceService,
+    IUserProvider,
+    IUserService
+} from "../../src/app.core.api";
 import {
     AuthenticationService,
     AuthorizationService,
     PermissionProvider,
     ReferenceService,
-    UserProvider,
+    UserProvider, UserService,
 } from "../../src/app.core";
-import {appDataStore, userService} from "../../src/serviceComposition";
+
 import {PermissionInfo} from "../../src/app.model";
+import {AppDataStore} from "../../src/framework.core/redux/reduxStore";
+
+    const userService: IUserService = new UserService();
 
 beforeAll(() => {
     const logService: ILogService = new LogService();
@@ -23,6 +32,8 @@ beforeAll(() => {
     const selectionService: ISelectionService = new SelectionService();
     const refService: IReferenceService = new ReferenceService();
     const httpService: IHttpService = new HttpService();
+    const appDataStore: IStorage = new AppDataStore();
+
 
     //Import Providers
     const userProvider: IUserProvider = new UserProvider();
@@ -42,6 +53,14 @@ beforeAll(() => {
     repoService.setLogService(logService);
     repoService.setStorage(appDataStore);
     repoService.start();
+
+    // User Service
+    userService.setLogService(logService);
+    userService.setRepositoryService(repoService);
+    userService.setAuthorizationService(authorizationService);
+    userService.setAuthenticationService(authenticationService);
+    userService.setUserProvider(userProvider);
+    userService.start();
 
     // selection service
     selectionService.setLogService(logService);
