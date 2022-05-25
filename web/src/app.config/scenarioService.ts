@@ -94,7 +94,7 @@ export class ScenarioService extends Plugin implements IScenarioService {
 
     createSearchParamsInfos() {
         this.createSearchParamInfo('search_request', ParamType.STRING, '', null, null, 'Include Text', false, false, false);
-        this.createSearchParamInfo('exclude_search_request', ParamType.STRING, '', null, null, 'Exclude Text', true, true, false);
+        this.createSearchParamInfo('exclusion', ParamType.STRING, '', null, null, 'Exclude Text', true, true, false);
         this.createSearchParamInfo('sort', ParamType.OPTIONS, 'author_ascending', null, null, 'Sort', false, false, false);
         this.createSearchParamInfo('offset', ParamType.STRING, '', null, null, 'Offset', false, false, false);
         this.createSearchParamInfo('limit', ParamType.STRING, '', null, null, 'Limit', false, false, false);
@@ -102,7 +102,7 @@ export class ScenarioService extends Plugin implements IScenarioService {
         this.createSearchParamInfo('author', ParamType.STRING, '', null, null, 'Author', true, true, false);
         this.createSearchParamInfo('department', ParamType.OPTIONS, '', {}, ReferenceType.DEPARTMENT, 'Department', true, false, false);
         this.createSearchParamInfo('purpose', ParamType.OPTIONS, '', {}, ReferenceType.PURPOSE, 'Purpose', true, false, false);
-        this.createSearchParamInfo('projects', ParamType.STRING, '', null, null, 'Projects', true, true, false);
+        this.createSearchParamInfo('project', ParamType.STRING, '', null, null, 'Projects', true, true, false);
         this.createSearchParamInfo('tags', ParamType.STRING, '', null, null, 'Tags', true, false, false);
         this.createSearchParamInfo('upload_date', ParamType.DATE_RANGE,
             {

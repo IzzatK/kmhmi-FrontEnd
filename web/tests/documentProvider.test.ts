@@ -125,7 +125,7 @@ beforeAll(() => {
     };
 
     createSearchParamInfo('search_request', ParamType.STRING, '', null, null, 'Include Text', false, false, false);
-    createSearchParamInfo('exclude_search_request', ParamType.STRING, '', null, null, 'Exclude Text', true, true, false);
+    createSearchParamInfo('exclusion', ParamType.STRING, '', null, null, 'Exclude Text', true, true, false);
     createSearchParamInfo('sort', ParamType.OPTIONS, 'author_ascending', null, null, 'Sort', false, false, false);
     createSearchParamInfo('offset', ParamType.STRING, '', null, null, 'Offset', false, false, false);
     createSearchParamInfo('limit', ParamType.STRING, '', null, null, 'Limit', false, false, false);
@@ -133,7 +133,7 @@ beforeAll(() => {
     createSearchParamInfo('author', ParamType.STRING, '', null, null, 'Author', true, true, false);
     createSearchParamInfo('department', ParamType.OPTIONS, '', {}, ReferenceType.DEPARTMENT, 'Department', true, false, false);
     createSearchParamInfo('purpose', ParamType.OPTIONS, '', {}, ReferenceType.PURPOSE, 'Purpose', true, false, false);
-    createSearchParamInfo('projects', ParamType.STRING, '', null, null, 'Projects', true, true, false);
+    createSearchParamInfo('project', ParamType.STRING, '', null, null, 'Projects', true, true, false);
     createSearchParamInfo('tags', ParamType.STRING, '', null, null, 'Tags', true, false, false);
     createSearchParamInfo('upload_date', ParamType.DATE_RANGE,
         {
